@@ -88,7 +88,7 @@ def applied(row):
 
 
 def test_rules_version_is_set():
-    assert RULES_VERSION == 1
+    assert RULES_VERSION == 2
 
 
 def test_four_positive_yoy_passes_even_if_decelerating():
@@ -209,10 +209,17 @@ def test_latest_decline_does_not_need_earlier_qoq():
 
 
 def test_other_flat_and_unable():
-    badges = classify_qoq_badges([1.0, 1.0, 1.0, 1.0], Thresholds(None, None))
-    assert any(b["id"] == CAT_OTHER and b["applied"] for b in badges)
-    badges = classify_qoq_badges([None, None, 1.0, 1.0], Thresholds(None, None))
-    assert any(b["id"] == CAT_UNABLE and b["applied"] for b in badges)
+    unconfigured = classify_qoq_badges([1.0, 1.0, 1.0, 1.0], Thresholds(None, None))
+    assert not any(b["id"] == CAT_OTHER and b["applied"] for b in unconfigured)
+    assert not any(b["id"] == CAT_UNABLE and b["applied"] for b in unconfigured)
+
+    incomplete = classify_qoq_badges([None, None, 1.0, 1.0], Thresholds(None, None))
+    assert any(b["id"] == CAT_UNABLE and b["applied"] for b in incomplete)
+    assert not any(b["id"] == CAT_OTHER and b["applied"] for b in incomplete)
+
+    # Both thresholds evaluated; all positive but not stable (spread 1 > 0.5) and not a jump.
+    other = classify_qoq_badges([5.0, 5.0, 5.0, 4.0], Thresholds(0.5, 10.0))
+    assert any(b["id"] == CAT_OTHER and b["applied"] for b in other)
 
 
 def test_non_calendar_fiscal_year_labels():
@@ -262,6 +269,10 @@ def test_sample_dataset_buckets_from_layer1_json():
     assert by["BNTX"]["bucket"] == BUCKET_DATA_REVIEW
     assert by["IONS"]["bucket"] == BUCKET_TTM_NONPOSITIVE
     assert all(b["blockedByThreshold"] for b in by["INSM"]["badges"] if b["id"] in {CAT_STABLE, CAT_JUMP})
+    assert CAT_OTHER not in applied(by["INSM"])
+    assert CAT_OTHER not in applied(by["KRYS"])
+    assert CAT_OTHER not in applied(by["ARGX"])
+    assert CAT_UNABLE in applied(by["ARGX"])
 
 
 def test_unrounded_decisions_not_display_rounding():

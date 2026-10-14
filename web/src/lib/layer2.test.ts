@@ -47,8 +47,18 @@ describe("classifyQoqBadges", () => {
     expect(applied([10, 0, -10, 10])).toContain(CAT_VOL);
   });
 
-  it("uses other/flat when complete and no rule matches", () => {
-    expect(applied([1, 1, 1, 1])).toContain(CAT_OTHER);
+  it("does not assign other/flat while thresholds are unconfigured", () => {
+    expect(applied([1, 1, 1, 1])).not.toContain(CAT_OTHER);
+    expect(applied([1, 1, 1, 1])).not.toContain(CAT_UNABLE);
+  });
+
+  it("does not assign other/flat when QoQ classification is incomplete", () => {
+    expect(applied([null, null, 1, 1])).toContain(CAT_UNABLE);
+    expect(applied([null, null, 1, 1])).not.toContain(CAT_OTHER);
+  });
+
+  it("uses other/flat only after every rule that could apply has been evaluated", () => {
+    expect(applied([5, 5, 5, 4], 0.5, 10)).toContain(CAT_OTHER);
   });
 });
 

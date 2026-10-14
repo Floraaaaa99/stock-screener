@@ -100,7 +100,7 @@ Layer 2 does not fetch or reinterpret revenue. It reads Layer 1’s latest eight
 quarters and preserves currency, revenue concept, schema version, and quarter-level validation. Dependent YoY/QoQ rates
 are recomputed whenever that window changes (new filings or restatements).
 
-Classification rules are versioned (`rulesVersion`, currently 1). Decisions use unrounded values.
+Classification rules are versioned (`rulesVersion`, currently 2). Decisions use unrounded values.
 
 - **Eligibility.** Start from Layer 1 companies with TTM revenue growth **> 0%**. Valid TTM growth **≤ 0%** is a separate
   bucket (`ttm_nonpositive`) and is never labeled Data Review.
@@ -117,7 +117,10 @@ Classification rules are versioned (`rulesVersion`, currently 1). Decisions use 
   Threshold-dependent rules — stable sequential growth (max − min ≤ configured spread) and recent QoQ jump
   (latest − max of preceding three ≥ configured jump) — stay inactive until
   `pipeline/config/layer2.json` (or the on-site inputs) set those values. Until then the UI shows
-  **Threshold not configured**. An unavailable earlier QoQ does not block identifying a latest-quarter decline.
+  **Threshold not configured**. Other / flat is assigned only when all four QoQ rates are present **and** every rule
+  that could apply has been evaluated — it is not used while a threshold is unconfigured, and not used when QoQ data
+  is incomplete (`unable_to_classify` covers that). An unavailable earlier QoQ does not block identifying a
+  latest-quarter decline.
 - There is no top-N limit and no valuation screen.
 
 ## 6. Output

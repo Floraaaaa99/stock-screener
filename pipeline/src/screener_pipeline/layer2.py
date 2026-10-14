@@ -14,7 +14,7 @@ from pathlib import Path
 from . import config
 from .cache import read_json, write_json_atomic
 
-RULES_VERSION = 1
+RULES_VERSION = 2
 LAYER2_SCHEMA_VERSION = 1
 N_YOY = 4
 N_WINDOW = 8
@@ -260,7 +260,10 @@ def classify_qoq_badges(qoq_oldest_to_newest: list[float | None], thresholds: Th
         )
 
     applied = [b for b in badges if b["applied"]]
-    if complete and not applied:
+    thresholds_pending = any(b["blockedByThreshold"] for b in badges)
+    # Other/flat only after every rule that could apply has been evaluated.
+    # Unconfigured thresholds and incomplete QoQ must not land here.
+    if complete and not applied and not thresholds_pending:
         seq = ", ".join(_fmt(r) for r in rates)
         badges.append(
             _badge(

@@ -1,7 +1,7 @@
 import type { Layer2Badge, Layer2Bucket, Layer2Row } from "../types";
 import { normalize } from "./screener";
 
-export const RULES_VERSION = 1;
+export const RULES_VERSION = 2;
 
 export const TABS: { id: Layer2Bucket; label: string }[] = [
   { id: "passed", label: "Passed" },
@@ -143,7 +143,8 @@ export function classifyQoqBadges(rates: (number | null)[], t: Layer2Thresholds)
   }
 
   const applied = badges.filter((b) => b.applied);
-  if (complete && applied.length === 0) {
+  const thresholdsPending = badges.some((b) => b.blockedByThreshold);
+  if (complete && applied.length === 0 && !thresholdsPending) {
     badges.push(badge(CAT_OTHER, `All four QoQ rates are present (${r.map(fmt).join(", ")}) but no other category rule matched. Rules v${RULES_VERSION}.`, true));
   }
   if (applied.length === 0 && !badges.some((b) => b.id === CAT_OTHER && b.applied)) {
