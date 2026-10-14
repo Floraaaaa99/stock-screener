@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "screener-pipeline"
+version = "0.1.0"
+description = "Data pipeline for the U.S. Stock Screener (NASDAQ Trader, Yahoo Finance, SEC EDGAR)"
+requires-python = ">=3.11"
+dependencies = [
+  "requests==2.34.2",
+  "yfinance==1.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==9.1.1",
+  "ruff==0.17.0",
+]
+
+[project.scripts]
+screener = "screener_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
