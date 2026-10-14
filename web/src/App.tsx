@@ -10,6 +10,7 @@ import {
   DEFAULT_VIEW,
   filterRows,
   industriesFor,
+  mixedCurrencies,
   pageCount,
   paginate,
   readViewFromSearch,
@@ -54,16 +55,24 @@ export default function App() {
   const meta = load.status === "ready" ? load.meta : null;
 
   const filtered = useMemo(
-    () => filterRows(rows, { sector: view.sector, industry: view.industry, query: view.query }),
-    [rows, view.sector, view.industry, view.query],
+    () =>
+      filterRows(rows, {
+        sicMajorGroup: view.sicMajorGroup,
+        sicIndustry: view.sicIndustry,
+        currency: view.currency,
+        query: view.query,
+      }),
+    [rows, view.sicMajorGroup, view.sicIndustry, view.currency, view.query],
   );
   const sorted = useMemo(() => sortRows(filtered, view.sort, view.dir, view.query), [filtered, view.sort, view.dir, view.query]);
   const pages = pageCount(sorted.length);
   const page = Math.min(view.page, pages);
   const pageRows = useMemo(() => paginate(sorted, page), [sorted, page]);
+  const mixed = useMemo(() => mixedCurrencies(filtered), [filtered]);
 
-  const sectors = meta ? Object.keys(meta.sectors) : [];
-  const industries = meta ? industriesFor(meta.sectors, view.sector) : [];
+  const majorGroups = meta ? Object.keys(meta.sicMajorGroups) : [];
+  const industries = meta ? industriesFor(meta.sicMajorGroups, view.sicMajorGroup) : [];
+  const currencies = meta?.currencies ?? [];
 
   const update = (patch: Partial<ViewState>) => {
     setExpanded(null);
@@ -78,6 +87,8 @@ export default function App() {
       page: 1,
     }));
   };
+
+  const clearFilters = () => update({ sicMajorGroup: "", sicIndustry: "", currency: "", query: "" });
 
   return (
     <div className="app">
@@ -96,8 +107,9 @@ export default function App() {
         {load.status !== "error" && (
           <>
             <Filters
-              sectors={sectors}
+              majorGroups={majorGroups}
               industries={industries}
+              currencies={currencies}
               view={view}
               disabled={load.status === "loading"}
               resultCount={sorted.length}
@@ -105,6 +117,14 @@ export default function App() {
               onChange={update}
               onReset={() => update({ ...DEFAULT_VIEW })}
             />
+            {mixed && (
+              <div className="currency-banner" role="note">
+                Revenue is shown in each company's SEC reporting currency, labeled on every amount. Amounts are
+                <strong> not converted</strong>. Sorting Current or Previous TTM groups currencies (USD first) so
+                figures in different currencies are never ranked as one series. TTM growth is a ratio and can be
+                compared across currencies.
+              </div>
+            )}
             <ScreenerTable
               loading={load.status === "loading"}
               rows={pageRows}
@@ -112,7 +132,7 @@ export default function App() {
               expanded={expanded}
               onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
               onSort={onSort}
-              onClearFilters={() => update({ sector: "", industry: "", query: "" })}
+              onClearFilters={clearFilters}
             />
             {load.status === "ready" && sorted.length > 0 && (
               <Pagination

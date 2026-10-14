@@ -1,4 +1,4 @@
-"""Download and stream SEC's nightly companyfacts.zip into compact per-CIK revenue facts."""
+"""Download SEC nightly bulk zips and extract compact per-CIK revenue facts and SIC codes."""
 
 from __future__ import annotations
 
@@ -69,10 +69,65 @@ def extract_compact_facts(
     return hashes
 
 
-def zip_info(zip_path: Path) -> dict:
+def zip_info(zip_path: Path, url: str | None = None) -> dict:
     return {
         "path": str(zip_path),
         "bytes": zip_path.stat().st_size if zip_path.exists() else 0,
         "sha256": sha256_file(zip_path) if zip_path.exists() else None,
-        "url": config.SEC_COMPANYFACTS_ZIP_URL,
+        "url": url or config.SEC_COMPANYFACTS_ZIP_URL,
     }
+
+
+def download_submissions_zip(http: RateLimitedClient, dest: Path, *, offline: bool = False) -> Path:
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if dest.exists() and (offline or is_fresh(dest, config.SEC_BULK_TTL_H)):
+        return dest
+    if offline:
+        raise FileNotFoundError(f"offline mode and no cached copy of {config.SEC_SUBMISSIONS_ZIP_URL}")
+    log.info("Downloading submissions.zip to %s", dest)
+    http.download(config.SEC_SUBMISSIONS_ZIP_URL, dest)
+    return dest
+
+
+def extract_compact_sic(
+    zip_path: Path,
+    ciks: list[str],
+    sic_dir: Path,
+    *,
+    force: bool = False,
+) -> dict[str, str]:
+    """Write compact SIC records for each CIK present in submissions.zip."""
+    from .sic import sic_from_submissions
+
+    sic_dir.mkdir(parents=True, exist_ok=True)
+    wanted = {str(c).zfill(10) for c in ciks}
+    hashes: dict[str, str] = {}
+    found: set[str] = set()
+    with zipfile.ZipFile(zip_path) as zf:
+        names = zf.namelist()
+        by_base = {Path(n).name: n for n in names}
+        for cik in sorted(wanted):
+            member = zip_member(cik)
+            name = member if member in zf.NameToInfo else by_base.get(member)
+            out = sic_dir / f"{cik}.json"
+            if out.exists() and not force:
+                hashes[cik] = canonical_hash(read_json(out))
+                found.add(cik)
+                continue
+            if not name:
+                continue
+            with zf.open(name) as fh:
+                payload = json.load(fh)
+            info = sic_from_submissions(payload).to_dict()
+            info["cik"] = cik
+            write_json_atomic(out, info)
+            hashes[cik] = canonical_hash(info)
+            found.add(cik)
+    missing = wanted - found
+    if missing:
+        log.info(
+            "submissions.zip missing %d of %d requested CIKs; API fallback will be used",
+            len(missing),
+            len(wanted),
+        )
+    return hashes

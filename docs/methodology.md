@@ -12,19 +12,19 @@ NASDAQ Trader's `nasdaqlisted.txt` and `otherlisted.txt` define the universe.
   - ETFs and test issues, using the files' own flags.
   - Warrants, rights, units, preferred and depositary preferred shares, notes and other debt, ETNs, closed-end and other funds, trust certificates and structured products, and when-issued lines. These are identified from the security name and from the ACT symbol suffix (`$`, `.U`, `.W`, `.WS`, `.R`, `#`).
 - **Included:** common stocks and ADRs. ADRs are tagged `ADR` on the site.
-- **Duplicates:** NASDAQ Trader is authoritative. A symbol listed twice keeps its first listing, and the other is recorded as `duplicate`. Symbols are normalised to Yahoo/SEC form (`BRK.B` and `BRK/B` become `BRK-B`). Matching a symbol to a SEC CIK also tries its variants, which handles share-class suffixes.
-- **Yahoo does not decide inclusion.** A listing is never dropped because Yahoo returns no data or an unexpected `quoteType`. Such cases go to `classification_issues.json` instead.
+- **Duplicates:** NASDAQ Trader is authoritative. A symbol listed twice keeps its first listing, and the other is recorded as `duplicate`. Symbols are normalised to SEC form (`BRK.B` and `BRK/B` become `BRK-B`). Matching a symbol to a SEC CIK also tries its variants, which handles share-class suffixes.
+- **Missing SEC data does not drop a listing.** A company without a CIK, SIC code, or quarterly revenue stays in the table with N/A and a reason. Missing cases go to `classification_issues.json` when they are a CIK or SIC gap.
 
-Every exclusion is recorded with its reason. `meta.json` reports the counts.
+Every exclusion is recorded with its reason. `meta.json` reports the counts. Coverage is split into **full-universe coverage** (how many eligible listings are present, CIK-matched, SIC-assigned) and **TTM coverage** (how many have current TTM and growth).
 
-## 2. Market data (Yahoo Finance)
+## 2. Industry (SEC SIC)
 
-yfinance `Ticker.info` provides sector, industry, market cap, price and currency.
+Industry comes from each company's EDGAR submissions JSON (`sic` and `sicDescription`), labeled **SEC SIC** on the site. The two-digit prefix is mapped to the U.S. SIC manual major-group title for the filter roll-up.
 
-- Requests are throttled (about 1 per second plus jitter) and retried with exponential backoff on HTTP 429 and 5xx responses. A run stops early after repeated consecutive failures instead of hammering the service.
-- Fields are cached per ticker with their own timestamps. Sector and industry are refreshed every 30 days; market cap and price are treated as fresh for 20 hours. Progress is checkpointed, so an interrupted run resumes where it stopped.
-- A batched `yf.download` path exists for prices but is **not used in production** unless a comparison run shows it matches Yahoo `marketCap` (see `screener yahoo-batch-test`).
-- Yahoo's terms forbid redistributing these fields as a public full-universe dataset. See [`yahoo-terms.md`](yahoo-terms.md). The site shows when market data was fetched. Missing values are N/A.
+- Bulk source: nightly `https://www.sec.gov/Archives/edgar/daily-index/bulkdata/submissions.zip`. The per-CIK submissions API is the fallback.
+- Compact SIC records are stored in pipeline state (`sic/*.json`) and packed into the `pipeline-state` release.
+- Filters are **SEC SIC major group** and **SEC SIC industry** (`code — description`). They are not Yahoo or commercial sector/industry names.
+- Stock price and market cap are not collected.
 
 ## 3. Quarterly revenue (SEC EDGAR Company Facts)
 
@@ -83,8 +83,9 @@ with the reason `foreign_filer`. Annual figures are not divided or substituted.
 - **Current TTM** is the sum of slots 1–4, the latest 4 quarters. **Previous TTM** is the sum of slots 5–8.
 - **Growth** = (Current TTM ÷ Previous TTM − 1) × 100.
 - Growth is computed only when all 8 slots have values, the quarters are consecutive, they come from one verified comparable concept, none of them disagrees with its filing, and Previous TTM is greater than zero.
-- Otherwise the value is N/A, with one of these reasons: `insufficient_quarters`, `gap_in_quarters`, `previous_ttm_not_positive`, `ambiguous_concept`, `filing_mismatch`, `statement_mismatch`, `foreign_filer`, `no_cik`, `no_revenue_concept`.
-- Yahoo's `revenueGrowth` is never used.
+- Otherwise the value is N/A, with one of these reasons: `insufficient_quarters`, `gap_in_quarters`, `previous_ttm_not_positive`, `ambiguous_concept`, `filing_mismatch`, `statement_mismatch`, `foreign_filer`, `no_cik`, `no_company_facts`, `no_revenue_concept`.
+- Revenue amounts keep the SEC reporting currency (always labeled, including USD). The site does not convert currencies. Sorting Current or Previous TTM groups by currency (USD first) so amounts in different currencies are never ranked as one series. Growth is a ratio and may be sorted across currencies.
+- Default table sort is TTM growth descending, with N/A last. Current and Previous TTM columns are also sortable.
 
 Additional flags are shown in the expanded row:
 
@@ -100,7 +101,7 @@ Additional flags are shown in the expanded row:
 - `meta.json`: build timestamps, source file dates, universe and exclusion counts, coverage statistics and N/A reason counts.
 - `screener.json`: one compact row per listing, used by the table.
 - `companies/<TICKER>.json`: per-company detail, loaded when a row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered.
-- `classification_issues.json`: Yahoo classification problems for listings that are still included.
+- `classification_issues.json`: missing CIK or missing SEC SIC for listings that are still included.
 
 Files are written atomically: the whole dataset directory is built next to the old one and then swapped in. A failed
 run therefore never leaves a half-written dataset.

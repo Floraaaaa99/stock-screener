@@ -1,4 +1,4 @@
-"""Build the static dataset: universe -> SEC revenue -> Yahoo market data -> JSON files."""
+"""Build the static dataset: NASDAQ Trader universe + SEC revenue and SIC."""
 
 from __future__ import annotations
 
@@ -9,14 +9,21 @@ from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 
-from . import config, yahoo
+from . import config
 from .cache import read_json, write_json_atomic
 from .gate import evaluate_gate
-from .output import SCHEMA_VERSION, company_json, screener_row
+from .output import SCHEMA_VERSION, company_json, screener_row, sort_screener_rows
 from .revenue import analyze_company
-from .sec.bulk import download_companyfacts_zip, extract_compact_facts, zip_info
+from .sec.bulk import (
+    download_companyfacts_zip,
+    download_submissions_zip,
+    extract_compact_facts,
+    extract_compact_sic,
+    zip_info,
+)
 from .sec.client import SecClient, load_overrides
-from .sec.store import FactsStore, StatementStore
+from .sec.sic import SicInfo
+from .sec.store import FactsStore, SicStore, StatementStore
 from .universe.fetch import load_universe
 from .universe.nasdaq_trader import Listing
 
@@ -55,7 +62,6 @@ def build(
     universe: str,
     *,
     offline: bool = False,
-    skip_yahoo: bool = False,
     verify_quarters: bool = True,
     output_dir: Path | None = None,
     state_dir: Path | None = None,
@@ -63,6 +69,7 @@ def build(
     time_budget_s: float | None = None,
     resume: bool = True,
     use_bulk: bool | None = None,
+    write_live: bool = False,
 ) -> dict:
     output_dir = output_dir or config.OUTPUT_DIR
     state_dir = state_dir or config.STATE_DIR
@@ -87,7 +94,6 @@ def build(
             "id": sample_name,
             "name": sample_meta.get("name", sample_name),
             "description": sample_meta.get("description", ""),
-            "expectedIndustry": sample_meta.get("industry"),
         }
     elif universe == "full":
         listings = list(listings_all)
@@ -95,7 +101,10 @@ def build(
             "mode": "full",
             "id": "us-listed",
             "name": "U.S. listed common stocks and ADRs",
-            "description": "Every eligible NASDAQ, NYSE and NYSE American listing from NASDAQ Trader.",
+            "description": (
+                "Every eligible NASDAQ, NYSE and NYSE American listing from NASDAQ Trader. "
+                "Listings without quarterly revenue stay in the table as N/A."
+            ),
         }
     else:
         raise DatasetError(f"Unknown universe {universe!r}")
@@ -112,7 +121,10 @@ def build(
 
     facts_store = FactsStore(state_dir / "facts")
     statement_store = StatementStore(state_dir / "statements")
-    sec = SecClient(offline=offline, facts_store=facts_store, statement_store=statement_store)
+    sic_store = SicStore(state_dir / "sic")
+    sec = SecClient(
+        offline=offline, facts_store=facts_store, statement_store=statement_store, sic_store=sic_store
+    )
     ticker_map = sec.ticker_map()
     overrides = load_overrides()
 
@@ -127,22 +139,26 @@ def build(
         if cik:
             needed_ciks.append(cik)
 
-    bulk_meta = None
+    bulk_meta: dict | None = None
     should_bulk = use_bulk if use_bulk is not None else universe == "full"
     if should_bulk and needed_ciks:
-        zip_path = config.CACHE_DIR / "sec" / "bulk" / "companyfacts.zip"
-        download_companyfacts_zip(sec.http, zip_path, offline=offline)
-        extract_compact_facts(zip_path, needed_ciks, facts_store.directory)
-        bulk_meta = zip_info(zip_path)
+        facts_zip = config.CACHE_DIR / "sec" / "bulk" / "companyfacts.zip"
+        sic_zip = config.CACHE_DIR / "sec" / "bulk" / "submissions.zip"
+        download_companyfacts_zip(sec.http, facts_zip, offline=offline)
+        extract_compact_facts(facts_zip, needed_ciks, facts_store.directory)
+        try:
+            download_submissions_zip(sec.http, sic_zip, offline=offline)
+            extract_compact_sic(sic_zip, needed_ciks, sic_store.directory)
+        except FileNotFoundError:
+            log.warning("submissions.zip unavailable; SIC will use the per-CIK API")
+        bulk_meta = {
+            "companyfacts": zip_info(facts_zip, config.SEC_COMPANYFACTS_ZIP_URL),
+            "submissions": zip_info(sic_zip, config.SEC_SUBMISSIONS_ZIP_URL) if sic_zip.exists() else None,
+        }
 
     progress_path = state_dir / "progress.json"
     progress = read_json(progress_path, default={}) or {}
     processed: dict[str, dict] = dict(progress.get("processed") or {}) if resume else {}
-
-    ycache = yahoo.YahooCache()
-    yahoo_errors: dict[str, str] = {}
-    if not skip_yahoo:
-        yahoo_errors = yahoo.refresh([x.symbol for x in listings], ycache, offline=offline)
 
     companies: list[dict] = []
     issues_all: list[dict] = []
@@ -151,18 +167,18 @@ def build(
     for listing in listings:
         if deadline is not None and time.monotonic() >= deadline:
             timed_out = True
-            pending = [x.symbol for x in listings if x.symbol not in {c["ticker"] for c in companies}]
-            pending = [s for s in pending if s != listing.symbol]
-            pending.insert(0, listing.symbol)
+            done = {c["ticker"] for c in companies}
+            pending = [x.symbol for x in listings if x.symbol not in done]
             log.warning("Time budget reached after %d companies; %d pending", len(companies), len(pending))
             break
         cik = cik_by_ticker[listing.symbol]
         rec = rec_by_ticker[listing.symbol]
         facts_hash = facts_store.hash_of(cik) if cik else None
-        prev = processed.get(listing.symbol)
         rev = None
         sec_name = rec["name"] if rec else None
+        sic: SicInfo | None = None
         if cik:
+            sic = sec.sic(cik)
             rf = sec.revenue_facts(cik)
             if rf is not None:
                 facts_hash = facts_store.hash_of(cik)
@@ -170,22 +186,22 @@ def build(
                 def fetch(accn: str, _cik: str = cik):
                     return sec.income_statement(_cik, accn)
 
-                rev = analyze_company(rf, fetch, override=overrides.get(cik, {}).get("concept"),
-                                     verify_quarters=verify_quarters)
+                rev = analyze_company(
+                    rf, fetch, override=overrides.get(cik, {}).get("concept"), verify_quarters=verify_quarters
+                )
                 log.info("%s: %s %s", listing.symbol, rev.status, rev.ttm)
-        y = dict(ycache.get(listing.symbol))
-        issues = classification_issues(listing, y, yahoo_errors.get(listing.symbol), dataset)
+        issues = classification_issues(listing, cik, sic)
         issues_all.extend(issues)
-        c = company_json(listing, cik, sec_name, rev, y, issues)
+        c = company_json(listing, cik, sec_name, rev, sic, issues)
         if rev is None:
             c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
         companies.append(c)
         processed[listing.symbol] = {
             "cik": cik,
             "factsHash": facts_hash,
+            "sic": (sic.code if sic else None),
             "status": (rev.status if rev else c["ttm"]["reason"]),
             "doneAt": _now_iso(),
-            "reused": bool(prev and prev.get("factsHash") == facts_hash),
         }
 
     status = "complete" if not timed_out else "incomplete"
@@ -198,65 +214,47 @@ def build(
         "pending": pending,
         "timeBudgetS": time_budget_s,
         "bulk": bulk_meta,
-        "yahooIncluded": not skip_yahoo,
     }
     write_json_atomic(progress_path, {"processed": processed, "run": run, "dataset": dataset})
 
+    rows = sort_screener_rows([screener_row(c) for c in companies])
+    meta = make_meta(dataset, companies, listings_all, exclusions, file_times, started, run)
+
     if timed_out:
         staging = state_dir / "dataset-incomplete"
-        rows = sorted((screener_row(c) for c in companies),
-                      key=lambda r: (r["marketCap"] is None, -(r["marketCap"] or 0)))
-        meta = make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run)
         write_dataset(staging, meta, rows, companies, issues_all)
         raise IncompleteRun(
             f"Time budget reached: processed {len(companies)} of {len(listings)} listings. "
             "State was saved; the live dataset was not replaced."
         )
 
-    rows = sorted((screener_row(c) for c in companies),
-                  key=lambda r: (r["marketCap"] is None, -(r["marketCap"] or 0)))
-    baseline = read_json(output_dir / "meta.json") if output_dir.exists() else None
-    meta = make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run, baseline)
-    # Never replace the live Pages payload with a full or partial universe.
-    if dataset["mode"] != "sample" and output_dir.resolve() == config.OUTPUT_DIR.resolve():
+    hold_live = dataset["mode"] != "sample" and output_dir.resolve() == config.OUTPUT_DIR.resolve()
+    if hold_live and not (write_live and meta.get("gate", {}).get("ok")):
         staging = state_dir / f"dataset-{dataset['mode']}"
         write_dataset(staging, meta, rows, companies, issues_all)
         meta["run"]["publishedTo"] = str(staging)
-        meta["run"]["heldBack"] = "yahoo_terms_and_keep_stage1_live"
+        meta["run"]["heldBack"] = "awaiting_full_universe_validation"
         write_json_atomic(staging / "meta.json", meta)
-        log.warning(
-            "%s dataset written to %s; the live Stage 1 site was left unchanged.",
-            dataset["mode"],
-            staging,
-        )
+        log.warning("%s dataset written to %s; live Pages payload unchanged.", dataset["mode"], staging)
         return meta
 
     write_dataset(output_dir, meta, rows, companies, issues_all)
     return meta
 
 
-def classification_issues(listing: Listing, y: dict, error: str | None, dataset: dict) -> list[dict]:
+def classification_issues(listing: Listing, cik: str | None, sic: SicInfo | None) -> list[dict]:
     out: list[dict] = []
-    if not y.get("profile_as_of"):
-        out.append({"ticker": listing.symbol, "issue": "yahoo_no_data", "detail": error or "never fetched"})
+    if not cik:
+        out.append({"ticker": listing.symbol, "issue": "no_cik", "detail": "No SEC CIK matches this ticker."})
         return out
-    qt = y.get("quoteType")
-    if qt != "EQUITY":
-        out.append({"ticker": listing.symbol, "issue": "yahoo_quote_type", "detail": f"quoteType={qt!r}"})
-    if not y.get("sector") or not y.get("industry"):
-        out.append({"ticker": listing.symbol, "issue": "yahoo_missing_classification",
-                    "detail": f"sector={y.get('sector')!r} industry={y.get('industry')!r}"})
-    expected = dataset.get("expectedIndustry")
-    if expected and y.get("industry") and y.get("industry") != expected:
-        out.append({"ticker": listing.symbol, "issue": "sample_industry_mismatch",
-                    "detail": f"Yahoo industry is {y.get('industry')!r}, sample expects {expected!r}"})
-    if error:
-        out.append({"ticker": listing.symbol, "issue": "yahoo_stale", "detail": f"refresh failed: {error}"})
+    if not sic or not sic.code:
+        out.append(
+            {"ticker": listing.symbol, "issue": "no_sic", "detail": "SEC submissions did not include an SIC code."}
+        )
     return out
 
 
-def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run=None,
-              baseline=None) -> dict:
+def make_meta(dataset, companies, listings_all, exclusions, file_times, started, run=None, baseline=None) -> dict:
     def count(pred) -> int:
         return sum(1 for c in companies if pred(c))
 
@@ -265,19 +263,27 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
 
     checks = Counter(
         (q.get("check") or {}).get("status", "not_checked")
-        for c in companies for q in rev(c).get("quarters", []) if not q.get("missing")
+        for c in companies
+        for q in rev(c).get("quarters", [])
+        if not q.get("missing")
     )
-    sectors: dict[str, set[str]] = {}
+    groups: dict[str, set[str]] = {}
+    currencies: dict[str, int] = Counter()
     for c in companies:
-        s, i = c["market"]["sector"], c["market"]["industry"]
-        if s:
-            sectors.setdefault(s, set())
-            if i:
-                sectors[s].add(i)
+        sic = c.get("sic") or {}
+        g, lab = sic.get("majorGroup"), sic.get("label")
+        if g:
+            groups.setdefault(g, set())
+            if lab:
+                groups[g].add(lab)
+        cur = (rev(c).get("currency") or (c.get("ttm") or {}).get("currency"))
+        if cur:
+            currencies[cur] += 1
+        elif c["ttm"]["current"] is not None:
+            currencies["unknown"] += 1
 
-    market_times = sorted(c["market"]["marketAsOf"] for c in companies if c["market"]["marketAsOf"])
-    profile_times = sorted(c["market"]["profileAsOf"] for c in companies if c["market"]["profileAsOf"])
     filed = sorted(q["filed"] for c in companies for q in rev(c).get("quarters", []) if q.get("filed"))
+    listings_n = len(companies)
     meta = {
         "schemaVersion": SCHEMA_VERSION,
         "generatedAt": _now_iso(),
@@ -294,25 +300,23 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
             "fileCreated": file_times,
         },
         "sources": {
-            "nasdaqTrader": {"url": "https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs",
-                             "fileCreated": file_times},
-            "yahoo": {"url": "https://finance.yahoo.com", "via": "yfinance",
-                      "marketOldest": market_times[0] if market_times else None,
-                      "marketNewest": market_times[-1] if market_times else None,
-                      "profileOldest": profile_times[0] if profile_times else None,
-                      "publicRedistribution": False,
-                      "terms": "https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html"},
-            "sec": {"url": "https://www.sec.gov/edgar", "api": "XBRL Company Facts",
-                    "bulk": "https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip",
-                    "latestFilingDate": filed[-1] if filed else None},
+            "nasdaqTrader": {
+                "url": "https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs",
+                "fileCreated": file_times,
+            },
+            "sec": {
+                "url": "https://www.sec.gov/edgar",
+                "companyFacts": "XBRL Company Facts (nightly companyfacts.zip)",
+                "sic": "EDGAR submissions sic / sicDescription",
+                "latestFilingDate": filed[-1] if filed else None,
+            },
         },
         "coverage": {
-            "listings": len(companies),
+            "listings": listings_n,
             "companies": len({c["cik"] or c["ticker"] for c in companies}),
-            "yahooProfile": count(lambda c: c["market"]["sector"] and c["market"]["industry"]),
-            "marketCap": count(lambda c: c["market"]["marketCap"] is not None),
-            "price": count(lambda c: c["market"]["price"] is not None),
             "cikMatched": count(lambda c: c["cik"]),
+            "sicAssigned": count(lambda c: (c.get("sic") or {}).get("code")),
+            "includedWithoutRevenue": count(lambda c: c["ttm"]["current"] is None),
             "foreignFilers": count(lambda c: rev(c).get("status") == "foreign_filer"),
             "ambiguousConcept": count(lambda c: rev(c).get("status") == "ambiguous"),
             "eightQuarters": count(
@@ -327,8 +331,10 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
             "quarterChecks": dict(checks),
             "naReasons": dict(Counter(c["ttm"]["reason"] for c in companies if c["ttm"]["reason"])),
             "classificationIssues": sum(len(c["classificationIssues"]) for c in companies),
+            "byCurrency": dict(currencies),
         },
-        "sectors": {s: sorted(i) for s, i in sorted(sectors.items())},
+        "sicMajorGroups": {s: sorted(i) for s, i in sorted(groups.items())},
+        "currencies": sorted(c for c in currencies if c != "unknown"),
     }
     meta["gate"] = evaluate_gate(meta, baseline, publish=False).to_dict()
     return meta
@@ -342,8 +348,11 @@ def write_dataset(output_dir: Path, meta: dict, rows: list[dict], companies: lis
     (tmp / "companies").mkdir(parents=True)
     for c in companies:
         write_json_atomic(tmp / "companies" / f"{c['ticker']}.json", c)
-    write_json_atomic(tmp / "screener.json", {"schemaVersion": SCHEMA_VERSION, "generatedAt": meta["generatedAt"],
-                                              "rows": rows}, compact=True)
+    write_json_atomic(
+        tmp / "screener.json",
+        {"schemaVersion": SCHEMA_VERSION, "generatedAt": meta["generatedAt"], "rows": rows},
+        compact=True,
+    )
     write_json_atomic(tmp / "classification_issues.json", {"generatedAt": meta["generatedAt"], "issues": issues})
     write_json_atomic(tmp / "meta.json", meta)
     old = output_dir.with_name(output_dir.name + ".old")

@@ -1,13 +1,22 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-10-14T18:32:45+00:00",
-  "buildStartedAt": "2026-10-14T18:32:42+00:00",
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T20:26:59+00:00",
+  "buildStartedAt": "2026-10-14T20:26:52+00:00",
   "dataset": {
     "mode": "sample",
     "id": "biotech20",
     "name": "Biotechnology validation sample",
-    "description": "20 Yahoo Finance \"Biotechnology\" companies that file 10-Q/10-K reports, plus 2 foreign-filer ADRs (ARGX, BNTX) to exercise N/A handling. Used to validate 12-quarter revenue and TTM calculations against SEC filings before the full-universe build.",
-    "expectedIndustry": "Biotechnology"
+    "description": "20 domestic SEC 10-Q/10-K biotechnology filers plus 2 foreign-filer ADRs (ARGX, BNTX) to exercise N/A handling. Used to validate 12-quarter revenue, TTM calculations, and SEC SIC against filings before the full-universe build."
+  },
+  "run": {
+    "status": "complete",
+    "startedAt": "2026-10-14T20:26:52+00:00",
+    "finishedAt": "2026-10-14T20:26:59+00:00",
+    "listingsTarget": 22,
+    "listingsDone": 22,
+    "pending": [],
+    "timeBudgetS": null,
+    "bulk": null
   },
   "universe": {
     "source": "NASDAQ Trader symbol directory (nasdaqlisted.txt, otherlisted.txt)",
@@ -52,26 +61,19 @@
         "otherlisted": "1014202614:01"
       }
     },
-    "yahoo": {
-      "url": "https://finance.yahoo.com",
-      "via": "yfinance",
-      "marketOldest": "2026-10-14T18:16:38+00:00",
-      "marketNewest": "2026-10-14T18:17:08+00:00",
-      "profileOldest": "2026-10-14T18:16:38+00:00"
-    },
     "sec": {
       "url": "https://www.sec.gov/edgar",
-      "api": "XBRL Company Facts",
+      "companyFacts": "XBRL Company Facts (nightly companyfacts.zip)",
+      "sic": "EDGAR submissions sic / sicDescription",
       "latestFilingDate": "2026-08-06"
     }
   },
   "coverage": {
     "listings": 22,
     "companies": 22,
-    "yahooProfile": 22,
-    "marketCap": 22,
-    "price": 22,
     "cikMatched": 22,
+    "sicAssigned": 22,
+    "includedWithoutRevenue": 2,
     "foreignFilers": 2,
     "ambiguousConcept": 0,
     "eightQuarters": 20,
@@ -84,11 +86,36 @@
     "naReasons": {
       "foreign_filer": 2
     },
-    "classificationIssues": 0
+    "classificationIssues": 0,
+    "byCurrency": {
+      "USD": 20
+    }
   },
-  "sectors": {
-    "Healthcare": [
-      "Biotechnology"
+  "sicMajorGroups": {
+    "Chemicals and Allied Products": [
+      "2834 — Pharmaceutical Preparations",
+      "2835 — In Vitro & In Vivo Diagnostic Substances",
+      "2836 — Biological Products, (No Diagnostic Substances)"
+    ],
+    "Engineering, Accounting, Research, Management, and Related Services": [
+      "8731 — Services-Commercial Physical & Biological Research"
     ]
+  },
+  "currencies": [
+    "USD"
+  ],
+  "gate": {
+    "ok": true,
+    "reasons": [],
+    "metrics": {
+      "mode": "sample",
+      "status": "complete",
+      "listings": 22,
+      "eligible": 5593,
+      "cikMatched": 22,
+      "growthRatio": 0.9090909090909091,
+      "currentTtmRatio": 0.9090909090909091,
+      "quarterMismatchRatio": 0.0
+    }
   }
 }

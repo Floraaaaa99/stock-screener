@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { naReason } from "../lib/explain";
-import { formatCompactMoney, formatPercent, formatPrice } from "../lib/format";
+import { formatCompactMoney, formatPercent } from "../lib/format";
 import type { SortKey, ViewState } from "../lib/screener";
 import type { ScreenerRow } from "../types";
 import { CompanyDetailPanel } from "./CompanyDetail";
@@ -15,7 +15,7 @@ interface Props {
   onClearFilters: () => void;
 }
 
-const COLUMNS = 10;
+const COLUMNS = 8;
 
 function SortHeader({ label, k, view, onSort, title }: { label: string; k: SortKey; view: ViewState; onSort: (k: SortKey) => void; title?: string }) {
   const active = view.sort === k;
@@ -46,6 +46,16 @@ function Growth({ row }: { row: ScreenerRow }) {
   return <span className={`growth ${cls}`}>{formatPercent(row.ttmGrowth)}</span>;
 }
 
+function SicCell({ row, field }: { row: ScreenerRow; field: "sicMajorGroup" | "sicIndustry" }) {
+  const value = row[field];
+  if (!value) return <NA reason={row.sicCode ? null : "no_sic"} />;
+  return (
+    <span className="sic" title={row.sicCode ? `SEC SIC ${row.sicCode}` : "SEC SIC"}>
+      {value}
+    </span>
+  );
+}
+
 export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort, onClearFilters }: Props) {
   return (
     <section className="panel table-panel">
@@ -56,13 +66,11 @@ export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort,
               <th scope="col">Ticker</th>
               <th scope="col">Company</th>
               <th scope="col">Exchange</th>
-              <th scope="col">Sector</th>
-              <th scope="col">Industry</th>
-              <SortHeader label="Market Cap" k="marketCap" view={view} onSort={onSort} />
-              <SortHeader label="Price" k="price" view={view} onSort={onSort} />
-              <SortHeader label="Current TTM Revenue" k="ttmCurrent" view={view} onSort={onSort} title="Sum of the latest 4 quarters" />
-              <SortHeader label="Previous TTM Revenue" k="ttmPrevious" view={view} onSort={onSort} title="Sum of the 4 quarters before those" />
-              <SortHeader label="TTM Revenue Growth YoY" k="ttmGrowth" view={view} onSort={onSort} title="Current TTM ÷ Previous TTM − 1" />
+              <th scope="col">SEC SIC major group</th>
+              <th scope="col">SEC SIC industry</th>
+              <SortHeader label="Current TTM Revenue" k="ttmCurrent" view={view} onSort={onSort} title="Sum of the latest 4 quarters, in the reporting currency" />
+              <SortHeader label="Previous TTM Revenue" k="ttmPrevious" view={view} onSort={onSort} title="Sum of the 4 quarters before those, in the reporting currency" />
+              <SortHeader label="TTM Revenue Growth YoY" k="ttmGrowth" view={view} onSort={onSort} title="Current TTM ÷ Previous TTM − 1. Default sort: descending, N/A last." />
             </tr>
           </thead>
           <tbody>
@@ -115,10 +123,12 @@ export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort,
                         {r.type === "adr" && <span className="tag">ADR</span>}
                       </td>
                       <td>{r.exchange}</td>
-                      <td>{r.sector ?? <NA reason={null} />}</td>
-                      <td>{r.industry ?? <NA reason={null} />}</td>
-                      <td className="num">{r.marketCap === null ? <NA reason={null} /> : formatCompactMoney(r.marketCap, r.priceCurrency)}</td>
-                      <td className="num">{r.price === null ? <NA reason={null} /> : formatPrice(r.price, r.priceCurrency)}</td>
+                      <td>
+                        <SicCell row={r} field="sicMajorGroup" />
+                      </td>
+                      <td>
+                        <SicCell row={r} field="sicIndustry" />
+                      </td>
                       <td className="num">
                         {r.ttmCurrent === null ? <NA reason={r.naReason} /> : formatCompactMoney(r.ttmCurrent, r.revenueCurrency)}
                       </td>

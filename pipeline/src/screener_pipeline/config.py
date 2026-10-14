@@ -17,20 +17,16 @@ SEC_COMPANYFACTS_URL = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json
 SEC_SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 SEC_ARCHIVES_URL = "https://www.sec.gov/Archives/edgar/data/{cik}/{accn_nodash}/"
 SEC_COMPANYFACTS_ZIP_URL = "https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip"
+SEC_SUBMISSIONS_ZIP_URL = "https://www.sec.gov/Archives/edgar/daily-index/bulkdata/submissions.zip"
 
 # SEC fair-access policy allows 10 requests/second; stay below it.
 SEC_MAX_RPS = 8.0
-YAHOO_MIN_INTERVAL_S = 1.0
-YAHOO_BATCH_SIZE = 100
-# Adopt batched Yahoo prices only when a comparison run is within this relative error.
-YAHOO_BATCH_MAX_REL_ERROR = 0.02
 
 # Cache freshness, in hours.
 SEC_FACTS_TTL_H = 20
 NASDAQ_TTL_H = 20
-YAHOO_PROFILE_TTL_H = 24 * 30
-YAHOO_MARKET_TTL_H = 20
 SEC_BULK_TTL_H = 20
+SEC_SIC_TTL_H = 24 * 7
 
 STATE_VERSION = 1
 STATE_DIR = Path(os.environ.get("SCREENER_STATE_DIR", CACHE_DIR / "state"))
@@ -38,7 +34,7 @@ RELEASE_TAG = "pipeline-state"
 
 # Publishing gates (relative drop vs the last complete baseline). A first full run has no baseline.
 GROWTH_COVERAGE_MAX_DROP = 0.05
-YAHOO_PROFILE_COVERAGE_MAX_DROP = 0.10
+QUARTER_MISMATCH_MAX_RATIO = 0.10
 # Leave headroom under GitHub's 6-hour job limit for packing and uploading state.
 DEFAULT_TIME_BUDGET_S = int(os.environ.get("SCREENER_TIME_BUDGET_S", str(5 * 3600)))
 

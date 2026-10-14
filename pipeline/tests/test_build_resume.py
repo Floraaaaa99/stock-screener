@@ -15,7 +15,6 @@ def test_time_budget_does_not_replace_live_dataset(tmp_path: Path):
         build(
             "sample:biotech20",
             offline=True,
-            skip_yahoo=True,
             verify_quarters=False,
             output_dir=live,
             state_dir=tmp_path / "state",
@@ -38,7 +37,6 @@ def test_partial_full_run_does_not_replace_default_output(tmp_path: Path, monkey
     meta = build_fn(
         "sample:biotech20",
         offline=True,
-        skip_yahoo=True,
         verify_quarters=False,
         output_dir=live,
         state_dir=tmp_path / "state",

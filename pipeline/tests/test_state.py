@@ -12,22 +12,25 @@ from screener_pipeline.state import StateError, pack_state, read_sidecar_sha256,
 def _seed(state_dir: Path) -> None:
     write_json_atomic(state_dir / "facts" / "0000875320.json", {"cik": "0000875320", "byConcept": {}})
     write_json_atomic(state_dir / "statements" / "0001.json", {"accn": "0001", "rows": []})
-    write_json_atomic(state_dir / "yahoo-should-not-pack.json", {"secret": "nope"})
+    write_json_atomic(state_dir / "sic" / "0000875320.json", {"cik": "0000875320", "code": "2834"})
+    write_json_atomic(state_dir / "stray-should-not-pack.json", {"secret": "nope"})
 
 
 def test_pack_roundtrip_and_integrity(tmp_path: Path):
     state = tmp_path / "state"
     _seed(state)
     archive, sidecar, manifest = pack_state(state, tmp_path / "state.tar.gz", extra={"runId": "abc"})
-    assert manifest["fileCount"] == 2
+    assert manifest["fileCount"] == 3
     assert "facts/0000875320.json" in manifest["files"]
+    assert "sic/0000875320.json" in manifest["files"]
     digest = read_sidecar_sha256(sidecar)
 
     dest = tmp_path / "restored"
     unpacked = unpack_state(archive, dest, expected_sha256=digest)
-    assert unpacked["fileCount"] == 2
+    assert unpacked["fileCount"] == 3
     assert (dest / "facts" / "0000875320.json").exists()
-    assert not (dest / "yahoo-should-not-pack.json").exists()
+    assert (dest / "sic" / "0000875320.json").exists()
+    assert not (dest / "stray-should-not-pack.json").exists()
 
 
 def test_tampered_file_is_rejected(tmp_path: Path):

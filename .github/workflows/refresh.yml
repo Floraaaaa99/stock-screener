@@ -1,9 +1,8 @@
 name: Refresh full universe
 
 # Builds the full NASDAQ / NYSE / NYSE American dataset. Never deploys GitHub Pages.
-# The live Stage 1 site stays as committed in web/public/data/ until Yahoo terms are
-# resolved and two complete manual runs have passed validation.
-# Weekly cron is intentionally omitted.
+# The live site stays as committed in web/public/data/ until a complete run passes
+# the publish gate and is copied with --write-live. Weekly cron is intentionally omitted.
 on:
   workflow_dispatch:
     inputs:
@@ -14,10 +13,6 @@ on:
           - full
           - sample:biotech20
         default: full
-      skip_yahoo:
-        description: Skip the Yahoo refresh (use the runner cache only)
-        type: boolean
-        default: false
       time_budget_hours:
         description: Stop and save state after this many hours
         type: string
@@ -62,7 +57,6 @@ jobs:
             pipeline/.cache/nasdaq
             pipeline/.cache/sec/bulk
             pipeline/.cache/sec/company_tickers_exchange.json
-            pipeline/.cache/yahoo
           key: pipeline-hot-${{ github.run_id }}
           restore-keys: pipeline-hot-
       - name: Restore compact state from the rolling release
@@ -84,9 +78,7 @@ jobs:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
           set +e
-          extra=""
-          if [ "${{ inputs.skip_yahoo }}" = "true" ]; then extra="--skip-yahoo"; fi
-          screener -v build --universe "${{ inputs.universe }}" --time-budget-hours "${{ inputs.time_budget_hours }}" --report docs/validation/refresh-report.md $extra
+          screener -v build --universe "${{ inputs.universe }}" --time-budget-hours "${{ inputs.time_budget_hours }}" --report docs/validation/refresh-report.md
           code=$?
           set -e
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
@@ -113,7 +105,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if ! gh release view pipeline-state >/dev/null 2>&1; then
-            gh release create pipeline-state --title "Pipeline state" --notes "Compact SEC facts and cached statements. Yahoo data is not included. See docs/yahoo-terms.md."
+            gh release create pipeline-state --title "Pipeline state" --notes "Compact SEC facts, SIC records, and cached statements. See docs/stage2-persistence.md."
           fi
           # Dated asset first so a failed pointer update is recoverable.
           dest="$GITHUB_WORKSPACE/pipeline/.cache/state-out"
@@ -132,6 +124,7 @@ jobs:
           name: dataset
           path: |
             pipeline/.cache/dataset
+            pipeline/.cache/state/dataset-full
             docs/validation/refresh-report.md
           retention-days: 90
           if-no-files-found: warn
@@ -144,6 +137,7 @@ jobs:
           fi
           screener gate --meta "$meta"
           echo "Non-publish validation passed. GitHub Pages was not updated."
+          screener gate --meta "$meta" --publish || echo "Publish gate not yet satisfied; live Pages unchanged."
       - name: Fail incomplete runs
         if: steps.build.outputs.exit_code == '3'
         run: |

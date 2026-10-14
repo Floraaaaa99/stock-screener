@@ -1,7 +1,6 @@
 """Pack, verify and unpack compact pipeline state for a rolling GitHub Release asset.
 
-Yahoo caches are never included: a public release asset would redistribute that data
-(see docs/yahoo-terms.md). Only SEC-derived facts and parsed statements are stored.
+Only SEC-derived compact facts, parsed statements, and SIC records are stored.
 """
 
 from __future__ import annotations
@@ -16,7 +15,7 @@ from pathlib import Path
 from . import config
 from .cache import sha256_file, write_json_atomic, write_text_atomic
 
-INCLUDED_DIRS = ("facts", "statements")
+INCLUDED_DIRS = ("facts", "statements", "sic")
 MANIFEST_NAME = "manifest.json"
 
 

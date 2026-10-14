@@ -3,8 +3,9 @@ import { formatCount } from "../lib/format";
 import type { ViewState } from "../lib/screener";
 
 interface Props {
-  sectors: string[];
+  majorGroups: string[];
   industries: string[];
+  currencies: string[];
   view: ViewState;
   disabled: boolean;
   resultCount: number;
@@ -13,7 +14,17 @@ interface Props {
   onReset: () => void;
 }
 
-export function Filters({ sectors, industries, view, disabled, resultCount, totalCount, onChange, onReset }: Props) {
+export function Filters({
+  majorGroups,
+  industries,
+  currencies,
+  view,
+  disabled,
+  resultCount,
+  totalCount,
+  onChange,
+  onReset,
+}: Props) {
   const [query, setQuery] = useState(view.query);
 
   useEffect(() => setQuery(view.query), [view.query]);
@@ -24,20 +35,20 @@ export function Filters({ sectors, industries, view, disabled, resultCount, tota
     return () => window.clearTimeout(t);
   }, [query, view.query, onChange]);
 
-  const active = Boolean(view.sector || view.industry || view.query);
+  const active = Boolean(view.sicMajorGroup || view.sicIndustry || view.currency || view.query);
 
   return (
     <section className="panel filters" aria-label="Filters">
       <div className="field">
-        <label htmlFor="sector">Sector</label>
+        <label htmlFor="sic-group">SEC SIC major group</label>
         <select
-          id="sector"
-          value={view.sector}
+          id="sic-group"
+          value={view.sicMajorGroup}
           disabled={disabled}
-          onChange={(e) => onChange({ sector: e.target.value, industry: "" })}
+          onChange={(e) => onChange({ sicMajorGroup: e.target.value, sicIndustry: "" })}
         >
-          <option value="">All sectors</option>
-          {sectors.map((s) => (
+          <option value="">All SEC SIC major groups</option>
+          {majorGroups.map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
@@ -45,17 +56,28 @@ export function Filters({ sectors, industries, view, disabled, resultCount, tota
         </select>
       </div>
       <div className="field">
-        <label htmlFor="industry">Industry</label>
+        <label htmlFor="sic-industry">SEC SIC industry</label>
         <select
-          id="industry"
-          value={view.industry}
+          id="sic-industry"
+          value={view.sicIndustry}
           disabled={disabled}
-          onChange={(e) => onChange({ industry: e.target.value })}
+          onChange={(e) => onChange({ sicIndustry: e.target.value })}
         >
-          <option value="">{view.sector ? `All ${view.sector} industries` : "All industries"}</option>
+          <option value="">{view.sicMajorGroup ? `All in ${view.sicMajorGroup}` : "All SEC SIC industries"}</option>
           {industries.map((i) => (
             <option key={i} value={i}>
               {i}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="field">
+        <label htmlFor="currency">Revenue currency</label>
+        <select id="currency" value={view.currency} disabled={disabled} onChange={(e) => onChange({ currency: e.target.value })}>
+          <option value="">All currencies</option>
+          {currencies.map((c) => (
+            <option key={c} value={c}>
+              {c}
             </option>
           ))}
         </select>
@@ -65,7 +87,7 @@ export function Filters({ sectors, industries, view, disabled, resultCount, tota
         <input
           id="search"
           type="search"
-          placeholder="Ticker or company name"
+          placeholder="Ticker, company, or SEC SIC"
           value={query}
           disabled={disabled}
           autoComplete="off"

@@ -1,4 +1,4 @@
-import { formatDate, formatDateTime, formatNasdaqFileTime } from "../lib/format";
+import { formatDate, formatNasdaqFileTime } from "../lib/format";
 import type { Meta } from "../types";
 
 export function Footer({ meta }: { meta: Meta | null }) {
@@ -17,17 +17,11 @@ export function Footer({ meta }: { meta: Meta | null }) {
               {s && <span className="muted"> File created {formatNasdaqFileTime(s.nasdaqTrader.fileCreated.nasdaqlisted)}.</span>}
             </li>
             <li>
-              <a href="https://finance.yahoo.com" target="_blank" rel="noreferrer">
-                Yahoo Finance
-              </a>{" "}
-              (via yfinance) — sector, industry, market cap and price.
-              {s && <span className="muted"> Prices as of {formatDateTime(s.yahoo.marketNewest)}.</span>}
-            </li>
-            <li>
               <a href="https://www.sec.gov/edgar/sec-api-documentation" target="_blank" rel="noreferrer">
-                SEC EDGAR XBRL Company Facts
+                SEC EDGAR
               </a>{" "}
-              — quarterly revenue from 10-Q and 10-K filings.
+              — SIC codes from company submissions; quarterly revenue from XBRL Company Facts and the income statements of
+              10-Q/10-K filings.
               {s && <span className="muted"> Latest filing included: {formatDate(s.sec.latestFilingDate)}.</span>}
             </li>
           </ul>
@@ -38,10 +32,12 @@ export function Footer({ meta }: { meta: Meta | null }) {
             Current TTM is the sum of the latest four standalone fiscal quarters; Previous TTM is the four quarters
             before those. Growth = Current ÷ Previous − 1, shown only when all eight quarters are available, consecutive
             and comparable and Previous TTM is positive. Quarters missing from 10-Qs are derived from year-to-date totals
-            (for example Q4 = annual − nine months). Missing values are shown as N/A, never as zero.
+            (for example Q4 = annual − nine months). Missing values are shown as N/A, never as zero. Industry filters use
+            SEC SIC codes and descriptions, not a commercial sector taxonomy.
           </p>
           <p className="muted">
-            For personal research only. Not investment advice. Data may be delayed or incomplete.
+            For personal research only. Not investment advice. Data may be delayed or incomplete. Do not compare revenue
+            amounts across currencies without conversion; this site does not convert.
           </p>
         </div>
       </div>

@@ -23,8 +23,12 @@ def main(argv: list[str] | None = None) -> int:
     b = sub.add_parser("build", help="Build the static JSON dataset")
     b.add_argument("--universe", default="sample:biotech20", help="sample:<name> or full")
     b.add_argument("--offline", action="store_true", help="Use cached downloads only")
-    b.add_argument("--skip-yahoo", action="store_true", help="Do not refresh Yahoo data (use cache)")
     b.add_argument("--no-verify", action="store_true", help="Skip per-quarter checks against filing statements")
+    b.add_argument(
+        "--write-live",
+        action="store_true",
+        help="Write a full-universe dataset over web/public/data only if the publish gate passes",
+    )
     b.add_argument("--report", help="Write a validation report (Markdown) to this path")
     b.add_argument("--limit", type=int, help="Process only the first N listings (partial; cannot be published as full)")
     b.add_argument("--time-budget-hours", type=float, help="Stop and save state after this many hours")
@@ -48,10 +52,7 @@ def main(argv: list[str] | None = None) -> int:
     g = sub.add_parser("gate", help="Check whether a dataset may be published")
     g.add_argument("--meta", required=True, help="Path to meta.json")
     g.add_argument("--baseline", help="Previous complete meta.json")
-    g.add_argument("--publish", action="store_true", help="Apply the public-Pages rules (Yahoo terms block full)")
-
-    yb = sub.add_parser("yahoo-batch-test", help="Compare batched Yahoo prices with .info market cap (does not adopt)")
-    yb.add_argument("--tickers", nargs="+", help="Tickers to compare (default: sample:biotech20)")
+    g.add_argument("--publish", action="store_true", help="Require a complete full-universe dataset")
 
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
@@ -64,7 +65,6 @@ def main(argv: list[str] | None = None) -> int:
                 meta = build(
                     args.universe,
                     offline=args.offline,
-                    skip_yahoo=args.skip_yahoo,
                     verify_quarters=not args.no_verify,
                     output_dir=Path(args.output_dir) if args.output_dir else None,
                     state_dir=Path(args.state_dir) if args.state_dir else None,
@@ -72,6 +72,7 @@ def main(argv: list[str] | None = None) -> int:
                     time_budget_s=budget,
                     resume=not args.no_resume,
                     use_bulk=False if args.no_bulk else None,
+                    write_live=args.write_live,
                 )
             except IncompleteRun as exc:
                 print(f"incomplete: {exc}", file=sys.stderr)
@@ -113,8 +114,6 @@ def main(argv: list[str] | None = None) -> int:
             result = evaluate_gate(meta, baseline, publish=args.publish)
             print(json.dumps(result.to_dict(), indent=2))
             return 0 if result.ok else 2
-        elif args.cmd == "yahoo-batch-test":
-            return _yahoo_batch_test(args.tickers)
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -150,54 +149,20 @@ def request_estimate() -> dict:
         },
         "fullUniverseWithBulk": {
             "companyfactsZip": {"requests": 1, "bytesApprox": 1_410_000_000},
+            "submissionsZip": {"requests": 1, "bytesApprox": 1_570_000_000},
             "tickerMap": ticker_map,
             "statementRequestsFirstRun": statement_requests,
-            "totalSecRequestsFirstRun": ticker_map + 1 + statement_requests,
-            "hoursAtMaxRpsFirstRun": round((ticker_map + 1 + statement_requests) / rps / 3600, 2),
+            "totalSecRequestsFirstRun": ticker_map + 2 + statement_requests,
+            "hoursAtMaxRpsFirstRun": round((ticker_map + 2 + statement_requests) / rps / 3600, 2),
             "hoursAtMaxRpsWeekly": "0.2–1.5 depending on how many new accessions appear",
         },
         "notes": [
             "The ~125,000 figure is companyfacts API (≈5,600) plus ~12 filings × 2 files × ~4,900 domestic issuers.",
-            "The bulk zip removes the 5,600 companyfacts calls; statement fetches remain until cached.",
+            "The bulk zips remove the companyfacts and submissions API calls; statement fetches remain until cached.",
             "A 5-hour budget leaves headroom under GitHub's 6-hour job limit; incomplete runs exit 3.",
+            "Yahoo Finance is not used. Industry comes from SEC SIC; the dataset has no price or market cap.",
         ],
     }
-
-
-def _yahoo_batch_test(tickers: list[str] | None) -> int:
-    import yfinance as yf
-
-    from . import yahoo
-    from .build import read_sample
-
-    symbols = tickers or read_sample("biotech20")[0]
-    cache = yahoo.YahooCache()
-    data = yf.download(
-        symbols, period="1d", group_by="ticker", auto_adjust=False, threads=True, progress=False,
-    )
-    rows = []
-    for t in symbols:
-        entry = cache.get(t)
-        batch_price = yahoo._batch_last_close(data, t, len(symbols) == 1)
-        implied = yahoo.implied_market_cap(batch_price, entry.get("sharesOutstanding"))
-        rel = yahoo.batch_row_error(entry.get("marketCap"), implied)
-        info_price = entry.get("price")
-        price_rel = None
-        if batch_price and info_price:
-            price_rel = abs(batch_price - info_price) / info_price if info_price else None
-        rows.append({
-            "ticker": t,
-            "infoMarketCap": entry.get("marketCap"),
-            "infoPrice": info_price,
-            "batchPrice": batch_price,
-            "sharesOutstanding": entry.get("sharesOutstanding"),
-            "impliedMarketCap": implied,
-            "relError": rel,
-            "priceRelError": price_rel,
-        })
-    summary = yahoo.summarize_batch_comparison(rows)
-    print(json.dumps({"summary": summary, "rows": rows}, indent=2, default=str))
-    return 0
 
 
 if __name__ == "__main__":

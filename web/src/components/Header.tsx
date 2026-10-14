@@ -17,8 +17,8 @@ export function Header({ meta }: { meta: Meta | null }) {
             U.S. Stock Screener
           </h1>
           <p className="subtitle">
-            Sector, industry, market cap and trailing-twelve-month revenue growth for U.S.-listed stocks, with
-            quarterly revenue taken from SEC filings.
+            SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings
+            and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted.
           </p>
         </div>
         <dl className="header-stats">
@@ -30,6 +30,10 @@ export function Header({ meta }: { meta: Meta | null }) {
             <dt>Companies shown</dt>
             <dd>{meta ? formatCount(meta.coverage.listings) : "…"}</dd>
           </div>
+          <div>
+            <dt>Eligible universe</dt>
+            <dd>{meta ? formatCount(meta.universe.eligibleListings) : "…"}</dd>
+          </div>
         </dl>
       </div>
       {sample && meta && (
@@ -37,7 +41,7 @@ export function Header({ meta }: { meta: Meta | null }) {
           <div className="container">
             <strong>{meta.dataset.name}.</strong> This validation build shows {formatCount(meta.coverage.listings)} of the{" "}
             {formatCount(meta.universe.eligibleListings)} eligible NASDAQ, NYSE and NYSE American listings. The full U.S.
-            universe is added after the sample's calculations have been checked against SEC filings.
+            universe replaces this sample after a complete run passes completeness and filing-validation checks.
           </div>
         </div>
       )}

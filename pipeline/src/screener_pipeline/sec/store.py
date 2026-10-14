@@ -7,6 +7,7 @@ from pathlib import Path
 from .. import config
 from ..cache import canonical_hash, read_json, write_json_atomic
 from .facts import RevenueFacts, compact_revenue_facts, extract_revenue_facts, revenue_facts_from_compact
+from .sic import SicInfo, sic_from_submissions
 from .statement import Statement, statement_from_compact, statement_to_compact
 
 
@@ -70,3 +71,28 @@ class StatementStore:
         payload = statement_to_compact(st, url)
         payload["accn"] = accn
         write_json_atomic(self.path(accn), payload)
+
+
+class SicStore:
+    def __init__(self, directory: Path | None = None):
+        self.directory = directory or (config.STATE_DIR / "sic")
+        self.directory.mkdir(parents=True, exist_ok=True)
+
+    def path(self, cik: str) -> Path:
+        return self.directory / f"{str(cik).zfill(10)}.json"
+
+    def get(self, cik: str) -> SicInfo | None:
+        data = read_json(self.path(cik))
+        if not data:
+            return None
+        return SicInfo(data.get("code"), data.get("description"), data.get("majorGroup"), data.get("label"))
+
+    def put(self, cik: str, info: SicInfo) -> None:
+        payload = info.to_dict()
+        payload["cik"] = str(cik).zfill(10)
+        write_json_atomic(self.path(cik), payload)
+
+    def put_payload(self, cik: str, payload: dict) -> SicInfo:
+        info = sic_from_submissions(payload)
+        self.put(cik, info)
+        return info

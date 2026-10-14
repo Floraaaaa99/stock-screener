@@ -14,6 +14,7 @@ export const NA_REASONS: Record<string, string> = {
   previous_ttm_not_positive: "Previous TTM revenue is zero or negative, so growth is not meaningful.",
   statement_mismatch: "The latest revenue figure disagrees with the filing's income statement.",
   filing_mismatch: "A quarter used in the TTM disagrees with the income statement of its filing.",
+  no_sic: "SEC submissions did not include an SIC code for this company.",
 };
 
 export const FLAG_TEXT: Record<string, string> = {

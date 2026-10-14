@@ -9,8 +9,9 @@ from ..cache import is_fresh, read_json, write_text_atomic
 from ..http import RateLimitedClient
 from ..universe.symbols import sec_symbol_variants
 from .facts import RevenueFacts, extract_revenue_facts
+from .sic import SicInfo
 from .statement import Statement, has_revenue_line, income_statement_candidates, parse_statement_html
-from .store import FactsStore, StatementStore
+from .store import FactsStore, SicStore, StatementStore
 
 log = logging.getLogger(__name__)
 
@@ -22,12 +23,14 @@ class SecClient:
         offline: bool = False,
         facts_store: FactsStore | None = None,
         statement_store: StatementStore | None = None,
+        sic_store: SicStore | None = None,
     ):
         self.cache_dir = (cache_dir or config.CACHE_DIR) / "sec"
         self.offline = offline
         self._http: RateLimitedClient | None = None
         self.facts_store = facts_store or FactsStore()
         self.statement_store = statement_store or StatementStore()
+        self.sic_store = sic_store or SicStore()
 
     @property
     def http(self) -> RateLimitedClient:
@@ -96,6 +99,25 @@ class SecClient:
         rf = extract_revenue_facts(raw)
         self.facts_store.put(rf)
         return rf
+
+    def sic(self, cik: str) -> SicInfo | None:
+        cached = self.sic_store.get(cik)
+        if cached is not None:
+            return cached
+        cik10 = str(cik).zfill(10)
+        try:
+            text = self._cached_text(
+                config.SEC_SUBMISSIONS_URL.format(cik=cik10),
+                self.cache_dir / "submissions" / f"CIK{cik10}.json",
+                config.SEC_SIC_TTL_H,
+            )
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+        if not text:
+            return None
+        return self.sic_store.put_payload(cik10, json.loads(text))
 
     def income_statement(self, cik: str, accn: str) -> tuple[Statement, str] | None:
         """The income statement as rendered by EDGAR for one filing, and its URL (cached forever)."""
