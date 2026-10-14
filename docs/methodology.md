@@ -94,12 +94,39 @@ Additional flags are shown in the expanded row:
 - `stale_filings`: the latest quarter ended more than 270 days ago.
 - `other_concept_disagrees`: another revenue concept reports different values.
 
-## 5. Output
+## 5. Sequential growth (Layer 2)
+
+Layer 2 does not fetch or reinterpret revenue. It reads Layer 1’s latest eight consecutive, comparable, filing-validated
+quarters and preserves currency, revenue concept, schema version, and quarter-level validation. Dependent YoY/QoQ rates
+are recomputed whenever that window changes (new filings or restatements).
+
+Classification rules are versioned (`rulesVersion`, currently 1). Decisions use unrounded values.
+
+- **Eligibility.** Start from Layer 1 companies with TTM revenue growth **> 0%**. Valid TTM growth **≤ 0%** is a separate
+  bucket (`ttm_nonpositive`) and is never labeled Data Review.
+- **Quarterly YoY** for the latest four quarters, oldest to newest:
+  `(current quarter ÷ same fiscal quarter last year − 1) × 100`.
+  - **Passed:** all four YoY rates are strictly > 0% (deceleration is allowed; accelerating growth is not required).
+  - **Watchlist:** all required data is valid, but at least one YoY is ≤ 0%.
+  - **Data Review:** a required quarter is missing, unverified, incomparable, or a prior-year denominator is ≤ 0%.
+- **Quarterly QoQ** is calculated for display on the same four quarters:
+  `(current ÷ immediately preceding quarter − 1) × 100`. Missing inputs or denominators ≤ 0 are N/A with a reason, never
+  zero. QoQ never excludes a YoY-passing company.
+- **QoQ category badges** (multiple allowed; they do not affect YoY eligibility). Objective rules run immediately:
+  accelerating sequential growth, QoQ volatility, latest-quarter revenue decline, other/flat, unable to classify.
+  Threshold-dependent rules — stable sequential growth (max − min ≤ configured spread) and recent QoQ jump
+  (latest − max of preceding three ≥ configured jump) — stay inactive until
+  `pipeline/config/layer2.json` (or the on-site inputs) set those values. Until then the UI shows
+  **Threshold not configured**. An unavailable earlier QoQ does not block identifying a latest-quarter decline.
+- There is no top-N limit and no valuation screen.
+
+## 6. Output
 
 `web/public/data/` contains:
 
 - `meta.json`: build timestamps, source file dates, universe and exclusion counts, coverage statistics and N/A reason counts.
 - `screener.json`: one compact row per listing, used by the table.
+- `layer2.json`: sequential-growth rows and bucket counts derived from Layer 1 company JSON.
 - `companies/<TICKER>.json`: per-company detail, loaded when a row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered.
 - `classification_issues.json`: missing CIK or missing SEC SIC for listings that are still included.
 

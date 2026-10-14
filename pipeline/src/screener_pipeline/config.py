@@ -7,6 +7,7 @@ PIPELINE_DIR = Path(__file__).resolve().parents[2]
 REPO_ROOT = PIPELINE_DIR.parent
 SAMPLES_DIR = PIPELINE_DIR / "samples"
 OVERRIDES_FILE = PIPELINE_DIR / "config" / "concept_overrides.json"
+LAYER2_CONFIG = PIPELINE_DIR / "config" / "layer2.json"
 CACHE_DIR = Path(os.environ.get("SCREENER_CACHE_DIR", PIPELINE_DIR / ".cache"))
 OUTPUT_DIR = Path(os.environ.get("SCREENER_OUTPUT_DIR", REPO_ROOT / "web" / "public" / "data"))
 

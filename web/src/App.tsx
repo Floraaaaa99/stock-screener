@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { loadMeta, loadScreener } from "./api";
+import { loadLayer2, loadMeta, loadScreener } from "./api";
 import { CoveragePanel } from "./components/CoveragePanel";
 import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { Layer2View } from "./components/Layer2View";
 import { Pagination } from "./components/Pagination";
 import { ScreenerTable } from "./components/ScreenerTable";
+import { layer2ToSearch, readLayer2View, type Layer2View as Layer2ViewState } from "./lib/layer2";
 import {
   DEFAULT_VIEW,
   filterRows,
@@ -19,34 +21,52 @@ import {
   type ViewState,
   viewToSearch,
 } from "./lib/screener";
-import type { Meta, ScreenerRow } from "./types";
+import type { Layer2File, Meta, ScreenerRow } from "./types";
 
 type LoadState =
   | { status: "loading" }
   | { status: "error"; message: string }
-  | { status: "ready"; meta: Meta; rows: ScreenerRow[] };
+  | { status: "ready"; meta: Meta; rows: ScreenerRow[]; layer2: Layer2File | null };
+
+function parseLocation(search: string): { layer: 1 | 2; layer1: ViewState; layer2: Layer2ViewState } {
+  const parsed = readLayer2View(search);
+  return {
+    layer: parsed.layer,
+    layer1: readViewFromSearch(search),
+    layer2: parsed.view,
+  };
+}
 
 export default function App() {
+  const initial = parseLocation(window.location.search);
   const [load, setLoad] = useState<LoadState>({ status: "loading" });
-  const [view, setView] = useState<ViewState>(() => readViewFromSearch(window.location.search));
+  const [layer, setLayer] = useState<1 | 2>(initial.layer);
+  const [view, setView] = useState<ViewState>(initial.layer1);
+  const [layer2View, setLayer2View] = useState<Layer2ViewState>(initial.layer2);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const fetchData = useCallback(() => {
     setLoad({ status: "loading" });
-    Promise.all([loadMeta(), loadScreener()])
-      .then(([meta, screener]) => setLoad({ status: "ready", meta, rows: screener.rows }))
+    Promise.all([loadMeta(), loadScreener(), loadLayer2().catch(() => null)])
+      .then(([meta, screener, layer2]) => setLoad({ status: "ready", meta, rows: screener.rows, layer2 }))
       .catch((err: unknown) => setLoad({ status: "error", message: err instanceof Error ? err.message : String(err) }));
   }, []);
 
   useEffect(fetchData, [fetchData]);
 
   useEffect(() => {
-    const url = `${window.location.pathname}${viewToSearch(view)}`;
+    const url = `${window.location.pathname}${layer === 2 ? layer2ToSearch(2, layer2View, "") : viewToSearch(view)}`;
     window.history.replaceState(null, "", url);
-  }, [view]);
+  }, [layer, view, layer2View]);
 
   useEffect(() => {
-    const onPop = () => setView(readViewFromSearch(window.location.search));
+    const onPop = () => {
+      const next = parseLocation(window.location.search);
+      setLayer(next.layer);
+      setView(next.layer1);
+      setLayer2View(next.layer2);
+      setExpanded(null);
+    };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
@@ -79,6 +99,11 @@ export default function App() {
     setView((v) => ({ ...v, page: 1, ...patch }));
   };
 
+  const updateLayer2 = (patch: Partial<Layer2ViewState>) => {
+    setExpanded(null);
+    setLayer2View((v) => ({ ...v, page: 1, ...patch }));
+  };
+
   const onSort = (key: SortKey) => {
     setView((v) => ({
       ...v,
@@ -88,11 +113,16 @@ export default function App() {
     }));
   };
 
+  const onLayer = (next: 1 | 2) => {
+    setLayer(next);
+    setExpanded(null);
+  };
+
   const clearFilters = () => update({ sicMajorGroup: "", sicIndustry: "", currency: "", query: "" });
 
   return (
     <div className="app">
-      <Header meta={meta} />
+      <Header meta={meta} layer={layer} onLayer={onLayer} />
       <main className="container">
         {load.status === "error" && (
           <div className="panel error-panel" role="alert">
@@ -104,7 +134,38 @@ export default function App() {
           </div>
         )}
 
-        {load.status !== "error" && (
+        {load.status !== "error" && layer === 2 && (
+          <>
+            {load.status === "ready" && !load.layer2 && (
+              <div className="panel error-panel" role="alert">
+                <h2>Sequential growth dataset is not available</h2>
+                <p>Layer 2 is built from Layer 1’s validated company JSON after the TTM dataset is written.</p>
+                <button type="button" className="btn" onClick={fetchData}>
+                  Try again
+                </button>
+              </div>
+            )}
+            {load.status === "ready" && load.layer2 && meta && (
+              <Layer2View
+                file={load.layer2}
+                meta={meta}
+                view={layer2View}
+                expanded={expanded}
+                onChange={updateLayer2}
+                onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
+              />
+            )}
+            {load.status === "loading" && (
+              <div className="panel table-panel" role="status">
+                <p className="detail-loading">
+                  <span className="spinner" aria-hidden="true" /> Loading sequential growth…
+                </p>
+              </div>
+            )}
+          </>
+        )}
+
+        {load.status !== "error" && layer === 1 && (
           <>
             <Filters
               majorGroups={majorGroups}

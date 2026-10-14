@@ -2,7 +2,9 @@
 
 A public, static stock screener for U.S.-listed common stocks and ADRs (NASDAQ, NYSE, NYSE American). For each
 listing it shows **SEC SIC** industry, trailing-twelve-month (TTM) revenue, and TTM revenue growth computed from the
-latest standalone fiscal quarters reported to the SEC. Stock price and market cap are not included.
+latest standalone fiscal quarters reported to the SEC. Sequential growth (Layer 2) then classifies companies with
+positive TTM growth using four quarterly YoY rates, and shows descriptive QoQ rates and category badges. Stock price
+and market cap are not included.
 
 - **Website:** React + Vite + TypeScript in [`web/`](web), hosted on GitHub Pages. No login, no backend.
 - **Data pipeline:** Python in [`pipeline/`](pipeline), which writes static JSON to `web/public/data/`.
@@ -38,6 +40,7 @@ See [`docs/methodology.md`](docs/methodology.md). In short:
 - Revenue amounts are labeled with the SEC reporting currency, including USD. Amounts in different currencies are not converted and are not ranked as one series.
 - Missing values are shown as **N/A** with a reason, never as zero. Companies without usable SEC revenue stay in the table.
 - The table defaults to TTM growth descending, with N/A last. Current and Previous TTM revenue are also sortable.
+- **Sequential growth (Layer 2)** uses the same eight-quarter window. Passed requires TTM growth > 0% and four strictly positive quarterly YoY rates. Watchlist is valid data with at least one YoY ≤ 0%. Valid TTM growth ≤ 0% is listed separately and is not Data Review. QoQ is descriptive. Stable-spread and recent-jump badge thresholds stay unset until configured (`pipeline/config/layer2.json`).
 
 ## Local development
 
@@ -75,6 +78,9 @@ screener pack-state --dest /tmp/state.tar.gz
 screener unpack-state --archive /tmp/state.tar.gz --dest /tmp/state --sha256-file /tmp/state.tar.gz.sha256
 screener gate --meta pipeline/.cache/state/dataset-full/meta.json
 screener gate --meta pipeline/.cache/state/dataset-full/meta.json --publish
+
+# Layer 2 from an existing Layer 1 dataset (does not fetch SEC data)
+screener layer2 --data-dir web/public/data
 
 # Write the live Pages payload only after the publish gate passes
 screener -v build --universe full --write-live
@@ -121,9 +127,11 @@ pipeline/
     quarters.py   Standalone-quarter derivation (YTD subtraction, restatements, fiscal labels)
     concepts.py   Revenue-concept selection and verification
     ttm.py        Current/Previous TTM and growth
+    layer2.py     Sequential YoY/QoQ rates and QoQ category badges
     revenue.py    Per-company analysis and per-quarter filing checks
     gate.py       Completeness and filing-validation publish gates
     build.py      Dataset build and atomic write
+  config/layer2.json  QoQ badge thresholds (null until configured)
   samples/        Validation samples (ticker lists)
   tests/          Unit tests and real-company regression tests (SEC fixtures)
 web/

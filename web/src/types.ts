@@ -174,3 +174,67 @@ export interface CompanyDetail {
   } | null;
   classificationIssues: { ticker: string; issue: string; detail: string }[];
 }
+
+export type Layer2Bucket = "passed" | "watchlist" | "data_review" | "ttm_nonpositive";
+
+export interface Layer2Rate {
+  fiscalYear: number | null;
+  fiscalQuarter: number | null;
+  start: string | null;
+  end: string | null;
+  label: string | null;
+  rate: number | null;
+  reason: string | null;
+  kind: "yoy" | "qoq";
+  currentValue: number | null;
+  otherValue: number | null;
+  absoluteChange: number | null;
+  currentUrl: string | null;
+  otherUrl: string | null;
+  currentForm: string | null;
+  otherForm: string | null;
+  currentCheck: string | null;
+  otherCheck: string | null;
+}
+
+export interface Layer2Badge {
+  id: string;
+  label: string;
+  tooltip: string;
+  applied: boolean;
+  blockedByThreshold: boolean;
+  rulesVersion: number;
+}
+
+export interface Layer2Row {
+  ticker: string;
+  name: string;
+  exchange: string;
+  type: string;
+  sicCode: string | null;
+  sicMajorGroup: string | null;
+  sicIndustry: string | null;
+  revenueCurrency: string | null;
+  revenueConcept: string | null;
+  layer1SchemaVersion: number;
+  ttmGrowth: number | null;
+  ttmReason: string | null;
+  bucket: Layer2Bucket;
+  dataReviewReasons: string[];
+  yoy: Layer2Rate[];
+  qoq: Layer2Rate[];
+  badges: Layer2Badge[];
+  appliedCategories: string[];
+  rulesVersion: number;
+}
+
+export interface Layer2File {
+  schemaVersion: number;
+  rulesVersion: number;
+  generatedAt: string;
+  layer1GeneratedAt: string;
+  layer1SchemaVersion: number;
+  thresholds: { qoqStableSpreadPctPoints: number | null; qoqRecentJumpPctPoints: number | null };
+  counts: { passed: number; watchlist: number; dataReview: number; ttmNonpositive: number; listings: number };
+  rows: Layer2Row[];
+}

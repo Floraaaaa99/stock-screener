@@ -1,7 +1,7 @@
 import { formatCount, formatDateTime } from "../lib/format";
 import type { Meta } from "../types";
 
-export function Header({ meta }: { meta: Meta | null }) {
+export function Header({ meta, layer, onLayer }: { meta: Meta | null; layer: 1 | 2; onLayer: (layer: 1 | 2) => void }) {
   const sample = meta?.dataset.mode === "sample";
   return (
     <header className="header">
@@ -17,9 +17,18 @@ export function Header({ meta }: { meta: Meta | null }) {
             U.S. Stock Screener
           </h1>
           <p className="subtitle">
-            SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings
-            and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted.
+            {layer === 1
+              ? "SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted."
+              : "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and category badges. No valuation screen."}
           </p>
+          <nav className="layer-nav" aria-label="Screener layer">
+            <button type="button" className={`layer-btn ${layer === 1 ? "on" : ""}`} onClick={() => onLayer(1)}>
+              TTM growth
+            </button>
+            <button type="button" className={`layer-btn ${layer === 2 ? "on" : ""}`} onClick={() => onLayer(2)}>
+              Sequential growth
+            </button>
+          </nav>
         </div>
         <dl className="header-stats">
           <div>

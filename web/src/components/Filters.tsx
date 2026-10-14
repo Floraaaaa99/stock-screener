@@ -71,17 +71,19 @@ export function Filters({
           ))}
         </select>
       </div>
-      <div className="field">
-        <label htmlFor="currency">Revenue currency</label>
-        <select id="currency" value={view.currency} disabled={disabled} onChange={(e) => onChange({ currency: e.target.value })}>
-          <option value="">All currencies</option>
-          {currencies.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </div>
+      {currencies.length > 0 && (
+        <div className="field">
+          <label htmlFor="currency">Revenue currency</label>
+          <select id="currency" value={view.currency} disabled={disabled} onChange={(e) => onChange({ currency: e.target.value })}>
+            <option value="">All currencies</option>
+            {currencies.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <div className="field field-search">
         <label htmlFor="search">Search</label>
         <input

@@ -54,6 +54,15 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--baseline", help="Previous complete meta.json")
     g.add_argument("--publish", action="store_true", help="Require a complete full-universe dataset")
 
+    l2 = sub.add_parser("layer2", help="Build Layer 2 sequential-growth JSON from an existing Layer 1 dataset")
+    l2.add_argument(
+        "--data-dir",
+        default=str(config.OUTPUT_DIR),
+        help="Directory with meta.json, screener.json, companies/",
+    )
+    l2.add_argument("--output", help="Destination layer2.json (default: <data-dir>/layer2.json)")
+    l2.add_argument("--config", help="Thresholds JSON (default: pipeline/config/layer2.json)")
+
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -114,6 +123,17 @@ def main(argv: list[str] | None = None) -> int:
             result = evaluate_gate(meta, baseline, publish=args.publish)
             print(json.dumps(result.to_dict(), indent=2))
             return 0 if result.ok else 2
+        elif args.cmd == "layer2":
+            from .layer2 import load_thresholds, write_layer2
+
+            data_dir = Path(args.data_dir)
+            dest = Path(args.output) if args.output else data_dir / "layer2.json"
+            thresholds = load_thresholds(Path(args.config) if args.config else None)
+            payload = write_layer2(data_dir, thresholds, dest)
+            print(json.dumps(
+                {"counts": payload["counts"], "rulesVersion": payload["rulesVersion"], "output": str(dest)},
+                indent=2,
+            ))
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
