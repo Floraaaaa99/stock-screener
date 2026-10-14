@@ -36,6 +36,15 @@ def test_publish_requires_full_universe():
     assert evaluate_gate(_meta(), publish=True).ok
 
 
+def test_publish_blocked_when_newer_filing_was_not_ingested():
+    meta = _meta()
+    meta["coverage"]["edgarUnresolved"] = 2
+    r = evaluate_gate(meta, publish=True)
+    assert not r.ok
+    assert "unresolved_edgar_lag" in r.reasons
+    assert evaluate_gate(meta, publish=False).ok
+
+
 def test_quarter_mismatch_ratio_blocks():
     bad = evaluate_gate(_meta(mismatches=30, checks=200))  # 15%
     assert not bad.ok

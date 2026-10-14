@@ -26,11 +26,22 @@ Industry comes from each company's EDGAR submissions JSON (`sic` and `sicDescrip
 - Filters are **SEC SIC major group** and **SEC SIC industry** (`code — description`). They are not Yahoo or commercial sector/industry names.
 - Stock price and market cap are not collected.
 
-## 3. Quarterly revenue (SEC EDGAR Company Facts)
+## 3. Quarterly revenue (SEC EDGAR filings)
+
+Official 10-Q and 10-K income statements are the source of truth. Company Facts (nightly
+`companyfacts.zip` or the per-CIK API) is an index of those filings, not a newer data source.
+If EDGAR submissions already list a 10-Q or 10-K whose period end is after the latest Company
+Facts quarter, the pipeline opens that filing's rendered income statement and uses the officially
+reported revenue. Cached Company Facts are never treated as "latest" when a newer filing is on
+EDGAR. Third-party estimates are not used.
+
+`screener freshness --data-dir …` compares a built dataset with EDGAR submissions. Publication
+(`--write-live` / `screener gate --publish`) fails when a newer official filing was found but its
+standalone-quarter revenue could not be read (`unresolved_edgar_lag`).
 
 ### 3.1 Candidate concepts
 
-Company Facts are loaded from SEC's nightly `companyfacts.zip` for the full universe (one download, then only the needed CIKs and revenue concepts are kept). The per-CIK API is the fallback when a CIK is missing from the zip.
+Company Facts are loaded from SEC's nightly `companyfacts.zip` for the full universe (one download, then only the needed CIKs and revenue concepts are kept). The per-CIK API is the fallback when a CIK is missing from the zip. A newer EDGAR 10-Q/10-K is then merged from the filing itself when Facts lag.
 
 The pipeline considers these `us-gaap` concepts in USD (or the filer's reporting currency): `Revenues`,
 `RevenueFromContractWithCustomerExcludingAssessedTax`, `RevenueFromContractWithCustomerIncludingAssessedTax`,
@@ -65,7 +76,8 @@ The concept is **never** chosen because its values are larger. The rules, in ord
 ### 3.4 Verification against filings
 
 Every quarter on the site is checked against the income statement of the filing it comes from, using EDGAR's rendered
-statement pages, which are independent of the Company Facts API:
+statement pages. A quarter taken from a filing that Company Facts had not yet indexed is checked the same way and
+keeps that filing's SEC link:
 
 - A reported quarter is compared with the statement's 3-month column.
 - A derived quarter is recomputed from its sources' statement columns, for example the 10-K annual column minus the 10-Q nine-month column.

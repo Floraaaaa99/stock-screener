@@ -6,7 +6,7 @@ import logging
 import shutil
 import time
 from collections import Counter
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from . import config
@@ -22,8 +22,9 @@ from .sec.bulk import (
     zip_info,
 )
 from .sec.client import SecClient, load_overrides
+from .sec.edgar import facts_may_lag, latest_facts_period_end, newer_filings, supplement_revenue_facts
 from .sec.sic import SicInfo
-from .sec.store import FactsStore, SicStore, StatementStore
+from .sec.store import FactsStore, PeriodicStore, SicStore, StatementStore
 from .universe.fetch import load_universe
 from .universe.nasdaq_trader import Listing
 
@@ -122,8 +123,13 @@ def build(
     facts_store = FactsStore(state_dir / "facts")
     statement_store = StatementStore(state_dir / "statements")
     sic_store = SicStore(state_dir / "sic")
+    periodic_store = PeriodicStore(state_dir / "periodic")
     sec = SecClient(
-        offline=offline, facts_store=facts_store, statement_store=statement_store, sic_store=sic_store
+        offline=offline,
+        facts_store=facts_store,
+        statement_store=statement_store,
+        sic_store=sic_store,
+        periodic_store=periodic_store,
     )
     ticker_map = sec.ticker_map()
     overrides = load_overrides()
@@ -148,7 +154,9 @@ def build(
         extract_compact_facts(facts_zip, needed_ciks, facts_store.directory)
         try:
             download_submissions_zip(sec.http, sic_zip, offline=offline)
-            extract_compact_sic(sic_zip, needed_ciks, sic_store.directory)
+            extract_compact_sic(
+                sic_zip, needed_ciks, sic_store.directory, periodic_dir=periodic_store.directory
+            )
         except FileNotFoundError:
             log.warning("submissions.zip unavailable; SIC will use the per-CIK API")
         bulk_meta = {
@@ -164,6 +172,7 @@ def build(
     issues_all: list[dict] = []
     pending: list[str] = []
     timed_out = False
+    as_of = date.today()
     for listing in listings:
         if deadline is not None and time.monotonic() >= deadline:
             timed_out = True
@@ -175,6 +184,7 @@ def build(
         rec = rec_by_ticker[listing.symbol]
         facts_hash = facts_store.hash_of(cik) if cik else None
         rev = None
+        supp_dict = None
         sec_name = rec["name"] if rec else None
         sic: SicInfo | None = None
         if cik:
@@ -186,15 +196,33 @@ def build(
                 def fetch(accn: str, _cik: str = cik):
                     return sec.income_statement(_cik, accn)
 
+                periodic = sec.periodic_filings(cik)
+                latest_end = latest_facts_period_end(rf)
+                if (
+                    not offline
+                    and facts_may_lag(latest_end, as_of)
+                    and not newer_filings(periodic, latest_end)
+                ):
+                    periodic = sec.periodic_filings(cik, refresh=True)
+                    refreshed = True
+                else:
+                    refreshed = False
+                rf, supp = supplement_revenue_facts(rf, periodic, fetch, as_of)
+                supp.refreshed_submissions = refreshed
                 rev = analyze_company(
                     rf, fetch, override=overrides.get(cik, {}).get("concept"), verify_quarters=verify_quarters
                 )
-                log.info("%s: %s %s", listing.symbol, rev.status, rev.ttm)
+                if supp.status == "applied" and "supplemented_from_edgar_filing" not in rev.flags:
+                    rev.flags.append("supplemented_from_edgar_filing")
+                supp_dict = supp.to_dict()
+                log.info("%s: %s %s supplement=%s", listing.symbol, rev.status, rev.ttm, supp.status)
         issues = classification_issues(listing, cik, sic)
         issues_all.extend(issues)
         c = company_json(listing, cik, sec_name, rev, sic, issues)
         if rev is None:
             c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
+        if supp_dict and c.get("revenue"):
+            c["revenue"]["edgarSupplement"] = supp_dict
         companies.append(c)
         processed[listing.symbol] = {
             "cik": cik,
@@ -308,6 +336,10 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, started,
                 "url": "https://www.sec.gov/edgar",
                 "companyFacts": "XBRL Company Facts (nightly companyfacts.zip)",
                 "sic": "EDGAR submissions sic / sicDescription",
+                "periodicFilings": (
+                    "EDGAR submissions recent 10-Q/10-K. When Company Facts lag a newer filing, "
+                    "Layer 1 uses that filing's official income-statement revenue."
+                ),
                 "latestFilingDate": filed[-1] if filed else None,
             },
         },
@@ -332,6 +364,15 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, started,
             "naReasons": dict(Counter(c["ttm"]["reason"] for c in companies if c["ttm"]["reason"])),
             "classificationIssues": sum(len(c["classificationIssues"]) for c in companies),
             "byCurrency": dict(currencies),
+            "edgarSupplemented": count(
+                lambda c: ((rev(c).get("edgarSupplement") or {}).get("status") == "applied")
+            ),
+            "edgarUnresolved": count(
+                lambda c: ((rev(c).get("edgarSupplement") or {}).get("status") == "unresolved")
+            ),
+            "edgarLaggingBeforeSupplement": count(
+                lambda c: bool((rev(c).get("edgarSupplement") or {}).get("newerFilings"))
+            ),
         },
         "sicMajorGroups": {s: sorted(i) for s, i in sorted(groups.items())},
         "currencies": sorted(c for c in currencies if c != "unknown"),

@@ -48,6 +48,8 @@ def evaluate_gate(meta: dict, baseline: dict | None = None, *, publish: bool = F
         "growthRatio": _ratio(coverage, "growth"),
         "currentTtmRatio": _ratio(coverage, "currentTtm"),
         "quarterMismatchRatio": mismatch,
+        "edgarUnresolved": coverage.get("edgarUnresolved") or 0,
+        "edgarSupplemented": coverage.get("edgarSupplemented") or 0,
     }
 
     if run.get("status") != "complete":
@@ -75,6 +77,8 @@ def evaluate_gate(meta: dict, baseline: dict | None = None, *, publish: bool = F
 
     if publish and dataset.get("mode") != "full":
         reasons.append("publish_requires_full_universe")
+    if publish and (coverage.get("edgarUnresolved") or 0) > 0:
+        reasons.append("unresolved_edgar_lag")
     if publish and not reasons and dataset.get("mode") == "full":
         pass
 

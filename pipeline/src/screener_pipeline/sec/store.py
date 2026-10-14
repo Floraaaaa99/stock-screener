@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 
 from .. import config
 from ..cache import canonical_hash, read_json, write_json_atomic
+from .edgar import PeriodicFiling
 from .facts import RevenueFacts, compact_revenue_facts, extract_revenue_facts, revenue_facts_from_compact
 from .sic import SicInfo, sic_from_submissions
 from .statement import Statement, statement_from_compact, statement_to_compact
@@ -96,3 +98,38 @@ class SicStore:
         info = sic_from_submissions(payload)
         self.put(cik, info)
         return info
+
+
+class PeriodicStore:
+    """Recent 10-Q/10-K accessions from EDGAR submissions, keyed by CIK."""
+
+    def __init__(self, directory: Path | None = None):
+        self.directory = directory or (config.STATE_DIR / "periodic")
+        self.directory.mkdir(parents=True, exist_ok=True)
+
+    def path(self, cik: str) -> Path:
+        return self.directory / f"{str(cik).zfill(10)}.json"
+
+    def get(self, cik: str) -> list[PeriodicFiling] | None:
+        data = read_json(self.path(cik))
+        if not data:
+            return None
+        out: list[PeriodicFiling] = []
+        for row in data.get("filings") or []:
+            try:
+                filed = date.fromisoformat(row["filed"])
+                report = date.fromisoformat(row["reportDate"]) if row.get("reportDate") else None
+            except (KeyError, TypeError, ValueError):
+                continue
+            out.append(PeriodicFiling(row["accn"], row.get("form", ""), filed, report))
+        return out
+
+    def put(self, cik: str, filings: list[PeriodicFiling], *, source: str) -> None:
+        write_json_atomic(
+            self.path(cik),
+            {
+                "cik": str(cik).zfill(10),
+                "source": source,
+                "filings": [f.to_dict() for f in filings],
+            },
+        )

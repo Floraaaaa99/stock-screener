@@ -11,8 +11,9 @@ latest standalone fiscal quarters reported to the SEC. Stock price and market ca
   now and become weekly once two complete full runs have passed validation.
 
 All data sources are free: the [NASDAQ Trader symbol directory](https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs)
-and [SEC EDGAR](https://www.sec.gov/edgar/sec-api-documentation) (Company Facts, submissions SIC, and filing income
-statements). No paid APIs, databases, or Yahoo Finance data are used.
+and [SEC EDGAR](https://www.sec.gov/edgar/sec-api-documentation) (official 10-Q/10-K filings, Company Facts as an
+index, submissions SIC, and filing income statements). When Company Facts lag a filing already on EDGAR, the
+pipeline uses that filing's reported revenue. No paid APIs, databases, estimates, or Yahoo Finance data are used.
 
 ## Status
 
@@ -75,6 +76,9 @@ screener pack-state --dest /tmp/state.tar.gz
 screener unpack-state --archive /tmp/state.tar.gz --dest /tmp/state --sha256-file /tmp/state.tar.gz.sha256
 screener gate --meta pipeline/.cache/state/dataset-full/meta.json
 screener gate --meta pipeline/.cache/state/dataset-full/meta.json --publish
+
+# Compare a built dataset with EDGAR 10-Q/10-K submissions (does not write live Pages)
+screener freshness --data-dir pipeline/.cache/state/dataset-full --refresh-lagging
 
 # Write the live Pages payload only after the publish gate passes
 screener -v build --universe full --write-live

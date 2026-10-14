@@ -1,6 +1,6 @@
 # Validation report: Biotechnology validation sample
 
-Generated 2026-10-14T20:26:59+00:00 from live NASDAQ Trader and SEC EDGAR data.
+Generated 2026-10-14T22:56:40+00:00 from live NASDAQ Trader and SEC EDGAR data.
 
 Every quarter shown on the site is checked against the income statements of the filings its value
 comes from (EDGAR's rendered statement pages, `R*.htm`, independent of the Company Facts API).
@@ -27,6 +27,9 @@ column). "Statement value" is that recomputed figure. Values are in millions of 
 | naReasons | {'foreign_filer': 2} |
 | classificationIssues | 0 |
 | byCurrency | {'USD': 20} |
+| edgarSupplemented | 1 |
+| edgarUnresolved | 0 |
+| edgarLaggingBeforeSupplement | 1 |
 
 ## Summary
 
@@ -37,8 +40,8 @@ column). "Statement value" is that recomputed figure. Values are in millions of 
 | MDGL | RevenueFromContractWithCustomerExcludingAssessedTax | equivalent | verified | 12/12 | 1,283.9 | 515.5 | +149.0% |  |
 | ALNY | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 4,804.2 | 2,462.0 | +95.1% |  |
 | HALO | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 1,663.7 | 1,178.7 | +41.2% |  |
+| INCY | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 5,819.5 | 4,585.0 | +26.9% |  |
 | KRYS | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 440.5 | 359.2 | +22.6% |  |
-| INCY | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 5,361.0 | 4,413.2 | +21.5% |  |
 | RARE | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 717.2 | 610.2 | +17.5% |  |
 | ARWR | RevenueFromContractWithCustomerExcludingAssessedTax | single | verified | 12/12 | 669.5 | 573.0 | +16.8% |  |
 | NTLA | RevenueFromContractWithCustomerExcludingAssessedTax | statement_verified | verified | 12/12 | 59.5 | 52.9 | +12.6% |  |
@@ -142,6 +145,25 @@ column). "Statement value" is that recomputed figure. Values are in millions of 
 | FY2023 Q4 | 2023-10-01 – 2023-12-31 | 230.0 | FY − 9M YTD | [10-K 2024-02-20](https://www.sec.gov/Archives/edgar/data/1159036/000115903624000008/0001159036-24-000008-index.htm) | Total revenues | 230.0 | match |
 | FY2023 Q3 | 2023-07-01 – 2023-09-30 | 216.0 | 3M reported | [10-Q 2023-11-06](https://www.sec.gov/Archives/edgar/data/1159036/000115903623000057/0001159036-23-000057-index.htm) | Total revenues | 216.0 | match |
 
+### INCY — Incyte Corporation
+
+Flags: `supplemented_from_edgar_filing`
+
+| Fiscal | Period | Pipeline | Method | Filing | Statement line | Statement value | Check |
+|---|---|---|---|---|---|---|---|
+| FY2026 Q2 | 2026-04-01 – 2026-06-30 | 1,674.0 | 3M reported | [10-Q 2026-07-28](https://www.sec.gov/Archives/edgar/data/879169/000087916926000056/0000879169-26-000056-index.htm) | Total revenues | 1,674.0 | match |
+| FY2026 Q1 | 2026-01-01 – 2026-03-31 | 1,272.7 | 3M reported | [10-Q 2026-04-28](https://www.sec.gov/Archives/edgar/data/879169/000087916926000026/0000879169-26-000026-index.htm) | Total revenues | 1,272.7 | match |
+| FY2025 Q4 | 2025-10-01 – 2025-12-31 | 1,506.8 | FY − 9M YTD | [10-K 2026-02-10](https://www.sec.gov/Archives/edgar/data/879169/000087916926000010/0000879169-26-000010-index.htm) | Total revenues | 1,506.8 | match |
+| FY2025 Q3 | 2025-07-01 – 2025-09-30 | 1,366.0 | 3M reported | [10-Q 2025-10-28](https://www.sec.gov/Archives/edgar/data/879169/000087916925000118/0000879169-25-000118-index.htm) | Total revenues | 1,366.0 | match |
+| FY2025 Q2 | 2025-04-01 – 2025-06-30 | 1,215.5 | 3M reported | [10-Q 2025-07-29](https://www.sec.gov/Archives/edgar/data/879169/000087916925000103/0000879169-25-000103-index.htm) | Total revenues | 1,215.5 | match |
+| FY2025 Q1 | 2025-01-01 – 2025-03-31 | 1,052.9 | 3M reported | [10-Q 2025-04-29](https://www.sec.gov/Archives/edgar/data/879169/000087916925000056/0000879169-25-000056-index.htm) | Total revenues | 1,052.9 | match |
+| FY2024 Q4 | 2024-10-01 – 2024-12-31 | 1,178.7 | FY − 9M YTD | [10-K 2025-02-10](https://www.sec.gov/Archives/edgar/data/879169/000162828025004633/0001628280-25-004633-index.htm) | Total revenues | 1,178.7 | match |
+| FY2024 Q3 | 2024-07-01 – 2024-09-30 | 1,137.9 | 3M reported | [10-Q 2024-10-29](https://www.sec.gov/Archives/edgar/data/879169/000087916924000172/0000879169-24-000172-index.htm) | Total revenues | 1,137.9 | match |
+| FY2024 Q2 | 2024-04-01 – 2024-06-30 | 1,043.8 | 3M reported | [10-Q 2024-07-30](https://www.sec.gov/Archives/edgar/data/879169/000087916924000149/0000879169-24-000149-index.htm) | Total revenues | 1,043.8 | match |
+| FY2024 Q1 | 2024-01-01 – 2024-03-31 | 880.9 | 3M reported | [10-Q 2024-04-30](https://www.sec.gov/Archives/edgar/data/879169/000087916924000077/0000879169-24-000077-index.htm) | Total revenues | 880.9 | match |
+| FY2023 Q4 | 2023-10-01 – 2023-12-31 | 1,013.3 | FY − 9M YTD | [10-K 2024-02-13](https://www.sec.gov/Archives/edgar/data/879169/000087916924000045/0000879169-24-000045-index.htm) | Total revenues | 1,013.3 | match |
+| FY2023 Q3 | 2023-07-01 – 2023-09-30 | 919.0 | 3M reported | [10-Q 2023-10-31](https://www.sec.gov/Archives/edgar/data/879169/000087916923000041/0000879169-23-000041-index.htm) | Total revenues | 919.0 | match |
+
 ### KRYS — Krystal Biotech, Inc.
 
 | Fiscal | Period | Pipeline | Method | Filing | Statement line | Statement value | Check |
@@ -158,23 +180,6 @@ column). "Statement value" is that recomputed figure. Values are in millions of 
 | FY2024 Q1 | 2024-01-01 – 2024-03-31 | 45.2 | 3M reported | [10-Q 2024-05-06](https://www.sec.gov/Archives/edgar/data/1711279/000171127924000020/0001711279-24-000020-index.htm) | Product revenue, net | 45.2 | match |
 | FY2023 Q4 | 2023-10-01 – 2023-12-31 | 42.1 | FY − 9M YTD | [10-K 2024-02-26](https://www.sec.gov/Archives/edgar/data/1711279/000171127924000005/0001711279-24-000005-index.htm) | Product revenue, net | 42.1 | match |
 | FY2023 Q3 | 2023-07-01 – 2023-09-30 | 8.6 | 3M reported | [10-Q 2023-11-06](https://www.sec.gov/Archives/edgar/data/1711279/000171127923000073/0001711279-23-000073-index.htm) | Product revenues, net | 8.6 | match |
-
-### INCY — Incyte Corporation
-
-| Fiscal | Period | Pipeline | Method | Filing | Statement line | Statement value | Check |
-|---|---|---|---|---|---|---|---|
-| FY2026 Q1 | 2026-01-01 – 2026-03-31 | 1,272.7 | 3M reported | [10-Q 2026-04-28](https://www.sec.gov/Archives/edgar/data/879169/000087916926000026/0000879169-26-000026-index.htm) | Total revenues | 1,272.7 | match |
-| FY2025 Q4 | 2025-10-01 – 2025-12-31 | 1,506.8 | FY − 9M YTD | [10-K 2026-02-10](https://www.sec.gov/Archives/edgar/data/879169/000087916926000010/0000879169-26-000010-index.htm) | Total revenues | 1,506.8 | match |
-| FY2025 Q3 | 2025-07-01 – 2025-09-30 | 1,366.0 | 3M reported | [10-Q 2025-10-28](https://www.sec.gov/Archives/edgar/data/879169/000087916925000118/0000879169-25-000118-index.htm) | Total revenues | 1,366.0 | match |
-| FY2025 Q2 | 2025-04-01 – 2025-06-30 | 1,215.5 | 3M reported | [10-Q 2025-07-29](https://www.sec.gov/Archives/edgar/data/879169/000087916925000103/0000879169-25-000103-index.htm) | Total revenues | 1,215.5 | match |
-| FY2025 Q1 | 2025-01-01 – 2025-03-31 | 1,052.9 | 3M reported | [10-Q 2025-04-29](https://www.sec.gov/Archives/edgar/data/879169/000087916925000056/0000879169-25-000056-index.htm) | Total revenues | 1,052.9 | match |
-| FY2024 Q4 | 2024-10-01 – 2024-12-31 | 1,178.7 | FY − 9M YTD | [10-K 2025-02-10](https://www.sec.gov/Archives/edgar/data/879169/000162828025004633/0001628280-25-004633-index.htm) | Total revenues | 1,178.7 | match |
-| FY2024 Q3 | 2024-07-01 – 2024-09-30 | 1,137.9 | 3M reported | [10-Q 2024-10-29](https://www.sec.gov/Archives/edgar/data/879169/000087916924000172/0000879169-24-000172-index.htm) | Total revenues | 1,137.9 | match |
-| FY2024 Q2 | 2024-04-01 – 2024-06-30 | 1,043.8 | 3M reported | [10-Q 2024-07-30](https://www.sec.gov/Archives/edgar/data/879169/000087916924000149/0000879169-24-000149-index.htm) | Total revenues | 1,043.8 | match |
-| FY2024 Q1 | 2024-01-01 – 2024-03-31 | 880.9 | 3M reported | [10-Q 2024-04-30](https://www.sec.gov/Archives/edgar/data/879169/000087916924000077/0000879169-24-000077-index.htm) | Total revenues | 880.9 | match |
-| FY2023 Q4 | 2023-10-01 – 2023-12-31 | 1,013.3 | FY − 9M YTD | [10-K 2024-02-13](https://www.sec.gov/Archives/edgar/data/879169/000087916924000045/0000879169-24-000045-index.htm) | Total revenues | 1,013.3 | match |
-| FY2023 Q3 | 2023-07-01 – 2023-09-30 | 919.0 | 3M reported | [10-Q 2023-10-31](https://www.sec.gov/Archives/edgar/data/879169/000087916923000041/0000879169-23-000041-index.htm) | Total revenues | 919.0 | match |
-| FY2023 Q2 | 2023-04-01 – 2023-06-30 | 954.6 | 3M reported | [10-Q 2023-08-01](https://www.sec.gov/Archives/edgar/data/879169/000087916923000025/0000879169-23-000025-index.htm) | Total revenues | 954.6 | match |
 
 ### RARE — Ultragenyx Pharmaceutical Inc.
 

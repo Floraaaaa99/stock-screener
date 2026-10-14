@@ -95,11 +95,15 @@ def extract_compact_sic(
     sic_dir: Path,
     *,
     force: bool = False,
+    periodic_dir: Path | None = None,
 ) -> dict[str, str]:
-    """Write compact SIC records for each CIK present in submissions.zip."""
+    """Write compact SIC records (and optional recent 10-Q/10-K lists) from submissions.zip."""
+    from .edgar import parse_periodic_filings
     from .sic import sic_from_submissions
 
     sic_dir.mkdir(parents=True, exist_ok=True)
+    if periodic_dir is not None:
+        periodic_dir.mkdir(parents=True, exist_ok=True)
     wanted = {str(c).zfill(10) for c in ciks}
     hashes: dict[str, str] = {}
     found: set[str] = set()
@@ -110,7 +114,10 @@ def extract_compact_sic(
             member = zip_member(cik)
             name = member if member in zf.NameToInfo else by_base.get(member)
             out = sic_dir / f"{cik}.json"
-            if out.exists() and not force:
+            periodic_out = periodic_dir / f"{cik}.json" if periodic_dir is not None else None
+            have_sic = out.exists() and not force
+            have_periodic = periodic_out is None or (periodic_out.exists() and not force)
+            if have_sic and have_periodic:
                 hashes[cik] = canonical_hash(read_json(out))
                 found.add(cik)
                 continue
@@ -118,10 +125,20 @@ def extract_compact_sic(
                 continue
             with zf.open(name) as fh:
                 payload = json.load(fh)
-            info = sic_from_submissions(payload).to_dict()
-            info["cik"] = cik
-            write_json_atomic(out, info)
-            hashes[cik] = canonical_hash(info)
+            if not have_sic:
+                info = sic_from_submissions(payload).to_dict()
+                info["cik"] = cik
+                write_json_atomic(out, info)
+            if periodic_out is not None and not have_periodic:
+                write_json_atomic(
+                    periodic_out,
+                    {
+                        "cik": cik,
+                        "source": "submissions_zip",
+                        "filings": [f.to_dict() for f in parse_periodic_filings(payload)],
+                    },
+                )
+            hashes[cik] = canonical_hash(read_json(out))
             found.add(cik)
     missing = wanted - found
     if missing:

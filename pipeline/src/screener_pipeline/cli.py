@@ -12,6 +12,9 @@ from .build import DatasetError, IncompleteRun, build
 from .cache import read_json
 from .gate import evaluate_gate
 from .report import write_validation_report
+from .sec.client import SecClient
+from .sec.edgar import facts_may_lag, freshness_row, newer_filings
+from .sec.store import PeriodicStore, SicStore
 from .state import pack_state, read_sidecar_sha256, unpack_state
 
 
@@ -53,6 +56,19 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--meta", required=True, help="Path to meta.json")
     g.add_argument("--baseline", help="Previous complete meta.json")
     g.add_argument("--publish", action="store_true", help="Require a complete full-universe dataset")
+
+    f = sub.add_parser(
+        "freshness",
+        help="Compare a built dataset's latest quarters with EDGAR 10-Q/10-K submissions",
+    )
+    f.add_argument("--data-dir", required=True, help="Directory containing companies/*.json and meta.json")
+    f.add_argument("--state-dir", help="Compact state (periodic filings cache)")
+    f.add_argument("--offline", action="store_true", help="Do not refresh submissions from EDGAR")
+    f.add_argument(
+        "--refresh-lagging",
+        action="store_true",
+        help="Re-fetch EDGAR submissions when Company Facts look past the 10-Q window",
+    )
 
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
@@ -114,6 +130,18 @@ def main(argv: list[str] | None = None) -> int:
             result = evaluate_gate(meta, baseline, publish=args.publish)
             print(json.dumps(result.to_dict(), indent=2))
             return 0 if result.ok else 2
+        elif args.cmd == "freshness":
+            from datetime import date
+
+            report = run_freshness(
+                Path(args.data_dir),
+                state_dir=Path(args.state_dir) if args.state_dir else None,
+                offline=args.offline,
+                refresh_lagging=args.refresh_lagging,
+                as_of=date.today(),
+            )
+            print(json.dumps(report, indent=2))
+            return 0 if report.get("lagging", 0) == 0 else 2
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -161,7 +189,59 @@ def request_estimate() -> dict:
             "The bulk zips remove the companyfacts and submissions API calls; statement fetches remain until cached.",
             "A 5-hour budget leaves headroom under GitHub's 6-hour job limit; incomplete runs exit 3.",
             "Yahoo Finance is not used. Industry comes from SEC SIC; the dataset has no price or market cap.",
+            "When Company Facts lag a 10-Q/10-K already on EDGAR, the filing's official income statement is used.",
         ],
+    }
+
+
+def run_freshness(
+    data_dir: Path,
+    *,
+    state_dir: Path | None = None,
+    offline: bool = False,
+    refresh_lagging: bool = False,
+    as_of=None,
+) -> dict:
+    """Scan company JSON against EDGAR submissions. Does not write live Pages data."""
+    from datetime import date
+
+    as_of = as_of or date.today()
+    companies_dir = data_dir / "companies"
+    if not companies_dir.exists():
+        raise DatasetError(f"No companies directory in {data_dir}")
+    state_dir = state_dir or config.STATE_DIR
+    sec = SecClient(
+        offline=offline,
+        sic_store=SicStore(state_dir / "sic"),
+        periodic_store=PeriodicStore(state_dir / "periodic"),
+    )
+    rows: list[dict] = []
+    for path in sorted(companies_dir.glob("*.json")):
+        company = read_json(path) or {}
+        cik = company.get("cik")
+        if not cik:
+            continue
+        filings = sec.periodic_filings(cik)
+        latest = None
+        quarters = (company.get("revenue") or {}).get("quarters") or []
+        ends = [q.get("end") for q in quarters if q.get("end") and not q.get("missing")]
+        if ends:
+            from datetime import date as date_cls
+
+            latest = date_cls.fromisoformat(max(ends))
+        if refresh_lagging and not offline and facts_may_lag(latest, as_of) and not newer_filings(filings, latest):
+            filings = sec.periodic_filings(cik, refresh=True)
+        row = freshness_row(company, filings, as_of)
+        if row["newerFilings"]:
+            rows.append(row)
+    meta = read_json(data_dir / "meta.json") or {}
+    return {
+        "asOf": as_of.isoformat(),
+        "dataset": (meta.get("dataset") or {}).get("id"),
+        "generatedAt": meta.get("generatedAt"),
+        "checked": len(list(companies_dir.glob("*.json"))),
+        "lagging": len(rows),
+        "rows": rows,
     }
 
 
