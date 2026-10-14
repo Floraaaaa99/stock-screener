@@ -17,12 +17,12 @@ Yahoo Finance via [yfinance](https://github.com/ranaroussi/yfinance), and
 | Stage | Scope | Status |
 |---|---|---|
 | 1 | 20 Biotechnology companies plus 2 foreign-filer ADRs, validated against SEC filings | Done. See [`docs/validation/biotech20.md`](docs/validation/biotech20.md) |
-| 2 | Full NASDAQ / NYSE / NYSE American universe (≈5,600 listings) | Not started. Persistence plan in [`docs/stage2-persistence.md`](docs/stage2-persistence.md) |
-| 3 | Scheduled refreshes on GitHub Pages | Manual deploy and refresh workflows exist; the weekly schedule comes after Stage 2 |
+| 2 | Full NASDAQ / NYSE / NYSE American universe (≈5,600 listings) | Pipeline, resumable state and gates are in. The public site stays on Stage 1: Yahoo's terms forbid redistributing the full market-data columns. See [`docs/yahoo-terms.md`](docs/yahoo-terms.md) and [`docs/stage2-persistence.md`](docs/stage2-persistence.md) |
+| 3 | Scheduled refreshes on GitHub Pages | Not enabled. Weekly cron is added only after two complete full manual runs **and** a decision on Yahoo data |
 
 While the site runs on the validation sample, a banner says so and shows how many of the eligible listings are
-included. The pipeline refuses `--universe full` until Stage 2, so a smaller universe is never published as if it were
-the full one.
+included. `--universe full` writes a complete dataset to a staging directory; it does not replace the live Pages payload.
+A `--limit` run is marked `partial` and cannot pass the publish gate.
 
 ## How the numbers are calculated
 
@@ -55,6 +55,24 @@ screener build --universe sample:biotech20 --offline --skip-yahoo
 # Universe statistics from NASDAQ Trader
 screener universe
 
+# Request / runtime estimate (bulk zip vs per-CIK API)
+screener estimate
+
+# Full universe (does not replace web/public/data while Stage 1 is live)
+screener -v build --universe full --time-budget-hours 5 --report docs/validation/full.md
+
+# Resume after a time-budget stop (exit code 3); statements already fetched are reused
+screener -v build --universe full --time-budget-hours 5
+
+# Pack / verify compact SEC state (Yahoo caches are excluded)
+screener pack-state --dest /tmp/state.tar.gz
+screener unpack-state --archive /tmp/state.tar.gz --dest /tmp/state --sha256-file /tmp/state.tar.gz.sha256
+screener gate --meta pipeline/.cache/state/dataset-full/meta.json
+screener gate --meta web/public/data/meta.json --publish   # full universe is blocked on Yahoo terms
+
+# Compare batched Yahoo prices with .info market cap (never auto-adopts)
+screener yahoo-batch-test --tickers VRTX REGN ALNY
+
 # Website
 cd web
 npm ci
@@ -84,7 +102,8 @@ One-time setup:
 Workflows:
 
 - **CI** (`ci.yml`) runs on pull requests and pushes to `main`: pipeline lint and tests, then web typecheck, tests and build.
-- **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed dataset. A manual run with **refresh_data** checked rebuilds the dataset from the live sources first, deploys it, and uploads it as a `dataset` workflow artifact together with a validation report. Nothing is committed or force-pushed. To keep refreshed data across later pushes, review the artifact and commit it.
+- **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed **sample**. A full-universe `meta.json` is refused. Manual sample refresh still exists; nothing is committed or force-pushed.
+- **Refresh full universe** (`refresh.yml`) is manual only. It restores compact SEC state from the `pipeline-state` release, builds with a 5-hour budget, packs and checksums a new state archive, and uploads artifacts. It never deploys Pages. Re-run the same workflow to resume after exit code 3. Weekly cron is not configured.
 
 ## Repository layout
 

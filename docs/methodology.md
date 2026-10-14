@@ -23,11 +23,14 @@ yfinance `Ticker.info` provides sector, industry, market cap, price and currency
 
 - Requests are throttled (about 1 per second plus jitter) and retried with exponential backoff on HTTP 429 and 5xx responses. A run stops early after repeated consecutive failures instead of hammering the service.
 - Fields are cached per ticker with their own timestamps. Sector and industry are refreshed every 30 days; market cap and price are treated as fresh for 20 hours. Progress is checkpointed, so an interrupted run resumes where it stopped.
-- The site shows when market data was fetched. Missing values are N/A.
+- A batched `yf.download` path exists for prices but is **not used in production** unless a comparison run shows it matches Yahoo `marketCap` (see `screener yahoo-batch-test`).
+- Yahoo's terms forbid redistributing these fields as a public full-universe dataset. See [`yahoo-terms.md`](yahoo-terms.md). The site shows when market data was fetched. Missing values are N/A.
 
 ## 3. Quarterly revenue (SEC EDGAR Company Facts)
 
 ### 3.1 Candidate concepts
+
+Company Facts are loaded from SEC's nightly `companyfacts.zip` for the full universe (one download, then only the needed CIKs and revenue concepts are kept). The per-CIK API is the fallback when a CIK is missing from the zip.
 
 The pipeline considers these `us-gaap` concepts in USD (or the filer's reporting currency): `Revenues`,
 `RevenueFromContractWithCustomerExcludingAssessedTax`, `RevenueFromContractWithCustomerIncludingAssessedTax`,
