@@ -206,6 +206,24 @@ export interface Layer2Badge {
   rulesVersion: number;
 }
 
+export interface Layer2FreshnessPeriod {
+  label: string | null;
+  end: string | null;
+  filed?: string | null;
+  form?: string | null;
+  filedBy?: string | null;
+  filedByDays?: number | null;
+}
+
+export interface Layer2Freshness {
+  status: "current" | "verified_lagging" | "unknown";
+  asOf: string | null;
+  window: "verified_historical";
+  latestVerified: Layer2FreshnessPeriod | null;
+  expectedNext: Layer2FreshnessPeriod | null;
+  message: string | null;
+}
+
 export interface Layer2Row {
   ticker: string;
   name: string;
@@ -225,6 +243,7 @@ export interface Layer2Row {
   qoq: Layer2Rate[];
   badges: Layer2Badge[];
   appliedCategories: string[];
+  freshness: Layer2Freshness;
   rulesVersion: number;
 }
 

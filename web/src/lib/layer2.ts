@@ -1,7 +1,7 @@
 import type { Layer2Badge, Layer2Bucket, Layer2Row } from "../types";
 import { normalize } from "./screener";
 
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 export const TABS: { id: Layer2Bucket; label: string }[] = [
   { id: "passed", label: "Passed" },
@@ -13,6 +13,7 @@ export const TABS: { id: Layer2Bucket; label: string }[] = [
 export const CAT_STABLE = "stable_sequential_growth";
 export const CAT_ACCEL = "accelerating_sequential_growth";
 export const CAT_JUMP = "recent_qoq_jump";
+export const CAT_FOUR_POS = "four_consecutive_positive_qoq";
 export const CAT_VOL = "qoq_volatility";
 export const CAT_DECLINE = "latest_quarter_revenue_decline";
 export const CAT_OTHER = "other_flat";
@@ -22,13 +23,14 @@ export const CAT_LABELS: Record<string, string> = {
   [CAT_STABLE]: "Stable sequential growth",
   [CAT_ACCEL]: "Accelerating sequential growth",
   [CAT_JUMP]: "Recent QoQ jump",
+  [CAT_FOUR_POS]: "Four consecutive quarters of positive QoQ",
   [CAT_VOL]: "QoQ volatility",
   [CAT_DECLINE]: "Latest-quarter revenue decline",
   [CAT_OTHER]: "Other / flat",
   [CAT_UNABLE]: "Unable to classify",
 };
 
-export const OBJECTIVE_CATS = [CAT_ACCEL, CAT_VOL, CAT_DECLINE, CAT_OTHER, CAT_UNABLE];
+export const OBJECTIVE_CATS = [CAT_FOUR_POS, CAT_ACCEL, CAT_VOL, CAT_DECLINE, CAT_OTHER, CAT_UNABLE];
 export const THRESHOLD_CATS = [CAT_STABLE, CAT_JUMP];
 
 export interface Layer2Thresholds {
@@ -78,6 +80,12 @@ export function classifyQoqBadges(rates: (number | null)[], t: Layer2Thresholds)
   const complete = r.every((x) => x !== null && Number.isFinite(x));
   const allPositive = complete && r.every((x) => (x as number) > 0);
   const badges: Layer2Badge[] = [];
+
+  if (allPositive) {
+    badges.push(
+      badge(CAT_FOUR_POS, `All four QoQ rates are strictly > 0% oldest→newest: ${r.map(fmt).join(", ")}. Rules v${RULES_VERSION}.`, true),
+    );
+  }
 
   if (allPositive && r[0]! < r[1]! && r[1]! < r[2]! && r[2]! < r[3]!) {
     badges.push(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 
 from screener_pipeline.layer2 import (
@@ -9,6 +10,7 @@ from screener_pipeline.layer2 import (
     BUCKET_WATCHLIST,
     CAT_ACCEL,
     CAT_DECLINE,
+    CAT_FOUR_POS,
     CAT_JUMP,
     CAT_OTHER,
     CAT_STABLE,
@@ -17,6 +19,7 @@ from screener_pipeline.layer2 import (
     RULES_VERSION,
     Thresholds,
     analyze_company,
+    assess_freshness,
     build_layer2,
     classify_qoq_badges,
     pct_change,
@@ -88,7 +91,7 @@ def applied(row):
 
 
 def test_rules_version_is_set():
-    assert RULES_VERSION == 2
+    assert RULES_VERSION == 3
 
 
 def test_four_positive_yoy_passes_even_if_decelerating():
@@ -175,6 +178,7 @@ def test_overlapping_category_badges():
     badges = classify_qoq_badges(rates, Thresholds(100.0, 10.0))
     ids = {b["id"] for b in badges if b["applied"]}
     assert CAT_ACCEL in ids
+    assert CAT_FOUR_POS in ids
     assert CAT_STABLE in ids
     assert CAT_JUMP in ids
 
@@ -217,9 +221,13 @@ def test_other_flat_and_unable():
     assert any(b["id"] == CAT_UNABLE and b["applied"] for b in incomplete)
     assert not any(b["id"] == CAT_OTHER and b["applied"] for b in incomplete)
 
-    # Both thresholds evaluated; all positive but not stable (spread 1 > 0.5) and not a jump.
-    other = classify_qoq_badges([5.0, 5.0, 5.0, 4.0], Thresholds(0.5, 10.0))
+    four = classify_qoq_badges([1.0, 1.0, 1.0, 1.0], Thresholds(None, None))
+    assert any(b["id"] == CAT_FOUR_POS and b["applied"] for b in four)
+
+    # Thresholds evaluated; not all positive, not a decline, one sign change, no jump.
+    other = classify_qoq_badges([5.0, 5.0, 5.0, 0.0], Thresholds(0.5, 10.0))
     assert any(b["id"] == CAT_OTHER and b["applied"] for b in other)
+    assert not any(b["id"] == CAT_FOUR_POS and b["applied"] for b in other)
 
 
 def test_non_calendar_fiscal_year_labels():
@@ -271,8 +279,41 @@ def test_sample_dataset_buckets_from_layer1_json():
     assert all(b["blockedByThreshold"] for b in by["INSM"]["badges"] if b["id"] in {CAT_STABLE, CAT_JUMP})
     assert CAT_OTHER not in applied(by["INSM"])
     assert CAT_OTHER not in applied(by["KRYS"])
+    assert CAT_FOUR_POS in applied(by["KRYS"])
+    assert CAT_FOUR_POS in applied(by["INSM"])
+    assert CAT_FOUR_POS not in applied(by["INCY"])
+    assert by["INCY"]["freshness"]["status"] == "verified_lagging"
+    assert by["KRYS"]["freshness"]["status"] == "current"
     assert CAT_OTHER not in applied(by["ARGX"])
     assert CAT_UNABLE in applied(by["ARGX"])
+
+
+def test_freshness_distinguishes_verified_window_from_expected_next():
+    window = [
+        q(2026, 1, "2026-03-31", 100),
+        q(2025, 4, "2025-12-31", 90),
+        q(2025, 3, "2025-09-30", 80),
+        q(2025, 2, "2025-06-30", 70),
+        q(2025, 1, "2025-03-31", 60),
+        q(2024, 4, "2024-12-31", 50),
+        q(2024, 3, "2024-09-30", 40),
+        q(2024, 2, "2024-06-30", 30),
+    ]
+    lagging = assess_freshness(window, date(2026, 10, 14))
+    assert lagging["status"] == "verified_lagging"
+    assert lagging["window"] == "verified_historical"
+    assert lagging["latestVerified"]["label"] == "FY2026 Q1"
+    assert lagging["expectedNext"]["label"] == "FY2026 Q2"
+    assert lagging["expectedNext"]["end"] == "2026-06-30"
+    assert lagging["expectedNext"]["form"] == "10-Q"
+    assert "verified historical" in lagging["message"]
+
+    current = assess_freshness(
+        [q(2026, 2, "2026-06-30", 100)] + window[1:],
+        date(2026, 10, 14),
+    )
+    assert current["status"] == "current"
+    assert current["latestVerified"]["label"] == "FY2026 Q2"
 
 
 def test_unrounded_decisions_not_display_rounding():

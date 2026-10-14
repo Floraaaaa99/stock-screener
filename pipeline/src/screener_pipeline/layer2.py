@@ -8,13 +8,15 @@ not applied until qoqStableSpreadPctPoints / qoqRecentJumpPctPoints are set.
 from __future__ import annotations
 
 import json
+from calendar import monthrange
 from dataclasses import dataclass
+from datetime import date, timedelta
 from pathlib import Path
 
 from . import config
 from .cache import read_json, write_json_atomic
 
-RULES_VERSION = 2
+RULES_VERSION = 3
 LAYER2_SCHEMA_VERSION = 1
 N_YOY = 4
 N_WINDOW = 8
@@ -27,6 +29,7 @@ BUCKET_TTM_NONPOSITIVE = "ttm_nonpositive"
 CAT_STABLE = "stable_sequential_growth"
 CAT_ACCEL = "accelerating_sequential_growth"
 CAT_JUMP = "recent_qoq_jump"
+CAT_FOUR_POS = "four_consecutive_positive_qoq"
 CAT_VOL = "qoq_volatility"
 CAT_DECLINE = "latest_quarter_revenue_decline"
 CAT_OTHER = "other_flat"
@@ -36,11 +39,18 @@ CAT_LABELS = {
     CAT_STABLE: "Stable sequential growth",
     CAT_ACCEL: "Accelerating sequential growth",
     CAT_JUMP: "Recent QoQ jump",
+    CAT_FOUR_POS: "Four consecutive quarters of positive QoQ",
     CAT_VOL: "QoQ volatility",
     CAT_DECLINE: "Latest-quarter revenue decline",
     CAT_OTHER: "Other / flat",
     CAT_UNABLE: "Unable to classify",
 }
+
+# SEC 10-Q is due 40 days after quarter-end for large accelerated filers and 45 for
+# accelerated filers; 10-K is due 60 / 75 days. Use the slower window so a "newer
+# filing may exist" warning fires only after that quarter should have been filed.
+TEN_Q_FILED_BY_DAYS = 45
+TEN_K_FILED_BY_DAYS = 75
 
 THRESHOLD_DEPENDENT = {CAT_STABLE, CAT_JUMP}
 
@@ -177,6 +187,17 @@ def classify_qoq_badges(qoq_oldest_to_newest: list[float | None], thresholds: Th
     all_positive = complete and all(r > 0 for r in rates)
     badges: list[dict] = []
 
+    # Four consecutive positive QoQ: objective, no spread/jump threshold.
+    if all_positive:
+        seq = ", ".join(_fmt(r) for r in rates)
+        badges.append(
+            _badge(
+                CAT_FOUR_POS,
+                f"All four QoQ rates are strictly > 0% oldest→newest: {seq}. Rules v{RULES_VERSION}.",
+                applied=True,
+            )
+        )
+
     # Accelerating: all four > 0 and strictly increasing oldest → newest.
     if all_positive and rates[0] < rates[1] < rates[2] < rates[3]:
         seq = ", ".join(_fmt(r) for r in rates)
@@ -284,7 +305,103 @@ def classify_qoq_badges(qoq_oldest_to_newest: list[float | None], thresholds: Th
     return badges
 
 
-def analyze_company(company: dict, thresholds: Thresholds | None = None) -> dict:
+def _parse_iso_date(value: object) -> date | None:
+    if not isinstance(value, str) or len(value) < 10:
+        return None
+    try:
+        return date.fromisoformat(value[:10])
+    except ValueError:
+        return None
+
+
+def _add_months(d: date, months: int) -> date:
+    m0 = d.month - 1 + months
+    year = d.year + m0 // 12
+    month = m0 % 12 + 1
+    return date(year, month, min(d.day, monthrange(year, month)[1]))
+
+
+def _fiscal_label(fy, fq) -> str | None:
+    if fy and fq:
+        return f"FY{fy} Q{fq}"
+    return None
+
+
+def assess_freshness(window: list[dict], as_of: date | None) -> dict:
+    """Compare Layer 1's verified latest quarter with the next quarter expected at as-of.
+
+    Sequential rates always use the verified historical window. When the next fiscal
+    quarter is past its typical 10-Q/10-K filing window, a newer EDGAR filing may
+    exist that is not in this window.
+    """
+    as_of_s = as_of.isoformat() if as_of else None
+    latest = next((q for q in window if q and not q.get("missing") and q.get("end")), None)
+    empty = {
+        "status": "unknown",
+        "asOf": as_of_s,
+        "window": "verified_historical",
+        "latestVerified": None,
+        "expectedNext": None,
+        "message": None,
+    }
+    if not latest:
+        return empty
+    latest_end = _parse_iso_date(latest.get("end"))
+    fy, fq = latest.get("fiscalYear"), latest.get("fiscalQuarter")
+    latest_label = _fiscal_label(fy, fq) or latest.get("label")
+    latest_info = {
+        "label": latest_label,
+        "end": latest.get("end"),
+        "filed": latest.get("filed"),
+        "form": latest.get("form"),
+    }
+    if as_of is None or latest_end is None:
+        return {**empty, "latestVerified": latest_info}
+
+    if fy and fq:
+        next_fy, next_fq = (fy + 1, 1) if fq == 4 else (fy, fq + 1)
+    else:
+        next_fy, next_fq = None, None
+    next_end = _add_months(latest_end, 3)
+    next_form = "10-K" if next_fq == 4 else "10-Q"
+    lag = TEN_K_FILED_BY_DAYS if next_form == "10-K" else TEN_Q_FILED_BY_DAYS
+    filed_by = next_end + timedelta(days=lag)
+    next_info = {
+        "label": _fiscal_label(next_fy, next_fq),
+        "end": next_end.isoformat(),
+        "form": next_form,
+        "filedBy": filed_by.isoformat(),
+        "filedByDays": lag,
+    }
+    lagging = as_of > filed_by
+    if lagging:
+        message = (
+            f"Rates use Layer 1’s verified historical window through {latest_label} "
+            f"(period-end {latest_end.isoformat()}, {latest.get('form') or 'filing'} filed "
+            f"{latest.get('filed') or 'unknown'}). That is not necessarily the latest EDGAR filing. "
+            f"At the dataset as-of date ({as_of.isoformat()}), the next fiscal quarter "
+            f"({_fiscal_label(next_fy, next_fq) or 'next'}, period-end {next_end.isoformat()}) "
+            f"was past the typical {next_form} filing window ({lag} days, by {filed_by.isoformat()}), "
+            f"so a newer filing may exist that is not in this verified window."
+        )
+        status = "verified_lagging"
+    else:
+        message = (
+            f"Verified historical window through {latest_label} (period-end {latest_end.isoformat()}) "
+            f"is the latest quarter expected at the dataset as-of date ({as_of.isoformat()})."
+        )
+        status = "current"
+    return {
+        "status": status,
+        "asOf": as_of_s,
+        "window": "verified_historical",
+        "latestVerified": latest_info,
+        "expectedNext": next_info,
+        "message": message,
+    }
+
+
+def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: date | None = None) -> dict:
     """Derive Layer 2 metrics from one Layer 1 company JSON object."""
     thresholds = thresholds or Thresholds(None, None)
     ttm = company.get("ttm") or {}
@@ -344,6 +461,7 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None) -> dict
         bucket = BUCKET_WATCHLIST
 
     badges = classify_qoq_badges(qoq_rates, thresholds)
+    freshness = assess_freshness(window, as_of)
     return {
         "ticker": company["ticker"],
         "name": company["name"],
@@ -363,6 +481,7 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None) -> dict
         "qoq": qoq,
         "badges": badges,
         "appliedCategories": [b["id"] for b in badges if b["applied"]],
+        "freshness": freshness,
         "rulesVersion": RULES_VERSION,
     }
 
@@ -372,12 +491,13 @@ def build_layer2(data_dir: Path, thresholds: Thresholds | None = None) -> dict:
     thresholds = thresholds or load_thresholds()
     meta = read_json(data_dir / "meta.json") or {}
     screener = read_json(data_dir / "screener.json") or {}
+    as_of = _parse_iso_date(meta.get("generatedAt"))
     rows_out: list[dict] = []
     for row in screener.get("rows") or []:
         company = read_json(data_dir / "companies" / f"{row['ticker']}.json")
         if not company:
             continue
-        rows_out.append(analyze_company(company, thresholds))
+        rows_out.append(analyze_company(company, thresholds, as_of))
     counts = {
         BUCKET_PASSED: 0,
         BUCKET_WATCHLIST: 0,

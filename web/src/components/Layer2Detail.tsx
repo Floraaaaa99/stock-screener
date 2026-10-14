@@ -63,9 +63,20 @@ export function Layer2Detail({ row }: { row: Layer2Row }) {
   return (
     <div className="detail">
       <p className="note">
-        Layer 2 uses Layer 1’s latest 8 consecutive comparable quarters (rules v{row.rulesVersion}). Revenue concept{" "}
-        <code>{row.revenueConcept ?? "N/A"}</code> in {row.revenueCurrency ?? "N/A"}. QoQ does not affect YoY eligibility.
+        Sequential rates use Layer 1’s <strong>verified historical</strong> eight-quarter window (rules v{row.rulesVersion}),
+        not a live EDGAR scan. Revenue concept <code>{row.revenueConcept ?? "N/A"}</code> in {row.revenueCurrency ?? "N/A"}.
+        QoQ does not affect YoY eligibility.
       </p>
+      {row.freshness?.status === "verified_lagging" && row.freshness.message && (
+        <p className="freshness-banner" role="note">
+          <strong>Freshness warning.</strong> {row.freshness.message}
+        </p>
+      )}
+      {row.freshness?.status === "current" && row.freshness.message && (
+        <p className="freshness-ok" role="note">
+          {row.freshness.message}
+        </p>
+      )}
       {row.dataReviewReasons.length > 0 && (
         <p className="na-reason">Data Review: {row.dataReviewReasons.map(naReason).join(" ")}</p>
       )}

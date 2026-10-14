@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   CAT_ACCEL,
   CAT_DECLINE,
+  CAT_FOUR_POS,
   CAT_JUMP,
   CAT_OTHER,
   CAT_STABLE,
@@ -48,6 +49,7 @@ describe("classifyQoqBadges", () => {
   });
 
   it("does not assign other/flat while thresholds are unconfigured", () => {
+    expect(applied([1, 1, 1, 1])).toContain(CAT_FOUR_POS);
     expect(applied([1, 1, 1, 1])).not.toContain(CAT_OTHER);
     expect(applied([1, 1, 1, 1])).not.toContain(CAT_UNABLE);
   });
@@ -58,7 +60,14 @@ describe("classifyQoqBadges", () => {
   });
 
   it("uses other/flat only after every rule that could apply has been evaluated", () => {
-    expect(applied([5, 5, 5, 4], 0.5, 10)).toContain(CAT_OTHER);
+    expect(applied([5, 5, 5, 0], 0.5, 10)).toContain(CAT_OTHER);
+    expect(applied([5, 5, 5, 0], 0.5, 10)).not.toContain(CAT_FOUR_POS);
+  });
+
+  it("flags four consecutive positive QoQ without a spread threshold", () => {
+    expect(applied([1.8, 9.5, 8.6, 2.5])).toContain(CAT_FOUR_POS);
+    expect(applied([1.8, 9.5, 8.6, 2.5])).not.toContain(CAT_ACCEL);
+    expect(applied([15, 12, 10, -15])).not.toContain(CAT_FOUR_POS);
   });
 });
 

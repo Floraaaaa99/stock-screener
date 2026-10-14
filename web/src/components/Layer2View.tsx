@@ -73,9 +73,11 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
     <>
       <p className="layer2-lead">
         Sequential growth (Layer 2) starts from Layer 1’s latest eight consecutive, comparable, filing-validated
-        quarters. Passed requires TTM revenue growth &gt; 0% and four strictly positive quarterly YoY rates (deceleration
-        is allowed). Watchlist is the same data quality with at least one YoY ≤ 0%. Companies with valid TTM growth ≤ 0%
-        are listed separately and are not Data Review. QoQ is descriptive and never removes a company. Rules v{file.rulesVersion}.
+        quarters (verified historical data, not a live EDGAR scan). Passed requires TTM revenue growth &gt; 0% and four
+        strictly positive quarterly YoY rates (deceleration is allowed). Watchlist is the same data quality with at
+        least one YoY ≤ 0%. Companies with valid TTM growth ≤ 0% are listed separately and are not Data Review. QoQ is
+        descriptive and never removes a company. A freshness warning appears when the next fiscal quarter was past its
+        typical filing window at the dataset as-of date. Rules v{file.rulesVersion}.
       </p>
       <div className="layer2-settings panel">
         <div className="field">

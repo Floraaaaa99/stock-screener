@@ -84,6 +84,11 @@ export function Layer2Table({
                       </td>
                       <td className="name" title={r.name}>
                         {r.name}
+                        {r.freshness?.status === "verified_lagging" && r.freshness.latestVerified && (
+                          <div className="freshness-chip warn" title={r.freshness.message ?? ""}>
+                            Verified through {r.freshness.latestVerified.label} · newer filing may exist
+                          </div>
+                        )}
                       </td>
                       <td className="sic">{r.sicIndustry ?? "N/A"}</td>
                       <td className="num">

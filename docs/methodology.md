@@ -100,7 +100,7 @@ Layer 2 does not fetch or reinterpret revenue. It reads Layer 1’s latest eight
 quarters and preserves currency, revenue concept, schema version, and quarter-level validation. Dependent YoY/QoQ rates
 are recomputed whenever that window changes (new filings or restatements).
 
-Classification rules are versioned (`rulesVersion`, currently 2). Decisions use unrounded values.
+Classification rules are versioned (`rulesVersion`, currently 3). Decisions use unrounded values.
 
 - **Eligibility.** Start from Layer 1 companies with TTM revenue growth **> 0%**. Valid TTM growth **≤ 0%** is a separate
   bucket (`ttm_nonpositive`) and is never labeled Data Review.
@@ -112,8 +112,15 @@ Classification rules are versioned (`rulesVersion`, currently 2). Decisions use 
 - **Quarterly QoQ** is calculated for display on the same four quarters:
   `(current ÷ immediately preceding quarter − 1) × 100`. Missing inputs or denominators ≤ 0 are N/A with a reason, never
   zero. QoQ never excludes a YoY-passing company.
+- **Verified historical vs latest available.** Layer 2 always uses Layer 1’s filing-validated consecutive window.
+  That window is **verified historical data**, not a live EDGAR listing of the newest 10-Q. If the dataset as-of date
+  (`meta.generatedAt`) is after the next fiscal quarter’s typical filing deadline — 45 days after quarter-end for a
+  10-Q (the slower of the 40/45-day SEC windows) or 75 days for a 10-K (the slower of the 60/75-day windows) — the
+  company is marked `verified_lagging` and the UI shows a freshness warning. Company Facts can lag EDGAR submissions:
+  a 10-Q may already be on file while the XBRL snapshot used for revenue still ends at the previous quarter.
 - **QoQ category badges** (multiple allowed; they do not affect YoY eligibility). Objective rules run immediately:
-  accelerating sequential growth, QoQ volatility, latest-quarter revenue decline, other/flat, unable to classify.
+  four consecutive quarters of positive QoQ (no spread/jump threshold), accelerating sequential growth, QoQ volatility,
+  latest-quarter revenue decline, other/flat, unable to classify.
   Threshold-dependent rules — stable sequential growth (max − min ≤ configured spread) and recent QoQ jump
   (latest − max of preceding three ≥ configured jump) — stay inactive until
   `pipeline/config/layer2.json` (or the on-site inputs) set those values. Until then the UI shows
