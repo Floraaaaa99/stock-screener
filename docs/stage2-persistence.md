@@ -43,7 +43,7 @@ Projected size is about 50–100 MB compressed.
 
 - Keep one rolling release, `pipeline-state`, with the asset `state.tar.gz`, updated with `gh release upload --clobber` using the workflow's `GITHUB_TOKEN` (`contents: write`). This creates **no commits and rewrites no history**. Failed runs never overwrite the last good state.
 - Also attach each published dataset as a dated asset, `dataset-YYYY-MM-DD.tar.gz`, keeping the last 8. This gives history and one-step rollback: redeploy an older asset.
-- Everything stored is derived from public data. Secrets are never written to state; the SEC User-Agent stays a repository variable.
+- Everything stored is derived from public data. Secrets are never written to state; the SEC User-Agent stays a repository secret.
 - Fallback if releases are not wanted: the last successful run's workflow artifact. Retention is at most 90 days, and finding the artifact needs an API lookup, so this option is less robust.
 
 `actions/cache` is used only to speed things up, for example by keeping recent raw downloads within a run series. It is
