@@ -83,7 +83,11 @@ keeps that filing's SEC link:
 - A derived quarter is recomputed from its sources' statement columns, for example the 10-K annual column minus the 10-Q nine-month column.
 
 Results appear as *Matches filing*, *Differs from filing* or *Not verifiable*, with a link to the statement. A mismatch
-in any of the 8 TTM quarters blocks the growth figure (`filing_mismatch`).
+or unverifiable result in **any** of the 8 TTM-window quarters excludes that company’s Current TTM, Previous TTM, and
+growth (`filing_mismatch` or `unverified_quarters`). Those quarters never enter Layer 2 Passed/Watchlist eligibility.
+The company stays in the table with N/A and the reason. The 10% quarter-mismatch gate is a **dataset publish brake**
+only: if more than 10% of checked quarters in the file are mismatches, the dataset may not replace live Pages. It does
+not allow mismatched or unverified numbers into TTM.
 
 ### 3.5 Foreign private issuers
 
@@ -94,8 +98,9 @@ with the reason `foreign_filer`. Annual figures are not divided or substituted.
 
 - **Current TTM** is the sum of slots 1–4, the latest 4 quarters. **Previous TTM** is the sum of slots 5–8.
 - **Growth** = (Current TTM ÷ Previous TTM − 1) × 100.
-- Growth is computed only when all 8 slots have values, the quarters are consecutive, they come from one verified comparable concept, none of them disagrees with its filing, and Previous TTM is greater than zero.
-- Otherwise the value is N/A, with one of these reasons: `insufficient_quarters`, `gap_in_quarters`, `previous_ttm_not_positive`, `ambiguous_concept`, `filing_mismatch`, `statement_mismatch`, `foreign_filer`, `no_cik`, `no_company_facts`, `no_revenue_concept`.
+- Growth is computed only when all 8 slots have values, the quarters are consecutive, they come from one verified comparable concept, every TTM-window quarter matches its filing, and Previous TTM is greater than zero.
+- A mismatched or unverified TTM-window quarter blocks Current TTM, Previous TTM, and growth together. The company remains listed with N/A.
+- Otherwise the value is N/A, with one of these reasons: `insufficient_quarters`, `gap_in_quarters`, `previous_ttm_not_positive`, `ambiguous_concept`, `filing_mismatch`, `unverified_quarters`, `statement_mismatch`, `foreign_filer`, `no_cik`, `no_company_facts`, `no_revenue_concept`.
 - Revenue amounts keep the SEC reporting currency (always labeled, including USD). The site does not convert currencies. Sorting Current or Previous TTM groups by currency (USD first) so amounts in different currencies are never ranked as one series. Growth is a ratio and may be sorted across currencies.
 - Default table sort is TTM growth descending, with N/A last. Current and Previous TTM columns are also sortable.
 
@@ -106,12 +111,50 @@ Additional flags are shown in the expanded row:
 - `stale_filings`: the latest quarter ended more than 270 days ago.
 - `other_concept_disagrees`: another revenue concept reports different values.
 
-## 5. Output
+## 5. Sequential growth (Layer 2)
+
+Layer 2 does not fetch or reinterpret revenue. It reads Layer 1’s latest eight consecutive, comparable, filing-validated
+quarters and preserves currency, revenue concept, schema version, and quarter-level validation. Dependent YoY/QoQ rates
+are recomputed whenever that window changes (new filings or restatements).
+
+Classification rules are versioned (`rulesVersion`, currently 3). Decisions use unrounded values.
+
+- **Eligibility.** Start from Layer 1 companies with TTM revenue growth **> 0%** computed only from filing-matched
+  quarters. Valid TTM growth **≤ 0%** is a separate bucket (`ttm_nonpositive`) and is never labeled Data Review.
+  TTM N/A because a TTM-window quarter is mismatched or unverified is Data Review, not Passed or Watchlist.
+- **Quarterly YoY** for the latest four quarters, oldest to newest:
+  `(current quarter ÷ same fiscal quarter last year − 1) × 100`.
+  - **Passed:** all four YoY rates are strictly > 0% (deceleration is allowed; accelerating growth is not required).
+  - **Watchlist:** all required data is valid, but at least one YoY is ≤ 0%.
+  - **Data Review:** a required quarter is missing, unverified, incomparable, or a prior-year denominator is ≤ 0%.
+- **Quarterly QoQ** is calculated for display on the same four quarters:
+  `(current ÷ immediately preceding quarter − 1) × 100`. Missing inputs or denominators ≤ 0 are N/A with a reason, never
+  zero. QoQ never excludes a YoY-passing company.
+- **Verified historical vs latest available.** Layer 2 always uses Layer 1’s filing-validated consecutive window.
+  That window is **verified historical data**, not a live EDGAR listing of the newest 10-Q. If the dataset as-of date
+  (`meta.generatedAt`) is after the next fiscal quarter’s typical filing deadline — 45 days after quarter-end for a
+  10-Q (the slower of the 40/45-day SEC windows) or 75 days for a 10-K (the slower of the 60/75-day windows) — the
+  company is marked `verified_lagging` and the UI shows a freshness warning. Company Facts can lag EDGAR submissions:
+  a 10-Q may already be on file while the XBRL snapshot used for revenue still ends at the previous quarter.
+- **QoQ category badges** (multiple allowed; they do not affect YoY eligibility). Objective rules run immediately:
+  four consecutive quarters of positive QoQ (no spread/jump threshold), accelerating sequential growth, QoQ volatility,
+  latest-quarter revenue decline, other/flat, unable to classify.
+  Threshold-dependent rules — stable sequential growth (max − min ≤ configured spread) and recent QoQ jump
+  (latest − max of preceding three ≥ configured jump) — stay inactive until
+  `pipeline/config/layer2.json` (or the on-site inputs) set those values. Until then the UI shows
+  **Threshold not configured**. Other / flat is assigned only when all four QoQ rates are present **and** every rule
+  that could apply has been evaluated — it is not used while a threshold is unconfigured, and not used when QoQ data
+  is incomplete (`unable_to_classify` covers that). An unavailable earlier QoQ does not block identifying a
+  latest-quarter decline.
+- There is no top-N limit and no valuation screen.
+
+## 6. Output
 
 `web/public/data/` contains:
 
 - `meta.json`: build timestamps, source file dates, universe and exclusion counts, coverage statistics and N/A reason counts.
 - `screener.json`: one compact row per listing, used by the table.
+- `layer2.json`: sequential-growth rows and bucket counts derived from Layer 1 company JSON.
 - `companies/<TICKER>.json`: per-company detail, loaded when a row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered.
 - `classification_issues.json`: missing CIK or missing SEC SIC for listings that are still included.
 

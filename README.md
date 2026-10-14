@@ -2,7 +2,9 @@
 
 A public, static stock screener for U.S.-listed common stocks and ADRs (NASDAQ, NYSE, NYSE American). For each
 listing it shows **SEC SIC** industry, trailing-twelve-month (TTM) revenue, and TTM revenue growth computed from the
-latest standalone fiscal quarters reported to the SEC. Stock price and market cap are not included.
+latest standalone fiscal quarters reported to the SEC. Sequential growth (Layer 2) then classifies companies with
+positive TTM growth using four quarterly YoY rates, and shows descriptive QoQ rates and category badges. Stock price
+and market cap are not included.
 
 - **Website:** React + Vite + TypeScript in [`web/`](web), hosted on GitHub Pages. No login, no backend.
 - **Data pipeline:** Python in [`pipeline/`](pipeline), which writes static JSON to `web/public/data/`.
@@ -33,12 +35,13 @@ publish gate.
 See [`docs/methodology.md`](docs/methodology.md). In short:
 
 - **Current TTM** is the sum of the latest 4 standalone fiscal quarters. **Previous TTM** is the sum of the 4 quarters before those.
-- **TTM Revenue Growth YoY** = (Current TTM ÷ Previous TTM − 1) × 100. It is computed only when all 8 quarters are present, consecutive and comparable (same verified revenue concept), and Previous TTM is positive.
+- **TTM Revenue Growth YoY** = (Current TTM ÷ Previous TTM − 1) × 100. It is computed only when all 8 quarters are present, consecutive, comparable, and each matches its filing. Mismatched or unverified TTM-window quarters make Current TTM, Previous TTM, and growth N/A; the company stays listed with the reason. The 10% mismatch gate is a publish brake for the whole file, not a way those values enter TTM.
 - Quarters that are not reported directly are derived from year-to-date figures, for example Q4 = FY − 9M. Every quarter records how it was obtained and which filings it came from.
 - **Industry** is the company's SEC SIC code and description (plus the two-digit SIC major group). These are labeled **SEC SIC**, not commercial sector/industry names.
 - Revenue amounts are labeled with the SEC reporting currency, including USD. Amounts in different currencies are not converted and are not ranked as one series.
 - Missing values are shown as **N/A** with a reason, never as zero. Companies without usable SEC revenue stay in the table.
 - The table defaults to TTM growth descending, with N/A last. Current and Previous TTM revenue are also sortable.
+- **Sequential growth (Layer 2)** uses the same eight-quarter window. Passed requires TTM growth > 0% and four strictly positive quarterly YoY rates. Watchlist is valid data with at least one YoY ≤ 0%. Valid TTM growth ≤ 0% is listed separately and is not Data Review. QoQ is descriptive. Stable-spread and recent-jump badge thresholds stay unset until configured (`pipeline/config/layer2.json`).
 
 ## Local development
 
@@ -79,6 +82,9 @@ screener gate --meta pipeline/.cache/state/dataset-full/meta.json --publish
 
 # Compare a built dataset with EDGAR 10-Q/10-K submissions (does not write live Pages)
 screener freshness --data-dir pipeline/.cache/state/dataset-full --refresh-lagging
+
+# Layer 2 from an existing Layer 1 dataset (does not fetch SEC data)
+screener layer2 --data-dir web/public/data
 
 # Write the live Pages payload only after the publish gate passes
 screener -v build --universe full --write-live
@@ -125,9 +131,11 @@ pipeline/
     quarters.py   Standalone-quarter derivation (YTD subtraction, restatements, fiscal labels)
     concepts.py   Revenue-concept selection and verification
     ttm.py        Current/Previous TTM and growth
+    layer2.py     Sequential YoY/QoQ rates and QoQ category badges
     revenue.py    Per-company analysis and per-quarter filing checks
     gate.py       Completeness and filing-validation publish gates
     build.py      Dataset build and atomic write
+  config/layer2.json  QoQ badge thresholds (null until configured)
   samples/        Validation samples (ticker lists)
   tests/          Unit tests and real-company regression tests (SEC fixtures)
 web/

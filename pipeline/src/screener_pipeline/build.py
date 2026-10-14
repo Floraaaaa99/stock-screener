@@ -12,6 +12,7 @@ from pathlib import Path
 from . import config
 from .cache import read_json, write_json_atomic
 from .gate import evaluate_gate
+from .layer2 import write_layer2
 from .output import SCHEMA_VERSION, company_json, screener_row, sort_screener_rows
 from .revenue import analyze_company
 from .sec.bulk import (
@@ -396,6 +397,7 @@ def write_dataset(output_dir: Path, meta: dict, rows: list[dict], companies: lis
     )
     write_json_atomic(tmp / "classification_issues.json", {"generatedAt": meta["generatedAt"], "issues": issues})
     write_json_atomic(tmp / "meta.json", meta)
+    write_layer2(tmp)
     old = output_dir.with_name(output_dir.name + ".old")
     if old.exists():
         shutil.rmtree(old)

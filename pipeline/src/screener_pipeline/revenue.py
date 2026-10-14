@@ -223,16 +223,45 @@ def analyze_company(
     if slots and (today - slots[0].end).days > STALE_AFTER_DAYS:
         flags.append("stale_filings")
 
-    blocking = None
-    if check_status == "mismatch":
-        blocking = "statement_mismatch"
-    elif any(checks.get(s.end) and checks[s.end].status == "mismatch" for s in slots[:8] if isinstance(s, Quarter)):
-        blocking = "filing_mismatch"
+    blocking = ttm_window_block_reason(slots, checks, check_status, verify_quarters=verify_quarters)
     ttm = compute_ttm(slots, blocking)
     if blocking:
         flags.append(blocking)
 
     return CompanyRevenue("ok", rf.currency, sel, slots, ttm, statement_check, checks, flags)
+
+
+VERIFIED_CHECK = "match"
+
+
+def ttm_window_block_reason(
+    slots: list[Slot],
+    checks: dict[date, QuarterCheck],
+    statement_status: str | None,
+    *,
+    verify_quarters: bool,
+) -> str | None:
+    """Mismatched or unverified TTM-window quarters never contribute to TTM figures.
+
+    The dataset-level 10% mismatch gate is a publish brake only. Per company, any of the 8
+    TTM-window quarters that is a mismatch or not verified against its filing blocks Current
+    TTM, Previous TTM, and growth. The company stays in the table with N/A and this reason.
+    """
+    if statement_status == "mismatch":
+        return "statement_mismatch"
+    if not verify_quarters:
+        return None
+    for s in slots[:8]:
+        if not isinstance(s, Quarter):
+            continue
+        check = checks.get(s.end)
+        if check is None:
+            return "unverified_quarters"
+        if check.status == "mismatch":
+            return "filing_mismatch"
+        if check.status != VERIFIED_CHECK:
+            return "unverified_quarters"
+    return None
 
 
 def slot_role(index: int) -> str | None:
@@ -243,4 +272,12 @@ def slot_role(index: int) -> str | None:
     return None
 
 
-__all__ = ["CompanyRevenue", "MissingQuarter", "Quarter", "analyze_company", "slot_role", "verify_quarter"]
+__all__ = [
+    "CompanyRevenue",
+    "MissingQuarter",
+    "Quarter",
+    "analyze_company",
+    "slot_role",
+    "ttm_window_block_reason",
+    "verify_quarter",
+]

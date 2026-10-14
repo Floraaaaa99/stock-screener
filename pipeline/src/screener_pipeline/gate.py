@@ -58,6 +58,9 @@ def evaluate_gate(meta: dict, baseline: dict | None = None, *, publish: bool = F
         reasons.append("partial_universe")
     if dataset.get("mode") == "full" and coverage.get("listings") != universe.get("eligibleListings"):
         reasons.append("missing_listings")
+    # Dataset-level publish brake only. Mismatched/unverified quarters are already excluded
+    # from every company's TTM and Layer 2 eligibility (N/A + reason). This ratio does not
+    # let those values into TTM; it stops publication when too many checks failed.
     if mismatch is not None and mismatch > config.QUARTER_MISMATCH_MAX_RATIO:
         reasons.append(
             f"quarter_mismatch_ratio_{mismatch:.1%}_exceeds_{config.QUARTER_MISMATCH_MAX_RATIO:.0%}"
