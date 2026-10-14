@@ -70,7 +70,7 @@ override the cache and output locations.
 
 | Setting | Where | Purpose |
 |---|---|---|
-| `SEC_USER_AGENT` | Environment variable locally; **repository variable** in Actions (Settings → Secrets and variables → Actions → Variables) | Required by SEC EDGAR's fair-access policy. Format: `app-name Your Name email@example.com`. The pipeline exits if it is not set. |
+| `SEC_USER_AGENT` | Environment variable locally; **repository secret** in Actions (Settings → Secrets and variables → Actions → Secrets) | Required by SEC EDGAR's fair-access policy. Format: `app-name Your Name email@example.com`. The pipeline exits if it is not set. It is stored as a secret so your contact details are masked in logs, and the pipeline never prints it or writes it to the dataset. |
 | `VITE_BASE` | Build environment | Base path for the site. Defaults to `/stock-screener/`. The deploy workflow sets it from GitHub Pages. |
 | `pipeline/config/concept_overrides.json` | Repository | Pins a company's revenue concept when the automatic selection is ambiguous. Each entry must cite the filing it was validated against. |
 
@@ -79,7 +79,7 @@ override the cache and output locations.
 One-time setup:
 
 1. Under Settings → Pages → Build and deployment, set **Source** to **GitHub Actions**.
-2. Under Settings → Secrets and variables → Actions → **Variables**, add `SEC_USER_AGENT`. This is only needed for data refreshes.
+2. Under Settings → Secrets and variables → Actions → **Secrets**, choose **New repository secret** and add `SEC_USER_AGENT`, for example `stock-screener Your Name you@example.com`. This is only needed for data refreshes. If a `SEC_USER_AGENT` repository *variable* was created earlier, delete it, because variables are shown in plain text.
 
 Workflows:
 

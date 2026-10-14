@@ -38,6 +38,6 @@ def sec_user_agent() -> str:
     if not ua:
         raise ConfigError(
             "SEC_USER_AGENT is not set. Set it to your name and contact email, e.g. "
-            "SEC_USER_AGENT='Jane Doe jane@example.com'. In GitHub Actions use a repository variable."
+            "SEC_USER_AGENT='Jane Doe jane@example.com'. In GitHub Actions use the SEC_USER_AGENT repository secret."
         )
     return ua

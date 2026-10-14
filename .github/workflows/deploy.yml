@@ -33,14 +33,15 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.refresh_data
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    env:
-      SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
     steps:
       - uses: actions/checkout@v7
+      # The secret is passed only to the steps that need it and is never echoed.
       - name: Require SEC_USER_AGENT
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: |
           if [ -z "$SEC_USER_AGENT" ]; then
-            echo "::error::Set the SEC_USER_AGENT repository variable (Settings > Secrets and variables > Actions > Variables), e.g. 'stock-screener your-name you@example.com'."
+            echo "::error::Add the SEC_USER_AGENT repository secret (Settings > Secrets and variables > Actions > Secrets)."
             exit 1
           fi
       - uses: actions/setup-python@v7
@@ -56,6 +57,8 @@ jobs:
           key: pipeline-cache-${{ inputs.universe }}-${{ github.run_id }}
           restore-keys: pipeline-cache-${{ inputs.universe }}-
       - name: Build dataset
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: screener -v build --universe "${{ inputs.universe }}" --report docs/validation/refresh-report.md
       - uses: actions/upload-artifact@v7
         with:
