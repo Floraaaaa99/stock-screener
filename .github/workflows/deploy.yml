@@ -1,0 +1,115 @@
+name: Deploy to GitHub Pages
+
+# Stage 1: deploys the committed validation dataset on every push to main.
+# A manual run can optionally refresh the dataset from NASDAQ Trader, Yahoo
+# Finance and SEC EDGAR first. Refreshed data is deployed and uploaded as a
+# workflow artifact; nothing is committed or force-pushed.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      refresh_data:
+        description: Refresh the dataset from the live sources before deploying
+        type: boolean
+        default: false
+      universe:
+        description: Dataset to build
+        type: choice
+        options:
+          - sample:biotech20
+        default: sample:biotech20
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh dataset
+    if: github.event_name == 'workflow_dispatch' && inputs.refresh_data
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Require SEC_USER_AGENT
+        run: |
+          if [ -z "$SEC_USER_AGENT" ]; then
+            echo "::error::Set the SEC_USER_AGENT repository variable (Settings > Secrets and variables > Actions > Variables), e.g. 'stock-screener your-name you@example.com'."
+            exit 1
+          fi
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/pyproject.toml
+      - run: pip install -e "pipeline"
+      # Speeds up reruns only; the pipeline re-downloads anything missing or stale.
+      - uses: actions/cache@v6
+        with:
+          path: pipeline/.cache
+          key: pipeline-cache-${{ inputs.universe }}-${{ github.run_id }}
+          restore-keys: pipeline-cache-${{ inputs.universe }}-
+      - name: Build dataset
+        run: screener -v build --universe "${{ inputs.universe }}" --report docs/validation/refresh-report.md
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dataset
+          path: |
+            web/public/data
+            docs/validation/refresh-report.md
+          retention-days: 90
+
+  build:
+    name: Build site
+    needs: refresh
+    if: ${{ !cancelled() && (needs.refresh.result == 'success' || needs.refresh.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use refreshed dataset
+        if: needs.refresh.result == 'success'
+        run: rm -rf web/public/data
+      - uses: actions/download-artifact@v8
+        if: needs.refresh.result == 'success'
+        with:
+          name: dataset
+          path: .
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      - working-directory: web
+        run: npm test
+      - uses: actions/configure-pages@v6
+        id: pages
+      - working-directory: web
+        env:
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: web/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment
