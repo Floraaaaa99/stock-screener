@@ -237,6 +237,39 @@ class StatementEvidence:
         return [r for r in self.rows if r[0] == f"us-gaap:{concept}"]
 
 
+def statement_to_compact(st: Statement, url: str) -> dict:
+    """Keep revenue-like rows only so the statement cache stays small."""
+    rows = []
+    for r in st.rows:
+        if re.search(r"revenue|sales", r.concept.split(":", 1)[-1], re.I) or re.search(r"revenue|sales", r.label, re.I):
+            rows.append({"concept": r.concept, "label": r.label, "values": r.values})
+    return {
+        "url": url,
+        "title": st.title,
+        "scale": st.scale,
+        "columns": [{"months": c.months, "end": c.end.isoformat() if c.end else None} for c in st.columns],
+        "rows": rows,
+    }
+
+
+def statement_from_compact(data: dict) -> tuple[Statement, str]:
+    columns = [
+        StatementColumn(c.get("months"), date.fromisoformat(c["end"]) if c.get("end") else None)
+        for c in data.get("columns") or []
+    ]
+    rows = [
+        StatementRow(concept=r["concept"], label=r["label"], values=list(r.get("values") or []))
+        for r in data.get("rows") or []
+    ]
+    st = Statement(
+        title=data.get("title") or "",
+        scale=float(data.get("scale") or 1),
+        columns=columns,
+        rows=rows,
+    )
+    return st, data.get("url") or ""
+
+
 def evidence_from_statement(
     st: Statement, accn: str, form: str, url: str, months: int, end: date
 ) -> StatementEvidence:

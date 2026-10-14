@@ -8,17 +8,26 @@ from .. import config
 from ..cache import is_fresh, read_json, write_text_atomic
 from ..http import RateLimitedClient
 from ..universe.symbols import sec_symbol_variants
+from .facts import RevenueFacts, extract_revenue_facts
 from .statement import Statement, has_revenue_line, income_statement_candidates, parse_statement_html
+from .store import FactsStore, StatementStore
 
 log = logging.getLogger(__name__)
 
 
 class SecClient:
-    def __init__(self, cache_dir: Path | None = None, offline: bool = False):
+    def __init__(
+        self,
+        cache_dir: Path | None = None,
+        offline: bool = False,
+        facts_store: FactsStore | None = None,
+        statement_store: StatementStore | None = None,
+    ):
         self.cache_dir = (cache_dir or config.CACHE_DIR) / "sec"
         self.offline = offline
         self._http: RateLimitedClient | None = None
-        self._statements: dict[str, tuple[Statement, str] | None] = {}
+        self.facts_store = facts_store or FactsStore()
+        self.statement_store = statement_store or StatementStore()
 
     @property
     def http(self) -> RateLimitedClient:
@@ -71,13 +80,32 @@ class SecClient:
         )
         return json.loads(text) if text else None
 
+    def revenue_facts(self, cik: str) -> RevenueFacts | None:
+        """Prefer compact state; fall back to the per-CIK API only when the bulk extract missed this CIK."""
+        cached = self.facts_store.get(cik)
+        if cached is not None:
+            return cached
+        try:
+            raw = self.companyfacts(cik)
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+        if raw is None:
+            return None
+        rf = extract_revenue_facts(raw)
+        self.facts_store.put(rf)
+        return rf
+
     def income_statement(self, cik: str, accn: str) -> tuple[Statement, str] | None:
         """The income statement as rendered by EDGAR for one filing, and its URL (cached forever)."""
+        cached = self.statement_store.get(accn)
+        if cached is False:
+            return None
+        if cached is not None:
+            return cached
         base = config.SEC_ARCHIVES_URL.format(cik=int(cik), accn_nodash=accn.replace("-", ""))
         fdir = self.cache_dir / "filings" / accn
-        key = accn
-        if key in self._statements:
-            return self._statements[key]
         result: tuple[Statement, str] | None = None
         try:
             summary = self._cached_text(base + "FilingSummary.xml", fdir / "FilingSummary.xml", None)
@@ -94,7 +122,7 @@ class SecClient:
         except Exception as exc:  # noqa: BLE001 - statements are best-effort; absence is reported, not fatal
             log.warning("income statement unavailable for %s %s: %s", cik, accn, exc)
             result = None
-        self._statements[key] = result
+        self.statement_store.put(accn, result)
         return result
 
 

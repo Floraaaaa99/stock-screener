@@ -67,6 +67,98 @@ def _fetch_info(ticker: str, retries: int = 4) -> dict:
     raise last
 
 
+def implied_market_cap(price: float | None, shares: float | None) -> float | None:
+    if price is None or shares is None:
+        return None
+    if not (price > 0 and shares > 0):
+        return None
+    return price * shares
+
+
+def batch_row_error(info_market_cap: float | None, implied: float | None) -> float | None:
+    """Relative error of implied cap vs Yahoo's .info marketCap; None if either side is missing."""
+    if info_market_cap is None or implied is None or info_market_cap <= 0:
+        return None
+    return abs(implied - info_market_cap) / info_market_cap
+
+
+def summarize_batch_comparison(rows: list[dict], max_rel_error: float | None = None) -> dict:
+    """Decide whether batched prices may be adopted. Default is no."""
+    limit = config.YAHOO_BATCH_MAX_REL_ERROR if max_rel_error is None else max_rel_error
+    errors = [r["relError"] for r in rows if r.get("relError") is not None]
+    comparable = len(errors)
+    within = sum(1 for e in errors if e <= limit)
+    adopt = comparable >= 10 and within / comparable >= 0.95
+    return {
+        "compared": comparable,
+        "withinTolerance": within,
+        "tolerance": limit,
+        "maxRelError": max(errors) if errors else None,
+        "medianRelError": sorted(errors)[len(errors) // 2] if errors else None,
+        "adopt": adopt,
+        "reason": (
+            "Batched prices match Yahoo marketCap closely enough to adopt."
+            if adopt
+            else "Keep per-ticker .info; batched prices are not accurate enough or the sample is too small."
+        ),
+    }
+
+
+def refresh_market_batch(tickers: list[str], cache: YahooCache, *, batch_size: int | None = None) -> dict[str, str]:
+    """Experimental: fill price from yf.download in batches. Does not overwrite sector/industry.
+
+    Market cap is left unchanged unless sharesOutstanding is already in the cache from a prior .info
+    fetch, in which case it is recomputed as price × shares. This path is not used by the default
+    build; call it only after summarize_batch_comparison(...).adopt is true.
+    """
+    import yfinance as yf
+
+    errors: dict[str, str] = {}
+    size = batch_size or config.YAHOO_BATCH_SIZE
+    stamp = _now().isoformat()
+    for i in range(0, len(tickers), size):
+        chunk = tickers[i : i + size]
+        try:
+            data = yf.download(
+                chunk,
+                period="1d",
+                group_by="ticker",
+                auto_adjust=False,
+                threads=True,
+                progress=False,
+            )
+        except Exception as exc:  # noqa: BLE001
+            for t in chunk:
+                errors[t] = str(exc)[:200]
+            continue
+        for t in chunk:
+            price = _batch_last_close(data, t, len(chunk) == 1)
+            if price is None:
+                errors[t] = "no close in batch download"
+                continue
+            entry = cache.get(t)
+            entry["price"] = float(price)
+            entry["market_as_of"] = stamp
+            shares = entry.get("sharesOutstanding")
+            implied = implied_market_cap(float(price), shares)
+            if implied is not None:
+                entry["marketCap"] = implied
+    cache.save()
+    return errors
+
+
+def _batch_last_close(data, ticker: str, single: bool) -> float | None:
+    try:
+        if single:
+            closes = data["Close"]
+        else:
+            closes = data[ticker]["Close"]
+        val = closes.dropna().iloc[-1]
+        return float(val)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def refresh(tickers: list[str], cache: YahooCache, *, offline: bool = False,
             max_consecutive_errors: int = 20, checkpoint_every: int = 50) -> dict[str, str]:
     """Refresh stale entries. Returns {ticker: error} for tickers that failed this run."""
@@ -102,7 +194,12 @@ def refresh(tickers: list[str], cache: YahooCache, *, offline: bool = False,
             "profile_as_of": stamp,
         })
         price = info.get("regularMarketPrice") or info.get("currentPrice")
-        entry.update({"marketCap": info.get("marketCap"), "price": price, "market_as_of": stamp})
+        entry.update({
+            "marketCap": info.get("marketCap"),
+            "price": price,
+            "sharesOutstanding": info.get("sharesOutstanding"),
+            "market_as_of": stamp,
+        })
         entry.pop("last_error", None)
         entry.pop("last_error_at", None)
         done += 1

@@ -4,16 +4,19 @@ from __future__ import annotations
 
 import logging
 import shutil
+import time
 from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 
 from . import config, yahoo
-from .cache import write_json_atomic
+from .cache import read_json, write_json_atomic
+from .gate import evaluate_gate
 from .output import SCHEMA_VERSION, company_json, screener_row
 from .revenue import analyze_company
+from .sec.bulk import download_companyfacts_zip, extract_compact_facts, zip_info
 from .sec.client import SecClient, load_overrides
-from .sec.facts import extract_revenue_facts
+from .sec.store import FactsStore, StatementStore
 from .universe.fetch import load_universe
 from .universe.nasdaq_trader import Listing
 
@@ -22,6 +25,10 @@ log = logging.getLogger(__name__)
 
 class DatasetError(RuntimeError):
     pass
+
+
+class IncompleteRun(DatasetError):
+    """The run hit its time budget. State was saved; the live dataset was not replaced."""
 
 
 def read_sample(name: str) -> tuple[list[str], dict]:
@@ -44,10 +51,24 @@ def _now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat()
 
 
-def build(universe: str, *, offline: bool = False, skip_yahoo: bool = False, verify_quarters: bool = True,
-          output_dir: Path | None = None) -> dict:
+def build(
+    universe: str,
+    *,
+    offline: bool = False,
+    skip_yahoo: bool = False,
+    verify_quarters: bool = True,
+    output_dir: Path | None = None,
+    state_dir: Path | None = None,
+    limit: int | None = None,
+    time_budget_s: float | None = None,
+    resume: bool = True,
+    use_bulk: bool | None = None,
+) -> dict:
     output_dir = output_dir or config.OUTPUT_DIR
+    state_dir = state_dir or config.STATE_DIR
+    state_dir.mkdir(parents=True, exist_ok=True)
     started = _now_iso()
+    deadline = (time.monotonic() + time_budget_s) if time_budget_s is not None else None
 
     listings_all, exclusions, file_times = load_universe(offline=offline)
     by_symbol = {x.symbol: x for x in listings_all}
@@ -69,16 +90,54 @@ def build(universe: str, *, offline: bool = False, skip_yahoo: bool = False, ver
             "expectedIndustry": sample_meta.get("industry"),
         }
     elif universe == "full":
-        raise DatasetError(
-            "The full-universe build is Stage 2 and is enabled after the sample is validated; "
-            "use --universe sample:biotech20."
-        )
+        listings = list(listings_all)
+        dataset = {
+            "mode": "full",
+            "id": "us-listed",
+            "name": "U.S. listed common stocks and ADRs",
+            "description": "Every eligible NASDAQ, NYSE and NYSE American listing from NASDAQ Trader.",
+        }
     else:
         raise DatasetError(f"Unknown universe {universe!r}")
 
-    sec = SecClient(offline=offline)
+    if limit is not None:
+        listings = listings[:limit]
+        dataset = {
+            **dataset,
+            "mode": "partial",
+            "id": f"{dataset.get('id')}-limit{limit}",
+            "name": f"{dataset.get('name')} (first {limit} listings)",
+            "description": f"Partial run of {limit} listings; cannot be published as the full universe.",
+        }
+
+    facts_store = FactsStore(state_dir / "facts")
+    statement_store = StatementStore(state_dir / "statements")
+    sec = SecClient(offline=offline, facts_store=facts_store, statement_store=statement_store)
     ticker_map = sec.ticker_map()
     overrides = load_overrides()
+
+    cik_by_ticker: dict[str, str | None] = {}
+    rec_by_ticker: dict[str, dict | None] = {}
+    needed_ciks: list[str] = []
+    for listing in listings:
+        rec = SecClient.lookup_cik(ticker_map, listing.symbol)
+        rec_by_ticker[listing.symbol] = rec
+        cik = str(rec["cik"]).zfill(10) if rec else None
+        cik_by_ticker[listing.symbol] = cik
+        if cik:
+            needed_ciks.append(cik)
+
+    bulk_meta = None
+    should_bulk = use_bulk if use_bulk is not None else universe == "full"
+    if should_bulk and needed_ciks:
+        zip_path = config.CACHE_DIR / "sec" / "bulk" / "companyfacts.zip"
+        download_companyfacts_zip(sec.http, zip_path, offline=offline)
+        extract_compact_facts(zip_path, needed_ciks, facts_store.directory)
+        bulk_meta = zip_info(zip_path)
+
+    progress_path = state_dir / "progress.json"
+    progress = read_json(progress_path, default={}) or {}
+    processed: dict[str, dict] = dict(progress.get("processed") or {}) if resume else {}
 
     ycache = yahoo.YahooCache()
     yahoo_errors: dict[str, str] = {}
@@ -87,23 +146,33 @@ def build(universe: str, *, offline: bool = False, skip_yahoo: bool = False, ver
 
     companies: list[dict] = []
     issues_all: list[dict] = []
+    pending: list[str] = []
+    timed_out = False
     for listing in listings:
-        rec = SecClient.lookup_cik(ticker_map, listing.symbol)
-        cik = str(rec["cik"]).zfill(10) if rec else None
+        if deadline is not None and time.monotonic() >= deadline:
+            timed_out = True
+            pending = [x.symbol for x in listings if x.symbol not in {c["ticker"] for c in companies}]
+            pending = [s for s in pending if s != listing.symbol]
+            pending.insert(0, listing.symbol)
+            log.warning("Time budget reached after %d companies; %d pending", len(companies), len(pending))
+            break
+        cik = cik_by_ticker[listing.symbol]
+        rec = rec_by_ticker[listing.symbol]
+        facts_hash = facts_store.hash_of(cik) if cik else None
+        prev = processed.get(listing.symbol)
         rev = None
         sec_name = rec["name"] if rec else None
         if cik:
-            facts = sec.companyfacts(cik)
-            if facts is not None:
-                rf = extract_revenue_facts(facts)
-                override = overrides.get(cik, {}).get("concept")
+            rf = sec.revenue_facts(cik)
+            if rf is not None:
+                facts_hash = facts_store.hash_of(cik)
 
                 def fetch(accn: str, _cik: str = cik):
                     return sec.income_statement(_cik, accn)
 
-                rev = analyze_company(rf, fetch, override=override, verify_quarters=verify_quarters)
+                rev = analyze_company(rf, fetch, override=overrides.get(cik, {}).get("concept"),
+                                     verify_quarters=verify_quarters)
                 log.info("%s: %s %s", listing.symbol, rev.status, rev.ttm)
-
         y = dict(ycache.get(listing.symbol))
         issues = classification_issues(listing, y, yahoo_errors.get(listing.symbol), dataset)
         issues_all.extend(issues)
@@ -111,10 +180,56 @@ def build(universe: str, *, offline: bool = False, skip_yahoo: bool = False, ver
         if rev is None:
             c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
         companies.append(c)
+        processed[listing.symbol] = {
+            "cik": cik,
+            "factsHash": facts_hash,
+            "status": (rev.status if rev else c["ttm"]["reason"]),
+            "doneAt": _now_iso(),
+            "reused": bool(prev and prev.get("factsHash") == facts_hash),
+        }
+
+    status = "complete" if not timed_out else "incomplete"
+    run = {
+        "status": status,
+        "startedAt": started,
+        "finishedAt": _now_iso(),
+        "listingsTarget": len(listings),
+        "listingsDone": len(companies),
+        "pending": pending,
+        "timeBudgetS": time_budget_s,
+        "bulk": bulk_meta,
+        "yahooIncluded": not skip_yahoo,
+    }
+    write_json_atomic(progress_path, {"processed": processed, "run": run, "dataset": dataset})
+
+    if timed_out:
+        staging = state_dir / "dataset-incomplete"
+        rows = sorted((screener_row(c) for c in companies),
+                      key=lambda r: (r["marketCap"] is None, -(r["marketCap"] or 0)))
+        meta = make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run)
+        write_dataset(staging, meta, rows, companies, issues_all)
+        raise IncompleteRun(
+            f"Time budget reached: processed {len(companies)} of {len(listings)} listings. "
+            "State was saved; the live dataset was not replaced."
+        )
 
     rows = sorted((screener_row(c) for c in companies),
                   key=lambda r: (r["marketCap"] is None, -(r["marketCap"] or 0)))
-    meta = make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started)
+    baseline = read_json(output_dir / "meta.json") if output_dir.exists() else None
+    meta = make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run, baseline)
+    # Never replace the live Pages payload with a full or partial universe.
+    if dataset["mode"] != "sample" and output_dir.resolve() == config.OUTPUT_DIR.resolve():
+        staging = state_dir / f"dataset-{dataset['mode']}"
+        write_dataset(staging, meta, rows, companies, issues_all)
+        meta["run"]["publishedTo"] = str(staging)
+        meta["run"]["heldBack"] = "yahoo_terms_and_keep_stage1_live"
+        write_json_atomic(staging / "meta.json", meta)
+        log.warning(
+            "%s dataset written to %s; the live Stage 1 site was left unchanged.",
+            dataset["mode"],
+            staging,
+        )
+        return meta
 
     write_dataset(output_dir, meta, rows, companies, issues_all)
     return meta
@@ -140,7 +255,8 @@ def classification_issues(listing: Listing, y: dict, error: str | None, dataset:
     return out
 
 
-def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started) -> dict:
+def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, started, run=None,
+              baseline=None) -> dict:
     def count(pred) -> int:
         return sum(1 for c in companies if pred(c))
 
@@ -162,12 +278,12 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
     market_times = sorted(c["market"]["marketAsOf"] for c in companies if c["market"]["marketAsOf"])
     profile_times = sorted(c["market"]["profileAsOf"] for c in companies if c["market"]["profileAsOf"])
     filed = sorted(q["filed"] for c in companies for q in rev(c).get("quarters", []) if q.get("filed"))
-
-    return {
+    meta = {
         "schemaVersion": SCHEMA_VERSION,
         "generatedAt": _now_iso(),
         "buildStartedAt": started,
         "dataset": dataset,
+        "run": run or {"status": "complete", "startedAt": started, "finishedAt": _now_iso()},
         "universe": {
             "source": "NASDAQ Trader symbol directory (nasdaqlisted.txt, otherlisted.txt)",
             "exchanges": ["NASDAQ", "NYSE", "NYSE American"],
@@ -183,8 +299,11 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
             "yahoo": {"url": "https://finance.yahoo.com", "via": "yfinance",
                       "marketOldest": market_times[0] if market_times else None,
                       "marketNewest": market_times[-1] if market_times else None,
-                      "profileOldest": profile_times[0] if profile_times else None},
+                      "profileOldest": profile_times[0] if profile_times else None,
+                      "publicRedistribution": False,
+                      "terms": "https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html"},
             "sec": {"url": "https://www.sec.gov/edgar", "api": "XBRL Company Facts",
+                    "bulk": "https://www.sec.gov/Archives/edgar/daily-index/xbrl/companyfacts.zip",
                     "latestFilingDate": filed[-1] if filed else None},
         },
         "coverage": {
@@ -211,6 +330,8 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, ycache, 
         },
         "sectors": {s: sorted(i) for s, i in sorted(sectors.items())},
     }
+    meta["gate"] = evaluate_gate(meta, baseline, publish=False).to_dict()
+    return meta
 
 
 def write_dataset(output_dir: Path, meta: dict, rows: list[dict], companies: list[dict], issues: list[dict]) -> None:

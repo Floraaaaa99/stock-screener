@@ -5,10 +5,14 @@ import json
 import logging
 import sys
 from collections import Counter
+from pathlib import Path
 
 from . import config
-from .build import DatasetError, build
+from .build import DatasetError, IncompleteRun, build
+from .cache import read_json
+from .gate import evaluate_gate
 from .report import write_validation_report
+from .state import pack_state, read_sidecar_sha256, unpack_state
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,8 +26,32 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--skip-yahoo", action="store_true", help="Do not refresh Yahoo data (use cache)")
     b.add_argument("--no-verify", action="store_true", help="Skip per-quarter checks against filing statements")
     b.add_argument("--report", help="Write a validation report (Markdown) to this path")
+    b.add_argument("--limit", type=int, help="Process only the first N listings (partial; cannot be published as full)")
+    b.add_argument("--time-budget-hours", type=float, help="Stop and save state after this many hours")
+    b.add_argument("--no-resume", action="store_true", help="Ignore previous progress.json")
+    b.add_argument("--no-bulk", action="store_true", help="Do not use companyfacts.zip (per-CIK API only)")
+    b.add_argument("--output-dir", help="Override dataset output directory")
+    b.add_argument("--state-dir", help="Override compact state directory")
 
     sub.add_parser("universe", help="Print NASDAQ Trader universe statistics")
+    sub.add_parser("estimate", help="Print the SEC request and runtime estimate")
+
+    p = sub.add_parser("pack-state", help="Pack compact SEC state into a checksummed archive")
+    p.add_argument("--state-dir", default=str(config.STATE_DIR))
+    p.add_argument("--dest", required=True, help="Path of the .tar.gz to write")
+
+    u = sub.add_parser("unpack-state", help="Verify and unpack a state archive")
+    u.add_argument("--archive", required=True)
+    u.add_argument("--dest", required=True)
+    u.add_argument("--sha256-file", help="Sidecar checksum file")
+
+    g = sub.add_parser("gate", help="Check whether a dataset may be published")
+    g.add_argument("--meta", required=True, help="Path to meta.json")
+    g.add_argument("--baseline", help="Previous complete meta.json")
+    g.add_argument("--publish", action="store_true", help="Apply the public-Pages rules (Yahoo terms block full)")
+
+    yb = sub.add_parser("yahoo-batch-test", help="Compare batched Yahoo prices with .info market cap (does not adopt)")
+    yb.add_argument("--tickers", nargs="+", help="Tickers to compare (default: sample:biotech20)")
 
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
@@ -31,11 +59,32 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.cmd == "build":
-            meta = build(args.universe, offline=args.offline, skip_yahoo=args.skip_yahoo,
-                         verify_quarters=not args.no_verify)
-            print(json.dumps(meta["coverage"], indent=2))
+            budget = args.time_budget_hours * 3600 if args.time_budget_hours is not None else None
+            try:
+                meta = build(
+                    args.universe,
+                    offline=args.offline,
+                    skip_yahoo=args.skip_yahoo,
+                    verify_quarters=not args.no_verify,
+                    output_dir=Path(args.output_dir) if args.output_dir else None,
+                    state_dir=Path(args.state_dir) if args.state_dir else None,
+                    limit=args.limit,
+                    time_budget_s=budget,
+                    resume=not args.no_resume,
+                    use_bulk=False if args.no_bulk else None,
+                )
+            except IncompleteRun as exc:
+                print(f"incomplete: {exc}", file=sys.stderr)
+                return 3
+            print(json.dumps(
+                {"coverage": meta["coverage"], "run": meta.get("run"), "gate": meta.get("gate")},
+                indent=2,
+            ))
             if args.report:
-                write_validation_report(config.OUTPUT_DIR, args.report)
+                out = Path(args.output_dir) if args.output_dir else config.OUTPUT_DIR
+                if (meta.get("run") or {}).get("publishedTo"):
+                    out = Path(meta["run"]["publishedTo"])
+                write_validation_report(out, args.report)
                 print(f"validation report: {args.report}")
         elif args.cmd == "universe":
             from .universe.fetch import load_universe
@@ -48,9 +97,106 @@ def main(argv: list[str] | None = None) -> int:
                 "excluded": Counter(e.reason for e in exclusions),
                 "fileCreated": times,
             }, indent=2, default=dict))
+        elif args.cmd == "estimate":
+            print(json.dumps(request_estimate(), indent=2))
+        elif args.cmd == "pack-state":
+            archive, sidecar, manifest = pack_state(Path(args.state_dir), Path(args.dest))
+            print(json.dumps({"archive": str(archive), "sha256": sidecar.read_text().split()[0],
+                              "fileCount": manifest["fileCount"]}, indent=2))
+        elif args.cmd == "unpack-state":
+            expected = read_sidecar_sha256(Path(args.sha256_file)) if args.sha256_file else None
+            manifest = unpack_state(Path(args.archive), Path(args.dest), expected_sha256=expected)
+            print(json.dumps({"fileCount": manifest["fileCount"], "version": manifest["version"]}, indent=2))
+        elif args.cmd == "gate":
+            meta = read_json(Path(args.meta))
+            baseline = read_json(Path(args.baseline)) if args.baseline else None
+            result = evaluate_gate(meta, baseline, publish=args.publish)
+            print(json.dumps(result.to_dict(), indent=2))
+            return 0 if result.ok else 2
+        elif args.cmd == "yahoo-batch-test":
+            return _yahoo_batch_test(args.tickers)
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    return 0
+
+
+def request_estimate() -> dict:
+    """Documented estimate: Stage 1 measured 12 filings × 2 files for each domestic company."""
+    eligible = 5593
+    domestic_share = 20 / 22  # Stage 1: 2 of 22 were foreign filers
+    domestic = round(eligible * domestic_share)
+    filings_per = 12
+    files_per_filing = 2  # FilingSummary.xml + one R*.htm
+    statement_requests = domestic * filings_per * files_per_filing
+    ticker_map = 1
+    companyfacts_api = eligible  # avoided by the bulk zip
+    per_cik_total = ticker_map + companyfacts_api + statement_requests
+    rps = config.SEC_MAX_RPS
+    return {
+        "eligibleListingsApprox": eligible,
+        "stage1": {
+            "listings": 22,
+            "foreignFilers": 2,
+            "filingsWithStatements": 240,
+            "filesPerFiling": files_per_filing,
+            "companyfactsApiCalls": 22,
+        },
+        "fullUniverseWithoutBulk": {
+            "companyfactsApiCalls": companyfacts_api,
+            "statementRequests": statement_requests,
+            "totalSecRequests": per_cik_total,
+            "hoursAtMaxRps": round(per_cik_total / rps / 3600, 2),
+        },
+        "fullUniverseWithBulk": {
+            "companyfactsZip": {"requests": 1, "bytesApprox": 1_410_000_000},
+            "tickerMap": ticker_map,
+            "statementRequestsFirstRun": statement_requests,
+            "totalSecRequestsFirstRun": ticker_map + 1 + statement_requests,
+            "hoursAtMaxRpsFirstRun": round((ticker_map + 1 + statement_requests) / rps / 3600, 2),
+            "hoursAtMaxRpsWeekly": "0.2–1.5 depending on how many new accessions appear",
+        },
+        "notes": [
+            "The ~125,000 figure is companyfacts API (≈5,600) plus ~12 filings × 2 files × ~4,900 domestic issuers.",
+            "The bulk zip removes the 5,600 companyfacts calls; statement fetches remain until cached.",
+            "A 5-hour budget leaves headroom under GitHub's 6-hour job limit; incomplete runs exit 3.",
+        ],
+    }
+
+
+def _yahoo_batch_test(tickers: list[str] | None) -> int:
+    import yfinance as yf
+
+    from . import yahoo
+    from .build import read_sample
+
+    symbols = tickers or read_sample("biotech20")[0]
+    cache = yahoo.YahooCache()
+    data = yf.download(
+        symbols, period="1d", group_by="ticker", auto_adjust=False, threads=True, progress=False,
+    )
+    rows = []
+    for t in symbols:
+        entry = cache.get(t)
+        batch_price = yahoo._batch_last_close(data, t, len(symbols) == 1)
+        implied = yahoo.implied_market_cap(batch_price, entry.get("sharesOutstanding"))
+        rel = yahoo.batch_row_error(entry.get("marketCap"), implied)
+        info_price = entry.get("price")
+        price_rel = None
+        if batch_price and info_price:
+            price_rel = abs(batch_price - info_price) / info_price if info_price else None
+        rows.append({
+            "ticker": t,
+            "infoMarketCap": entry.get("marketCap"),
+            "infoPrice": info_price,
+            "batchPrice": batch_price,
+            "sharesOutstanding": entry.get("sharesOutstanding"),
+            "impliedMarketCap": implied,
+            "relError": rel,
+            "priceRelError": price_rel,
+        })
+    summary = yahoo.summarize_batch_comparison(rows)
+    print(json.dumps({"summary": summary, "rows": rows}, indent=2, default=str))
     return 0
 
 

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import logging
+import os
 import random
 import threading
 import time
+from pathlib import Path
 
 import requests
 
@@ -43,6 +45,35 @@ class RateLimitedClient:
                 if resp.status_code not in RETRY_STATUS:
                     return resp
                 last_exc = requests.HTTPError(f"HTTP {resp.status_code} for {url}", response=resp)
+            if attempt < self.retries:
+                backoff = (2**attempt) * 2 + random.uniform(0, 1)
+                log.warning("GET %s failed (%s); retrying in %.1fs", url, last_exc, backoff)
+                time.sleep(backoff)
+        assert last_exc is not None
+        raise last_exc
+
+    def download(self, url: str, dest: Path) -> Path:
+        """Stream a large file to dest (via dest.part). Does not log headers that could contain secrets."""
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        part = dest.with_name(dest.name + ".part")
+        last_exc: Exception | None = None
+        for attempt in range(self.retries + 1):
+            self._wait_turn()
+            try:
+                with self.session.get(url, timeout=(30, 120), stream=True) as resp:
+                    if resp.status_code in RETRY_STATUS:
+                        last_exc = requests.HTTPError(f"HTTP {resp.status_code} for {url}", response=resp)
+                    else:
+                        resp.raise_for_status()
+                        with part.open("wb") as fh:
+                            for chunk in resp.iter_content(chunk_size=1024 * 1024):
+                                if chunk:
+                                    fh.write(chunk)
+                        os.replace(part, dest)
+                        return dest
+            except requests.RequestException as exc:
+                last_exc = exc
+                part.unlink(missing_ok=True)
             if attempt < self.retries:
                 backoff = (2**attempt) * 2 + random.uniform(0, 1)
                 log.warning("GET %s failed (%s); retrying in %.1fs", url, last_exc, backoff)

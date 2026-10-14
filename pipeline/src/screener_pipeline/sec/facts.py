@@ -142,5 +142,68 @@ def extract_revenue_facts(companyfacts: dict) -> RevenueFacts:
     )
 
 
+def compact_revenue_facts(rf: RevenueFacts) -> dict:
+    """JSON-ready extracted facts only — not the full Company Facts payload."""
+    return {
+        "cik": rf.cik,
+        "entityName": rf.entity_name,
+        "currency": rf.currency,
+        "formsSeen": sorted(rf.forms_seen),
+        "byConcept": {
+            concept: [
+                {
+                    "start": f.start.isoformat(),
+                    "end": f.end.isoformat(),
+                    "val": f.val,
+                    "accn": f.accn,
+                    "fy": f.fy,
+                    "fp": f.fp,
+                    "form": f.form,
+                    "filed": f.filed.isoformat(),
+                }
+                for f in facts
+            ]
+            for concept, facts in rf.by_concept.items()
+        },
+        "filings": {
+            accn: {
+                "accn": info.accn,
+                "form": info.form,
+                "filed": info.filed.isoformat(),
+                "fy": info.fy,
+                "fp": info.fp,
+                "period_end": info.period_end.isoformat(),
+            }
+            for accn, info in rf.filings.items()
+        },
+    }
+
+
+def revenue_facts_from_compact(data: dict) -> RevenueFacts:
+    by_concept: dict[str, list[Fact]] = {}
+    for concept, rows in (data.get("byConcept") or {}).items():
+        facts = [parse_fact(r) for r in rows]
+        by_concept[concept] = [f for f in facts if f is not None]
+    filings = {
+        accn: FilingInfo(
+            accn=info["accn"],
+            form=info["form"],
+            filed=_d(info["filed"]),
+            fy=info.get("fy"),
+            fp=info.get("fp"),
+            period_end=_d(info["period_end"]),
+        )
+        for accn, info in (data.get("filings") or {}).items()
+    }
+    return RevenueFacts(
+        cik=str(data.get("cik", "")).zfill(10),
+        entity_name=data.get("entityName", ""),
+        currency=data.get("currency"),
+        by_concept=by_concept,
+        filings=filings,
+        forms_seen=set(data.get("formsSeen") or []),
+    )
+
+
 def filing_url(cik: str, accn: str) -> str:
     return f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accn.replace('-', '')}/{accn}-index.htm"
