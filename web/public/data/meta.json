@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-14T18:32:45+00:00",
+  "buildStartedAt": "2026-10-14T18:32:42+00:00",
+  "dataset": {
+    "mode": "sample",
+    "id": "biotech20",
+    "name": "Biotechnology validation sample",
+    "description": "20 Yahoo Finance \"Biotechnology\" companies that file 10-Q/10-K reports, plus 2 foreign-filer ADRs (ARGX, BNTX) to exercise N/A handling. Used to validate 12-quarter revenue and TTM calculations against SEC filings before the full-universe build.",
+    "expectedIndustry": "Biotechnology"
+  },
+  "universe": {
+    "source": "NASDAQ Trader symbol directory (nasdaqlisted.txt, otherlisted.txt)",
+    "exchanges": [
+      "NASDAQ",
+      "NYSE",
+      "NYSE American"
+    ],
+    "eligibleListings": 5593,
+    "byExchange": {
+      "NYSE": 1951,
+      "NASDAQ": 3399,
+      "NYSE American": 243
+    },
+    "bySecurityType": {
+      "common": 5287,
+      "adr": 306
+    },
+    "excludedByReason": {
+      "etf": 1375,
+      "unit": 301,
+      "warrant": 434,
+      "right": 127,
+      "preferred": 512,
+      "debt": 171,
+      "fund": 304,
+      "when_issued": 3,
+      "test_issue": 37,
+      "exchange_out_of_scope": 4425,
+      "structured_product": 5
+    },
+    "fileCreated": {
+      "nasdaqlisted": "1014202614:01",
+      "otherlisted": "1014202614:01"
+    }
+  },
+  "sources": {
+    "nasdaqTrader": {
+      "url": "https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs",
+      "fileCreated": {
+        "nasdaqlisted": "1014202614:01",
+        "otherlisted": "1014202614:01"
+      }
+    },
+    "yahoo": {
+      "url": "https://finance.yahoo.com",
+      "via": "yfinance",
+      "marketOldest": "2026-10-14T18:16:38+00:00",
+      "marketNewest": "2026-10-14T18:17:08+00:00",
+      "profileOldest": "2026-10-14T18:16:38+00:00"
+    },
+    "sec": {
+      "url": "https://www.sec.gov/edgar",
+      "api": "XBRL Company Facts",
+      "latestFilingDate": "2026-08-06"
+    }
+  },
+  "coverage": {
+    "listings": 22,
+    "companies": 22,
+    "yahooProfile": 22,
+    "marketCap": 22,
+    "price": 22,
+    "cikMatched": 22,
+    "foreignFilers": 2,
+    "ambiguousConcept": 0,
+    "eightQuarters": 20,
+    "currentTtm": 20,
+    "growth": 20,
+    "statementVerified": 20,
+    "quarterChecks": {
+      "match": 240
+    },
+    "naReasons": {
+      "foreign_filer": 2
+    },
+    "classificationIssues": 0
+  },
+  "sectors": {
+    "Healthcare": [
+      "Biotechnology"
+    ]
+  }
+}
