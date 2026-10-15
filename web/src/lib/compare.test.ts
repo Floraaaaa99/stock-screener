@@ -97,6 +97,28 @@ describe("comparisonRows", () => {
     expect(latest.niQoq).toBeNull();
     expect(latest.revenue).toBe(167);
   });
+
+  it("treats unverified net income as N/A rather than the raw amount", () => {
+    const latest = comparisonRows(
+      row({
+        earningsYoy: [
+          rate({
+            fiscalYear: 2026,
+            fiscalQuarter: 1,
+            end: "2026-03-31",
+            label: "FY2026 Q1",
+            currentValue: 303,
+            otherValue: 158,
+            currentCheck: "unavailable",
+            otherCheck: "unavailable",
+          }),
+          rate({ currentValue: 586, otherValue: 405, currentCheck: "mismatch", otherCheck: "match" }),
+        ],
+      }),
+    )[1]!;
+    expect(latest.earnings).toBeNull();
+    expect(latest.revenue).toBe(167);
+  });
 });
 
 describe("priorYearRows", () => {

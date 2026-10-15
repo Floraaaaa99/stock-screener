@@ -146,6 +146,24 @@ Classification rules are versioned (`rulesVersion`, currently 3). Decisions use 
   that could apply has been evaluated — it is not used while a threshold is unconfigured, and not used when QoQ data
   is incomplete (`unable_to_classify` covers that). An unavailable earlier QoQ does not block identifying a
   latest-quarter decline.
+- **Net income on Passed (descriptive).** Layer 2 reuses the existing validated standalone quarterly GAAP net-income
+  series (same quarter window as revenue; one concept per company, so consolidated net income is never mixed with
+  income attributable to common shareholders). Figures are not year-to-date totals and are not adjusted earnings.
+  Missing or unverified amounts are **N/A, never zero**, and an older quarter is never substituted. TTM Net Income is
+  the sum of those four verified amounts. Two independent badge dimensions run only as filters on Passed companies
+  and **do not change** revenue-based Passed / Watchlist / Data Review eligibility:
+  - **Profitability** (one primary badge, plus an extra break-even badge when any quarter is exactly 0): all four
+    profitable (all NI > 0); one loss quarter; two or three loss quarters; all four loss-making; contains break-even
+    quarter; insufficient NI data. Tooltips list profitable / loss / break-even counts, the loss quarters, and whether
+    the latest quarter is a loss.
+  - **Profit improvement** (each rule evaluated independently; multiple may apply): four consecutive YoY improvements
+    (each of the latest four NI amounts > the same fiscal quarter one year earlier; needs 8 verified comparable
+    quarters); latest-quarter turnaround (previous NI < 0 and latest NI > 0); latest-quarter turned to loss (previous
+    NI > 0 and latest NI < 0); four-quarter sequential improvement (strictly increasing oldest→newest). Improvement is
+    algebraic, so a narrower loss counts. Absolute YoY/QoQ NI changes are shown; an ordinary percentage is omitted when
+    the comparison base is zero or negative. Unavailable inputs for one rule do not block another. No applied badge is
+    not deterioration — expand shows Applied / Unmet / Unavailable with the triggering values.
+  - Within a dimension, selected badges match any; across the two dimensions both filters must match.
 - There is no top-N limit and no valuation screen.
 
 ## 6. Output
@@ -155,7 +173,7 @@ Classification rules are versioned (`rulesVersion`, currently 3). Decisions use 
 - `meta.json`: build timestamps, source file dates, universe and exclusion counts, coverage statistics and N/A reason counts.
 - `screener.json`: one compact row per listing, used by the table.
 - `layer2.json`: sequential-growth rows and bucket counts derived from Layer 1 company JSON.
-- `companies/<TICKER>.json`: per-company detail, loaded when a Layer 1 row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered. When available, **net income** is included as a parallel series (same quarter math as revenue) and is shown only in expanded detail. Layer 2 expand uses one comparison table (revenue and net income, YoY and QoQ) instead of repeating those amounts in separate rate tables. It does not change Layer 1 TTM columns or Layer 2 Passed / Watchlist. A newer official filing used only for net income does not move a company into Data Review.
+- `companies/<TICKER>.json`: per-company detail, loaded when a Layer 1 row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered. When available, **net income** is included as a parallel series (same quarter math as revenue). On Layer 2 Passed, the table shows the latest four quarterly NI amounts, TTM NI, and descriptive profitability / improvement badges; expand adds absolute YoY/QoQ NI changes, fiscal dates, filing links, and Applied / Unmet / Unavailable explanations. These badges and filters do not change Layer 1 TTM columns or Layer 2 Passed / Watchlist. A newer official filing used only for net income does not move a company into Data Review. Layer 2 expand uses one comparison table (revenue and net income, YoY and QoQ) instead of repeating those amounts in separate rate tables.
 - `classification_issues.json`: missing CIK or missing SEC SIC for listings that are still included.
 
 Files are written atomically: the whole dataset directory is built next to the old one and then swapped in. A failed

@@ -1,4 +1,5 @@
 import type { Layer2Badge, Layer2Bucket, Layer2Row } from "../types";
+import { analyzeNetIncome, type NiAnalysis } from "./niAnalysis";
 import { normalize } from "./screener";
 
 export const RULES_VERSION = 3;
@@ -44,6 +45,8 @@ export interface Layer2View {
   sicIndustry: string;
   query: string;
   categories: string[];
+  niProfitability: string[];
+  niImprovement: string[];
   stableSpreadPp: number | null;
   recentJumpPp: number | null;
   page: number;
@@ -55,6 +58,8 @@ export const DEFAULT_LAYER2_VIEW: Layer2View = {
   sicIndustry: "",
   query: "",
   categories: [],
+  niProfitability: [],
+  niImprovement: [],
   stableSpreadPp: null,
   recentJumpPp: null,
   page: 1,
@@ -163,12 +168,19 @@ export function classifyQoqBadges(rates: (number | null)[], t: Layer2Thresholds)
   return badges;
 }
 
-export function withLiveBadges(row: Layer2Row, t: Layer2Thresholds): Layer2Row {
+export type Layer2RowLive = Layer2Row & { ni: NiAnalysis };
+
+export function withLiveBadges(row: Layer2Row, t: Layer2Thresholds): Layer2RowLive {
   const badges = classifyQoqBadges(
     row.qoq.map((q) => q.rate),
     t,
   );
-  return { ...row, badges, appliedCategories: badges.filter((b) => b.applied).map((b) => b.id) };
+  return {
+    ...row,
+    badges,
+    appliedCategories: badges.filter((b) => b.applied).map((b) => b.id),
+    ni: analyzeNetIncome(row),
+  };
 }
 
 export function countsFor(rows: Layer2Row[]): Record<Layer2Bucket, number> {
@@ -177,17 +189,34 @@ export function countsFor(rows: Layer2Row[]): Record<Layer2Bucket, number> {
   return c;
 }
 
-export function filterLayer2(
-  rows: Layer2Row[],
+export function filterLayer2<T extends Layer2Row>(
+  rows: T[],
   tab: Layer2Bucket,
-  f: { sicMajorGroup: string; sicIndustry: string; query: string; categories: string[] },
-): Layer2Row[] {
+  f: {
+    sicMajorGroup: string;
+    sicIndustry: string;
+    query: string;
+    categories: string[];
+    niProfitability?: string[];
+    niImprovement?: string[];
+  },
+): T[] {
   const q = normalize(f.query);
+  const niProf = f.niProfitability ?? [];
+  const niImp = f.niImprovement ?? [];
   return rows.filter((r) => {
     if (r.bucket !== tab) return false;
     if (f.sicMajorGroup && r.sicMajorGroup !== f.sicMajorGroup) return false;
     if (f.sicIndustry && r.sicIndustry !== f.sicIndustry) return false;
     if (f.categories.length && !f.categories.some((id) => r.appliedCategories.includes(id))) return false;
+    if (tab === "passed" && niProf.length) {
+      const have = "ni" in r && r.ni ? r.ni.appliedProfitability : [];
+      if (!niProf.some((id) => have.includes(id))) return false;
+    }
+    if (tab === "passed" && niImp.length) {
+      const have = "ni" in r && r.ni ? r.ni.appliedImprovement : [];
+      if (!niImp.some((id) => have.includes(id))) return false;
+    }
     if (q) {
       const ticker = r.ticker.toLowerCase();
       if (!ticker.startsWith(q) && !normalize(r.name).includes(q) && !(r.sicIndustry && normalize(r.sicIndustry).includes(q)))
@@ -216,6 +245,8 @@ export function readLayer2View(search: string): { layer: 1 | 2; view: Layer2View
       sicIndustry: p.get("sic") ?? "",
       query: p.get("q") ?? "",
       categories: cats,
+      niProfitability: (p.get("niProf") ?? "").split(",").filter(Boolean),
+      niImprovement: (p.get("niImp") ?? "").split(",").filter(Boolean),
       stableSpreadPp: parseNum(p.get("spread")),
       recentJumpPp: parseNum(p.get("jump")),
       page: Math.max(1, Number(p.get("page")) || 1),
@@ -232,6 +263,8 @@ export function layer2ToSearch(layer: 1 | 2, v: Layer2View, layer1Search: string
   if (v.sicIndustry) p.set("sic", v.sicIndustry);
   if (v.query) p.set("q", v.query);
   if (v.categories.length) p.set("cat", v.categories.join(","));
+  if (v.niProfitability.length) p.set("niProf", v.niProfitability.join(","));
+  if (v.niImprovement.length) p.set("niImp", v.niImprovement.join(","));
   if (v.stableSpreadPp !== null) p.set("spread", String(v.stableSpreadPp));
   if (v.recentJumpPp !== null) p.set("jump", String(v.recentJumpPp));
   if (v.page > 1) p.set("page", String(v.page));

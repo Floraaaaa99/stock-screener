@@ -1,11 +1,14 @@
 import { comparisonRows, priorYearRows } from "../lib/compare";
 import { naReason } from "../lib/explain";
 import { formatDate, formatMillions, formatPercent } from "../lib/format";
-import type { Layer2Rate, Layer2Row } from "../types";
+import type { Layer2RowLive } from "../lib/layer2";
+import { analyzeNetIncome, formatNiChange, niRuleStatus, type NiAnalysis, type NiQuarter } from "../lib/niAnalysis";
+import type { Layer2Badge, Layer2Rate, Layer2Row } from "../types";
+import { CategoryBadges } from "./CategoryBadges";
 
 function Money({ value, currency }: { value: number | null; currency: string | null }) {
   if (value == null) return <span className="na">N/A</span>;
-  return <span className={value < 0 ? "neg" : ""}>{formatMillions(value, currency)}</span>;
+  return <span className={value < 0 ? "neg" : value === 0 ? "zero" : ""}>{formatMillions(value, currency)}</span>;
 }
 
 function RateCell({ rate, currency }: { rate: Layer2Rate | null; currency: string | null }) {
@@ -27,22 +30,85 @@ function RateCell({ rate, currency }: { rate: Layer2Rate | null; currency: strin
   );
 }
 
-function FilingCell({ rate }: { rate: Layer2Rate | null }) {
-  if (!rate?.currentUrl) return <span className="muted">—</span>;
-  const tip = [rate.currentCheck && `Validation: ${rate.currentCheck}`, rate.reason && naReason(rate.reason)]
+function NiChangeCell({
+  abs,
+  prior,
+  rate,
+  currency,
+}: {
+  abs: number | null;
+  prior: number | null;
+  rate: number | null;
+  currency: string | null;
+}) {
+  const f = formatNiChange(abs, prior, rate, currency);
+  return (
+    <span className={f.kind === "pos" ? "pos" : f.kind === "neg" ? "neg" : "na"} title={f.title || undefined}>
+      {f.text}
+    </span>
+  );
+}
+
+function FilingLink({ rate, kind }: { rate: Layer2Rate | null; kind: "Revenue" | "NI" }) {
+  if (!rate?.currentUrl) return null;
+  const tip = [
+    kind,
+    rate.currentCheck && `Validation: ${rate.currentCheck}`,
+    rate.reason && naReason(rate.reason),
+  ]
     .filter(Boolean)
     .join(" · ");
   return (
-    <a href={rate.currentUrl} target="_blank" rel="noreferrer" title={tip || undefined}>
-      {rate.currentForm ?? "filing"}
+    <a href={rate.currentUrl} target="_blank" rel="noreferrer" title={tip}>
+      {kind} {rate.currentForm ?? "filing"}
     </a>
   );
 }
 
-export function Layer2Detail({ row }: { row: Layer2Row }) {
+function Filings({ rev, ni }: { rev: Layer2Rate | null; ni: Layer2Rate | null }) {
+  const revLink = <FilingLink rate={rev} kind="Revenue" />;
+  const niLink = ni?.currentUrl && ni.currentUrl !== rev?.currentUrl ? <FilingLink rate={ni} kind="NI" /> : null;
+  if (!revLink && !niLink) return <span className="muted">—</span>;
+  return (
+    <span className="filing-cell">
+      {revLink}
+      {niLink}
+    </span>
+  );
+}
+
+function statusLabel(status: ReturnType<typeof niRuleStatus>): string {
+  if (status === "applied") return "Applied";
+  if (status === "unavailable") return "Unavailable";
+  return "Unmet";
+}
+
+function NiRuleList({ badges }: { badges: Layer2Badge[] }) {
+  return (
+    <ul className="ni-rules">
+      {badges.map((b) => {
+        const status = niRuleStatus(b);
+        return (
+          <li key={b.id} title={b.tooltip}>
+            <span className={`ni-rule-status ${status}`}>{statusLabel(status)}</span>
+            <span>{b.label}</span>
+            <span className="muted ni-rule-tip">{b.tooltip}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function quarterFor(ni: NiAnalysis, end: string | null, i: number): NiQuarter | undefined {
+  return (end && ni.quarters.find((q) => q.end === end)) || ni.quarters[i];
+}
+
+export function Layer2Detail({ row }: { row: Layer2Row | Layer2RowLive }) {
   const currency = row.revenueCurrency;
   const rows = comparisonRows(row);
   const prior = priorYearRows(row);
+  const ni = "ni" in row && row.ni && "quarters" in row.ni ? (row.ni as NiAnalysis) : analyzeNetIncome(row);
   const hasEarnings = Boolean(row.earningsYoy?.length || row.earningsQoq?.length);
 
   return (
@@ -52,11 +118,12 @@ export function Layer2Detail({ row }: { row: Layer2Row }) {
         Revenue concept <code>{row.revenueConcept ?? "N/A"}</code>
         {hasEarnings && (
           <>
-            ; net income <code>{row.earningsConcept ?? "N/A"}</code> is detail only and does not change Passed /
-            Watchlist
+            ; net income <code>{row.earningsConcept ?? "N/A"}</code> (NI rules v{ni.rulesVersion}) is descriptive on
+            Passed companies and does not change Passed / Watchlist
           </>
         )}
-        . Amounts in {currency ?? "reporting currency"}. Hover a rate for the prior amount used.
+        . Amounts in {currency ?? "reporting currency"}. Unverified or missing NI is N/A, never zero. Hover a rate for
+        the prior amount used.
       </p>
       {row.freshness?.status === "verified_lagging" && row.freshness.message && (
         <p className="freshness-banner" role="note">
@@ -72,6 +139,39 @@ export function Layer2Detail({ row }: { row: Layer2Row }) {
         <p className="na-reason">Data Review: {row.dataReviewReasons.map(naReason).join(" ")}</p>
       )}
 
+      {row.bucket === "passed" && (
+        <div className="ni-summary">
+          <p>
+            <strong>TTM Net Income</strong>{" "}
+            {ni.ttm == null ? (
+              <span className="na" title={ni.ttmReason ? naReason(ni.ttmReason) : undefined}>
+                N/A
+              </span>
+            ) : (
+              <span className={ni.ttm < 0 ? "neg" : ni.ttm > 0 ? "pos" : "zero"}>{formatMillions(ni.ttm, currency)}</span>
+            )}
+            <span className="muted">
+              {" "}
+              · sum of the same four quarters as revenue
+              {ni.profitableCount != null &&
+                ` · ${ni.profitableCount} profitable, ${ni.lossCount} loss, ${ni.breakEvenCount} break-even`}
+              {ni.latestIsLoss ? " · latest quarter is a loss" : ""}
+            </span>
+          </p>
+          <div className="ni-badge-block">
+            <span className="k">Profitability</span>
+            <CategoryBadges badges={ni.profitability} />
+          </div>
+          <div className="ni-badge-block">
+            <span className="k">Profit improvement</span>
+            <p className="muted ni-no-badge-note">
+              No applied badge is not deterioration. Each rule is Applied, Unmet, or Unavailable from its own inputs.
+            </p>
+            <NiRuleList badges={ni.improvement} />
+          </div>
+        </div>
+      )}
+
       {rows.length > 0 ? (
         <div className="table-scroll">
           <table className="quarters compare-table">
@@ -83,40 +183,50 @@ export function Layer2Detail({ row }: { row: Layer2Row }) {
                 <th className="num">Revenue</th>
                 <th className="num">Net income</th>
                 <th className="num">Rev YoY</th>
-                <th className="num">NI YoY</th>
+                <th className="num">NI YoY Δ</th>
                 <th className="num">Rev QoQ</th>
-                <th className="num">NI QoQ</th>
-                <th>Filing</th>
+                <th className="num">NI QoQ Δ</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
-                <tr key={r.key}>
-                  <td>{r.label}</td>
-                  <td>{formatDate(r.end)}</td>
-                  <td className="num">
-                    <Money value={r.revenue} currency={currency} />
-                  </td>
-                  <td className="num">
-                    <Money value={r.earnings} currency={currency} />
-                  </td>
-                  <td className="num">
-                    <RateCell rate={r.revYoy} currency={currency} />
-                  </td>
-                  <td className="num">
-                    <RateCell rate={r.niYoy} currency={currency} />
-                  </td>
-                  <td className="num">
-                    <RateCell rate={r.revQoq} currency={currency} />
-                  </td>
-                  <td className="num">
-                    <RateCell rate={r.niQoq} currency={currency} />
-                  </td>
-                  <td>
-                    <FilingCell rate={r.revYoy} />
-                  </td>
-                </tr>
-              ))}
+              {rows.map((r, i) => {
+                const q = quarterFor(ni, r.end, i);
+                return (
+                  <tr key={r.key} className={q?.verified && q.display != null && q.display < 0 && i === rows.length - 1 ? "latest-loss-row" : undefined}>
+                    <td>{r.label}</td>
+                    <td>
+                      {formatDate(r.end)}
+                      <div className="filing-cell">
+                        <Filings rev={r.revYoy} ni={r.niYoy} />
+                      </div>
+                    </td>
+                    <td className="num">
+                      <Money value={r.revenue} currency={currency} />
+                    </td>
+                    <td className="num">
+                      {q?.verified ? (
+                        <Money value={q.display} currency={currency} />
+                      ) : (
+                        <span className="na" title={q?.reason ? naReason(q.reason) : "N/A"}>
+                          N/A
+                        </span>
+                      )}
+                    </td>
+                    <td className="num">
+                      <RateCell rate={r.revYoy} currency={currency} />
+                    </td>
+                    <td className="num">
+                      <NiChangeCell abs={q?.yoyAbs ?? null} prior={q?.priorValue ?? null} rate={r.niYoy?.rate ?? null} currency={currency} />
+                    </td>
+                    <td className="num">
+                      <RateCell rate={r.revQoq} currency={currency} />
+                    </td>
+                    <td className="num">
+                      <NiChangeCell abs={q?.qoqAbs ?? null} prior={q?.qoqPrior ?? null} rate={r.niQoq?.rate ?? null} currency={currency} />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

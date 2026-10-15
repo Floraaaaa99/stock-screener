@@ -30,6 +30,16 @@ function byEnd(rates: Layer2Rate[] | undefined): Map<string, Layer2Rate> {
   return out;
 }
 
+function verifiedAmount(rate: Layer2Rate | undefined | null, side: "current" | "other"): number | null {
+  if (!rate) return null;
+  if (side === "current") {
+    if (rate.currentCheck !== "match" || rate.currentValue == null) return null;
+    return rate.currentValue;
+  }
+  if (rate.otherCheck !== "match" || rate.otherValue == null) return null;
+  return rate.otherValue;
+}
+
 /** Latest four Layer 2 quarters, oldest to newest, with revenue and net income on one row. */
 export function comparisonRows(row: Layer2Row): ComparisonRow[] {
   const niYoy = byEnd(row.earningsYoy);
@@ -43,7 +53,7 @@ export function comparisonRows(row: Layer2Row): ComparisonRow[] {
       label: y.label ?? fiscalLabel(y.fiscalYear, y.fiscalQuarter),
       end,
       revenue: y.currentValue,
-      earnings: ni?.currentValue ?? null,
+      earnings: verifiedAmount(ni, "current"),
       revYoy: y,
       niYoy: end ? (niYoy.get(end) ?? null) : null,
       revQoq: end ? (qoq.get(end) ?? null) : null,
@@ -61,7 +71,7 @@ export function priorYearRows(row: Layer2Row): PriorYearRow[] {
       key: `prior-${y.end ?? y.label ?? i}`,
       label: fy && y.fiscalQuarter ? fiscalLabel(fy, y.fiscalQuarter) : "N/A",
       revenue: y.otherValue,
-      earnings: y.end ? (niYoy.get(y.end)?.otherValue ?? null) : null,
+      earnings: y.end ? verifiedAmount(niYoy.get(y.end), "other") : null,
       url: y.otherUrl,
       form: y.otherForm,
     };

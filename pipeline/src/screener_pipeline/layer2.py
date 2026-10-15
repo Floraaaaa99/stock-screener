@@ -15,6 +15,7 @@ from pathlib import Path
 
 from . import config
 from .cache import read_json, write_json_atomic
+from .ni import analyze_net_income
 
 RULES_VERSION = 4
 LAYER2_SCHEMA_VERSION = 1
@@ -541,7 +542,7 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
         earnings_yoy, earnings_qoq, _ = sequential_rates(align_quarters(window, earn_qs))
     else:
         earnings_yoy, earnings_qoq = [], []
-    return {
+    payload = {
         "ticker": company["ticker"],
         "name": company["name"],
         "exchange": company.get("exchange"),
@@ -566,6 +567,8 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
         "freshness": freshness,
         "rulesVersion": RULES_VERSION,
     }
+    payload["ni"] = analyze_net_income(payload)
+    return payload
 
 
 def build_layer2(data_dir: Path, thresholds: Thresholds | None = None) -> dict:
