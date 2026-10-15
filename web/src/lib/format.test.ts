@@ -25,13 +25,13 @@ describe("missing values render as N/A, never zero", () => {
 
 describe("formatCompactMoney", () => {
   it("scales to T/B/M/K", () => {
-    expect(formatCompactMoney(1.234e12)).toBe("$1.23T");
-    expect(formatCompactMoney(123.45e9)).toBe("$123.5B");
-    expect(formatCompactMoney(12_587_200_000)).toBe("$12.59B");
-    expect(formatCompactMoney(-1_917_000)).toBe("−$1.92M");
-    expect(formatCompactMoney(0)).toBe("$0");
+    expect(formatCompactMoney(1.234e12)).toBe("$1.23T USD");
+    expect(formatCompactMoney(123.45e9)).toBe("$123.5B USD");
+    expect(formatCompactMoney(12_587_200_000)).toBe("$12.59B USD");
+    expect(formatCompactMoney(-1_917_000)).toBe("−$1.92M USD");
+    expect(formatCompactMoney(0)).toBe("$0 USD");
   });
-  it("labels non-USD currencies", () => {
+  it("labels every currency including USD", () => {
     expect(formatCompactMoney(2.5e9, "EUR")).toBe("€2.50B EUR");
     expect(formatCompactMoney(2.5e9, "DKK")).toBe("2.50B DKK");
   });
@@ -39,15 +39,15 @@ describe("formatCompactMoney", () => {
 
 describe("formatMillions", () => {
   it("shows full precision in millions", () => {
-    expect(formatMillions(1_167_175_000)).toBe("$1,167.2M");
-    expect(formatMillions(166_496_000)).toBe("$166.5M");
-    expect(formatMillions(-1_917_000)).toBe("−$1.917M");
+    expect(formatMillions(1_167_175_000)).toBe("$1,167.2M USD");
+    expect(formatMillions(166_496_000)).toBe("$166.5M USD");
+    expect(formatMillions(-1_917_000)).toBe("−$1.917M USD");
   });
 });
 
 describe("other formats", () => {
   it("formats prices, percentages, dates", () => {
-    expect(formatPrice(1234.5)).toBe("$1,234.50");
+    expect(formatPrice(1234.5)).toBe("$1,234.50 USD");
     expect(formatPercent(10.2345)).toBe("+10.2%");
     expect(formatPercent(-4.04)).toBe("−4.0%");
     expect(formatPercent(0)).toBe("0.0%");

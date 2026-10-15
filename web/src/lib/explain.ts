@@ -14,6 +14,23 @@ export const NA_REASONS: Record<string, string> = {
   previous_ttm_not_positive: "Previous TTM revenue is zero or negative, so growth is not meaningful.",
   statement_mismatch: "The latest revenue figure disagrees with the filing's income statement.",
   filing_mismatch: "A quarter used in the TTM disagrees with the income statement of its filing.",
+  unverified_quarters:
+    "A quarter in the TTM window could not be verified against its filing income statement, so TTM is N/A.",
+  no_sic: "SEC submissions did not include an SIC code for this company.",
+  nonpositive_denominator: "The prior-period revenue is zero or negative, so a percentage change is not meaningful.",
+  unverified: "A quarter used in this rate is not verified against its filing income statement.",
+  unverified_mismatch: "A quarter used in this rate differs from its filing income statement.",
+  missing_quarter: "A required quarter is missing from the Layer 1 eight-quarter window.",
+  missing_quarter_current: "The current quarter is missing from the Layer 1 eight-quarter window.",
+  missing_quarter_prior_year: "The same fiscal quarter last year is missing from the Layer 1 eight-quarter window.",
+  incomparable_concept: "The two quarters use different revenue concepts, so they are not comparable.",
+  incomplete_yoy: "The four YoY rates cannot all be computed from validated, comparable quarters.",
+  official_filing_unparsed:
+    "A newer official 10-Q/10-K is on EDGAR, but its income statement could not be read, so this window is stale.",
+  official_filing_no_applicable_revenue:
+    "A newer official 10-Q/10-K was read and has no applicable total-revenue line. The verified window is older than that filing.",
+  official_quarter_not_in_window:
+    "Official revenue from a newer filing was read but is not yet in the verified eight-quarter TTM window.",
 };
 
 export const FLAG_TEXT: Record<string, string> = {

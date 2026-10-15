@@ -8,17 +8,32 @@ from .. import config
 from ..cache import is_fresh, read_json, write_text_atomic
 from ..http import RateLimitedClient
 from ..universe.symbols import sec_symbol_variants
+from .edgar import PeriodicFiling, parse_periodic_filings
+from .facts import RevenueFacts, extract_revenue_facts
+from .sic import SicInfo
 from .statement import Statement, has_revenue_line, income_statement_candidates, parse_statement_html
+from .store import FactsStore, PeriodicStore, SicStore, StatementStore
 
 log = logging.getLogger(__name__)
 
 
 class SecClient:
-    def __init__(self, cache_dir: Path | None = None, offline: bool = False):
+    def __init__(
+        self,
+        cache_dir: Path | None = None,
+        offline: bool = False,
+        facts_store: FactsStore | None = None,
+        statement_store: StatementStore | None = None,
+        sic_store: SicStore | None = None,
+        periodic_store: PeriodicStore | None = None,
+    ):
         self.cache_dir = (cache_dir or config.CACHE_DIR) / "sec"
         self.offline = offline
         self._http: RateLimitedClient | None = None
-        self._statements: dict[str, tuple[Statement, str] | None] = {}
+        self.facts_store = facts_store or FactsStore()
+        self.statement_store = statement_store or StatementStore()
+        self.sic_store = sic_store or SicStore()
+        self.periodic_store = periodic_store or PeriodicStore()
 
     @property
     def http(self) -> RateLimitedClient:
@@ -26,14 +41,16 @@ class SecClient:
             self._http = RateLimitedClient(config.sec_user_agent(), config.SEC_MAX_RPS)
         return self._http
 
-    def _cached_text(self, url: str, path: Path, ttl_h: float | None) -> str | None:
+    def _cached_text(self, url: str, path: Path, ttl_h: float | None, *, force: bool = False) -> str | None:
         """Return cached text if fresh (ttl None = immutable), else download. 404 -> None (cached)."""
         missing_marker = path.with_suffix(path.suffix + ".404")
-        if path.exists() and (ttl_h is None or is_fresh(path, ttl_h) or self.offline):
+        if not force and path.exists() and (ttl_h is None or is_fresh(path, ttl_h) or self.offline):
             return path.read_text(encoding="utf-8")
-        if missing_marker.exists() and (ttl_h is None or is_fresh(missing_marker, ttl_h) or self.offline):
+        if not force and missing_marker.exists() and (ttl_h is None or is_fresh(missing_marker, ttl_h) or self.offline):
             return None
         if self.offline:
+            if path.exists():
+                return path.read_text(encoding="utf-8")
             raise FileNotFoundError(f"offline mode and no cache for {url}")
         resp = self.http.get(url)
         if resp.status_code == 404:
@@ -71,13 +88,71 @@ class SecClient:
         )
         return json.loads(text) if text else None
 
+    def revenue_facts(self, cik: str) -> RevenueFacts | None:
+        """Prefer compact state; fall back to the per-CIK API only when the bulk extract missed this CIK."""
+        cached = self.facts_store.get(cik)
+        if cached is not None:
+            return cached
+        try:
+            raw = self.companyfacts(cik)
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+        if raw is None:
+            return None
+        rf = extract_revenue_facts(raw)
+        self.facts_store.put(rf)
+        return rf
+
+    def submissions_payload(self, cik: str, *, refresh: bool = False) -> dict | None:
+        """EDGAR submissions JSON. `refresh` bypasses a stale cache so Company Facts is not treated as latest."""
+        cik10 = str(cik).zfill(10)
+        try:
+            text = self._cached_text(
+                config.SEC_SUBMISSIONS_URL.format(cik=cik10),
+                self.cache_dir / "submissions" / f"CIK{cik10}.json",
+                config.SEC_SIC_TTL_H,
+                force=refresh and not self.offline,
+            )
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+        if not text:
+            return None
+        payload = json.loads(text)
+        self.sic_store.put_payload(cik10, payload)
+        filings = parse_periodic_filings(payload)
+        self.periodic_store.put(cik10, filings, source="submissions_api" if refresh else "submissions")
+        return payload
+
+    def sic(self, cik: str) -> SicInfo | None:
+        cached = self.sic_store.get(cik)
+        if cached is not None:
+            return cached
+        if self.submissions_payload(cik) is None:
+            return None
+        return self.sic_store.get(cik)
+
+    def periodic_filings(self, cik: str, *, refresh: bool = False) -> list[PeriodicFiling]:
+        if not refresh:
+            cached = self.periodic_store.get(cik)
+            if cached is not None:
+                return cached
+        if self.submissions_payload(cik, refresh=refresh) is None:
+            return self.periodic_store.get(cik) or []
+        return self.periodic_store.get(cik) or []
+
     def income_statement(self, cik: str, accn: str) -> tuple[Statement, str] | None:
         """The income statement as rendered by EDGAR for one filing, and its URL (cached forever)."""
+        cached = self.statement_store.get(accn)
+        if cached is False:
+            return None
+        if cached is not None:
+            return cached
         base = config.SEC_ARCHIVES_URL.format(cik=int(cik), accn_nodash=accn.replace("-", ""))
         fdir = self.cache_dir / "filings" / accn
-        key = accn
-        if key in self._statements:
-            return self._statements[key]
         result: tuple[Statement, str] | None = None
         try:
             summary = self._cached_text(base + "FilingSummary.xml", fdir / "FilingSummary.xml", None)
@@ -94,7 +169,7 @@ class SecClient:
         except Exception as exc:  # noqa: BLE001 - statements are best-effort; absence is reported, not fatal
             log.warning("income statement unavailable for %s %s: %s", cik, accn, exc)
             result = None
-        self._statements[key] = result
+        self.statement_store.put(accn, result)
         return result
 
 

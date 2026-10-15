@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { loadCompany } from "../api";
 import { CONCEPT_STATUS, flagText, naReason } from "../lib/explain";
-import { fiscalLabel, formatDate, formatDateTime, formatMillions } from "../lib/format";
+import { fiscalLabel, formatDate, formatMillions } from "../lib/format";
 import type { CompanyDetail, QuarterEntry, ReportedQuarter } from "../types";
 
 type State = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; data: CompanyDetail };
@@ -195,15 +195,22 @@ function Detail({ data }: { data: CompanyDetail }) {
           </span>
         </div>
         <div>
-          <span className="k">Yahoo Finance data as of</span>
+          <span className="k">SEC SIC</span>
           <span className="v">
-            {formatDateTime(data.market.marketAsOf)}
-            {data.market.quoteType && data.market.quoteType !== "EQUITY" && (
-              <span className="badge warn-soft" title="Yahoo classifies this listing differently; NASDAQ Trader is authoritative for the universe.">
-                Yahoo type: {data.market.quoteType}
-              </span>
+            {data.sic?.label ? (
+              <>
+                {data.sic.label}
+                {data.sic.majorGroup && <span className="muted"> — {data.sic.majorGroup}</span>}
+                <span className="muted"> ({data.sic.source || "SEC EDGAR submissions"})</span>
+              </>
+            ) : (
+              <span className="muted">{naReason("no_sic") || "No SEC SIC code"}</span>
             )}
           </span>
+        </div>
+        <div>
+          <span className="k">Revenue currency</span>
+          <span className="v">{data.ttm.currency || rev?.currency || <span className="muted">N/A</span>}</span>
         </div>
       </div>
 
@@ -213,7 +220,10 @@ function Detail({ data }: { data: CompanyDetail }) {
       {quarters.length > 0 ? (
         <div className="table-scroll">
           <table className="quarters">
-            <caption>Latest {quarters.length} fiscal quarters, newest first</caption>
+            <caption>
+              Latest {quarters.length} fiscal quarters, newest first
+              {currency ? ` · amounts in ${currency} (unconverted)` : ""}
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Fiscal quarter</th>

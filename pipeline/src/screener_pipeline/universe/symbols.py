@@ -6,14 +6,10 @@ import re
 def canonical_symbol(symbol: str) -> str:
     """Canonical ticker form shared by all sources: upper case, share-class separator '-'.
 
-    NASDAQ Trader (ACT/CQS) writes BRK.B, Yahoo and SEC write BRK-B.
+    NASDAQ Trader (ACT/CQS) writes BRK.B; SEC's ticker map writes BRK-B.
     """
     s = symbol.strip().upper()
     return re.sub(r"[./]", "-", s)
-
-
-def yahoo_symbol(canonical: str) -> str:
-    return canonical
 
 
 def sec_symbol_variants(canonical: str) -> list[str]:

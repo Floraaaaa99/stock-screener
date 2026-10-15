@@ -1,20 +1,19 @@
 name: Deploy to GitHub Pages
 
-# Stage 1: deploys the committed validation dataset on every push to main.
-# A manual run can optionally refresh the dataset from NASDAQ Trader, Yahoo
-# Finance and SEC EDGAR first. Refreshed data is deployed and uploaded as a
-# workflow artifact; nothing is committed or force-pushed.
+# Deploys the committed dataset. Full-universe payloads are refused until the
+# publish gate on that dataset passes. The live site stays on the last validated
+# sample until a complete full run is copied in. No weekly schedule.
 on:
   push:
     branches: [main]
   workflow_dispatch:
     inputs:
       refresh_data:
-        description: Refresh the dataset from the live sources before deploying
+        description: Refresh the Stage 1 sample from the live sources before deploying
         type: boolean
         default: false
       universe:
-        description: Dataset to build
+        description: Dataset to build (sample only; full universe is refresh.yml)
         type: choice
         options:
           - sample:biotech20
@@ -83,6 +82,25 @@ jobs:
         with:
           name: dataset
           path: .
+      - name: Refuse an unpublished full-universe dataset
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path("web/public/data/meta.json")
+          meta = json.loads(p.read_text())
+          mode = (meta.get("dataset") or {}).get("mode")
+          gate = meta.get("gate") or {}
+          if mode == "sample":
+              sys.exit(0)
+          if mode == "full" and gate.get("ok"):
+              print("Full-universe dataset passed the publish gate.")
+              sys.exit(0)
+          print(
+              f"::error::Pages deploy requires dataset.mode=sample, or full with gate.ok "
+              f"(got mode={mode!r} gate={gate}). Live Pages stays on the last validated sample."
+          )
+          sys.exit(1)
+          PY
       - uses: actions/setup-node@v7
         with:
           node-version: "22"

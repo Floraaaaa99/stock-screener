@@ -3,9 +3,9 @@ const NA = "N/A";
 const CURRENCY_SYMBOL: Record<string, string> = { USD: "$", EUR: "€", GBP: "£", JPY: "¥", CNY: "¥" };
 
 function symbolFor(currency: string | null | undefined): { prefix: string; suffix: string } {
-  const c = currency ?? "USD";
+  const c = (currency && currency.trim()) || "USD";
   const sym = CURRENCY_SYMBOL[c];
-  return sym ? { prefix: sym, suffix: c === "USD" ? "" : ` ${c}` } : { prefix: "", suffix: ` ${c}` };
+  return { prefix: sym ?? "", suffix: ` ${c}` };
 }
 
 /** Compact money: $1.23T, $45.6B, $789.0M, $12.3K. */

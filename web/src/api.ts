@@ -1,4 +1,4 @@
-import type { CompanyDetail, Meta, ScreenerFile } from "./types";
+import type { CompanyDetail, Layer2File, Meta, ScreenerFile } from "./types";
 
 const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 
@@ -14,6 +14,10 @@ export function loadMeta(): Promise<Meta> {
 
 export function loadScreener(): Promise<ScreenerFile> {
   return getJson<ScreenerFile>("screener.json");
+}
+
+export function loadLayer2(): Promise<Layer2File> {
+  return getJson<Layer2File>("layer2.json");
 }
 
 const companyCache = new Map<string, Promise<CompanyDetail>>();

@@ -23,7 +23,7 @@ def write_validation_report(data_dir: Path, out_path: str | Path) -> None:
     lines += [
         f"# Validation report: {ds['name']}",
         "",
-        f"Generated {meta['generatedAt']} from live NASDAQ Trader, Yahoo Finance and SEC EDGAR data.",
+        f"Generated {meta['generatedAt']} from live NASDAQ Trader and SEC EDGAR data.",
         "",
         "Every quarter shown on the site is checked against the income statements of the filings its value",
         "comes from (EDGAR's rendered statement pages, `R*.htm`, independent of the Company Facts API).",

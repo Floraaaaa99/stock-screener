@@ -7,8 +7,9 @@ from datetime import date
 from .quarters import MissingQuarter, Quarter
 from .revenue import CompanyRevenue, slot_role
 from .sec.facts import filing_url
+from .sec.sic import SicInfo
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 def _iso(d: date | None) -> str | None:
@@ -60,8 +61,14 @@ def quarter_json(slot, index: int, cik: str, rev: CompanyRevenue) -> dict:
     }
 
 
-def company_json(listing, cik: str | None, sec_name: str | None, rev: CompanyRevenue | None,
-                 yahoo: dict, issues: list[dict]) -> dict:
+def company_json(
+    listing,
+    cik: str | None,
+    sec_name: str | None,
+    rev: CompanyRevenue | None,
+    sic: SicInfo | None,
+    issues: list[dict],
+) -> dict:
     revenue = None
     if rev is not None:
         sel = rev.selection
@@ -77,6 +84,7 @@ def company_json(listing, cik: str | None, sec_name: str | None, rev: CompanyRev
             "quarters": [quarter_json(s, i, cik or "", rev) for i, s in enumerate(rev.slots)],
         }
     ttm = rev.ttm if rev else None
+    empty_sic = SicInfo(None, None, None, None)
     return {
         "schemaVersion": SCHEMA_VERSION,
         "ticker": listing.symbol,
@@ -85,21 +93,13 @@ def company_json(listing, cik: str | None, sec_name: str | None, rev: CompanyRev
         "securityType": listing.security_type,
         "cik": cik,
         "secName": sec_name,
-        "market": {
-            "sector": yahoo.get("sector"),
-            "industry": yahoo.get("industry"),
-            "marketCap": yahoo.get("marketCap"),
-            "price": yahoo.get("price"),
-            "currency": yahoo.get("currency"),
-            "quoteType": yahoo.get("quoteType"),
-            "profileAsOf": yahoo.get("profile_as_of"),
-            "marketAsOf": yahoo.get("market_as_of"),
-        },
+        "sic": (sic or empty_sic).to_dict(),
         "ttm": {
             "current": ttm.current if ttm else None,
             "previous": ttm.previous if ttm else None,
             "growthPct": ttm.growth_pct if ttm else None,
             "reason": (ttm.reason if ttm else "no_cik"),
+            "currency": rev.currency if rev else None,
         },
         "revenue": revenue,
         "classificationIssues": issues,
@@ -108,6 +108,7 @@ def company_json(listing, cik: str | None, sec_name: str | None, rev: CompanyRev
 
 def screener_row(c: dict) -> dict:
     rev = c.get("revenue") or {}
+    sic = c.get("sic") or {}
     quarters = rev.get("quarters") or []
     latest = next((q for q in quarters if not q.get("missing")), None)
     return {
@@ -115,12 +116,10 @@ def screener_row(c: dict) -> dict:
         "name": c["name"],
         "exchange": c["exchange"],
         "type": c["securityType"],
-        "sector": c["market"]["sector"],
-        "industry": c["market"]["industry"],
-        "marketCap": c["market"]["marketCap"],
-        "price": c["market"]["price"],
-        "priceCurrency": c["market"]["currency"],
-        "revenueCurrency": rev.get("currency"),
+        "sicCode": sic.get("code"),
+        "sicMajorGroup": sic.get("majorGroup"),
+        "sicIndustry": sic.get("label"),
+        "revenueCurrency": rev.get("currency") or (c.get("ttm") or {}).get("currency"),
         "ttmCurrent": c["ttm"]["current"],
         "ttmPrevious": c["ttm"]["previous"],
         "ttmGrowth": c["ttm"]["growthPct"],
@@ -131,3 +130,11 @@ def screener_row(c: dict) -> dict:
         "latestQuarterEnd": latest["end"] if latest else None,
         "quartersAvailable": sum(1 for q in quarters if not q.get("missing")),
     }
+
+
+def sort_screener_rows(rows: list[dict]) -> list[dict]:
+    """Default: TTM growth descending, N/A last, then ticker."""
+    return sorted(
+        rows,
+        key=lambda r: (r["ttmGrowth"] is None, -(r["ttmGrowth"] or 0), r["ticker"]),
+    )
