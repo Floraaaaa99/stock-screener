@@ -85,6 +85,31 @@ function NetIncomeCell({ q, currency }: { q: ReportedQuarter | undefined; curren
   return <span className={q.value < 0 ? "neg" : ""}>{formatMillions(q.value, currency)}</span>;
 }
 
+function FilingCell({ q }: { q: ReportedQuarter }) {
+  const how = [
+    q.method === "reported" ? "Reported" : "Derived",
+    q.formula,
+    q.sources.map((s) => `${s.sign > 0 ? "+" : "−"} ${s.form} ${s.start}…${s.end}`).join("; "),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  return (
+    <td className="filing-cell">
+      <a href={q.url} target="_blank" rel="noreferrer" title={how}>
+        {q.form}
+      </a>{" "}
+      <span className="muted">filed {formatDate(q.filed)}</span>
+      <CheckBadge q={q} />
+      {q.restated && (
+        <span className="badge warn-soft" title="A later filing revised this figure; the revised value is shown.">
+          Restated
+        </span>
+      )}
+      {q.flags.includes("negative_value") && <span className="badge warn-soft">Negative</span>}
+    </td>
+  );
+}
+
 function QuarterRow({
   q,
   currency,
@@ -111,9 +136,7 @@ function QuarterRow({
         <td>
           <TtmBadge role={q.ttm} />
         </td>
-        <td colSpan={3} className="muted">
-          No revenue figure for this quarter in SEC Company Facts.
-        </td>
+        <td className="muted">No revenue figure for this quarter in SEC Company Facts.</td>
       </tr>
     );
   }
@@ -137,27 +160,7 @@ function QuarterRow({
       <td>
         <TtmBadge role={q.ttm} />
       </td>
-      <td>
-        <span className={`method ${q.method}`}>{q.method === "reported" ? "Reported" : "Derived"}</span>{" "}
-        <span className="formula" title={q.sources.map((s) => `${s.sign > 0 ? "+" : "−"} ${s.form} ${s.start}…${s.end}`).join("\n")}>
-          {q.formula}
-        </span>
-        {q.restated && (
-          <span className="badge warn-soft" title="A later filing revised this figure; the revised value is shown.">
-            Restated
-          </span>
-        )}
-        {q.flags.includes("negative_value") && <span className="badge warn-soft">Negative</span>}
-      </td>
-      <td>
-        <a href={q.url} target="_blank" rel="noreferrer">
-          {q.form}
-        </a>{" "}
-        <span className="muted">filed {formatDate(q.filed)}</span>
-      </td>
-      <td>
-        <CheckBadge q={q} />
-      </td>
+      <FilingCell q={q} />
     </tr>
   );
 }
@@ -260,9 +263,7 @@ function Detail({ data }: { data: CompanyDetail }) {
                   Net income
                 </th>
                 <th scope="col">TTM window</th>
-                <th scope="col">How obtained</th>
                 <th scope="col">SEC filing</th>
-                <th scope="col">Verification</th>
               </tr>
             </thead>
             <tbody>
