@@ -1,7 +1,18 @@
 import { formatCount, formatDateTime } from "../lib/format";
+import type { LayerId } from "../lib/layer2";
 import type { Meta } from "../types";
 
-export function Header({ meta, layer, onLayer }: { meta: Meta | null; layer: 1 | 2; onLayer: (layer: 1 | 2) => void }) {
+export function Header({
+  meta,
+  layer,
+  layer3Count,
+  onLayer,
+}: {
+  meta: Meta | null;
+  layer: LayerId;
+  layer3Count: number;
+  onLayer: (layer: LayerId) => void;
+}) {
   const sample = meta?.dataset.mode === "sample";
   return (
     <header className="header">
@@ -19,7 +30,9 @@ export function Header({ meta, layer, onLayer }: { meta: Meta | null; layer: 1 |
           <p className="subtitle">
             {layer === 1
               ? "SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted."
-              : "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and on Passed companies descriptive net-income badges. No valuation screen."}
+              : layer === 2
+                ? "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and on Passed companies descriptive net-income badges. No valuation screen."
+                : "Manually curated Layer 3 research list. Filter and select companies on the screener, then add them here. Nothing is enrolled from Layer 1 or Layer 2 automatically."}
           </p>
           <nav className="layer-nav" aria-label="Screener layer">
             <button type="button" className={`layer-btn ${layer === 1 ? "on" : ""}`} onClick={() => onLayer(1)}>
@@ -27,6 +40,9 @@ export function Header({ meta, layer, onLayer }: { meta: Meta | null; layer: 1 |
             </button>
             <button type="button" className={`layer-btn ${layer === 2 ? "on" : ""}`} onClick={() => onLayer(2)}>
               Sequential growth
+            </button>
+            <button type="button" className={`layer-btn ${layer === 3 ? "on" : ""}`} onClick={() => onLayer(3)}>
+              Layer 3{layer3Count > 0 ? ` (${formatCount(layer3Count)})` : ""}
             </button>
           </nav>
         </div>

@@ -1,21 +1,29 @@
 import { Fragment } from "react";
 import { naReason } from "../lib/explain";
 import { formatCompactMoney, formatPercent } from "../lib/format";
+import type { HeaderCheckState } from "../lib/layer3";
 import { formatSicIndustry, type SortKey, type ViewState } from "../lib/screener";
 import type { ScreenerRow } from "../types";
 import { CompanyDetailPanel } from "./CompanyDetail";
+import { SelectCell, SelectHeader } from "./SelectColumn";
 
 interface Props {
   loading: boolean;
   rows: ScreenerRow[];
   view: ViewState;
   expanded: string | null;
+  selected: ReadonlySet<string>;
+  savedTickers: ReadonlySet<string>;
+  headerState: HeaderCheckState;
+  filteredCount: number;
   onToggle: (ticker: string) => void;
   onSort: (key: SortKey) => void;
   onClearFilters: () => void;
+  onToggleSelect: (ticker: string, checked: boolean) => void;
+  onToggleFiltered: () => void;
 }
 
-const COLUMNS = 8;
+const COLUMNS = 9;
 
 function SortHeader({ label, k, view, onSort, title }: { label: string; k: SortKey; view: ViewState; onSort: (k: SortKey) => void; title?: string }) {
   const active = view.sort === k;
@@ -57,13 +65,28 @@ function SicCell({ row, field }: { row: ScreenerRow; field: "sicMajorGroup" | "s
   );
 }
 
-export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort, onClearFilters }: Props) {
+export function ScreenerTable({
+  loading,
+  rows,
+  view,
+  expanded,
+  selected,
+  savedTickers,
+  headerState,
+  filteredCount,
+  onToggle,
+  onSort,
+  onClearFilters,
+  onToggleSelect,
+  onToggleFiltered,
+}: Props) {
   return (
     <section className="panel table-panel">
       <div className="table-scroll">
         <table className="screener">
           <thead>
             <tr>
+              <SelectHeader state={headerState} filteredCount={filteredCount} disabled={loading} onToggle={onToggleFiltered} />
               <th scope="col">Ticker</th>
               <th scope="col">Company</th>
               <th scope="col">Exchange</th>
@@ -100,7 +123,13 @@ export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort,
                 const open = expanded === r.ticker;
                 return (
                   <Fragment key={r.ticker}>
-                    <tr className={`row ${open ? "open" : ""}`} onClick={() => onToggle(r.ticker)}>
+                    <tr className={`row ${open ? "open" : ""} ${selected.has(r.ticker) ? "is-selected" : ""}`} onClick={() => onToggle(r.ticker)}>
+                      <SelectCell
+                        ticker={r.ticker}
+                        checked={selected.has(r.ticker)}
+                        saved={savedTickers.has(r.ticker)}
+                        onChange={onToggleSelect}
+                      />
                       <td className="ticker">
                         <button
                           type="button"

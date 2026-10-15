@@ -20,11 +20,13 @@ import {
   NI_PROFITABILITY_IDS,
   NI_RULES_VERSION,
 } from "../lib/niAnalysis";
+import { headerCheckState, type AddToLayer3Result, type HeaderCheckState } from "../lib/layer3";
 import { industriesFor, pageCount, paginate, type ViewState } from "../lib/screener";
 import type { Layer2File, Meta } from "../types";
 import { Filters } from "./Filters";
 import { Layer2Table } from "./Layer2Table";
 import { Pagination } from "./Pagination";
+import { SelectionBar } from "./SelectionBar";
 
 interface Props {
   file: Layer2File;
@@ -32,11 +34,41 @@ interface Props {
   view: View;
   expanded: string | null;
   loading?: boolean;
+  selected: ReadonlySet<string>;
+  savedTickers: ReadonlySet<string>;
   onChange: (patch: Partial<View>) => void;
   onToggle: (ticker: string) => void;
+  onToggleSelect: (ticker: string, checked: boolean) => void;
+  onToggleFiltered: (tickers: string[]) => void;
+  selectedCount: number;
+  alreadySavedCount: number;
+  lastAdd: AddToLayer3Result | null;
+  storageNotice: string | null;
+  onClearSelection: () => void;
+  onAddToLayer3: () => void;
+  onOpenLayer3: () => void;
 }
 
-export function Layer2View({ file, meta, view, expanded, loading = false, onChange, onToggle }: Props) {
+export function Layer2View({
+  file,
+  meta,
+  view,
+  expanded,
+  loading = false,
+  selected,
+  savedTickers,
+  onChange,
+  onToggle,
+  onToggleSelect,
+  onToggleFiltered,
+  selectedCount,
+  alreadySavedCount,
+  lastAdd,
+  storageNotice,
+  onClearSelection,
+  onAddToLayer3,
+  onOpenLayer3,
+}: Props) {
   const thresholds = { stableSpreadPp: view.stableSpreadPp, recentJumpPp: view.recentJumpPp };
   const rows = useMemo(() => file.rows.map((r) => withLiveBadges(r, thresholds)), [file.rows, view.stableSpreadPp, view.recentJumpPp]);
   const counts = useMemo(() => countsFor(rows), [rows]);
@@ -55,6 +87,8 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
   const pages = pageCount(filtered.length);
   const page = Math.min(view.page, pages);
   const pageRows = useMemo(() => paginate(filtered, page), [filtered, page]);
+  const filteredTickers = useMemo(() => filtered.map((r) => r.ticker), [filtered]);
+  const selectHeader: HeaderCheckState = headerCheckState(selected, filteredTickers);
   const majorGroups = Object.keys(meta.sicMajorGroups);
   const industries = industriesFor(meta.sicMajorGroups, view.sicMajorGroup);
   const catOptions = [...OBJECTIVE_CATS, ...THRESHOLD_CATS];
@@ -216,12 +250,28 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         ))}
       </div>
       <p className="muted tab-hint">{tabHint(view.tab)}</p>
+      <SelectionBar
+        selectedCount={selectedCount}
+        alreadySavedCount={alreadySavedCount}
+        filteredCount={filtered.length}
+        lastResult={lastAdd}
+        storageNotice={storageNotice}
+        onClear={onClearSelection}
+        onAdd={onAddToLayer3}
+        onOpenLayer3={onOpenLayer3}
+      />
       <Layer2Table
         loading={loading}
         rows={pageRows}
         expanded={expanded}
         onToggle={onToggle}
         showNi={view.tab === "passed"}
+        selected={selected}
+        savedTickers={savedTickers}
+        headerState={selectHeader}
+        filteredCount={filtered.length}
+        onToggleSelect={onToggleSelect}
+        onToggleFiltered={() => onToggleFiltered(filteredTickers)}
         onClearFilters={() =>
           onChange({ sicMajorGroup: "", sicIndustries: [], query: "", categories: [], niProfitability: [], niImprovement: [] })
         }
