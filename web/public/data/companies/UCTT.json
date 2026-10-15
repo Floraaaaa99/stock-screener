@@ -614,22 +614,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-052540.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-26",
         "latestValue": 8700000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to UCT"
       },
       {
         "concept": "ProfitLoss",
@@ -640,14 +640,564 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-052540",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026052540/R4.htm",
+      "period_end": "2026-06-26",
+      "months": 3,
+      "pipeline_value": 8700000.0,
+      "statement_value": 8700000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-03-28",
+        "end": "2026-06-26",
+        "ttm": "current",
+        "missing": false,
+        "value": 8700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001628280-26-052540",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026052540/0001628280-26-052540-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001628280-26-052540",
+            "start": "2026-03-28",
+            "end": "2026-06-26",
+            "value": 8700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026052540/0001628280-26-052540-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-052540",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026052540/R4.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": 8700000.0,
+          "expected_value": 8700000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-12-27",
+        "end": "2026-03-27",
+        "ttm": "current",
+        "missing": false,
+        "value": -17900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-29",
+        "accn": "0001628280-26-028365",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026028365/0001628280-26-028365-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-29",
+            "accn": "0001628280-26-028365",
+            "start": "2025-12-27",
+            "end": "2026-03-27",
+            "value": -17900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026028365/0001628280-26-028365-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-028365",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026028365/R4.htm",
+          "statement_label": "Net loss attributable to UCT",
+          "statement_value": -17900000.0,
+          "expected_value": -17900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-27",
+        "end": "2025-12-26",
+        "ttm": "current",
+        "missing": false,
+        "value": -3300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-23",
+        "accn": "0001628280-26-010744",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026010744/0001628280-26-010744-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-23",
+            "accn": "0001628280-26-010744",
+            "start": "2024-12-28",
+            "end": "2025-12-26",
+            "value": -181200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026010744/0001628280-26-010744-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001628280-25-047117",
+            "start": "2024-12-28",
+            "end": "2025-09-26",
+            "value": -177900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025047117/0001628280-25-047117-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-010744",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828026010744/R5.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": -181200000.0,
+          "expected_value": -3300000.0,
+          "detail": "12M -181,200,000 (10-K 0001628280-26-010744) − 9M -177,900,000 (10-Q 0001628280-25-047117)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-28",
+        "end": "2025-09-26",
+        "ttm": "current",
+        "missing": false,
+        "value": -10900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001628280-25-047117",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025047117/0001628280-25-047117-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001628280-25-047117",
+            "start": "2025-06-28",
+            "end": "2025-09-26",
+            "value": -10900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025047117/0001628280-25-047117-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-047117",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025047117/R4.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": -10900000.0,
+          "expected_value": -10900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-29",
+        "end": "2025-06-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": -162000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-29",
+        "accn": "0001628280-25-036413",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025036413/0001628280-25-036413-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-29",
+            "accn": "0001628280-25-036413",
+            "start": "2025-03-29",
+            "end": "2025-06-27",
+            "value": -162000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025036413/0001628280-25-036413-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-036413",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025036413/R4.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": -162000000.0,
+          "expected_value": -162000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-28",
+        "end": "2025-03-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-29",
+        "accn": "0001628280-25-020658",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025020658/0001628280-25-020658-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-29",
+            "accn": "0001628280-25-020658",
+            "start": "2024-12-28",
+            "end": "2025-03-28",
+            "value": -5000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025020658/0001628280-25-020658-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-020658",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025020658/R4.htm",
+          "statement_label": "Net loss attributable to UCT",
+          "statement_value": -5000000.0,
+          "expected_value": -5000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-28",
+        "end": "2024-12-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": 16300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-25",
+        "accn": "0001628280-25-007865",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025007865/0001628280-25-007865-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-25",
+            "accn": "0001628280-25-007865",
+            "start": "2023-12-30",
+            "end": "2024-12-27",
+            "value": 23700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025007865/0001628280-25-007865-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001628280-24-044152",
+            "start": "2023-12-30",
+            "end": "2024-09-27",
+            "value": 7400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024044152/0001628280-24-044152-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-007865",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828025007865/R5.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": 23700000.0,
+          "expected_value": 16300000.0,
+          "detail": "12M 23,700,000 (10-K 0001628280-25-007865) − 9M 7,400,000 (10-Q 0001628280-24-044152)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-06-29",
+        "end": "2024-09-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001628280-24-044152",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024044152/0001628280-24-044152-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001628280-24-044152",
+            "start": "2024-06-29",
+            "end": "2024-09-27",
+            "value": -2300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024044152/0001628280-24-044152-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-044152",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024044152/R4.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": -2300000.0,
+          "expected_value": -2300000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-30",
+        "end": "2024-06-28",
+        "ttm": null,
+        "missing": false,
+        "value": 19100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-26",
+        "accn": "0001628280-24-033152",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024033152/0001628280-24-033152-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-26",
+            "accn": "0001628280-24-033152",
+            "start": "2024-03-30",
+            "end": "2024-06-28",
+            "value": 19100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024033152/0001628280-24-033152-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-033152",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024033152/R4.htm",
+          "statement_label": "Net income (loss) attributable to UCT",
+          "statement_value": 19100000.0,
+          "expected_value": 19100000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-30",
+        "end": "2024-03-29",
+        "ttm": null,
+        "missing": false,
+        "value": -9400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-06",
+        "accn": "0001628280-24-020679",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024020679/0001628280-24-020679-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-06",
+            "accn": "0001628280-24-020679",
+            "start": "2023-12-30",
+            "end": "2024-03-29",
+            "value": -9400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024020679/0001628280-24-020679-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-020679",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1275014/000162828024020679/R4.htm",
+          "statement_label": "Net loss attributable to UCT",
+          "statement_value": -9400000.0,
+          "expected_value": -9400000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-09-30",
+        "end": "2023-12-29",
+        "ttm": null,
+        "missing": false,
+        "value": -3800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0000950170-24-027213",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000095017024027213/0000950170-24-027213-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0000950170-24-027213",
+            "start": "2022-12-31",
+            "end": "2023-12-29",
+            "value": -31100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000095017024027213/0000950170-24-027213-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000950170-23-060220",
+            "start": "2022-12-31",
+            "end": "2023-09-29",
+            "value": -27300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000095017023060220/0000950170-23-060220-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-027213",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0000950170-24-027213 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-29",
+        "ttm": null,
+        "missing": false,
+        "value": -14500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0000950170-23-060220",
+        "url": "https://www.sec.gov/Archives/edgar/data/1275014/000095017023060220/0000950170-23-060220-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000950170-23-060220",
+            "start": "2023-07-01",
+            "end": "2023-09-29",
+            "value": -14500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1275014/000095017023060220/0000950170-23-060220-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-23-060220",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-23-060220 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-26",

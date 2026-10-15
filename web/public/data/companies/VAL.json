@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000314808-26-000141.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 50400000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "NET INCOME ATTRIBUTABLE TO VALARIS"
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,557 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000314808-26-000141",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000141/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 50400000.0,
+      "statement_value": 50400000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 50400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0000314808-26-000141",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000141/0000314808-26-000141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0000314808-26-000141",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 50400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000141/0000314808-26-000141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-26-000141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000141/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 50400000.0,
+          "expected_value": 50400000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -16400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-05",
+        "accn": "0000314808-26-000103",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000103/0000314808-26-000103-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-05",
+            "accn": "0000314808-26-000103",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -16400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000103/0000314808-26-000103-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-26-000103",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000103/R2.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO VALARIS",
+          "statement_value": -16399999.999999998,
+          "expected_value": -16399999.999999998
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 717500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-20",
+        "accn": "0000314808-26-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000029/0000314808-26-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-20",
+            "accn": "0000314808-26-000029",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 982800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000029/0000314808-26-000029-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000314808-25-000149",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 265300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000149/0000314808-25-000149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-26-000029",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480826000029/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 982800000.0,
+          "expected_value": 717500000.0,
+          "detail": "12M 982,800,000 (10-K 0000314808-26-000029) − 9M 265,300,000 (10-Q 0000314808-25-000149)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 188100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0000314808-25-000149",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000149/0000314808-25-000149-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000314808-25-000149",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 188100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000149/0000314808-25-000149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-25-000149",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000149/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 188100000.0,
+          "expected_value": 188100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 115100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0000314808-25-000126",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000126/0000314808-25-000126-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0000314808-25-000126",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 115100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000126/0000314808-25-000126-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-25-000126",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000126/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 115100000.0,
+          "expected_value": 115100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -37900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-01",
+        "accn": "0000314808-25-000076",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000076/0000314808-25-000076-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-01",
+            "accn": "0000314808-25-000076",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -37900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000076/0000314808-25-000076-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-25-000076",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000076/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO VALARIS",
+          "statement_value": -37900000.0,
+          "expected_value": -37900000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 133700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0000314808-25-000028",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000028/0000314808-25-000028-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0000314808-25-000028",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 373400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000028/0000314808-25-000028-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0000314808-24-000167",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 239700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000167/0000314808-24-000167-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-25-000028",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480825000028/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 373400000.0,
+          "expected_value": 133700000.0,
+          "detail": "12M 373,400,000 (10-K 0000314808-25-000028) − 9M 239,700,000 (10-Q 0000314808-24-000167)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 64600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-31",
+        "accn": "0000314808-24-000167",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000167/0000314808-24-000167-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0000314808-24-000167",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 64600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000167/0000314808-24-000167-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-24-000167",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000167/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 64599999.99999999,
+          "expected_value": 64599999.99999999
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 149600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-01",
+        "accn": "0000314808-24-000123",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000123/0000314808-24-000123-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-01",
+            "accn": "0000314808-24-000123",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 149600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000123/0000314808-24-000123-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-24-000123",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000123/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO VALARIS",
+          "statement_value": 149600000.0,
+          "expected_value": 149600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 25500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0000314808-24-000062",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000062/0000314808-24-000062-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0000314808-24-000062",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 25500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000062/0000314808-24-000062-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-24-000062",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000062/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO VALARIS",
+          "statement_value": 25500000.0,
+          "expected_value": 25500000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 835200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0000314808-24-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000014/0000314808-24-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0000314808-24-000014",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 865400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000014/0000314808-24-000014-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000314808-23-000130",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 30200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480823000130/0000314808-23-000130-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-24-000014",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480824000014/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO VALARIS",
+          "statement_value": 865400000.0,
+          "expected_value": 835200000.0,
+          "detail": "12M 865,400,000 (10-K 0000314808-24-000014) − 9M 30,200,000 (10-Q 0000314808-23-000130)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 12900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0000314808-23-000130",
+        "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480823000130/0000314808-23-000130-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000314808-23-000130",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 12900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480823000130/0000314808-23-000130-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000314808-23-000130",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314808/000031480823000130/R2.htm",
+          "statement_label": "Net Income (Loss) Attributable to Parent, Total",
+          "statement_value": 12900000.0,
+          "expected_value": 12900000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

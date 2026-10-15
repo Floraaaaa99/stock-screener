@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001620533-26-000034.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-01",
         "latestValue": 15680000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "NET INCOME ATTRIBUTABLE TO SHAKE SHACK INC."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "NET INCOME"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,553 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001620533-26-000034",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000034/R3.htm",
+      "period_end": "2026-07-01",
+      "months": 3,
+      "pipeline_value": 15680000.0,
+      "statement_value": 15680000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-02",
+        "end": "2026-07-01",
+        "ttm": "current",
+        "missing": false,
+        "value": 15680000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001620533-26-000034",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000034/0001620533-26-000034-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001620533-26-000034",
+            "start": "2026-04-02",
+            "end": "2026-07-01",
+            "value": 15680000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000034/0001620533-26-000034-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-26-000034",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000034/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 15680000.0,
+          "expected_value": 15680000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-04-01",
+        "ttm": "current",
+        "missing": false,
+        "value": -290000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001620533-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000026/0001620533-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001620533-26-000026",
+            "start": "2026-01-01",
+            "end": "2026-04-01",
+            "value": -290000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000026/0001620533-26-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-26-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000026/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": -290000.0,
+          "expected_value": -290000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-25",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 11831000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001620533-26-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000018/0001620533-26-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001620533-26-000018",
+            "start": "2024-12-26",
+            "end": "2025-12-31",
+            "value": 45725000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000018/0001620533-26-000018-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0001620533-25-000075",
+            "start": "2024-12-26",
+            "end": "2025-09-24",
+            "value": 33894000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000075/0001620533-25-000075-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-26-000018",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053326000018/R4.htm",
+          "statement_label": "Net income attributable to Shake Shack Inc.—basic",
+          "statement_value": 45725000.0,
+          "expected_value": 11831000.0,
+          "detail": "12M 45,725,000 (10-K 0001620533-26-000018) − 9M 33,894,000 (10-Q 0001620533-25-000075)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-26",
+        "end": "2025-09-24",
+        "ttm": "current",
+        "missing": false,
+        "value": 12501000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0001620533-25-000075",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000075/0001620533-25-000075-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0001620533-25-000075",
+            "start": "2025-06-26",
+            "end": "2025-09-24",
+            "value": 12501000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000075/0001620533-25-000075-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-25-000075",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000075/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 12501000.0,
+          "expected_value": 12501000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-27",
+        "end": "2025-06-25",
+        "ttm": "previous",
+        "missing": false,
+        "value": 17148000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0001620533-25-000065",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000065/0001620533-25-000065-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0001620533-25-000065",
+            "start": "2025-03-27",
+            "end": "2025-06-25",
+            "value": 17148000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000065/0001620533-25-000065-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-25-000065",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000065/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 17148000.0,
+          "expected_value": 17148000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-26",
+        "end": "2025-03-26",
+        "ttm": "previous",
+        "missing": false,
+        "value": 4245000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-01",
+        "accn": "0001620533-25-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000029/0001620533-25-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-01",
+            "accn": "0001620533-25-000029",
+            "start": "2024-12-26",
+            "end": "2025-03-26",
+            "value": 4245000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000029/0001620533-25-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-25-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000029/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 4245000.0,
+          "expected_value": 4245000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-26",
+        "end": "2024-12-25",
+        "ttm": "previous",
+        "missing": false,
+        "value": 8710000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-21",
+        "accn": "0001620533-25-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000016/0001620533-25-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-21",
+            "accn": "0001620533-25-000016",
+            "start": "2023-12-28",
+            "end": "2024-12-25",
+            "value": 10207000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000016/0001620533-25-000016-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0001620533-24-000110",
+            "start": "2023-12-28",
+            "end": "2024-09-25",
+            "value": 1497000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000110/0001620533-24-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-25-000016",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053325000016/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 10207000.0,
+          "expected_value": 8710000.0,
+          "detail": "12M 10,207,000 (10-K 0001620533-25-000016) − 9M 1,497,000 (10-Q 0001620533-24-000110)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-06-27",
+        "end": "2024-09-25",
+        "ttm": "previous",
+        "missing": false,
+        "value": -10211000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-31",
+        "accn": "0001620533-24-000110",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000110/0001620533-24-000110-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0001620533-24-000110",
+            "start": "2024-06-27",
+            "end": "2024-09-25",
+            "value": -10211000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000110/0001620533-24-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-24-000110",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000110/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": -10211000.0,
+          "expected_value": -10211000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-28",
+        "end": "2024-06-26",
+        "ttm": null,
+        "missing": false,
+        "value": 9668000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-02",
+        "accn": "0001620533-24-000086",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000086/0001620533-24-000086-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-02",
+            "accn": "0001620533-24-000086",
+            "start": "2024-03-28",
+            "end": "2024-06-26",
+            "value": 9668000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000086/0001620533-24-000086-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-24-000086",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000086/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 9668000.0,
+          "expected_value": 9668000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-28",
+        "end": "2024-03-27",
+        "ttm": null,
+        "missing": false,
+        "value": 2040000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-03",
+        "accn": "0001620533-24-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000040/0001620533-24-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-03",
+            "accn": "0001620533-24-000040",
+            "start": "2023-12-28",
+            "end": "2024-03-27",
+            "value": 2040000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000040/0001620533-24-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-24-000040",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000040/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 2040000.0,
+          "expected_value": 2040000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-09-28",
+        "end": "2023-12-27",
+        "ttm": null,
+        "missing": false,
+        "value": 7223000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-29",
+        "accn": "0001620533-24-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000023/0001620533-24-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-29",
+            "accn": "0001620533-24-000023",
+            "start": "2022-12-29",
+            "end": "2023-12-27",
+            "value": 20264000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000023/0001620533-24-000023-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001620533-23-000090",
+            "start": "2022-12-29",
+            "end": "2023-09-27",
+            "value": 13041000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053323000090/0001620533-23-000090-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-24-000023",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053324000023/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 20264000.0,
+          "expected_value": 7223000.0,
+          "detail": "12M 20,264,000 (10-K 0001620533-24-000023) − 9M 13,041,000 (10-Q 0001620533-23-000090)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-06-29",
+        "end": "2023-09-27",
+        "ttm": null,
+        "missing": false,
+        "value": 7627000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001620533-23-000090",
+        "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053323000090/0001620533-23-000090-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001620533-23-000090",
+            "start": "2023-06-29",
+            "end": "2023-09-27",
+            "value": 7627000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053323000090/0001620533-23-000090-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001620533-23-000090",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1620533/000162053323000090/R3.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO SHAKE SHACK INC.",
+          "statement_value": 7627000.0,
+          "expected_value": 7627000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-01",

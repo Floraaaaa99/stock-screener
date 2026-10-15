@@ -609,11 +609,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001683168-26-007580.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -635,25 +635,570 @@
         "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 8,
         "disagreements": 3,
-        "statementLabel": null
+        "statementLabel": "NET LOSS"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -6440435.0,
         "quartersInWindow": 10,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "NET LOSS ATTRIBUTABLE TO IPOWER INC."
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "concept_merged",
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001683168-26-007580",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826007580/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": -11622242.0,
+      "statement_value": -11622242.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -6440435.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-10-02",
+        "accn": "0001683168-26-007580",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826007580/0001683168-26-007580-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-10-02",
+            "accn": "0001683168-26-007580",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": -11622242.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826007580/0001683168-26-007580-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-20",
+            "accn": "0001683168-26-004180",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": -5181807.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826004180/0001683168-26-004180-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-007580",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826007580/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -11622242.0,
+          "expected_value": -6440435.0,
+          "detail": "12M -11,622,242 (10-K 0001683168-26-007580) − 9M -5,181,807 (10-Q 0001683168-26-004180)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -3454878.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-20",
+        "accn": "0001683168-26-004180",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826004180/0001683168-26-004180-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-20",
+            "accn": "0001683168-26-004180",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -3454878.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826004180/0001683168-26-004180-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-004180",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826004180/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -3454878.0,
+          "expected_value": -3454878.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1193281.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-20",
+        "accn": "0001683168-26-001222",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/0001683168-26-001222-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-20",
+            "accn": "0001683168-26-001222",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -1193281.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/0001683168-26-001222-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-001222",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -1193281.0,
+          "expected_value": -1193281.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -533648.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0001683168-25-008394",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/0001683168-25-008394-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001683168-25-008394",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -533648.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/0001683168-25-008394-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-008394",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -533648.0,
+          "expected_value": -533648.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2818227.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-10-09",
+        "accn": "0001683168-25-007480",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825007480/0001683168-25-007480-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-10-09",
+            "accn": "0001683168-25-007480",
+            "start": "2024-07-01",
+            "end": "2025-06-30",
+            "value": -4968288.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825007480/0001683168-25-007480-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001683168-25-003710",
+            "start": "2024-07-01",
+            "end": "2025-03-31",
+            "value": -2150061.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-007480",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001683168-25-007480 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -339599.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0001683168-25-003710",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001683168-25-003710",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -339599.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-003710",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001683168-25-003710 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 218819.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-20",
+        "accn": "0001683168-26-001222",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/0001683168-26-001222-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-20",
+            "accn": "0001683168-26-001222",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 218819.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/0001683168-26-001222-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-001222",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316826001222/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": 218819.0,
+          "expected_value": 218819.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2029281.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0001683168-25-008394",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/0001683168-25-008394-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001683168-25-008394",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2029281.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/0001683168-25-008394-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-008394",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825008394/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -2029281.0,
+          "expected_value": -2029281.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 657102.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-10-09",
+        "accn": "0001683168-25-007480",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825007480/0001683168-25-007480-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-10-09",
+            "accn": "0001683168-25-007480",
+            "start": "2023-07-01",
+            "end": "2024-06-30",
+            "value": -1528159.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825007480/0001683168-25-007480-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001683168-25-003710",
+            "start": "2023-07-01",
+            "end": "2024-03-31",
+            "value": -2185261.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-007480",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001683168-25-007480 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 1016082.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0001683168-25-003710",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001683168-25-003710",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 1016082.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316825003710/0001683168-25-003710-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-003710",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001683168-25-003710 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -1914828.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-14",
+        "accn": "0001683168-24-000987",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316824000987/0001683168-24-000987-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-14",
+            "accn": "0001683168-24-000987",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -1914828.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316824000987/0001683168-24-000987-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-24-000987",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316824000987/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -1914828.0,
+          "expected_value": -1914828.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -1286515.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-14",
+        "accn": "0001683168-23-008125",
+        "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316823008125/0001683168-23-008125-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001683168-23-008125",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -1286515.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316823008125/0001683168-23-008125-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-23-008125",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1830072/000168316823008125/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO IPOWER INC.",
+          "statement_value": -1286515.0,
+          "expected_value": -1286515.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

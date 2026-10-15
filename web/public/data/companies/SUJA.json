@@ -270,22 +270,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-052702.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-29",
         "latestValue": -3268000.0,
         "quartersInWindow": 2,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 2,
-        "disagreements": 2,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss) attributable to Suja Life, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -293,17 +293,124 @@
         "latestValue": -27798000.0,
         "quartersInWindow": 4,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 2,
+        "disagreements": 2,
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-052702",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/R4.htm",
+      "period_end": "2026-06-29",
+      "months": 3,
+      "pipeline_value": -3268000.0,
+      "statement_value": -3268000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-29",
+        "ttm": "current",
+        "missing": false,
+        "value": -3268000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001628280-26-052702",
+        "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/0001628280-26-052702-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001628280-26-052702",
+            "start": "2026-04-01",
+            "end": "2026-06-29",
+            "value": -3268000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/0001628280-26-052702-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-052702",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/R4.htm",
+          "statement_label": "Net income (loss) attributable to Suja Life, Inc.",
+          "statement_value": -3268000.0,
+          "expected_value": -3268000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-12-30",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 0.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "6M YTD − Q2",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001628280-26-052702",
+        "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/0001628280-26-052702-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001628280-26-052702",
+            "start": "2025-12-30",
+            "end": "2026-06-29",
+            "value": -3268000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/0001628280-26-052702-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001628280-26-052702",
+            "start": "2026-04-01",
+            "end": "2026-06-29",
+            "value": -3268000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/0001628280-26-052702-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-052702",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1934114/000162828026052702/R4.htm",
+          "statement_label": "Net income (loss) attributable to Suja Life, Inc.",
+          "statement_value": -3268000.0,
+          "expected_value": 0.0,
+          "detail": "6M -3,268,000 (10-Q 0001628280-26-052702) − 3M -3,268,000 (10-Q 0001628280-26-052702)"
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-29",

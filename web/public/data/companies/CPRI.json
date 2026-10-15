@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001530721-26-000081.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-27",
         "latestValue": 69000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Capri"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,549 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 6,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001530721-26-000081",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000081/R4.htm",
+      "period_end": "2026-06-27",
+      "months": 3,
+      "pipeline_value": 69000000.0,
+      "statement_value": 69000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-03-29",
+        "end": "2026-06-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 69000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001530721-26-000081",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000081/0001530721-26-000081-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001530721-26-000081",
+            "start": "2026-03-29",
+            "end": "2026-06-27",
+            "value": 69000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000081/0001530721-26-000081-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-26-000081",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000081/R4.htm",
+          "statement_label": "Net income attributable to Capri",
+          "statement_value": 69000000.0,
+          "expected_value": 69000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2025-12-28",
+        "end": "2026-03-28",
+        "ttm": "current",
+        "missing": false,
+        "value": -4000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-27",
+        "accn": "0001530721-26-000047",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000047/0001530721-26-000047-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-27",
+            "accn": "0001530721-26-000047",
+            "start": "2025-03-30",
+            "end": "2026-03-28",
+            "value": 137000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000047/0001530721-26-000047-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-03",
+            "accn": "0001530721-26-000012",
+            "start": "2025-03-30",
+            "end": "2025-12-27",
+            "value": 141000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000012/0001530721-26-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-26-000047",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000047/R5.htm",
+          "statement_label": "Net income (loss) attributable to Capri",
+          "statement_value": 137000000.0,
+          "expected_value": -4000000.0,
+          "detail": "12M 137,000,000 (10-K 0001530721-26-000047) − 9M 141,000,000 (10-Q 0001530721-26-000012)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-09-28",
+        "end": "2025-12-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 116000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-03",
+        "accn": "0001530721-26-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000012/0001530721-26-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-03",
+            "accn": "0001530721-26-000012",
+            "start": "2025-09-28",
+            "end": "2025-12-27",
+            "value": 116000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000012/0001530721-26-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-26-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072126000012/R4.htm",
+          "statement_label": "Net income (loss) attributable to Capri",
+          "statement_value": 116000000.0,
+          "expected_value": 116000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-06-29",
+        "end": "2025-09-27",
+        "ttm": "current",
+        "missing": false,
+        "value": -28000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001530721-25-000142",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000142/0001530721-25-000142-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001530721-25-000142",
+            "start": "2025-06-29",
+            "end": "2025-09-27",
+            "value": -28000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000142/0001530721-25-000142-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-25-000142",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000142/R4.htm",
+          "statement_label": "Net (loss) income attributable to Capri",
+          "statement_value": -28000000.0,
+          "expected_value": -28000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-03-30",
+        "end": "2025-06-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 53000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001530721-25-000113",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000113/0001530721-25-000113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001530721-25-000113",
+            "start": "2025-03-30",
+            "end": "2025-06-28",
+            "value": 53000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000113/0001530721-25-000113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-25-000113",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000113/R4.htm",
+          "statement_label": "Net income (loss) attributable to Capri",
+          "statement_value": 53000000.0,
+          "expected_value": 53000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2024-12-29",
+        "end": "2025-03-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": -645000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-28",
+        "accn": "0001530721-25-000052",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000052/0001530721-25-000052-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-28",
+            "accn": "0001530721-25-000052",
+            "start": "2024-03-31",
+            "end": "2025-03-29",
+            "value": -1182000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000052/0001530721-25-000052-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001530721-25-000015",
+            "start": "2024-03-31",
+            "end": "2024-12-28",
+            "value": -537000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000015/0001530721-25-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001530721-25-000052",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001530721-25-000052 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-09-29",
+        "end": "2024-12-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": -547000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-05",
+        "accn": "0001530721-25-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000015/0001530721-25-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001530721-25-000015",
+            "start": "2024-09-29",
+            "end": "2024-12-28",
+            "value": -547000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072125000015/0001530721-25-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001530721-25-000015",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001530721-25-000015 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-06-30",
+        "end": "2024-09-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 24000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0001530721-24-000125",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000125/0001530721-24-000125-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001530721-24-000125",
+            "start": "2024-06-30",
+            "end": "2024-09-28",
+            "value": 24000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000125/0001530721-24-000125-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001530721-24-000125",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001530721-24-000125 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-03-31",
+        "end": "2024-06-29",
+        "ttm": null,
+        "missing": false,
+        "value": -14000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0001530721-24-000096",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000096/0001530721-24-000096-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0001530721-24-000096",
+            "start": "2024-03-31",
+            "end": "2024-06-29",
+            "value": -14000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000096/0001530721-24-000096-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001530721-24-000096",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001530721-24-000096 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2023-12-31",
+        "end": "2024-03-30",
+        "ttm": null,
+        "missing": false,
+        "value": -472000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-29",
+        "accn": "0001530721-24-000041",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000041/0001530721-24-000041-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-29",
+            "accn": "0001530721-24-000041",
+            "start": "2023-04-02",
+            "end": "2024-03-30",
+            "value": -229000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000041/0001530721-24-000041-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-08",
+            "accn": "0001530721-24-000018",
+            "start": "2023-04-02",
+            "end": "2023-12-30",
+            "value": 243000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000018/0001530721-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001530721-24-000041",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001530721-24-000041 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-30",
+        "ttm": null,
+        "missing": false,
+        "value": 105000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-08",
+        "accn": "0001530721-24-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000018/0001530721-24-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-08",
+            "accn": "0001530721-24-000018",
+            "start": "2023-10-01",
+            "end": "2023-12-30",
+            "value": 105000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000018/0001530721-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-24-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072124000018/R4.htm",
+          "statement_label": "Net income attributable to Capri",
+          "statement_value": 105000000.0,
+          "expected_value": 105000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-02",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 90000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0001530721-23-000194",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072123000194/0001530721-23-000194-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001530721-23-000194",
+            "start": "2023-07-02",
+            "end": "2023-09-30",
+            "value": 90000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072123000194/0001530721-23-000194-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530721-23-000194",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530721/000153072123000194/R4.htm",
+          "statement_label": "Net income attributable to Capri",
+          "statement_value": 90000000.0,
+          "expected_value": 90000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-27",

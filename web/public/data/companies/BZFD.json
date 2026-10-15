@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001828972-26-000138.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -11848000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to BuzzFeed, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -629,14 +629,560 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Basic"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001828972-26-000138",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000138/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -11848000.0,
+      "statement_value": -11848000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -11848000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001828972-26-000138",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000138/0001828972-26-000138-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001828972-26-000138",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -11848000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000138/0001828972-26-000138-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-26-000138",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000138/R4.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -11848000.0,
+          "expected_value": -11848000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -15081000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001828972-26-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000056/0001828972-26-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001828972-26-000056",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -15081000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000056/0001828972-26-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-26-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000056/R4.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -15081000.0,
+          "expected_value": -15081000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -26798000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-16",
+        "accn": "0001828972-26-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000030/0001828972-26-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-16",
+            "accn": "0001828972-26-000030",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -57724000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000030/0001828972-26-000030-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001828972-25-000240",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -30926000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000240/0001828972-25-000240-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-26-000030",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897226000030/R5.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -57724000.0,
+          "expected_value": -26798000.0,
+          "detail": "12M -57,724,000 (10-K 0001828972-26-000030) − 9M -30,926,000 (10-Q 0001828972-25-000240)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -7435000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001828972-25-000240",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000240/0001828972-25-000240-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001828972-25-000240",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -7435000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000240/0001828972-25-000240-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-25-000240",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000240/R4.htm",
+          "statement_label": "Net (loss) income attributable to BuzzFeed, Inc.",
+          "statement_value": -7435000.0,
+          "expected_value": -7435000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -10820000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001828972-25-000195",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000195/0001828972-25-000195-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001828972-25-000195",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -10820000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000195/0001828972-25-000195-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-25-000195",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000195/R4.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -10820000.0,
+          "expected_value": -10820000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -12671000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0001828972-25-000121",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000121/0001828972-25-000121-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0001828972-25-000121",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -12671000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000121/0001828972-25-000121-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-25-000121",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000121/R4.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -12671000.0,
+          "expected_value": -12671000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 31031000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-14",
+        "accn": "0001828972-25-000073",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000073/0001828972-25-000073-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-14",
+            "accn": "0001828972-25-000073",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -10096000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000073/0001828972-25-000073-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001828972-24-000222",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -41127000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000222/0001828972-24-000222-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-25-000073",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897225000073/R4.htm",
+          "statement_label": "Net loss attributable to BuzzFeed, Inc.",
+          "statement_value": -10096000.0,
+          "expected_value": 31031000.0,
+          "detail": "12M -10,096,000 (10-K 0001828972-25-000073) − 9M -41,127,000 (10-Q 0001828972-24-000222)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2089000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001828972-24-000222",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000222/0001828972-24-000222-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001828972-24-000222",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 2089000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000222/0001828972-24-000222-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828972-24-000222",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000222/R4.htm",
+          "statement_label": "Net income (loss) attributable to BuzzFeed, Inc.",
+          "statement_value": 2089000.0,
+          "expected_value": 2089000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -7487000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-13",
+        "accn": "0001828972-24-000181",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000181/0001828972-24-000181-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-13",
+            "accn": "0001828972-24-000181",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -7487000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000181/0001828972-24-000181-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001828972-24-000181",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001828972-24-000181 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -35729000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-14",
+        "accn": "0001828972-24-000113",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000113/0001828972-24-000113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-14",
+            "accn": "0001828972-24-000113",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -35729000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000113/0001828972-24-000113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001828972-24-000113",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001828972-24-000113 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -11020000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-29",
+        "accn": "0001828972-24-000057",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000057/0001828972-24-000057-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-29",
+            "accn": "0001828972-24-000057",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -88579000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897224000057/0001828972-24-000057-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001828972-23-000191",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -77559000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897223000191/0001828972-23-000191-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001828972-24-000057",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001828972-24-000057 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -13722000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001828972-23-000191",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897223000191/0001828972-23-000191-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001828972-23-000191",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -13722000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828972/000182897223000191/0001828972-23-000191-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001828972-23-000191",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001828972-23-000191 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

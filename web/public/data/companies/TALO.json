@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-333290.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 149667000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Talos Energy Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,569 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 2,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-333290",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526333290/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 149667000.0,
+      "statement_value": 149667000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 149667000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001193125-26-333290",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526333290/0001193125-26-333290-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001193125-26-333290",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 149667000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526333290/0001193125-26-333290-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-333290",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526333290/R4.htm",
+          "statement_label": "Net income (loss) attributable to Talos Energy Inc.",
+          "statement_value": 149667000.0,
+          "expected_value": 149667000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -256165000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001193125-26-207039",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526207039/0001193125-26-207039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-207039",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -256165000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526207039/0001193125-26-207039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-207039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526207039/R4.htm",
+          "statement_label": "Net income (loss) attributable to Talos Energy Inc.",
+          "statement_value": -256165000.0,
+          "expected_value": -256165000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -202580000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001193125-26-067807",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526067807/0001193125-26-067807-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001193125-26-067807",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -494290000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526067807/0001193125-26-067807-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-267455",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -291710000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312525267455/0001193125-25-267455-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-067807",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312526067807/R4.htm",
+          "statement_label": "Net income (loss) attributable to Talos Energy Inc.",
+          "statement_value": -494290000.0,
+          "expected_value": -202580000.0,
+          "detail": "12M -494,290,000 (10-K 0001193125-26-067807) − 9M -291,710,000 (10-Q 0001193125-25-267455)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -95905000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001193125-25-267455",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312525267455/0001193125-25-267455-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-267455",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -95905000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312525267455/0001193125-25-267455-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-267455",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000119312525267455/R4.htm",
+          "statement_label": "Net income (loss) attributable to Talos Energy Inc.",
+          "statement_value": -95905000.0,
+          "expected_value": -95905000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -185937000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000950170-25-104296",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025104296/0000950170-25-104296-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000950170-25-104296",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -185937000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025104296/0000950170-25-104296-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-104296",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025104296/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": -185937000.0,
+          "expected_value": -185937000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -9868000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0000950170-25-063785",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025063785/0000950170-25-063785-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0000950170-25-063785",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -9868000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025063785/0000950170-25-063785-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-063785",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025063785/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": -9868000.0,
+          "expected_value": -9868000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -64508000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-27",
+        "accn": "0000950170-25-028223",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025028223/0000950170-25-028223-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-27",
+            "accn": "0000950170-25-028223",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -76393000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025028223/0000950170-25-028223-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125580",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -11885000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024125580/0000950170-24-125580-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-028223",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017025028223/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": -76393000.0,
+          "expected_value": -64508000.0,
+          "detail": "12M -76,393,000 (10-K 0000950170-25-028223) − 9M -11,885,000 (10-Q 0000950170-24-125580)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 88173000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0000950170-24-125580",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024125580/0000950170-24-125580-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125580",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 88173000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024125580/0000950170-24-125580-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-125580",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024125580/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": 88173000.0,
+          "expected_value": 88173000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 12381000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000950170-24-093063",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024093063/0000950170-24-093063-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000950170-24-093063",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 12381000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024093063/0000950170-24-093063-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-093063",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024093063/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": 12381000.0,
+          "expected_value": 12381000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -112439000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0000950170-24-053731",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024053731/0000950170-24-053731-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0000950170-24-053731",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -112439000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024053731/0000950170-24-053731-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-053731",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024053731/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": -112439000.0,
+          "expected_value": -112439000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 85898000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-29",
+        "accn": "0000950170-24-022540",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024022540/0000950170-24-022540-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-29",
+            "accn": "0000950170-24-022540",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 187332000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024022540/0000950170-24-022540-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000950170-23-059561",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 101434000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017023059561/0000950170-23-059561-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-022540",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017024022540/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": 187332000.0,
+          "expected_value": 85898000.0,
+          "detail": "12M 187,332,000 (10-K 0000950170-24-022540) − 9M 101,434,000 (10-Q 0000950170-23-059561)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -2103000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0000950170-23-059561",
+        "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017023059561/0000950170-23-059561-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0000950170-23-059561",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -2103000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017023059561/0000950170-23-059561-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-059561",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1724965/000095017023059561/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": -2103000.0,
+          "expected_value": -2103000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

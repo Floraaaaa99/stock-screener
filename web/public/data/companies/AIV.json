@@ -81,11 +81,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "ProfitLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; ProfitLoss is the net income line presented on the income statement of filing 0001193125-26-216904.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -93,9 +93,9 @@
         "latestValue": -7743000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
+        "comparedWith": "ProfitLoss",
+        "overlaps": 12,
+        "disagreements": 12,
         "statementLabel": null
       },
       {
@@ -103,11 +103,11 @@
         "latestEnd": "2025-12-31",
         "latestValue": 318663000.0,
         "quartersInWindow": 12,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 12,
-        "disagreements": 12,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -115,16 +115,25 @@
         "latestValue": 300516000.0,
         "quartersInWindow": 12,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "ProfitLoss",
         "overlaps": 12,
-        "disagreements": 3,
-        "statementLabel": null
+        "disagreements": 12,
+        "statementLabel": "Net income (loss) attributable to Aimco Operating Partnership"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees"
     ],
-    "statementCheck": null,
+    "statementCheck": {
+      "status": "unavailable",
+      "accn": "0001193125-26-216904",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/922864/000119312526216904/R5.htm",
+      "period_end": "2026-01-31",
+      "months": 3,
+      "pipeline_value": null,
+      "statement_value": null
+    },
     "quarters": [],
     "edgarSupplement": {
       "status": "current",

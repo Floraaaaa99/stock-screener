@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-335450.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 46649000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to common stockholders"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-335450",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526335450/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 46649000.0,
+      "statement_value": 46649000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 46649000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001193125-26-335450",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526335450/0001193125-26-335450-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001193125-26-335450",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 46649000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526335450/0001193125-26-335450-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-335450",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526335450/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 46649000.0,
+          "expected_value": 46649000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 14961000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001193125-26-212380",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526212380/0001193125-26-212380-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001193125-26-212380",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 14961000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526212380/0001193125-26-212380-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-212380",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526212380/R4.htm",
+          "statement_label": "Net income (loss) attributable to common stockholders",
+          "statement_value": 14961000.0,
+          "expected_value": 14961000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 10202000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-10",
+        "accn": "0001193125-26-044918",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526044918/0001193125-26-044918-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-10",
+            "accn": "0001193125-26-044918",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 66141000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526044918/0001193125-26-044918-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-270081",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 55939000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312525270081/0001193125-25-270081-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-044918",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312526044918/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 66141000.0,
+          "expected_value": 10202000.0,
+          "detail": "12M 66,141,000 (10-K 0001193125-26-044918) − 9M 55,939,000 (10-Q 0001193125-25-270081)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 14278000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001193125-25-270081",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312525270081/0001193125-25-270081-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-270081",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 14278000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312525270081/0001193125-25-270081-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-270081",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000119312525270081/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 14278000.0,
+          "expected_value": 14278000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 46098000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000950170-25-105233",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025105233/0000950170-25-105233-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000950170-25-105233",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 46098000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025105233/0000950170-25-105233-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-105233",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025105233/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 46098000.0,
+          "expected_value": 46098000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4437000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0000950170-25-067170",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025067170/0000950170-25-067170-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0000950170-25-067170",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -4437000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025067170/0000950170-25-067170-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-067170",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025067170/R4.htm",
+          "statement_label": "Net (loss) income attributable to common stockholders",
+          "statement_value": -4437000.0,
+          "expected_value": -4437000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 8241000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-14",
+        "accn": "0000950170-25-021400",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025021400/0000950170-25-021400-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-14",
+            "accn": "0000950170-25-021400",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 44024000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025021400/0000950170-25-021400-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123507",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 35783000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024123507/0000950170-24-123507-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-021400",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017025021400/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 44024000.0,
+          "expected_value": 8241000.0,
+          "detail": "12M 44,024,000 (10-K 0000950170-25-021400) − 9M 35,783,000 (10-Q 0000950170-24-123507)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13745000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000950170-24-123507",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024123507/0000950170-24-123507-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123507",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 13745000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024123507/0000950170-24-123507-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-123507",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024123507/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 13745000.0,
+          "expected_value": 13745000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 8000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000950170-24-094180",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024094180/0000950170-24-094180-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000950170-24-094180",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 8000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024094180/0000950170-24-094180-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-094180",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024094180/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 8000000.0,
+          "expected_value": 8000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 14038000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-09",
+        "accn": "0000950170-24-057252",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024057252/0000950170-24-057252-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-09",
+            "accn": "0000950170-24-057252",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 14038000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024057252/0000950170-24-057252-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-057252",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024057252/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 14038000.0,
+          "expected_value": 14038000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 25292000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-09",
+        "accn": "0000950170-24-013363",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024013363/0000950170-24-013363-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-09",
+            "accn": "0000950170-24-013363",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 227182000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024013363/0000950170-24-013363-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061252",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 201890000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017023061252/0000950170-23-061252-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-013363",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017024013363/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 227182000.0,
+          "expected_value": 25292000.0,
+          "detail": "12M 227,182,000 (10-K 0000950170-24-013363) − 9M 201,890,000 (10-Q 0000950170-23-061252)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 48720000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-061252",
+        "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017023061252/0000950170-23-061252-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061252",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 48720000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017023061252/0000950170-23-061252-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-061252",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/29002/000095017023061252/R4.htm",
+          "statement_label": "Net income attributable to common stockholders",
+          "statement_value": 48720000.0,
+          "expected_value": 48720000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

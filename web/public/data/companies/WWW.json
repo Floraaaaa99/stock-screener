@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-056524.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-04",
         "latestValue": 31200000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to Wolverine World Wide, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,552 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net earnings"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-056524",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026056524/R2.htm",
+      "period_end": "2026-07-04",
+      "months": 3,
+      "pipeline_value": 31200000.0,
+      "statement_value": 31200000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-05",
+        "end": "2026-07-04",
+        "ttm": "current",
+        "missing": false,
+        "value": 31200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-13",
+        "accn": "0001628280-26-056524",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026056524/0001628280-26-056524-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-13",
+            "accn": "0001628280-26-056524",
+            "start": "2026-04-05",
+            "end": "2026-07-04",
+            "value": 31200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026056524/0001628280-26-056524-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-056524",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026056524/R2.htm",
+          "statement_label": "Net earnings attributable to Wolverine World Wide, Inc.",
+          "statement_value": 31200000.0,
+          "expected_value": 31200000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-04",
+        "end": "2026-04-04",
+        "ttm": "current",
+        "missing": false,
+        "value": 20200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-14",
+        "accn": "0001628280-26-034967",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026034967/0001628280-26-034967-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0001628280-26-034967",
+            "start": "2026-01-04",
+            "end": "2026-04-04",
+            "value": 20200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026034967/0001628280-26-034967-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-034967",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026034967/R2.htm",
+          "statement_label": "Net earnings attributable to Wolverine World Wide, Inc.",
+          "statement_value": 20200000.0,
+          "expected_value": 20200000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2025-09-28",
+        "end": "2026-01-03",
+        "ttm": "current",
+        "missing": false,
+        "value": 31800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001628280-26-012614",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001628280-26-012614",
+            "start": "2024-12-29",
+            "end": "2026-01-03",
+            "value": 95800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2024-12-29",
+            "end": "2025-09-27",
+            "value": 64000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-012614",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/R3.htm",
+          "statement_label": "Net earnings (loss) attributable to Wolverine World Wide, Inc.",
+          "statement_value": 95800000.0,
+          "expected_value": 31800000.0,
+          "detail": "12M 95,800,000 (10-K 0001628280-26-012614) − 9M 64,000,000 (10-Q 0001628280-25-049956)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-29",
+        "end": "2025-09-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 25100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001628280-25-049956",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2025-06-29",
+            "end": "2025-09-27",
+            "value": 25100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-049956",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/R2.htm",
+          "statement_label": "Net earnings attributable to Wolverine World Wide, Inc.",
+          "statement_value": 25100000.0,
+          "expected_value": 25100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-30",
+        "end": "2025-06-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 26800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000110471-25-000125",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047125000125/0000110471-25-000125-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000110471-25-000125",
+            "start": "2025-03-30",
+            "end": "2025-06-28",
+            "value": 26800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047125000125/0000110471-25-000125-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000110471-25-000125",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047125000125/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Wolverine World Wide, Inc.",
+          "statement_value": 26800000.0,
+          "expected_value": 26800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-29",
+        "end": "2025-03-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 12100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001628280-25-049956",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2024-12-29",
+            "end": "2025-03-29",
+            "value": 12100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-049956",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/R2.htm",
+          "detail": "No 3-month net income column ending 2025-03-29 on 10-Q 0001628280-25-049956."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-29",
+        "end": "2024-12-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 23100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001628280-26-012614",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001628280-26-012614",
+            "start": "2023-12-31",
+            "end": "2024-12-28",
+            "value": 45200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2023-12-31",
+            "end": "2024-09-28",
+            "value": 22100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-012614",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/R3.htm",
+          "statement_label": "Net earnings (loss) attributable to Wolverine World Wide, Inc.",
+          "statement_value": 45200000.0,
+          "expected_value": 23100000.0,
+          "detail": "12M 45,200,000 (10-K 0001628280-26-012614) − 9M 22,100,000 (10-Q 0001628280-25-049956)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-06-30",
+        "end": "2024-09-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 23200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001628280-25-049956",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2024-06-30",
+            "end": "2024-09-28",
+            "value": 23200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-049956",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/R2.htm",
+          "statement_label": "Net earnings attributable to Wolverine World Wide, Inc.",
+          "statement_value": 23200000.0,
+          "expected_value": 23200000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-31",
+        "end": "2024-06-29",
+        "ttm": null,
+        "missing": false,
+        "value": 13800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001628280-25-049956",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2024-03-31",
+            "end": "2024-06-29",
+            "value": 13800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-049956",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/R2.htm",
+          "detail": "No 3-month net income column ending 2024-06-29 on 10-Q 0001628280-25-049956."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-31",
+        "end": "2024-03-30",
+        "ttm": null,
+        "missing": false,
+        "value": -14900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001628280-25-049956",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001628280-25-049956",
+            "start": "2023-12-31",
+            "end": "2024-03-30",
+            "value": -14900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/0001628280-25-049956-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-049956",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828025049956/R2.htm",
+          "detail": "No 3-month net income column ending 2024-03-30 on 10-Q 0001628280-25-049956."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-30",
+        "ttm": null,
+        "missing": false,
+        "value": -90100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001628280-26-012614",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001628280-26-012614",
+            "start": "2023-01-01",
+            "end": "2023-12-30",
+            "value": -38500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/0001628280-26-012614-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000110471-23-000147",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 51600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047123000147/0000110471-23-000147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-012614",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000162828026012614/R3.htm",
+          "statement_label": "Net earnings (loss) attributable to Wolverine World Wide, Inc.",
+          "statement_value": -38500000.0,
+          "expected_value": -90100000.0,
+          "detail": "12M -38,500,000 (10-K 0001628280-26-012614) − 9M 51,600,000 (10-Q 0000110471-23-000147)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-02",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 8600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0000110471-23-000147",
+        "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047123000147/0000110471-23-000147-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000110471-23-000147",
+            "start": "2023-07-02",
+            "end": "2023-09-30",
+            "value": 8600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047123000147/0000110471-23-000147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000110471-23-000147",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/110471/000011047123000147/R2.htm",
+          "statement_label": "Net earnings attributable to Wolverine World Wide, Inc.",
+          "statement_value": 8600000.0,
+          "expected_value": 8600000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-04",

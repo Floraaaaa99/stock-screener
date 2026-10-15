@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001829126-26-008507.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -604,9 +604,9 @@
         "latestValue": 1937000.0,
         "quartersInWindow": 11,
         "selected": false,
-        "comparedWith": "ProfitLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 11,
-        "disagreements": 9,
+        "disagreements": 11,
         "statementLabel": null
       },
       {
@@ -615,28 +615,582 @@
         "latestValue": 2214000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net income / (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 1782000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income / (loss) attributable to shareholders of Aeries Technology Inc."
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001829126-26-008507",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626008507/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 1782000.0,
+      "statement_value": 1782000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1782000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-10",
+        "accn": "0001829126-26-008507",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626008507/0001829126-26-008507-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-10",
+            "accn": "0001829126-26-008507",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 1782000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626008507/0001829126-26-008507-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-26-008507",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626008507/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders of Aeries Technology Inc.",
+          "statement_value": 1782000.0,
+          "expected_value": 1782000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -280000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-06-08",
+        "accn": "0001829126-26-006123",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626006123/0001829126-26-006123-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-06-08",
+            "accn": "0001829126-26-006123",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": 2554000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626006123/0001829126-26-006123-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-09",
+            "accn": "0001829126-26-001091",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": 2834000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626001091/0001829126-26-001091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-26-006123",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626006123/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology Inc.",
+          "statement_value": 2554000.0,
+          "expected_value": -280000.0,
+          "detail": "12M 2,554,000 (10-K 0001829126-26-006123) − 9M 2,834,000 (10-Q 0001829126-26-001091)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1076000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-09",
+        "accn": "0001829126-26-001091",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626001091/0001829126-26-001091-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-09",
+            "accn": "0001829126-26-001091",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 1076000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626001091/0001829126-26-001091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-26-001091",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912626001091/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology Inc.",
+          "statement_value": 1076000.0,
+          "expected_value": 1076000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 241000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001829126-25-008937",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625008937/0001829126-25-008937-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001829126-25-008937",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 241000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625008937/0001829126-25-008937-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-25-008937",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625008937/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology Inc.",
+          "statement_value": 241000.0,
+          "expected_value": 241000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1512000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-14",
+        "accn": "0001829126-25-006238",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625006238/0001829126-25-006238-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-14",
+            "accn": "0001829126-25-006238",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1512000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625006238/0001829126-25-006238-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-25-006238",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625006238/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders of Aeries Technology Inc.",
+          "statement_value": 1512000.0,
+          "expected_value": 1512000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5756000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-07-02",
+        "accn": "0001829126-25-004837",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625004837/0001829126-25-004837-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-07-02",
+            "accn": "0001829126-25-004837",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": -19714000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625004837/0001829126-25-004837-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-14",
+            "accn": "0001829126-25-001004",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": -13958000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/0001829126-25-001004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-25-004837",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625004837/R4.htm",
+          "statement_label": "Net (loss) / income attributable to Aeries Technology Inc.",
+          "statement_value": -19714000.0,
+          "expected_value": -5756000.0,
+          "detail": "12M -19,714,000 (10-K 0001829126-25-004837) − 9M -13,958,000 (10-Q 0001829126-25-001004)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 3053000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-14",
+        "accn": "0001829126-25-001004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/0001829126-25-001004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-14",
+            "accn": "0001829126-25-001004",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 3053000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/0001829126-25-001004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-25-001004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders of Aeries Technology Inc.",
+          "statement_value": 3053000.0,
+          "expected_value": 3053000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2190000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-19",
+        "accn": "0001829126-24-007681",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/0001829126-24-007681-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-19",
+            "accn": "0001829126-24-007681",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2190000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/0001829126-24-007681-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-24-007681",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology Inc.",
+          "statement_value": -2190000.0,
+          "expected_value": -2190000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -14821000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-15",
+        "accn": "0001829126-24-006809",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006809/0001829126-24-006809-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-15",
+            "accn": "0001829126-24-006809",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -14821000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006809/0001829126-24-006809-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-24-006809",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006809/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology, Inc.",
+          "statement_value": -14821000.0,
+          "expected_value": -14821000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 30828000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-09-27",
+        "accn": "0001829126-24-006527",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006527/0001829126-24-006527-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-09-27",
+            "accn": "0001829126-24-006527",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": 15657000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006527/0001829126-24-006527-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-20",
+            "accn": "0001829126-24-001000",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": -15171000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624001000/0001829126-24-001000-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-24-006527",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624006527/R4.htm",
+          "statement_label": "Net income attributable to shareholders’ of Aeries Technology, Inc.",
+          "statement_value": 15657000.0,
+          "expected_value": 30828000.0,
+          "detail": "12M 15,657,000 (10-K 0001829126-24-006527) − 9M -15,171,000 (10-Q 0001829126-24-001000)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 16411000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-14",
+        "accn": "0001829126-25-001004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/0001829126-25-001004-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-14",
+            "accn": "0001829126-25-001004",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 16411000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/0001829126-25-001004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-25-001004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912625001004/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders of Aeries Technology Inc.",
+          "statement_value": 16411000.0,
+          "expected_value": 16411000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 819000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-19",
+        "accn": "0001829126-24-007681",
+        "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/0001829126-24-007681-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-19",
+            "accn": "0001829126-24-007681",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 819000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/0001829126-24-007681-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-24-007681",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1853044/000182912624007681/R4.htm",
+          "statement_label": "Net income / (loss) attributable to shareholders’ of Aeries Technology Inc.",
+          "statement_value": 819000.0,
+          "expected_value": 819000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

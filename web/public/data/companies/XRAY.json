@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000818479-26-000255.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 37000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Dentsply Sirona"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,569 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000818479-26-000255",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000255/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 37000000.0,
+      "statement_value": 37000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 37000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0000818479-26-000255",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000255/0000818479-26-000255-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0000818479-26-000255",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 37000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000255/0000818479-26-000255-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-26-000255",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000255/R2.htm",
+          "statement_label": "Net income (loss) attributable to Dentsply Sirona",
+          "statement_value": 37000000.0,
+          "expected_value": 37000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -10000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-05",
+        "accn": "0000818479-26-000149",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000149/0000818479-26-000149-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-05",
+            "accn": "0000818479-26-000149",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -10000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000149/0000818479-26-000149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-26-000149",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000149/R2.htm",
+          "statement_label": "Net (loss) income attributable to Dentsply Sirona",
+          "statement_value": -10000000.0,
+          "expected_value": -10000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -146000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0000818479-26-000075",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/0000818479-26-000075-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0000818479-26-000075",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -598000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/0000818479-26-000075-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000818479-25-000257",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -452000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000257/0000818479-25-000257-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-26-000075",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/R3.htm",
+          "statement_label": "Net loss attributable to Dentsply Sirona",
+          "statement_value": -598000000.0,
+          "expected_value": -146000000.0,
+          "detail": "12M -598,000,000 (10-K 0000818479-26-000075) − 9M -452,000,000 (10-Q 0000818479-25-000257)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -427000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0000818479-25-000257",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000257/0000818479-25-000257-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000818479-25-000257",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -427000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000257/0000818479-25-000257-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-25-000257",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000257/R2.htm",
+          "statement_label": "Net loss attributable to Dentsply Sirona",
+          "statement_value": -427000000.0,
+          "expected_value": -427000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -45000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000818479-25-000155",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000155/0000818479-25-000155-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000818479-25-000155",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -45000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000155/0000818479-25-000155-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-25-000155",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000155/R2.htm",
+          "statement_label": "Net (loss) income attributable to Dentsply Sirona",
+          "statement_value": -45000000.0,
+          "expected_value": -45000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 20000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0000818479-25-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000056/0000818479-25-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0000818479-25-000056",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 20000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000056/0000818479-25-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-25-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000056/R2.htm",
+          "statement_label": "Net income attributable to Dentsply Sirona",
+          "statement_value": 20000000.0,
+          "expected_value": 20000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -430000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-27",
+        "accn": "0000818479-25-000035",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000035/0000818479-25-000035-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-27",
+            "accn": "0000818479-25-000035",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -910000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000035/0000818479-25-000035-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000818479-24-000093",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -480000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000093/0000818479-24-000093-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-25-000035",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847925000035/R3.htm",
+          "statement_label": "Net loss attributable to Dentsply Sirona",
+          "statement_value": -910000000.0,
+          "expected_value": -430000000.0,
+          "detail": "12M -910,000,000 (10-K 0000818479-25-000035) − 9M -480,000,000 (10-Q 0000818479-24-000093)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -494000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000818479-24-000093",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000093/0000818479-24-000093-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000818479-24-000093",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -494000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000093/0000818479-24-000093-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-24-000093",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000093/R2.htm",
+          "statement_label": "Net loss attributable to Dentsply Sirona",
+          "statement_value": -494000000.0,
+          "expected_value": -494000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -4000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0000818479-24-000069",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000069/0000818479-24-000069-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0000818479-24-000069",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -4000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000069/0000818479-24-000069-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-24-000069",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000069/R2.htm",
+          "statement_label": "Net (loss) income attributable to Dentsply Sirona",
+          "statement_value": -4000000.0,
+          "expected_value": -4000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 18000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0000818479-24-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000036/0000818479-24-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0000818479-24-000036",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 18000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000036/0000818479-24-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-24-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000036/R2.htm",
+          "statement_label": "Net income (loss) attributable to Dentsply Sirona",
+          "statement_value": 18000000.0,
+          "expected_value": 18000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 67000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-29",
+        "accn": "0000818479-24-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000021/0000818479-24-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-29",
+            "accn": "0000818479-24-000021",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -132000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000021/0000818479-24-000021-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000818479-23-000084",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -199000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847923000084/0000818479-23-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-24-000021",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847924000021/R3.htm",
+          "statement_label": "Net (loss) income attributable to Dentsply Sirona",
+          "statement_value": -132000000.0,
+          "expected_value": 67000000.0,
+          "detail": "12M -132,000,000 (10-K 0000818479-24-000021) − 9M -199,000,000 (10-Q 0000818479-23-000084)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -266000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0000818479-23-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847923000084/0000818479-23-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000818479-23-000084",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -266000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847923000084/0000818479-23-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000818479-23-000084",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847923000084/R2.htm",
+          "statement_label": "Net loss attributable to Dentsply Sirona",
+          "statement_value": -266000000.0,
+          "expected_value": -266000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

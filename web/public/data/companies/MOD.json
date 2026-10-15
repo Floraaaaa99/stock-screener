@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-088569.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 73900000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to Modine"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net earnings"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-088569",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926088569/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 73900000.0,
+      "statement_value": 73900000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 73900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0001104659-26-088569",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926088569/0001104659-26-088569-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0001104659-26-088569",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 73900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926088569/0001104659-26-088569-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-088569",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926088569/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 73900000.0,
+          "expected_value": 73900000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 73300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-27",
+        "accn": "0001104659-26-066795",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926066795/0001104659-26-066795-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-27",
+            "accn": "0001104659-26-066795",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": 121500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926066795/0001104659-26-066795-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0001104659-26-010790",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": 48200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926010790/0001104659-26-010790-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-066795",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926066795/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 121500000.0,
+          "expected_value": 73300000.0,
+          "detail": "12M 121,500,000 (10-K 0001104659-26-066795) − 9M 48,200,000 (10-Q 0001104659-26-010790)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -47400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-05",
+        "accn": "0001104659-26-010790",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926010790/0001104659-26-010790-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0001104659-26-010790",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -47400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926010790/0001104659-26-010790-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-010790",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926010790/R2.htm",
+          "statement_label": "Net (loss) earnings attributable to Modine",
+          "statement_value": -47400000.0,
+          "expected_value": -47400000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 44400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001104659-25-103646",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465925103646/0001104659-25-103646-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001104659-25-103646",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 44400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465925103646/0001104659-25-103646-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-103646",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465925103646/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 44400000.0,
+          "expected_value": 44400000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 51200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0001558370-25-009865",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025009865/0001558370-25-009865-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0001558370-25-009865",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 51200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025009865/0001558370-25-009865-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-009865",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025009865/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 51200000.0,
+          "expected_value": 51200000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 49600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-21",
+        "accn": "0001558370-25-008058",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025008058/0001558370-25-008058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-21",
+            "accn": "0001558370-25-008058",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": 184000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025008058/0001558370-25-008058-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001558370-25-000648",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": 134400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025000648/0001558370-25-000648-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-008058",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025008058/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 184000000.0,
+          "expected_value": 49600000.0,
+          "detail": "12M 184,000,000 (10-K 0001558370-25-008058) − 9M 134,400,000 (10-Q 0001558370-25-000648)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 41000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-05",
+        "accn": "0001558370-25-000648",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025000648/0001558370-25-000648-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001558370-25-000648",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 41000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025000648/0001558370-25-000648-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-000648",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837025000648/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 41000000.0,
+          "expected_value": 41000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 46100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001558370-24-013912",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837024013912/0001558370-24-013912-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001558370-24-013912",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 46100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837024013912/0001558370-24-013912-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-013912",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000155837024013912/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 46100000.0,
+          "expected_value": 46100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 47300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0001140361-24-035058",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124035058/0001140361-24-035058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0001140361-24-035058",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 47300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124035058/0001140361-24-035058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-24-035058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124035058/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 47300000.0,
+          "expected_value": 47300000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 25800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-22",
+        "accn": "0001140361-24-027133",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124027133/0001140361-24-027133-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-22",
+            "accn": "0001140361-24-027133",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": 161500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124027133/0001140361-24-027133-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-01-31",
+            "accn": "0001140361-24-004740",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": 135700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124004740/0001140361-24-004740-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-24-027133",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124027133/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 161500000.0,
+          "expected_value": 25800000.0,
+          "detail": "12M 161,500,000 (10-K 0001140361-24-027133) − 9M 135,700,000 (10-Q 0001140361-24-004740)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 44400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-01-31",
+        "accn": "0001140361-24-004740",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124004740/0001140361-24-004740-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-01-31",
+            "accn": "0001140361-24-004740",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 44400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124004740/0001140361-24-004740-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-24-004740",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036124004740/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 44400000.0,
+          "expected_value": 44400000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 46500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001140361-23-051058",
+        "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036123051058/0001140361-23-051058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001140361-23-051058",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 46500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036123051058/0001140361-23-051058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-23-051058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/67347/000114036123051058/R2.htm",
+          "statement_label": "Net earnings attributable to Modine",
+          "statement_value": 46500000.0,
+          "expected_value": 46500000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

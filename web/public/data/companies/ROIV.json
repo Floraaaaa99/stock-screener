@@ -596,22 +596,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001635088-26-000090.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -189837000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Roivant Sciences Ltd."
       },
       {
         "concept": "ProfitLoss",
@@ -622,14 +622,556 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001635088-26-000090",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000090/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -189837000.0,
+      "statement_value": -189837000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -189837000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001635088-26-000090",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000090/0001635088-26-000090-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001635088-26-000090",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -189837000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000090/0001635088-26-000090-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635088-26-000090",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000090/R4.htm",
+          "statement_label": "Net loss attributable to Roivant Sciences Ltd.",
+          "statement_value": -189837000.0,
+          "expected_value": -189837000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 302994000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-20",
+        "accn": "0001635088-26-000061",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000061/0001635088-26-000061-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-20",
+            "accn": "0001635088-26-000061",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": -299771000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000061/0001635088-26-000061-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-06",
+            "accn": "0001635088-26-000011",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": -602765000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000011/0001635088-26-000011-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635088-26-000061",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000061/R5.htm",
+          "statement_label": "Net (loss) income attributable to Roivant Sciences Ltd.",
+          "statement_value": -299771000.0,
+          "expected_value": 302994000.0,
+          "detail": "12M -299,771,000 (10-K 0001635088-26-000061) − 9M -602,765,000 (10-Q 0001635088-26-000011)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -265891000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-06",
+        "accn": "0001635088-26-000011",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000011/0001635088-26-000011-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-06",
+            "accn": "0001635088-26-000011",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -265891000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000011/0001635088-26-000011-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635088-26-000011",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508826000011/R4.htm",
+          "statement_label": "Net (loss) income attributable to Roivant Sciences Ltd.",
+          "statement_value": -265891000.0,
+          "expected_value": -265891000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -113519000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001635088-25-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508825000016/0001635088-25-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001635088-25-000016",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -113519000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508825000016/0001635088-25-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635088-25-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000163508825000016/R4.htm",
+          "statement_label": "Net loss attributable to Roivant Sciences Ltd.",
+          "statement_value": -113519000.0,
+          "expected_value": -113519000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -223355000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0001140361-25-030001",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125030001/0001140361-25-030001-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0001140361-25-030001",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -223355000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125030001/0001140361-25-030001-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-25-030001",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125030001/R4.htm",
+          "statement_label": "Net (loss) income attributable to Roivant Sciences Ltd.",
+          "statement_value": -223355000.0,
+          "expected_value": -223355000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -206475000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-29",
+        "accn": "0001140361-25-020715",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125020715/0001140361-25-020715-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-29",
+            "accn": "0001140361-25-020715",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": -171981000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125020715/0001140361-25-020715-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-10",
+            "accn": "0001140361-25-003661",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": 34494000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125003661/0001140361-25-003661-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-25-020715",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125020715/R4.htm",
+          "statement_label": "Net (loss) income attributable to Roivant Sciences Ltd.",
+          "statement_value": -171981000.0,
+          "expected_value": -206475000.0,
+          "detail": "12M -171,981,000 (10-K 0001140361-25-020715) − 9M 34,494,000 (10-Q 0001140361-25-003661)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 169381000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-10",
+        "accn": "0001140361-25-003661",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125003661/0001140361-25-003661-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-10",
+            "accn": "0001140361-25-003661",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 169381000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125003661/0001140361-25-003661-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-25-003661",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036125003661/R4.htm",
+          "statement_label": "Net income attributable to Roivant Sciences Ltd.",
+          "statement_value": 169381000.0,
+          "expected_value": 169381000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -230184000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001140361-24-046019",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124046019/0001140361-24-046019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001140361-24-046019",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -230184000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124046019/0001140361-24-046019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001140361-24-046019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124046019/R4.htm",
+          "statement_label": "Net loss attributable to Roivant Sciences Ltd.",
+          "statement_value": -230184000.0,
+          "expected_value": -230184000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 95297000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0001140361-24-036642",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124036642/0001140361-24-036642-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0001140361-24-036642",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 95297000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124036642/0001140361-24-036642-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001140361-24-036642",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001140361-24-036642 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -151115000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-30",
+        "accn": "0001140361-24-028145",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124028145/0001140361-24-028145-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-30",
+            "accn": "0001140361-24-028145",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": 4348926000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124028145/0001140361-24-028145-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-13",
+            "accn": "0001140361-24-007260",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": 4500041000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124007260/0001140361-24-007260-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001140361-24-028145",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001140361-24-028145 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 5096184000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-13",
+        "accn": "0001140361-24-007260",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124007260/0001140361-24-007260-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-13",
+            "accn": "0001140361-24-007260",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 5096184000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036124007260/0001140361-24-007260-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001140361-24-007260",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001140361-24-007260 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -304327000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-13",
+        "accn": "0001140361-23-052721",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036123052721/0001140361-23-052721-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-13",
+            "accn": "0001140361-23-052721",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -304327000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036123052721/0001140361-23-052721-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001140361-23-052721",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001140361-23-052721 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

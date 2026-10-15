@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000073756-26-000136.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 65015000.0,
         "quartersInWindow": 4,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 4,
-        "disagreements": 1,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net Income (Loss)"
       },
       {
         "concept": "ProfitLoss",
@@ -615,17 +615,206 @@
         "latestValue": 63580000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 4,
+        "disagreements": 1,
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000073756-26-000136",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 65015000.0,
+      "statement_value": 65015000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 65015000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-23",
+        "accn": "0000073756-26-000136",
+        "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-23",
+            "accn": "0000073756-26-000136",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 65015000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000073756-26-000136",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/R4.htm",
+          "statement_label": "Net Income (Loss)",
+          "statement_value": 65015000.0,
+          "expected_value": 65015000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 36107000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-23",
+        "accn": "0000073756-26-000136",
+        "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-23",
+            "accn": "0000073756-26-000136",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 36107000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000073756-26-000136",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/R4.htm",
+          "detail": "No 3-month net income column ending 2026-03-31 on 10-Q 0000073756-26-000136."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-29",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-29",
+        "end": "2025-09-28",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 54442000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-23",
+        "accn": "0000073756-26-000136",
+        "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-23",
+            "accn": "0000073756-26-000136",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 54442000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000073756-26-000136",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/R4.htm",
+          "statement_label": "Net Income (Loss)",
+          "statement_value": 54442000.0,
+          "expected_value": 54442000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 50377000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-23",
+        "accn": "0000073756-26-000136",
+        "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-23",
+            "accn": "0000073756-26-000136",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 50377000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/0000073756-26-000136-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000073756-26-000136",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/73756/000007375626000136/R4.htm",
+          "detail": "No 3-month net income column ending 2025-03-31 on 10-Q 0000073756-26-000136."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

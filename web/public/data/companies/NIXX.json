@@ -599,11 +599,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "ProfitLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; ProfitLoss is the net income line presented on the income statement of filing 0001683168-26-006274.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -611,9 +611,9 @@
         "latestValue": -2300000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
+        "comparedWith": "ProfitLoss",
+        "overlaps": 13,
+        "disagreements": 5,
         "statementLabel": null
       },
       {
@@ -621,11 +621,11 @@
         "latestEnd": "2026-06-30",
         "latestValue": -2300000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 5,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "NET INCOME (LOSS) ATTRIBUTABLE TO NIXXY, INC."
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,17 +633,575 @@
         "latestValue": -2300000.0,
         "quartersInWindow": 10,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "ProfitLoss",
         "overlaps": 10,
-        "disagreements": 0,
-        "statementLabel": null
+        "disagreements": 2,
+        "statementLabel": "NET INCOME (LOSS) ATTRIBUTABLE TO COMMON SHAREHOLDERS"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "filing_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001683168-26-006274",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826006274/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -2300000.0,
+      "statement_value": -2300000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2300000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-12",
+        "accn": "0001683168-26-006274",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826006274/0001683168-26-006274-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0001683168-26-006274",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -2300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826006274/0001683168-26-006274-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-006274",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826006274/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO NIXXY, INC.",
+          "statement_value": -2300000.0,
+          "expected_value": -2300000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 537000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-13",
+        "accn": "0001683168-26-003816",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826003816/0001683168-26-003816-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-13",
+            "accn": "0001683168-26-003816",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 537000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826003816/0001683168-26-003816-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-003816",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826003816/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO NIXXY, INC.",
+          "statement_value": 537000.0,
+          "expected_value": 537000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -3988073.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-04-15",
+        "accn": "0001683168-26-002951",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826002951/0001683168-26-002951-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-04-15",
+            "accn": "0001683168-26-002951",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -14983000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316826002951/0001683168-26-002951-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-13",
+            "accn": "0001683168-25-008338",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -10994927.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/0001683168-25-008338-index.htm"
+          }
+        ],
+        "check": {
+          "status": "mismatch",
+          "accn": "0001683168-25-008338",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO NIXXY, INC.",
+          "statement_value": -10889150.0,
+          "expected_value": -10994927.0,
+          "detail": "9-month value on 10-Q 0001683168-25-008338 is -10,889,150; Company Facts has -10,994,927."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2195985.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-13",
+        "accn": "0001683168-25-008338",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/0001683168-25-008338-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-13",
+            "accn": "0001683168-25-008338",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -2195985.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/0001683168-25-008338-index.htm"
+          }
+        ],
+        "check": {
+          "status": "mismatch",
+          "accn": "0001683168-25-008338",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO NIXXY, INC.",
+          "statement_value": -2162963.0,
+          "expected_value": -2195985.0,
+          "detail": "3-month value on 10-Q 0001683168-25-008338 is -2,162,963; Company Facts has -2,195,985."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4256779.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-13",
+        "accn": "0001683168-25-006041",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825006041/0001683168-25-006041-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-13",
+            "accn": "0001683168-25-006041",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -4256779.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825006041/0001683168-25-006041-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-006041",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001683168-25-006041 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4542163.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-20",
+        "accn": "0001683168-25-003886",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825003886/0001683168-25-003886-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-20",
+            "accn": "0001683168-25-003886",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -4542163.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825003886/0001683168-25-003886-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-003886",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001683168-25-003886 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -7489906.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-31",
+        "accn": "0001654954-25-003709",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495425003709/0001654954-25-003709-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-31",
+            "accn": "0001654954-25-003709",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -22593628.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495425003709/0001654954-25-003709-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001654954-24-014482",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -15103722.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424014482/0001654954-24-014482-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001654954-25-003709",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001654954-25-003709 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -13310023.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-13",
+        "accn": "0001683168-25-008338",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/0001683168-25-008338-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-13",
+            "accn": "0001683168-25-008338",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -13310023.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/0001683168-25-008338-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-008338",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825008338/R4.htm",
+          "statement_label": "NET LOSS ATTRIBUTABLE TO NIXXY, INC.",
+          "statement_value": -13310023.0,
+          "expected_value": -13310023.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -1015272.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-13",
+        "accn": "0001683168-25-006041",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825006041/0001683168-25-006041-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-13",
+            "accn": "0001683168-25-006041",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -1015272.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000168316825006041/0001683168-25-006041-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001683168-25-006041",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001683168-25-006041 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -778427.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-15",
+        "accn": "0001654954-24-006429",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424006429/0001654954-24-006429-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-15",
+            "accn": "0001654954-24-006429",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -778427.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424006429/0001654954-24-006429-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001654954-24-006429",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424006429/R4.htm",
+          "statement_label": "Net Loss",
+          "statement_value": -778427.0,
+          "expected_value": -778427.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -1333175.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-04-16",
+        "accn": "0001654954-24-004693",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424004693/0001654954-24-004693-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-04-16",
+            "accn": "0001654954-24-004693",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -6659899.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424004693/0001654954-24-004693-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001654954-24-014482",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -5326724.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424014482/0001654954-24-014482-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001654954-24-004693",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424004693/R4.htm",
+          "statement_label": "Net Loss",
+          "statement_value": -6659899.0,
+          "expected_value": -1333175.0,
+          "detail": "12M -6,659,899 (10-K 0001654954-24-004693) − 9M -5,326,724 (10-Q 0001654954-24-014482)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -9622766.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "9M YTD − 6M YTD",
+        "form": "10-Q",
+        "filed": "2024-11-14",
+        "accn": "0001654954-24-014482",
+        "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424014482/0001654954-24-014482-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001654954-24-014482",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -5326724.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495424014482/0001654954-24-014482-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-08-14",
+            "accn": "0001654954-23-010757",
+            "start": "2023-01-01",
+            "end": "2023-06-30",
+            "value": 4296042.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1462223/000165495423010757/0001654954-23-010757-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001654954-23-010757",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001654954-23-010757 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

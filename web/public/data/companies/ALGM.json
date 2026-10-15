@@ -581,22 +581,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-327128.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-26",
         "latestValue": 15871000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Allegro MicroSystems, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -607,7 +607,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -622,10 +622,563 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-327128",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526327128/R4.htm",
+      "period_end": "2026-06-26",
+      "months": 3,
+      "pipeline_value": 15871000.0,
+      "statement_value": 15871000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-03-28",
+        "end": "2026-06-26",
+        "ttm": "current",
+        "missing": false,
+        "value": 15871000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-31",
+        "accn": "0001193125-26-327128",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526327128/0001193125-26-327128-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-31",
+            "accn": "0001193125-26-327128",
+            "start": "2026-03-28",
+            "end": "2026-06-26",
+            "value": 15871000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526327128/0001193125-26-327128-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-327128",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526327128/R4.htm",
+          "statement_label": "Net income (loss) attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 15871000.0,
+          "expected_value": 15871000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2025-12-27",
+        "end": "2026-03-27",
+        "ttm": "current",
+        "missing": false,
+        "value": -16488000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-21",
+        "accn": "0001193125-26-233537",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526233537/0001193125-26-233537-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-21",
+            "accn": "0001193125-26-233537",
+            "start": "2025-03-29",
+            "end": "2026-03-27",
+            "value": -14897000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526233537/0001193125-26-233537-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-01-30",
+            "accn": "0001193125-26-030636",
+            "start": "2025-03-29",
+            "end": "2025-12-26",
+            "value": 1591000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526030636/0001193125-26-030636-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-233537",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526233537/R4.htm",
+          "statement_label": "Net (loss) income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -14897000.0,
+          "expected_value": -16488000.0,
+          "detail": "12M -14,897,000 (10-K 0001193125-26-233537) − 9M 1,591,000 (10-Q 0001193125-26-030636)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-09-27",
+        "end": "2025-12-26",
+        "ttm": "current",
+        "missing": false,
+        "value": 8299000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-01-30",
+        "accn": "0001193125-26-030636",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526030636/0001193125-26-030636-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-01-30",
+            "accn": "0001193125-26-030636",
+            "start": "2025-09-27",
+            "end": "2025-12-26",
+            "value": 8299000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526030636/0001193125-26-030636-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-030636",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312526030636/R4.htm",
+          "statement_label": "Net income (loss) attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 8299000.0,
+          "expected_value": 8299000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-06-28",
+        "end": "2025-09-26",
+        "ttm": "current",
+        "missing": false,
+        "value": 6519000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-31",
+        "accn": "0001193125-25-259807",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312525259807/0001193125-25-259807-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-31",
+            "accn": "0001193125-25-259807",
+            "start": "2025-06-28",
+            "end": "2025-09-26",
+            "value": 6519000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312525259807/0001193125-25-259807-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-259807",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000119312525259807/R4.htm",
+          "statement_label": "Net income (loss) attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 6519000.0,
+          "expected_value": 6519000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-03-29",
+        "end": "2025-06-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": -13227000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-01",
+        "accn": "0000950170-25-101117",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025101117/0000950170-25-101117-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-01",
+            "accn": "0000950170-25-101117",
+            "start": "2025-03-29",
+            "end": "2025-06-27",
+            "value": -13227000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025101117/0000950170-25-101117-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-101117",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025101117/R4.htm",
+          "statement_label": "Net loss attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -13227000.0,
+          "expected_value": -13227000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2024-12-28",
+        "end": "2025-03-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": -14800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-22",
+        "accn": "0000950170-25-076059",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025076059/0000950170-25-076059-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-22",
+            "accn": "0000950170-25-076059",
+            "start": "2024-03-30",
+            "end": "2025-03-28",
+            "value": -73010000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025076059/0000950170-25-076059-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-01-31",
+            "accn": "0000950170-25-011434",
+            "start": "2024-03-30",
+            "end": "2024-12-27",
+            "value": -58210000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025011434/0000950170-25-011434-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-076059",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025076059/R4.htm",
+          "statement_label": "Net (loss) income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -73010000.0,
+          "expected_value": -14800000.0,
+          "detail": "12M -73,010,000 (10-K 0000950170-25-076059) − 9M -58,210,000 (10-Q 0000950170-25-011434)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-09-28",
+        "end": "2024-12-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6860000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-01-31",
+        "accn": "0000950170-25-011434",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025011434/0000950170-25-011434-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-01-31",
+            "accn": "0000950170-25-011434",
+            "start": "2024-09-28",
+            "end": "2024-12-27",
+            "value": -6860000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025011434/0000950170-25-011434-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-011434",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017025011434/R4.htm",
+          "statement_label": "Net (loss) income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -6860000.0,
+          "expected_value": -6860000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-06-29",
+        "end": "2024-09-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": -33675000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-01",
+        "accn": "0000950170-24-119808",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024119808/0000950170-24-119808-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-01",
+            "accn": "0000950170-24-119808",
+            "start": "2024-06-29",
+            "end": "2024-09-27",
+            "value": -33675000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024119808/0000950170-24-119808-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-119808",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024119808/R4.htm",
+          "statement_label": "Net (loss) income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -33675000.0,
+          "expected_value": -33675000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-03-30",
+        "end": "2024-06-28",
+        "ttm": null,
+        "missing": false,
+        "value": -17675000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-02",
+        "accn": "0000950170-24-089610",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024089610/0000950170-24-089610-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-02",
+            "accn": "0000950170-24-089610",
+            "start": "2024-03-30",
+            "end": "2024-06-28",
+            "value": -17675000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024089610/0000950170-24-089610-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-089610",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024089610/R4.htm",
+          "statement_label": "Net (loss) income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": -17675000.0,
+          "expected_value": -17675000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2023-12-30",
+        "end": "2024-03-29",
+        "ttm": null,
+        "missing": false,
+        "value": -7115000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-23",
+        "accn": "0000950170-24-063770",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024063770/0000950170-24-063770-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-23",
+            "accn": "0000950170-24-063770",
+            "start": "2023-04-01",
+            "end": "2024-03-29",
+            "value": 152697000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024063770/0000950170-24-063770-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-06",
+            "accn": "0000950170-24-011712",
+            "start": "2023-04-01",
+            "end": "2023-12-29",
+            "value": 159812000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024011712/0000950170-24-011712-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-063770",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024063770/R4.htm",
+          "statement_label": "Net income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 152697000.0,
+          "expected_value": -7115000.0,
+          "detail": "12M 152,697,000 (10-K 0000950170-24-063770) − 9M 159,812,000 (10-Q 0000950170-24-011712)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-09-30",
+        "end": "2023-12-29",
+        "ttm": null,
+        "missing": false,
+        "value": 33345000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-06",
+        "accn": "0000950170-24-011712",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024011712/0000950170-24-011712-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-06",
+            "accn": "0000950170-24-011712",
+            "start": "2023-09-30",
+            "end": "2023-12-29",
+            "value": 33345000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024011712/0000950170-24-011712-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-011712",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017024011712/R4.htm",
+          "statement_label": "Net income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 33345000.0,
+          "expected_value": 33345000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-29",
+        "ttm": null,
+        "missing": false,
+        "value": 65617000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-06",
+        "accn": "0000950170-23-059019",
+        "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017023059019/0000950170-23-059019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-06",
+            "accn": "0000950170-23-059019",
+            "start": "2023-07-01",
+            "end": "2023-09-29",
+            "value": 65617000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017023059019/0000950170-23-059019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-059019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/866291/000095017023059019/R4.htm",
+          "statement_label": "Net income attributable to Allegro MicroSystems, Inc.",
+          "statement_value": 65617000.0,
+          "expected_value": 65617000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-26",

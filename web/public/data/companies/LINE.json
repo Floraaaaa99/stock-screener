@@ -617,22 +617,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001868159-26-000039.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -29000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Lineage, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -643,7 +643,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -658,10 +658,561 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001868159-26-000039",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000039/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -29000000.0,
+      "statement_value": -29000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -29000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001868159-26-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000039/0001868159-26-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001868159-26-000039",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -29000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000039/0001868159-26-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-26-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000039/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -29000000.0,
+          "expected_value": -29000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -46000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001868159-26-000028",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000028/0001868159-26-000028-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001868159-26-000028",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -46000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000028/0001868159-26-000028-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-26-000028",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000028/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -46000000.0,
+          "expected_value": -46000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 6000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001868159-26-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000012/0001868159-26-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001868159-26-000012",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -100000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000012/0001868159-26-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001868159-25-000110",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -106000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000110/0001868159-25-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-26-000012",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815926000012/R5.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -100000000.0,
+          "expected_value": 6000000.0,
+          "detail": "12M -100,000,000 (10-K 0001868159-26-000012) − 9M -106,000,000 (10-Q 0001868159-25-000110)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -100000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001868159-25-000110",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000110/0001868159-25-000110-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001868159-25-000110",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -100000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000110/0001868159-25-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-25-000110",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000110/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -100000000.0,
+          "expected_value": -100000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001868159-25-000095",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000095/0001868159-25-000095-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001868159-25-000095",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -6000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000095/0001868159-25-000095-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-25-000095",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000095/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -6000000.0,
+          "expected_value": -6000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 0.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001868159-25-000061",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000061/0001868159-25-000061-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001868159-25-000061",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 0.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000061/0001868159-25-000061-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001868159-25-000061",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001868159-25-000061 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -71000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-26",
+        "accn": "0001868159-25-000011",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/0001868159-25-000011-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-26",
+            "accn": "0001868159-25-000011",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -664000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/0001868159-25-000011-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001868159-24-000018",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -593000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-25-000011",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -664000000.0,
+          "expected_value": -71000000.0,
+          "detail": "12M -664,000,000 (10-K 0001868159-25-000011) − 9M -593,000,000 (10-Q 0001868159-24-000018)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -485000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001868159-24-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001868159-24-000018",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -485000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-24-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -485000000.0,
+          "expected_value": -485000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -68000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-21",
+        "accn": "0001868159-24-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000004/0001868159-24-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-21",
+            "accn": "0001868159-24-000004",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -68000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000004/0001868159-24-000004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001868159-24-000004",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001868159-24-000004 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -40000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001868159-25-000061",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000061/0001868159-25-000061-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001868159-25-000061",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -40000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000061/0001868159-25-000061-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001868159-25-000061",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001868159-25-000061 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -51000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-26",
+        "accn": "0001868159-25-000011",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/0001868159-25-000011-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-26",
+            "accn": "0001868159-25-000011",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -77000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/0001868159-25-000011-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001868159-24-000018",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -26000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-25-000011",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815925000011/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -77000000.0,
+          "expected_value": -51000000.0,
+          "detail": "12M -77,000,000 (10-K 0001868159-25-000011) − 9M -26,000,000 (10-Q 0001868159-24-000018)"
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -39000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001868159-24-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001868159-24-000018",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -39000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/0001868159-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001868159-24-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868159/000186815924000018/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lineage, Inc.",
+          "statement_value": -39000000.0,
+          "expected_value": -39000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

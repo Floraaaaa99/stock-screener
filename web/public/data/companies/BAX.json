@@ -574,22 +574,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-051118.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 126000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Baxter stockholders"
       },
       {
         "concept": "ProfitLoss",
@@ -600,14 +600,527 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 7,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-051118",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026051118/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 126000000.0,
+      "statement_value": 126000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 126000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0001628280-26-051118",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026051118/0001628280-26-051118-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0001628280-26-051118",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 126000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026051118/0001628280-26-051118-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-051118",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026051118/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": 126000000.0,
+          "expected_value": 126000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -15000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-30",
+        "accn": "0001628280-26-028962",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026028962/0001628280-26-028962-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-30",
+            "accn": "0001628280-26-028962",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -15000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026028962/0001628280-26-028962-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-028962",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026028962/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": -15000000.0,
+          "expected_value": -15000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1128000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-12",
+        "accn": "0001628280-26-007733",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026007733/0001628280-26-007733-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-12",
+            "accn": "0001628280-26-007733",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -957000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026007733/0001628280-26-007733-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048897",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 171000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025048897/0001628280-25-048897-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-007733",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828026007733/R5.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": -957000000.0,
+          "expected_value": -1128000000.0,
+          "detail": "12M -957,000,000 (10-K 0001628280-26-007733) − 9M 171,000,000 (10-Q 0001628280-25-048897)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -46000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001628280-25-048897",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025048897/0001628280-25-048897-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048897",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -46000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025048897/0001628280-25-048897-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-048897",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025048897/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": -46000000.0,
+          "expected_value": -46000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 91000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001628280-25-037877",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025037877/0001628280-25-037877-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001628280-25-037877",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 91000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025037877/0001628280-25-037877-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-037877",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025037877/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": 91000000.0,
+          "expected_value": 91000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 126000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0001628280-25-022727",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025022727/0001628280-25-022727-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0001628280-25-022727",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 126000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025022727/0001628280-25-022727-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-022727",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025022727/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": 126000000.0,
+          "expected_value": 126000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -512000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2025-02-21",
+        "accn": "0001628280-25-007201",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025007201/0001628280-25-007201-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-21",
+            "accn": "0001628280-25-007201",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -512000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025007201/0001628280-25-007201-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-007201",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828025007201/R5.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": -512000000.0,
+          "expected_value": -512000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 140000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001628280-24-047221",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024047221/0001628280-24-047221-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001628280-24-047221",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 140000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024047221/0001628280-24-047221-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-047221",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024047221/R4.htm",
+          "statement_label": "Net income (loss) attributable to Baxter stockholders",
+          "statement_value": 140000000.0,
+          "expected_value": 140000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -314000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-06",
+        "accn": "0001628280-24-034965",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024034965/0001628280-24-034965-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-06",
+            "accn": "0001628280-24-034965",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -314000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024034965/0001628280-24-034965-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-24-034965",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-24-034965 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 37000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0001628280-24-019786",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024019786/0001628280-24-019786-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001628280-24-019786",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 37000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024019786/0001628280-24-019786-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-24-019786",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-24-019786 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 245000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2024-02-08",
+        "accn": "0001628280-24-003932",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024003932/0001628280-24-003932-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-08",
+            "accn": "0001628280-24-003932",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 245000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828024003932/0001628280-24-003932-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-24-003932",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001628280-24-003932 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 2508000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001628280-23-036195",
+        "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828023036195/0001628280-23-036195-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001628280-23-036195",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 2508000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/10456/000162828023036195/0001628280-23-036195-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-23-036195",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-23-036195 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

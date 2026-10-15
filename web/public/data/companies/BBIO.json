@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001743881-26-000027.",
     "candidates": [
       {
         "concept": "ProfitLoss",
@@ -604,28 +604,591 @@
         "latestValue": -155891000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -152216000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net loss attributable to common stockholders of BridgeBio"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001743881-26-000027",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000027/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -152216000.0,
+      "statement_value": -152216000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -152216000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-10",
+        "accn": "0001743881-26-000027",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000027/0001743881-26-000027-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-10",
+            "accn": "0001743881-26-000027",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -152216000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000027/0001743881-26-000027-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001743881-26-000027",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000027/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -152216000.0,
+          "expected_value": -152216000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -164043000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001743881-26-000019",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000019/0001743881-26-000019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001743881-26-000019",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -164043000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000019/0001743881-26-000019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001743881-26-000019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000019/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -164043000.0,
+          "expected_value": -164043000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -192863000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-24",
+        "accn": "0001743881-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000009/0001743881-26-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-24",
+            "accn": "0001743881-26-000009",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -724931000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000009/0001743881-26-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001743881-25-000012",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -532068000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388125000012/0001743881-25-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001743881-26-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388126000009/R5.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -724931000.0,
+          "expected_value": -192863000.0,
+          "detail": "12M -724,931,000 (10-K 0001743881-26-000009) − 9M -532,068,000 (10-Q 0001743881-25-000012)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -182743000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001743881-25-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388125000012/0001743881-25-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001743881-25-000012",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -182743000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388125000012/0001743881-25-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001743881-25-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000174388125000012/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -182743000.0,
+          "expected_value": -182743000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -181903000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0000950170-25-103192",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025103192/0000950170-25-103192-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0000950170-25-103192",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -181903000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025103192/0000950170-25-103192-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-103192",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025103192/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -181903000.0,
+          "expected_value": -181903000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -167422000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-29",
+        "accn": "0000950170-25-060314",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025060314/0000950170-25-060314-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-29",
+            "accn": "0000950170-25-060314",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -167422000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025060314/0000950170-25-060314-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-060314",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025060314/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -167422000.0,
+          "expected_value": -167422000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -265050000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0000950170-25-024119",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025024119/0000950170-25-024119-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0000950170-25-024119",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -535762000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025024119/0000950170-25-024119-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-124577",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -270712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024124577/0000950170-24-124577-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-024119",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017025024119/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -535762000.0,
+          "expected_value": -265050000.0,
+          "detail": "12M -535,762,000 (10-K 0000950170-25-024119) − 9M -270,712,000 (10-Q 0000950170-24-124577)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -162040000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0000950170-24-124577",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024124577/0000950170-24-124577-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-124577",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -162040000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024124577/0000950170-24-124577-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-124577",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024124577/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -162040000.0,
+          "expected_value": -162040000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -73456000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-01",
+        "accn": "0000950170-24-089326",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024089326/0000950170-24-089326-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-01",
+            "accn": "0000950170-24-089326",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -73456000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024089326/0000950170-24-089326-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-089326",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024089326/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -73456000.0,
+          "expected_value": -73456000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -35216000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0000950170-24-052165",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024052165/0000950170-24-052165-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0000950170-24-052165",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -35216000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024052165/0000950170-24-052165-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-052165",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024052165/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -35216000.0,
+          "expected_value": -35216000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -168148000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0000950170-24-018811",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024018811/0000950170-24-018811-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0000950170-24-018811",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -643202000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024018811/0000950170-24-018811-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000950170-23-058255",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -475054000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017023058255/0000950170-23-058255-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-018811",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017024018811/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -643202000.0,
+          "expected_value": -168148000.0,
+          "detail": "12M -643,202,000 (10-K 0000950170-24-018811) − 9M -475,054,000 (10-Q 0000950170-23-058255)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -176999000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0000950170-23-058255",
+        "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017023058255/0000950170-23-058255-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000950170-23-058255",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -176999000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017023058255/0000950170-23-058255-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-058255",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1743881/000095017023058255/R4.htm",
+          "statement_label": "Net loss attributable to common stockholders of BridgeBio",
+          "statement_value": -176999000.0,
+          "expected_value": -176999000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

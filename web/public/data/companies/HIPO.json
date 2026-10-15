@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001828105-26-000043.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 10100000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Hippo"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 9,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -629,14 +629,565 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Hippo - basic"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001828105-26-000043",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000043/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 10100000.0,
+      "statement_value": 10100000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 10100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0001828105-26-000043",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000043/0001828105-26-000043-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0001828105-26-000043",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 10100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000043/0001828105-26-000043-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-26-000043",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000043/R4.htm",
+          "statement_label": "Net income (loss) attributable to Hippo",
+          "statement_value": 10100000.0,
+          "expected_value": 10100000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 7100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-30",
+        "accn": "0001828105-26-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000025/0001828105-26-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-30",
+            "accn": "0001828105-26-000025",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 7100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000025/0001828105-26-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-26-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000025/R4.htm",
+          "statement_label": "Net income (loss) attributable to Hippo",
+          "statement_value": 7100000.0,
+          "expected_value": 7100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 6000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-05",
+        "accn": "0001828105-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000008/0001828105-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-05",
+            "accn": "0001828105-26-000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 57700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000008/0001828105-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001828105-25-000070",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 51700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000070/0001828105-25-000070-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810526000008/R5.htm",
+          "statement_label": "Net income (loss) attributable to Hippo",
+          "statement_value": 57700000.0,
+          "expected_value": 6000000.0,
+          "detail": "12M 57,700,000 (10-K 0001828105-26-000008) − 9M 51,700,000 (10-Q 0001828105-25-000070)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 98100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001828105-25-000070",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000070/0001828105-25-000070-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001828105-25-000070",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 98100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000070/0001828105-25-000070-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-25-000070",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000070/R4.htm",
+          "statement_label": "Net income (loss) attributable to Hippo",
+          "statement_value": 98100000.0,
+          "expected_value": 98100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001828105-25-000055",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000055/0001828105-25-000055-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001828105-25-000055",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000055/0001828105-25-000055-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-25-000055",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000055/R4.htm",
+          "statement_label": "Net income (loss) attributable to Hippo",
+          "statement_value": 1300000.0,
+          "expected_value": 1300000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -47700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001828105-25-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000036/0001828105-25-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001828105-25-000036",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -47700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000036/0001828105-25-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-25-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000036/R4.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -47700000.0,
+          "expected_value": -47700000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 44200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-06",
+        "accn": "0001828105-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000013/0001828105-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-06",
+            "accn": "0001828105-25-000013",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -40500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000013/0001828105-25-000013-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0001828105-24-000056",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -84700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000056/0001828105-24-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-25-000013",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810525000013/R5.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -40500000.0,
+          "expected_value": 44200000.0,
+          "detail": "12M -40,500,000 (10-K 0001828105-25-000013) − 9M -84,700,000 (10-Q 0001828105-24-000056)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -8500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-08",
+        "accn": "0001828105-24-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000056/0001828105-24-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0001828105-24-000056",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -8500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000056/0001828105-24-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-24-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000056/R4.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -8500000.0,
+          "expected_value": -8500000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -40500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0001828105-24-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000036/0001828105-24-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0001828105-24-000036",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -40500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000036/0001828105-24-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-24-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000036/R4.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -40500000.0,
+          "expected_value": -40500000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -35700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0001828105-24-000027",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000027/0001828105-24-000027-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001828105-24-000027",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -35700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000027/0001828105-24-000027-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-24-000027",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000027/R4.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -35700000.0,
+          "expected_value": -35700000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -42300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0001828105-24-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000008/0001828105-24-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0001828105-24-000008",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -273100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000008/0001828105-24-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001828105-23-000083",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -230800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810523000083/0001828105-23-000083-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-24-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810524000008/R5.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -273100000.0,
+          "expected_value": -42300000.0,
+          "detail": "12M -273,100,000 (10-K 0001828105-24-000008) − 9M -230,800,000 (10-Q 0001828105-23-000083)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -53100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001828105-23-000083",
+        "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810523000083/0001828105-23-000083-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001828105-23-000083",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -53100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810523000083/0001828105-23-000083-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001828105-23-000083",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1828105/000182810523000083/R4.htm",
+          "statement_label": "Net loss attributable to Hippo",
+          "statement_value": -53100000.0,
+          "expected_value": -53100000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

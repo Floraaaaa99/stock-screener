@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-339827.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 120000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Nexstar Media Group, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,551 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-339827",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526339827/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 120000000.0,
+      "statement_value": 120000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 120000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-07",
+        "accn": "0001193125-26-339827",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526339827/0001193125-26-339827-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-07",
+            "accn": "0001193125-26-339827",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 120000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526339827/0001193125-26-339827-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-339827",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526339827/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 120000000.0,
+          "expected_value": 120000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 164000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-08",
+        "accn": "0001193125-26-212539",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526212539/0001193125-26-212539-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-08",
+            "accn": "0001193125-26-212539",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 164000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526212539/0001193125-26-212539-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-212539",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526212539/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 164000000.0,
+          "expected_value": 164000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -166000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001193125-26-078361",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526078361/0001193125-26-078361-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001193125-26-078361",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 109000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526078361/0001193125-26-078361-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-269795",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 275000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525269795/0001193125-25-269795-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-078361",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312526078361/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 109000000.0,
+          "expected_value": -166000000.0,
+          "detail": "12M 109,000,000 (10-K 0001193125-26-078361) − 9M 275,000,000 (10-Q 0001193125-25-269795)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 70000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001193125-25-269795",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525269795/0001193125-25-269795-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-269795",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 70000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525269795/0001193125-25-269795-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-269795",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525269795/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 70000000.0,
+          "expected_value": 70000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 97000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-08",
+        "accn": "0001193125-25-175590",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525175590/0001193125-25-175590-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-08",
+            "accn": "0001193125-25-175590",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 97000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525175590/0001193125-25-175590-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-175590",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000119312525175590/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 97000000.0,
+          "expected_value": 97000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 108000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0000950170-25-066784",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025066784/0000950170-25-066784-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0000950170-25-066784",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 108000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025066784/0000950170-25-066784-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-066784",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025066784/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 108000000.0,
+          "expected_value": 108000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 242000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-27",
+        "accn": "0000950170-25-028949",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025028949/0000950170-25-028949-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-27",
+            "accn": "0000950170-25-028949",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 722000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025028949/0000950170-25-028949-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123213",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 480000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024123213/0000950170-24-123213-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-028949",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017025028949/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 722000000.0,
+          "expected_value": 242000000.0,
+          "detail": "12M 722,000,000 (10-K 0000950170-25-028949) − 9M 480,000,000 (10-Q 0000950170-24-123213)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 187000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000950170-24-123213",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024123213/0000950170-24-123213-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123213",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 187000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024123213/0000950170-24-123213-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-123213",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024123213/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 187000000.0,
+          "expected_value": 187000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 118000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000950170-24-093776",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024093776/0000950170-24-093776-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000950170-24-093776",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 118000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024093776/0000950170-24-093776-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-093776",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024093776/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 118000000.0,
+          "expected_value": 118000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 175000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-09",
+        "accn": "0000950170-24-056779",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024056779/0000950170-24-056779-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-09",
+            "accn": "0000950170-24-056779",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 175000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024056779/0000950170-24-056779-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-056779",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024056779/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 175000000.0,
+          "expected_value": 175000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 114000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-28",
+        "accn": "0000950170-24-021979",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024021979/0000950170-24-021979-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-28",
+            "accn": "0000950170-24-021979",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 346000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024021979/0000950170-24-021979-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061149",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 232000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017023061149/0000950170-23-061149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-021979",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017024021979/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 346000000.0,
+          "expected_value": 114000000.0,
+          "detail": "12M 346,000,000 (10-K 0000950170-24-021979) − 9M 232,000,000 (10-Q 0000950170-23-061149)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 25000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-061149",
+        "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017023061149/0000950170-23-061149-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061149",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 25000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017023061149/0000950170-23-061149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-061149",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1142417/000095017023061149/R4.htm",
+          "statement_label": "Net income attributable to Nexstar Media Group, Inc.",
+          "statement_value": 25000000.0,
+          "expected_value": 25000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

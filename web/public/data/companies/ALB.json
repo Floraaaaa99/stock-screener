@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0000915913-26-000102.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -604,10 +604,10 @@
         "latestValue": 479959000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 10,
+        "statementLabel": "Net income attributable to Albemarle Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -615,28 +615,583 @@
         "latestValue": 499211000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 438272000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 10,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss) attributable to Albemarle Corporation common shareholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000915913-26-000102",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 438272000.0,
+      "statement_value": 438272000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 438272000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0000915913-26-000102",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/0000915913-26-000102-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0000915913-26-000102",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 438272000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/0000915913-26-000102-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-26-000102",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/R2.htm",
+          "statement_label": "Net income (loss) attributable to Albemarle Corporation common shareholders",
+          "statement_value": 438272000.0,
+          "expected_value": 438272000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 277403000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0000915913-26-000072",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000072/0000915913-26-000072-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0000915913-26-000072",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 277403000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000072/0000915913-26-000072-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-26-000072",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000072/R2.htm",
+          "statement_label": "Net income (loss) attributable to Albemarle Corporation common shareholders",
+          "statement_value": 277403000.0,
+          "expected_value": 277403000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -455866000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-11",
+        "accn": "0000915913-26-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000018/0000915913-26-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-11",
+            "accn": "0000915913-26-000018",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -677378000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000018/0000915913-26-000018-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000915913-25-000162",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -221512000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000162/0000915913-25-000162-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-26-000018",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000018/R3.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders, basic",
+          "statement_value": -677378000.0,
+          "expected_value": -455866000.0,
+          "detail": "12M -677,378,000 (10-K 0000915913-26-000018) − 9M -221,512,000 (10-Q 0000915913-25-000162)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -202382000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0000915913-25-000162",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000162/0000915913-25-000162-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000915913-25-000162",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -202382000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000162/0000915913-25-000162-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-25-000162",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000162/R2.htm",
+          "statement_label": "Net loss attributable to Albemarle Corporation common shareholders",
+          "statement_value": -202382000.0,
+          "expected_value": -202382000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -18790000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-04",
+        "accn": "0000915913-25-000133",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000133/0000915913-25-000133-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-04",
+            "accn": "0000915913-25-000133",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -18790000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000133/0000915913-25-000133-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-25-000133",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000133/R2.htm",
+          "statement_label": "Net loss attributable to Albemarle Corporation common shareholders",
+          "statement_value": -18790000.0,
+          "expected_value": -18790000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -340000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0000915913-25-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000084/0000915913-25-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0000915913-25-000084",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -340000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000084/0000915913-25-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-25-000084",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000084/R2.htm",
+          "statement_label": "Net loss attributable to Albemarle Corporation common shareholders",
+          "statement_value": -340000.0,
+          "expected_value": -340000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 33605000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0000915913-25-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/0000915913-25-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0000915913-25-000026",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -1316096000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/0000915913-25-000026-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000915913-24-000158",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -1349701000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-25-000026",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/R3.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders, basic",
+          "statement_value": -1316096000.0,
+          "expected_value": 33605000.0,
+          "detail": "12M -1,316,096,000 (10-K 0000915913-25-000026) − 9M -1,349,701,000 (10-Q 0000915913-24-000158)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1110679000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0000915913-24-000158",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000915913-24-000158",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -1110679000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-24-000158",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/R2.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders",
+          "statement_value": -1110679000.0,
+          "expected_value": -1110679000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -229886000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0000915913-24-000139",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000139/0000915913-24-000139-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0000915913-24-000139",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -229886000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000139/0000915913-24-000139-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-24-000139",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000139/R2.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders",
+          "statement_value": -229886000.0,
+          "expected_value": -229886000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -9136000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-01",
+        "accn": "0000915913-24-000100",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000100/0000915913-24-000100-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-01",
+            "accn": "0000915913-24-000100",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -9136000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000100/0000915913-24-000100-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-24-000100",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000100/R2.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders",
+          "statement_value": -9136000.0,
+          "expected_value": -9136000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -617680000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0000915913-25-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/0000915913-25-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0000915913-25-000026",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 1573476000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/0000915913-25-000026-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000915913-24-000158",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 2191156000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-25-000026",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591325000026/R3.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders, basic",
+          "statement_value": 1573476000.0,
+          "expected_value": -617680000.0,
+          "detail": "12M 1,573,476,000 (10-K 0000915913-25-000026) − 9M 2,191,156,000 (10-Q 0000915913-24-000158)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 302533000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0000915913-24-000158",
+        "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000915913-24-000158",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 302533000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/0000915913-24-000158-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000915913-24-000158",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591324000158/R2.htm",
+          "statement_label": "Net (loss) income attributable to Albemarle Corporation common shareholders",
+          "statement_value": 302533000.0,
+          "expected_value": 302533000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

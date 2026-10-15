@@ -607,22 +607,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001683168-26-006405.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 26985000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net Income (Loss) Attributable to Kartoon Studios, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -633,14 +633,572 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Net Income (Loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001683168-26-006405",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826006405/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 26985000.0,
+      "statement_value": 26985000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 26985000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-14",
+        "accn": "0001683168-26-006405",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826006405/0001683168-26-006405-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-14",
+            "accn": "0001683168-26-006405",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 26985000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826006405/0001683168-26-006405-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-006405",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826006405/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Kartoon Studios, Inc.",
+          "statement_value": 26985000.0,
+          "expected_value": 26985000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -6365000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-15",
+        "accn": "0001683168-26-003977",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826003977/0001683168-26-003977-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-15",
+            "accn": "0001683168-26-003977",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -6365000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826003977/0001683168-26-003977-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-003977",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826003977/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -6365000.0,
+          "expected_value": -6365000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -5273000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-31",
+        "accn": "0001683168-26-002452",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826002452/0001683168-26-002452-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-31",
+            "accn": "0001683168-26-002452",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -24532000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826002452/0001683168-26-002452-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001683168-25-008374",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -19259000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825008374/0001683168-25-008374-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-26-002452",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316826002452/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -24532000.0,
+          "expected_value": -5273000.0,
+          "detail": "12M -24,532,000 (10-K 0001683168-26-002452) − 9M -19,259,000 (10-Q 0001683168-25-008374)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -6570000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0001683168-25-008374",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825008374/0001683168-25-008374-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001683168-25-008374",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -6570000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825008374/0001683168-25-008374-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-008374",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825008374/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -6570000.0,
+          "expected_value": -6570000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6163000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-14",
+        "accn": "0001683168-25-006078",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825006078/0001683168-25-006078-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-14",
+            "accn": "0001683168-25-006078",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -6163000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825006078/0001683168-25-006078-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-006078",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825006078/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -6163000.0,
+          "expected_value": -6163000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6526000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0001683168-25-003620",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825003620/0001683168-25-003620-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001683168-25-003620",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -6526000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825003620/0001683168-25-003620-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-003620",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825003620/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -6526000.0,
+          "expected_value": -6526000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5764000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-31",
+        "accn": "0001683168-25-002049",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825002049/0001683168-25-002049-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-31",
+            "accn": "0001683168-25-002049",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -20739000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825002049/0001683168-25-002049-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001683168-24-008023",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -14975000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316824008023/0001683168-24-008023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-25-002049",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316825002049/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -20739000.0,
+          "expected_value": -5764000.0,
+          "detail": "12M -20,739,000 (10-K 0001683168-25-002049) − 9M -14,975,000 (10-Q 0001683168-24-008023)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2057000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-14",
+        "accn": "0001683168-24-008023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316824008023/0001683168-24-008023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001683168-24-008023",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2057000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316824008023/0001683168-24-008023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001683168-24-008023",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000168316824008023/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -2057000.0,
+          "expected_value": -2057000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -5873000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-14",
+        "accn": "0001355848-24-000113",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000113/0001355848-24-000113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-14",
+            "accn": "0001355848-24-000113",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -5873000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000113/0001355848-24-000113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001355848-24-000113",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000113/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -5873000.0,
+          "expected_value": -5873000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -7045000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-15",
+        "accn": "0001355848-24-000071",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000071/0001355848-24-000071-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-15",
+            "accn": "0001355848-24-000071",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -7045000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000071/0001355848-24-000071-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001355848-24-000071",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000071/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -7045000.0,
+          "expected_value": -7045000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -25374000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-04-09",
+        "accn": "0001355848-24-000052",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000052/0001355848-24-000052-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-04-09",
+            "accn": "0001355848-24-000052",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -77103000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000052/0001355848-24-000052-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-K",
+            "filed": "2024-04-09",
+            "accn": "0001355848-24-000052",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -51729000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000052/0001355848-24-000052-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001355848-24-000052",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584824000052/R5.htm",
+          "detail": "No 9-month net income column ending 2023-09-30 on 10-K 0001355848-24-000052."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -15476000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-17",
+        "accn": "0001355848-23-000031",
+        "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584823000031/0001355848-23-000031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-17",
+            "accn": "0001355848-23-000031",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -15476000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584823000031/0001355848-23-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001355848-23-000031",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1355848/000135584823000031/R4.htm",
+          "statement_label": "Net Loss Attributable to Kartoon Studios, Inc.",
+          "statement_value": -15476000.0,
+          "expected_value": -15476000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

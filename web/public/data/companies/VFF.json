@@ -599,22 +599,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-341194.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 7145000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Village Farms International, Inc. shareholders"
       },
       {
         "concept": "ProfitLoss",
@@ -625,14 +625,551 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Income including non-controlling interests"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-341194",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526341194/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 7145000.0,
+      "statement_value": 7145000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 7145000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-10",
+        "accn": "0001193125-26-341194",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526341194/0001193125-26-341194-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-10",
+            "accn": "0001193125-26-341194",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 7145000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526341194/0001193125-26-341194-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-341194",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526341194/R4.htm",
+          "statement_label": "Net income attributable to Village Farms International, Inc. shareholders",
+          "statement_value": 7145000.0,
+          "expected_value": 7145000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 2917000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001193125-26-215665",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526215665/0001193125-26-215665-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001193125-26-215665",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 2917000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526215665/0001193125-26-215665-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-215665",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526215665/R4.htm",
+          "statement_label": "Net income (loss) attributable to Village Farms International, Inc. shareholders",
+          "statement_value": 2917000.0,
+          "expected_value": 2917000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 2430000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-12",
+        "accn": "0001193125-26-104189",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526104189/0001193125-26-104189-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-12",
+            "accn": "0001193125-26-104189",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 32441000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526104189/0001193125-26-104189-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001193125-25-273223",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 30011000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312525273223/0001193125-25-273223-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-104189",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526104189/R4.htm",
+          "statement_label": "Income (loss) from discontinued operations, net of tax",
+          "statement_value": 32441000.0,
+          "expected_value": 2430000.0,
+          "detail": "12M 32,441,000 (10-K 0001193125-26-104189) − 9M 30,011,000 (10-Q 0001193125-25-273223)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 10217000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001193125-25-273223",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312525273223/0001193125-25-273223-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001193125-25-273223",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 10217000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312525273223/0001193125-25-273223-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-273223",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312525273223/R4.htm",
+          "statement_label": "Net income (loss) attributable to Village Farms International, Inc. shareholders",
+          "statement_value": 10217000.0,
+          "expected_value": 10217000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 26497000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0000950170-25-106223",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025106223/0000950170-25-106223-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0000950170-25-106223",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 26497000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025106223/0000950170-25-106223-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-106223",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025106223/R4.htm",
+          "statement_label": "Net income (loss) attributable to Village Farms International, Inc. shareholders",
+          "statement_value": 26497000.0,
+          "expected_value": 26497000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6703000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0000950170-25-069458",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025069458/0000950170-25-069458-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0000950170-25-069458",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -6703000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025069458/0000950170-25-069458-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-25-069458",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-25-069458 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -8630000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-12",
+        "accn": "0001193125-26-104189",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526104189/0001193125-26-104189-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-12",
+            "accn": "0001193125-26-104189",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -35851000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000119312526104189/0001193125-26-104189-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-122773",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -27221000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024122773/0000950170-24-122773-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-122773",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-24-122773 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -820000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000950170-24-122773",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024122773/0000950170-24-122773-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-122773",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -820000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024122773/0000950170-24-122773-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-122773",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-24-122773 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -23549000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000950170-24-093297",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024093297/0000950170-24-093297-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000950170-24-093297",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -23549000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024093297/0000950170-24-093297-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-093297",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-24-093297 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -2852000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0000950170-24-055056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024055056/0000950170-24-055056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0000950170-24-055056",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -2852000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024055056/0000950170-24-055056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-055056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017024055056/R4.htm",
+          "statement_label": "Net loss attributable to Village Farms International, Inc. shareholders",
+          "statement_value": -2852000.0,
+          "expected_value": -2852000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -25483000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-13",
+        "accn": "0000950170-25-038326",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025038326/0000950170-25-038326-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-13",
+            "accn": "0000950170-25-038326",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -34798000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017025038326/0000950170-25-038326-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-060669",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -9315000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017023060669/0000950170-23-060669-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-25-038326",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0000950170-25-038326 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -1299000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-060669",
+        "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017023060669/0000950170-23-060669-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-060669",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -1299000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017023060669/0000950170-23-060669-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-060669",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1584549/000095017023060669/R4.htm",
+          "statement_label": "Net loss attributable to Village Farms International, Inc. shareholders",
+          "statement_value": -1299000.0,
+          "expected_value": -1299000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

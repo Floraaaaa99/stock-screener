@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-092021.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 14412000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net Income attributable to Innodata Inc. and Subsidiaries"
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,564 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 3,
-        "statementLabel": null
+        "statementLabel": "Consolidated net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-092021",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926092021/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 14412000.0,
+      "statement_value": 14412000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 14412000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001104659-26-092021",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926092021/0001104659-26-092021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001104659-26-092021",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 14412000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926092021/0001104659-26-092021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-092021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926092021/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 14412000.0,
+          "expected_value": 14412000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 14898000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001104659-26-057270",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926057270/0001104659-26-057270-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001104659-26-057270",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 14898000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926057270/0001104659-26-057270-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-057270",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926057270/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 14898000.0,
+          "expected_value": 14898000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 8833000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001104659-26-020655",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926020655/0001104659-26-020655-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001104659-26-020655",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 32181000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926020655/0001104659-26-020655-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001104659-25-107873",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 23348000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465925107873/0001104659-25-107873-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-020655",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465926020655/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 32181000.0,
+          "expected_value": 8833000.0,
+          "detail": "12M 32,181,000 (10-K 0001104659-26-020655) − 9M 23,348,000 (10-Q 0001104659-25-107873)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 8342000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001104659-25-107873",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465925107873/0001104659-25-107873-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001104659-25-107873",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 8342000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465925107873/0001104659-25-107873-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-107873",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465925107873/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 8342000.0,
+          "expected_value": 8342000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 7219000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0001410578-25-001550",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001550/0001410578-25-001550-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0001410578-25-001550",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 7219000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001550/0001410578-25-001550-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-001550",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001550/R4.htm",
+          "statement_label": "Net Income (loss) attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 7219000.0,
+          "expected_value": 7219000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 7787000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-09",
+        "accn": "0001410578-25-001113",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001113/0001410578-25-001113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-09",
+            "accn": "0001410578-25-001113",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 7787000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001113/0001410578-25-001113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-001113",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825001113/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 7787000.0,
+          "expected_value": 7787000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 10296000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-24",
+        "accn": "0001410578-25-000194",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825000194/0001410578-25-000194-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-24",
+            "accn": "0001410578-25-000194",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 28660000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825000194/0001410578-25-000194-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001104659-25-107873",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 18364000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000110465925107873/0001104659-25-107873-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-000194",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057825000194/R4.htm",
+          "statement_label": "Net income (loss) attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 28660000.0,
+          "expected_value": 10296000.0,
+          "detail": "12M 28,660,000 (10-K 0001410578-25-000194) − 9M 18,364,000 (10-Q 0001104659-25-107873)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 17389000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0001410578-24-001800",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824001800/0001410578-24-001800-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001410578-24-001800",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 17389000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824001800/0001410578-24-001800-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-24-001800",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824001800/R4.htm",
+          "statement_label": "Net Income attributable to Innodata Inc. and Subsidiaries",
+          "statement_value": 17389000.0,
+          "expected_value": 17389000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -14000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0001410578-24-001246",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824001246/0001410578-24-001246-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0001410578-24-001246",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -14000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824001246/0001410578-24-001246-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001410578-24-001246",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001410578-24-001246 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 989000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0001410578-24-000611",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824000611/0001410578-24-000611-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0001410578-24-000611",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 989000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824000611/0001410578-24-000611-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001410578-24-000611",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001410578-24-000611 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 1652000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − (Q1 + Q2 + Q3)",
+        "form": "10-K",
+        "filed": "2024-03-04",
+        "accn": "0001410578-24-000124",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824000124/0001410578-24-000124-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-04",
+            "accn": "0001410578-24-000124",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -908000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057824000124/0001410578-24-000124-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-05-12",
+            "accn": "0001410578-23-001033",
+            "start": "2023-01-01",
+            "end": "2023-03-31",
+            "value": -2116000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057823001033/0001410578-23-001033-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-08-11",
+            "accn": "0001410578-23-001711",
+            "start": "2023-04-01",
+            "end": "2023-06-30",
+            "value": -815000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057823001711/0001410578-23-001711-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001410578-23-002173",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 371000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057823002173/0001410578-23-002173-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001410578-24-000124",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001410578-24-000124 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 371000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001410578-23-002173",
+        "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057823002173/0001410578-23-002173-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001410578-23-002173",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 371000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/903651/000141057823002173/0001410578-23-002173-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001410578-23-002173",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001410578-23-002173 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

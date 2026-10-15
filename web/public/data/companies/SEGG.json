@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001493152-26-046279.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-03-31",
         "latestValue": -4721268.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to SEGG Media"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,577 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001493152-26-046279",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/R4.htm",
+      "period_end": "2026-03-31",
+      "months": 3,
+      "pipeline_value": -4721268.0,
+      "statement_value": -4721268.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -4721268.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-08",
+        "accn": "0001493152-26-046279",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/0001493152-26-046279-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-08",
+            "accn": "0001493152-26-046279",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -4721268.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/0001493152-26-046279-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-046279",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/R4.htm",
+          "statement_label": "Net loss attributable to SEGG Media",
+          "statement_value": -4721268.0,
+          "expected_value": -4721268.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -8572011.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-07-10",
+        "accn": "0001493152-26-032786",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226032786/0001493152-26-032786-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-07-10",
+            "accn": "0001493152-26-032786",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -20303608.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226032786/0001493152-26-032786-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-20",
+            "accn": "0001493152-25-024384",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -11731597.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-032786",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226032786/R4.htm",
+          "statement_label": "Net loss attributable to SEGG Media",
+          "statement_value": -20303608.0,
+          "expected_value": -8572011.0,
+          "detail": "12M -20,303,608 (10-K 0001493152-26-032786) − 9M -11,731,597 (10-Q 0001493152-25-024384)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -4441760.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-20",
+        "accn": "0001493152-25-024384",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-20",
+            "accn": "0001493152-25-024384",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -4441760.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-024384",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -4441760.0,
+          "expected_value": -4441760.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -3878027.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-19",
+        "accn": "0001641172-25-024882",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/0001641172-25-024882-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-19",
+            "accn": "0001641172-25-024882",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -3878027.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/0001641172-25-024882-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-024882",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -3878027.0,
+          "expected_value": -3878027.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -3174980.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-08",
+        "accn": "0001493152-26-046279",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/0001493152-26-046279-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-08",
+            "accn": "0001493152-26-046279",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -3174980.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/0001493152-26-046279-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-046279",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315226046279/R4.htm",
+          "statement_label": "Net loss attributable to SEGG Media",
+          "statement_value": -3174980.0,
+          "expected_value": -3174980.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -8813422.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2025-04-22",
+        "accn": "0001641172-25-005663",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225005663/0001641172-25-005663-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2025-04-22",
+            "accn": "0001641172-25-005663",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -28221605.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225005663/0001641172-25-005663-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-20",
+            "accn": "0001493152-25-024384",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -19408183.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001641172-25-005663",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001641172-25-005663 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -7933776.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-20",
+        "accn": "0001493152-25-024384",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-20",
+            "accn": "0001493152-25-024384",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -7933776.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/0001493152-25-024384-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-024384",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225024384/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -7933776.0,
+          "expected_value": -7933776.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5880070.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-19",
+        "accn": "0001641172-25-024882",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/0001641172-25-024882-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-19",
+            "accn": "0001641172-25-024882",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -5880070.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/0001641172-25-024882-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-024882",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225024882/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -5880070.0,
+          "expected_value": -5880070.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -5594337.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2025-10-15",
+        "accn": "0001493152-25-018121",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225018121/0001493152-25-018121-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2025-10-15",
+            "accn": "0001493152-25-018121",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -5594337.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225018121/0001493152-25-018121-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-018121",
+          "form": "10-Q/A",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315225018121/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -5594337.0,
+          "expected_value": -5594337.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -14722528.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2025-04-09",
+        "accn": "0001641172-25-003412",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225003412/0001641172-25-003412-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2025-04-09",
+            "accn": "0001641172-25-003412",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -25563699.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225003412/0001641172-25-003412-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q/A",
+            "filed": "2024-08-29",
+            "accn": "0001493152-24-034347",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -10841171.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315224034347/0001493152-24-034347-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-003412",
+          "form": "10-K/A",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000164117225003412/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -25563699.0,
+          "expected_value": -14722528.0,
+          "detail": "12M -25,563,699 (10-K/A 0001641172-25-003412) − 9M -10,841,171 (10-Q/A 0001493152-24-034347)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -3362646.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2024-08-29",
+        "accn": "0001493152-24-034347",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315224034347/0001493152-24-034347-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2024-08-29",
+            "accn": "0001493152-24-034347",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -3362646.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315224034347/0001493152-24-034347-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-034347",
+          "form": "10-Q/A",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315224034347/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -3362646.0,
+          "expected_value": -3362646.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 2,
+        "start": "2023-04-01",
+        "end": "2023-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -4218088.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-08-22",
+        "accn": "0001493152-23-029753",
+        "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315223029753/0001493152-23-029753-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-08-22",
+            "accn": "0001493152-23-029753",
+            "start": "2023-04-01",
+            "end": "2023-06-30",
+            "value": -4218088.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315223029753/0001493152-23-029753-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-23-029753",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1673481/000149315223029753/R4.htm",
+          "statement_label": "Net loss attributable to Lottery.com Inc.",
+          "statement_value": -4218088.0,
+          "expected_value": -4218088.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-03-31",

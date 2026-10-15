@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-051898.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -12861000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income attributable to 3D Systems Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 5,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income before redeemable non-controlling interest"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,571 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-051898",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026051898/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -12861000.0,
+      "statement_value": -12861000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -12861000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-03",
+        "accn": "0001628280-26-051898",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026051898/0001628280-26-051898-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-03",
+            "accn": "0001628280-26-051898",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -12861000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026051898/0001628280-26-051898-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-051898",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026051898/R4.htm",
+          "statement_label": "Net (loss) income attributable to 3D Systems Corporation",
+          "statement_value": -12861000.0,
+          "expected_value": -12861000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -4424000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001628280-26-033633",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026033633/0001628280-26-033633-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001628280-26-033633",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -4424000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026033633/0001628280-26-033633-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-033633",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026033633/R4.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -4424000.0,
+          "expected_value": -4424000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -19514000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-09",
+        "accn": "0001628280-26-015997",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026015997/0001628280-26-015997-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-09",
+            "accn": "0001628280-26-015997",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 29883000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026015997/0001628280-26-015997-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048915",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 49397000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828025048915/0001628280-25-048915-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-015997",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828026015997/R5.htm",
+          "statement_label": "Net income (loss) attributable to 3D Systems Corporation",
+          "statement_value": 29883000.0,
+          "expected_value": -19514000.0,
+          "detail": "12M 29,883,000 (10-K 0001628280-26-015997) − 9M 49,397,000 (10-Q 0001628280-25-048915)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -18053000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001628280-25-048915",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828025048915/0001628280-25-048915-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048915",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -18053000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828025048915/0001628280-25-048915-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-048915",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000162828025048915/R4.htm",
+          "statement_label": "Net (loss) income attributable to 3D Systems Corporation",
+          "statement_value": -18053000.0,
+          "expected_value": -18053000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 104436000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0000910638-25-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000016/0000910638-25-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0000910638-25-000016",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 104436000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000016/0000910638-25-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-25-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000016/R4.htm",
+          "statement_label": "Net income (loss) attributable to 3D Systems Corporation",
+          "statement_value": 104436000.0,
+          "expected_value": 104436000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -36986000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0000910638-25-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000010/0000910638-25-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0000910638-25-000010",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -36986000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000010/0000910638-25-000010-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-25-000010",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000010/R4.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -36986000.0,
+          "expected_value": -36986000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -33707000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-27",
+        "accn": "0000910638-25-000005",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000005/0000910638-25-000005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-27",
+            "accn": "0000910638-25-000005",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -255593000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000005/0000910638-25-000005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-26",
+            "accn": "0000910638-24-000046",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -221886000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000046/0000910638-24-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-25-000005",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063825000005/R5.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -255593000.0,
+          "expected_value": -33707000.0,
+          "detail": "12M -255,593,000 (10-K 0000910638-25-000005) − 9M -221,886,000 (10-Q 0000910638-24-000046)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -178627000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-26",
+        "accn": "0000910638-24-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000046/0000910638-24-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-26",
+            "accn": "0000910638-24-000046",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -178627000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000046/0000910638-24-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-24-000046",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000046/R4.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -178627000.0,
+          "expected_value": -178627000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -27258000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-29",
+        "accn": "0000910638-24-000041",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000041/0000910638-24-000041-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-29",
+            "accn": "0000910638-24-000041",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -27258000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000041/0000910638-24-000041-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-24-000041",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000041/R4.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -27258000.0,
+          "expected_value": -27258000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -16001000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-20",
+        "accn": "0000910638-24-000035",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000035/0000910638-24-000035-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-20",
+            "accn": "0000910638-24-000035",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -16001000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000035/0000910638-24-000035-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-24-000035",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000035/R4.htm",
+          "statement_label": "Net loss attributable to 3D Systems Corporation",
+          "statement_value": -16001000.0,
+          "expected_value": -16001000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -292668000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-08-13",
+        "accn": "0000910638-24-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000030/0000910638-24-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-08-13",
+            "accn": "0000910638-24-000030",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -362688000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000030/0000910638-24-000030-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000910638-23-000025",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -70020000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063823000025/0000910638-23-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-24-000030",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063824000030/R5.htm",
+          "statement_label": "Net (loss) income attributable to 3D Systems Corporation",
+          "statement_value": -362688000.0,
+          "expected_value": -292668000.0,
+          "detail": "12M -362,688,000 (10-K 0000910638-24-000030) − 9M -70,020,000 (10-Q 0000910638-23-000025)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -11704000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0000910638-23-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063823000025/0000910638-23-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000910638-23-000025",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -11704000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063823000025/0000910638-23-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000910638-23-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/910638/000091063823000025/R4.htm",
+          "statement_label": "Net (loss) income attributable to 3D Systems Corporation",
+          "statement_value": -11704000.0,
+          "expected_value": -11704000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001020859-26-000025.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-08-01",
         "latestValue": 35000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to United Natural Foods, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,571 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 6,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) including noncontrolling interests"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001020859-26-000025",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000025/R5.htm",
+      "period_end": "2026-08-01",
+      "months": 12,
+      "pipeline_value": 84000000.0,
+      "statement_value": 84000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-05-03",
+        "end": "2026-08-01",
+        "ttm": "current",
+        "missing": false,
+        "value": 35000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-09-14",
+        "accn": "0001020859-26-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000025/0001020859-26-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-09-14",
+            "accn": "0001020859-26-000025",
+            "start": "2025-08-03",
+            "end": "2026-08-01",
+            "value": 84000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000025/0001020859-26-000025-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-06-09",
+            "accn": "0001020859-26-000015",
+            "start": "2025-08-03",
+            "end": "2026-05-02",
+            "value": 49000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000015/0001020859-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-26-000025",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000025/R5.htm",
+          "statement_label": "Net income (loss) attributable to United Natural Foods, Inc.",
+          "statement_value": 84000000.0,
+          "expected_value": 35000000.0,
+          "detail": "12M 84,000,000 (10-K 0001020859-26-000025) − 9M 49,000,000 (10-Q 0001020859-26-000015)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-02-01",
+        "end": "2026-05-02",
+        "ttm": "current",
+        "missing": false,
+        "value": 33000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-06-09",
+        "accn": "0001020859-26-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000015/0001020859-26-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-06-09",
+            "accn": "0001020859-26-000015",
+            "start": "2026-02-01",
+            "end": "2026-05-02",
+            "value": 33000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000015/0001020859-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-26-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000015/R4.htm",
+          "statement_label": "Net income (loss) attributable to United Natural Foods, Inc.",
+          "statement_value": 33000000.0,
+          "expected_value": 33000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-11-02",
+        "end": "2026-01-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 20000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-03-10",
+        "accn": "0001020859-26-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000006/0001020859-26-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-03-10",
+            "accn": "0001020859-26-000006",
+            "start": "2025-11-02",
+            "end": "2026-01-31",
+            "value": 20000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000006/0001020859-26-000006-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-26-000006",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085926000006/R4.htm",
+          "statement_label": "Net income (loss) attributable to United Natural Foods, Inc.",
+          "statement_value": 20000000.0,
+          "expected_value": 20000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-08-03",
+        "end": "2025-11-01",
+        "ttm": "current",
+        "missing": false,
+        "value": -4000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-12-02",
+        "accn": "0001020859-25-000065",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000065/0001020859-25-000065-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-12-02",
+            "accn": "0001020859-25-000065",
+            "start": "2025-08-03",
+            "end": "2025-11-01",
+            "value": -4000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000065/0001020859-25-000065-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-25-000065",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000065/R4.htm",
+          "statement_label": "Net loss attributable to United Natural Foods, Inc.",
+          "statement_value": -4000000.0,
+          "expected_value": -4000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-05-04",
+        "end": "2025-08-02",
+        "ttm": "previous",
+        "missing": false,
+        "value": -87000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-10-01",
+        "accn": "0001020859-25-000054",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000054/0001020859-25-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-10-01",
+            "accn": "0001020859-25-000054",
+            "start": "2024-08-04",
+            "end": "2025-08-02",
+            "value": -118000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000054/0001020859-25-000054-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-06-10",
+            "accn": "0001020859-25-000029",
+            "start": "2024-08-04",
+            "end": "2025-05-03",
+            "value": -31000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000029/0001020859-25-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-25-000054",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000054/R5.htm",
+          "statement_label": "Net (loss) income attributable to United Natural Foods, Inc.",
+          "statement_value": -118000000.0,
+          "expected_value": -87000000.0,
+          "detail": "12M -118,000,000 (10-K 0001020859-25-000054) − 9M -31,000,000 (10-Q 0001020859-25-000029)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-02-02",
+        "end": "2025-05-03",
+        "ttm": "previous",
+        "missing": false,
+        "value": -7000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-06-10",
+        "accn": "0001020859-25-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000029/0001020859-25-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-06-10",
+            "accn": "0001020859-25-000029",
+            "start": "2025-02-02",
+            "end": "2025-05-03",
+            "value": -7000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000029/0001020859-25-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-25-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000029/R4.htm",
+          "statement_label": "Net loss attributable to United Natural Foods, Inc.",
+          "statement_value": -7000000.0,
+          "expected_value": -7000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-11-03",
+        "end": "2025-02-01",
+        "ttm": "previous",
+        "missing": false,
+        "value": -3000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-03-11",
+        "accn": "0001020859-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000013/0001020859-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-03-11",
+            "accn": "0001020859-25-000013",
+            "start": "2024-11-03",
+            "end": "2025-02-01",
+            "value": -3000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000013/0001020859-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-25-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085925000013/R4.htm",
+          "statement_label": "Net loss attributable to United Natural Foods, Inc.",
+          "statement_value": -3000000.0,
+          "expected_value": -3000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-08-04",
+        "end": "2024-11-02",
+        "ttm": "previous",
+        "missing": false,
+        "value": -21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-12-10",
+        "accn": "0001020859-24-000098",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000098/0001020859-24-000098-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-12-10",
+            "accn": "0001020859-24-000098",
+            "start": "2024-08-04",
+            "end": "2024-11-02",
+            "value": -21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000098/0001020859-24-000098-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-24-000098",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000098/R4.htm",
+          "statement_label": "Net loss attributable to United Natural Foods, Inc.",
+          "statement_value": -21000000.0,
+          "expected_value": -21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-28",
+        "end": "2024-08-03",
+        "ttm": null,
+        "missing": false,
+        "value": -37000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-10-01",
+        "accn": "0001020859-24-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000045/0001020859-24-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-10-01",
+            "accn": "0001020859-24-000045",
+            "start": "2023-07-30",
+            "end": "2024-08-03",
+            "value": -112000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000045/0001020859-24-000045-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-06-05",
+            "accn": "0001020859-24-000029",
+            "start": "2023-07-30",
+            "end": "2024-04-27",
+            "value": -75000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000029/0001020859-24-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-24-000045",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000045/R5.htm",
+          "statement_label": "Net (loss) income attributable to United Natural Foods, Inc.",
+          "statement_value": -112000000.0,
+          "expected_value": -37000000.0,
+          "detail": "12M -112,000,000 (10-K 0001020859-24-000045) − 9M -75,000,000 (10-Q 0001020859-24-000029)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-28",
+        "end": "2024-04-27",
+        "ttm": null,
+        "missing": false,
+        "value": -21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-06-05",
+        "accn": "0001020859-24-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000029/0001020859-24-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-06-05",
+            "accn": "0001020859-24-000029",
+            "start": "2024-01-28",
+            "end": "2024-04-27",
+            "value": -21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000029/0001020859-24-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-24-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000029/R4.htm",
+          "statement_label": "Net (loss) income attributable to United Natural Foods, Inc.",
+          "statement_value": -21000000.0,
+          "expected_value": -21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-29",
+        "end": "2024-01-27",
+        "ttm": null,
+        "missing": false,
+        "value": -15000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-03-06",
+        "accn": "0001020859-24-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000006/0001020859-24-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-03-06",
+            "accn": "0001020859-24-000006",
+            "start": "2023-10-29",
+            "end": "2024-01-27",
+            "value": -15000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000006/0001020859-24-000006-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-24-000006",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085924000006/R4.htm",
+          "statement_label": "Net (loss) income attributable to United Natural Foods, Inc.",
+          "statement_value": -15000000.0,
+          "expected_value": -15000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-30",
+        "end": "2023-10-28",
+        "ttm": null,
+        "missing": false,
+        "value": -39000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-06",
+        "accn": "0001020859-23-000115",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085923000115/0001020859-23-000115-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-06",
+            "accn": "0001020859-23-000115",
+            "start": "2023-07-30",
+            "end": "2023-10-28",
+            "value": -39000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085923000115/0001020859-23-000115-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020859-23-000115",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020859/000102085923000115/R4.htm",
+          "statement_label": "Net (loss) income attributable to United Natural Foods, Inc.",
+          "statement_value": -39000000.0,
+          "expected_value": -39000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-08-01",

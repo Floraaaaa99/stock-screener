@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001002638-26-000068.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 155663000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to OpenText"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,552 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 3,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001002638-26-000068",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000068/R5.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": 643022000.0,
+      "statement_value": 643022000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 155663000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-08-06",
+        "accn": "0001002638-26-000068",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000068/0001002638-26-000068-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-08-06",
+            "accn": "0001002638-26-000068",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": 643022000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000068/0001002638-26-000068-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001002638-26-000046",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": 487359000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000046/0001002638-26-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-26-000068",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000068/R5.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 643022000.0,
+          "expected_value": 155663000.0,
+          "detail": "12M 643,022,000 (10-K 0001002638-26-000068) − 9M 487,359,000 (10-Q 0001002638-26-000046)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 172652000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001002638-26-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000046/0001002638-26-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001002638-26-000046",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 172652000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000046/0001002638-26-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-26-000046",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000046/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 172652000.0,
+          "expected_value": 172652000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 168091000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-05",
+        "accn": "0001002638-26-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000021/0001002638-26-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0001002638-26-000021",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 168091000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000021/0001002638-26-000021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-26-000021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263826000021/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 168091000.0,
+          "expected_value": 168091000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 146616000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001002638-25-000096",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000096/0001002638-25-000096-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001002638-25-000096",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 146616000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000096/0001002638-25-000096-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-25-000096",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000096/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 146616000.0,
+          "expected_value": 146616000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 28833000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-08-07",
+        "accn": "0001002638-25-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000053/0001002638-25-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-08-07",
+            "accn": "0001002638-25-000053",
+            "start": "2024-07-01",
+            "end": "2025-06-30",
+            "value": 435868000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000053/0001002638-25-000053-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001002638-25-000040",
+            "start": "2024-07-01",
+            "end": "2025-03-31",
+            "value": 407035000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000040/0001002638-25-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-25-000053",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000053/R5.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 435868000.0,
+          "expected_value": 28833000.0,
+          "detail": "12M 435,868,000 (10-K 0001002638-25-000053) − 9M 407,035,000 (10-Q 0001002638-25-000040)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 92805000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001002638-25-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000040/0001002638-25-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001002638-25-000040",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 92805000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000040/0001002638-25-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-25-000040",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000040/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 92805000.0,
+          "expected_value": 92805000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 229862000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-06",
+        "accn": "0001002638-25-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000021/0001002638-25-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-06",
+            "accn": "0001002638-25-000021",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 229862000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000021/0001002638-25-000021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-25-000021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263825000021/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 229862000.0,
+          "expected_value": 229862000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 84368000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-31",
+        "accn": "0001002638-24-000075",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000075/0001002638-24-000075-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0001002638-24-000075",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 84368000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000075/0001002638-24-000075-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-24-000075",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000075/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 84368000.0,
+          "expected_value": 84368000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 248229000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-08-01",
+        "accn": "0001002638-24-000052",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000052/0001002638-24-000052-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-08-01",
+            "accn": "0001002638-24-000052",
+            "start": "2023-07-01",
+            "end": "2024-06-30",
+            "value": 465090000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000052/0001002638-24-000052-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001002638-24-000025",
+            "start": "2023-07-01",
+            "end": "2024-03-31",
+            "value": 216861000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000025/0001002638-24-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-24-000052",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000052/R5.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 465090000.0,
+          "expected_value": 248229000.0,
+          "detail": "12M 465,090,000 (10-K 0001002638-24-000052) − 9M 216,861,000 (10-Q 0001002638-24-000025)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 98285000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0001002638-24-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000025/0001002638-24-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001002638-24-000025",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 98285000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000025/0001002638-24-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-24-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000025/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 98285000.0,
+          "expected_value": 98285000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 37675000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-01",
+        "accn": "0001002638-24-000005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000005/0001002638-24-000005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-01",
+            "accn": "0001002638-24-000005",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 37675000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000005/0001002638-24-000005-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-24-000005",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263824000005/R4.htm",
+          "statement_label": "Net income attributable to OpenText",
+          "statement_value": 37675000.0,
+          "expected_value": 37675000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 80901000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001002638-23-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263823000032/0001002638-23-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001002638-23-000032",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 80901000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263823000032/0001002638-23-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001002638-23-000032",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1002638/000100263823000032/R4.htm",
+          "statement_label": "Net income (loss) attributable to OpenText",
+          "statement_value": 80901000.0,
+          "expected_value": 80901000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

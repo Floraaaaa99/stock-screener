@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001193125-26-340363.",
     "candidates": [
       {
         "concept": "ProfitLoss",
@@ -604,28 +604,587 @@
         "latestValue": -567000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 11,
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -604000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 11,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss) attributable to Agenus Inc. common stockholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-340363",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526340363/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -604000.0,
+      "statement_value": -604000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -604000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-07",
+        "accn": "0001193125-26-340363",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526340363/0001193125-26-340363-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-07",
+            "accn": "0001193125-26-340363",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -604000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526340363/0001193125-26-340363-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-340363",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526340363/R4.htm",
+          "statement_label": "Net income (loss) attributable to Agenus Inc. common stockholders",
+          "statement_value": -604000.0,
+          "expected_value": -604000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 39172000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001193125-26-217082",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526217082/0001193125-26-217082-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001193125-26-217082",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 39172000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526217082/0001193125-26-217082-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-217082",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526217082/R4.htm",
+          "statement_label": "Net income (loss) attributable to Agenus Inc. common stockholders",
+          "statement_value": 39172000.0,
+          "expected_value": 39172000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -10632000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-16",
+        "accn": "0001193125-26-108632",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526108632/0001193125-26-108632-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-16",
+            "accn": "0001193125-26-108632",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -101000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526108632/0001193125-26-108632-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001193125-25-274554",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 10531000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312525274554/0001193125-25-274554-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-108632",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312526108632/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -101000.0,
+          "expected_value": -10632000.0,
+          "detail": "12M -101,000 (10-K 0001193125-26-108632) − 9M 10,531,000 (10-Q 0001193125-25-274554)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 63860000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001193125-25-274554",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312525274554/0001193125-25-274554-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001193125-25-274554",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 63860000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312525274554/0001193125-25-274554-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-274554",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000119312525274554/R4.htm",
+          "statement_label": "Net income (loss) attributable to Agenus Inc. common stockholders",
+          "statement_value": 63860000.0,
+          "expected_value": 63860000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -28009000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0000950170-25-106633",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025106633/0000950170-25-106633-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0000950170-25-106633",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -28009000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025106633/0000950170-25-106633-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-106633",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025106633/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -28009000.0,
+          "expected_value": -28009000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -25320000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0000950170-25-069396",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025069396/0000950170-25-069396-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0000950170-25-069396",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -25320000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025069396/0000950170-25-069396-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-069396",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025069396/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -25320000.0,
+          "expected_value": -25320000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -45913000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-17",
+        "accn": "0000950170-25-040289",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025040289/0000950170-25-040289-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-17",
+            "accn": "0000950170-25-040289",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -227427000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025040289/0000950170-25-040289-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125608",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -181514000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024125608/0000950170-24-125608-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-040289",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017025040289/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -227427000.0,
+          "expected_value": -45913000.0,
+          "detail": "12M -227,427,000 (10-K 0000950170-25-040289) − 9M -181,514,000 (10-Q 0000950170-24-125608)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -66440000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0000950170-24-125608",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024125608/0000950170-24-125608-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125608",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -66440000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024125608/0000950170-24-125608-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-125608",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024125608/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -66440000.0,
+          "expected_value": -66440000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -53135000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000950170-24-093937",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024093937/0000950170-24-093937-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000950170-24-093937",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -53135000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024093937/0000950170-24-093937-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-093937",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024093937/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -53135000.0,
+          "expected_value": -53135000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -61940000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0000950170-24-053951",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024053951/0000950170-24-053951-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0000950170-24-053951",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -61940000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024053951/0000950170-24-053951-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-053951",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024053951/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -61940000.0,
+          "expected_value": -61940000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -46343000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-14",
+        "accn": "0000950170-24-031620",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024031620/0000950170-24-031620-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-14",
+            "accn": "0000950170-24-031620",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -245974000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024031620/0000950170-24-031620-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000950170-23-062051",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -199631000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017023062051/0000950170-23-062051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-031620",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017024031620/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -245974000.0,
+          "expected_value": -46343000.0,
+          "detail": "12M -245,974,000 (10-K 0000950170-24-031620) − 9M -199,631,000 (10-Q 0000950170-23-062051)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -62254000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0000950170-23-062051",
+        "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017023062051/0000950170-23-062051-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000950170-23-062051",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -62254000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017023062051/0000950170-23-062051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-062051",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1098972/000095017023062051/R4.htm",
+          "statement_label": "Net loss attributable to Agenus Inc. common stockholders",
+          "statement_value": -62254000.0,
+          "expected_value": -62254000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

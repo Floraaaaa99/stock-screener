@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000798354-26-000031.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 627000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Fiserv, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,547 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000798354-26-000031",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000031/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 627000000.0,
+      "statement_value": 627000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 627000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-07",
+        "accn": "0000798354-26-000031",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000031/0000798354-26-000031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-07",
+            "accn": "0000798354-26-000031",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 627000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000031/0000798354-26-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-26-000031",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000031/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 627000000.0,
+          "expected_value": 627000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 571000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0000798354-26-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000018/0000798354-26-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0000798354-26-000018",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 571000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000018/0000798354-26-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-26-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000018/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 571000000.0,
+          "expected_value": 571000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 811000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-19",
+        "accn": "0000798354-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000009/0000798354-26-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-19",
+            "accn": "0000798354-26-000009",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 3480000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000009/0000798354-26-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000798354-25-000171",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 2669000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000171/0000798354-25-000171-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-26-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835426000009/R3.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 3480000000.0,
+          "expected_value": 811000000.0,
+          "detail": "12M 3,480,000,000 (10-K 0000798354-26-000009) − 9M 2,669,000,000 (10-Q 0000798354-25-000171)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 792000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0000798354-25-000171",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000171/0000798354-25-000171-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000798354-25-000171",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 792000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000171/0000798354-25-000171-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-25-000171",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000171/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 792000000.0,
+          "expected_value": 792000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1026000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-24",
+        "accn": "0000798354-25-000163",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000163/0000798354-25-000163-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-24",
+            "accn": "0000798354-25-000163",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1026000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000163/0000798354-25-000163-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000798354-25-000163",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000798354-25-000163 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 851000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-25",
+        "accn": "0000798354-25-000104",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000104/0000798354-25-000104-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-25",
+            "accn": "0000798354-25-000104",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 851000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000104/0000798354-25-000104-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000798354-25-000104",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000798354-25-000104 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 938000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0000798354-25-000047",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000047/0000798354-25-000047-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0000798354-25-000047",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 3131000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000047/0000798354-25-000047-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-23",
+            "accn": "0000798354-24-000190",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 2193000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000190/0000798354-24-000190-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-25-000047",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835425000047/R3.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 3131000000.0,
+          "expected_value": 938000000.0,
+          "detail": "12M 3,131,000,000 (10-K 0000798354-25-000047) − 9M 2,193,000,000 (10-Q 0000798354-24-000190)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 564000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-23",
+        "accn": "0000798354-24-000190",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000190/0000798354-24-000190-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-23",
+            "accn": "0000798354-24-000190",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 564000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000190/0000798354-24-000190-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-24-000190",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000190/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 564000000.0,
+          "expected_value": 564000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 894000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-25",
+        "accn": "0000798354-24-000156",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000156/0000798354-24-000156-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-25",
+            "accn": "0000798354-24-000156",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 894000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000156/0000798354-24-000156-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-24-000156",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000156/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 894000000.0,
+          "expected_value": 894000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 735000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-24",
+        "accn": "0000798354-24-000100",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000100/0000798354-24-000100-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-24",
+            "accn": "0000798354-24-000100",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 735000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000100/0000798354-24-000100-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-24-000100",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000100/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 735000000.0,
+          "expected_value": 735000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 870000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0000798354-24-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000037/0000798354-24-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0000798354-24-000037",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 3068000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000037/0000798354-24-000037-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0000798354-23-000018",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 2198000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835423000018/0000798354-23-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-24-000037",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835424000037/R3.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 3068000000.0,
+          "expected_value": 870000000.0,
+          "detail": "12M 3,068,000,000 (10-K 0000798354-24-000037) − 9M 2,198,000,000 (10-Q 0000798354-23-000018)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 952000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-25",
+        "accn": "0000798354-23-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835423000018/0000798354-23-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0000798354-23-000018",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 952000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835423000018/0000798354-23-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000798354-23-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/798354/000079835423000018/R2.htm",
+          "statement_label": "Net income attributable to Fiserv, Inc.",
+          "statement_value": 952000000.0,
+          "expected_value": 952000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

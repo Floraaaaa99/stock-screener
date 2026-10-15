@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001437749-26-025925.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -2806000.0,
         "quartersInWindow": 11,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 11,
-        "disagreements": 8,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net loss attributable to Zevia PBC"
       },
       {
         "concept": "ProfitLoss",
@@ -615,10 +615,10 @@
         "latestValue": -2914000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 11,
+        "disagreements": 8,
+        "statementLabel": "Net loss and comprehensive loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -626,17 +626,496 @@
         "latestValue": -2806000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 11,
+        "disagreements": 8,
         "statementLabel": null
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001437749-26-025925",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -2806000.0,
+      "statement_value": -2806000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2806000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001437749-26-025925",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/0001437749-26-025925-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001437749-26-025925",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -2806000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/0001437749-26-025925-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-025925",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -2806000.0,
+          "expected_value": -2806000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -2267000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001437749-26-015202",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/0001437749-26-015202-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001437749-26-015202",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -2267000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/0001437749-26-015202-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-015202",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -2267000.0,
+          "expected_value": -2267000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1311000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001437749-26-005601",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/0001437749-26-005601-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001437749-26-005601",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -9920000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/0001437749-26-005601-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001437749-25-033353",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -8609000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-005601",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -9920000.0,
+          "expected_value": -1311000.0,
+          "detail": "12M -9,920,000 (10-K 0001437749-26-005601) − 9M -8,609,000 (10-Q 0001437749-25-033353)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2686000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001437749-25-033353",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001437749-25-033353",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -2686000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-033353",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -2686000.0,
+          "expected_value": -2686000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -697000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001437749-26-025925",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/0001437749-26-025925-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001437749-26-025925",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -697000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/0001437749-26-025925-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-025925",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926025925/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -697000.0,
+          "expected_value": -697000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5226000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001437749-26-015202",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/0001437749-26-015202-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001437749-26-015202",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -5226000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/0001437749-26-015202-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-015202",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926015202/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -5226000.0,
+          "expected_value": -5226000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5763000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001437749-26-005601",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/0001437749-26-005601-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001437749-26-005601",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -20005000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/0001437749-26-005601-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001437749-25-033353",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -14242000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-005601",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774926005601/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -20005000.0,
+          "expected_value": -5763000.0,
+          "detail": "12M -20,005,000 (10-K 0001437749-26-005601) − 9M -14,242,000 (10-Q 0001437749-25-033353)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2527000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001437749-25-033353",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001437749-25-033353",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2527000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/0001437749-25-033353-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-033353",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000143774925033353/R4.htm",
+          "statement_label": "Net loss attributable to Zevia PBC",
+          "statement_value": -2527000.0,
+          "expected_value": -2527000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-29",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-29",
+        "end": "2024-03-28",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -9151000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0000950170-24-027159",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/0000950170-24-027159-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0000950170-24-027159",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -9151000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/0000950170-24-027159-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-027159",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/R4.htm",
+          "detail": "No 3-month net income column ending 2023-12-31 on 10-K 0000950170-24-027159."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -11250000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0000950170-24-027159",
+        "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/0000950170-24-027159-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0000950170-24-027159",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -11250000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/0000950170-24-027159-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-24-027159",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1854139/000095017024027159/R4.htm",
+          "detail": "No 3-month net income column ending 2023-09-30 on 10-K 0000950170-24-027159."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

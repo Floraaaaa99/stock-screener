@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001640147-26-000037.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-31",
         "latestValue": -191720000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Snowflake Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,577 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 8,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001640147-26-000037",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/R4.htm",
+      "period_end": "2026-07-31",
+      "months": 3,
+      "pipeline_value": -191720000.0,
+      "statement_value": -191720000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 2,
+        "start": "2026-05-01",
+        "end": "2026-07-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -191720000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-09-04",
+        "accn": "0001640147-26-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/0001640147-26-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-09-04",
+            "accn": "0001640147-26-000037",
+            "start": "2026-05-01",
+            "end": "2026-07-31",
+            "value": -191720000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/0001640147-26-000037-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-26-000037",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -191720000.0,
+          "expected_value": -191720000.0
+        }
+      },
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-02-01",
+        "end": "2026-04-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -295571000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-29",
+        "accn": "0001640147-26-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000030/0001640147-26-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-29",
+            "accn": "0001640147-26-000030",
+            "start": "2026-02-01",
+            "end": "2026-04-30",
+            "value": -295571000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000030/0001640147-26-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-26-000030",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000030/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -295571000.0,
+          "expected_value": -295571000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2025-11-01",
+        "end": "2026-01-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -309550000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-20",
+        "accn": "0001640147-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000008/0001640147-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-20",
+            "accn": "0001640147-26-000008",
+            "start": "2025-02-01",
+            "end": "2026-01-31",
+            "value": -1331616000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000008/0001640147-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-12-05",
+            "accn": "0001640147-25-000211",
+            "start": "2025-02-01",
+            "end": "2025-10-31",
+            "value": -1022066000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000211/0001640147-25-000211-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014726000008/R5.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -1331616000.0,
+          "expected_value": -309550000.0,
+          "detail": "12M -1,331,616,000 (10-K 0001640147-26-000008) − 9M -1,022,066,000 (10-Q 0001640147-25-000211)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-08-01",
+        "end": "2025-10-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -293957000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-12-05",
+        "accn": "0001640147-25-000211",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000211/0001640147-25-000211-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-12-05",
+            "accn": "0001640147-25-000211",
+            "start": "2025-08-01",
+            "end": "2025-10-31",
+            "value": -293957000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000211/0001640147-25-000211-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-25-000211",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000211/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -293957000.0,
+          "expected_value": -293957000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-05-01",
+        "end": "2025-07-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -298017000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-09-05",
+        "accn": "0001640147-25-000187",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000187/0001640147-25-000187-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-09-05",
+            "accn": "0001640147-25-000187",
+            "start": "2025-05-01",
+            "end": "2025-07-31",
+            "value": -298017000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000187/0001640147-25-000187-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-25-000187",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000187/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -298017000.0,
+          "expected_value": -298017000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-02-01",
+        "end": "2025-04-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -430092000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-30",
+        "accn": "0001640147-25-000110",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000110/0001640147-25-000110-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-30",
+            "accn": "0001640147-25-000110",
+            "start": "2025-02-01",
+            "end": "2025-04-30",
+            "value": -430092000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000110/0001640147-25-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-25-000110",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000110/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -430092000.0,
+          "expected_value": -430092000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2024-11-01",
+        "end": "2025-01-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -327474000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-21",
+        "accn": "0001640147-25-000052",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000052/0001640147-25-000052-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-21",
+            "accn": "0001640147-25-000052",
+            "start": "2024-02-01",
+            "end": "2025-01-31",
+            "value": -1285640000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000052/0001640147-25-000052-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-27",
+            "accn": "0001640147-24-000250",
+            "start": "2024-02-01",
+            "end": "2024-10-31",
+            "value": -958166000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000250/0001640147-24-000250-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-25-000052",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014725000052/R5.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -1285640000.0,
+          "expected_value": -327474000.0,
+          "detail": "12M -1,285,640,000 (10-K 0001640147-25-000052) − 9M -958,166,000 (10-Q 0001640147-24-000250)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-08-01",
+        "end": "2024-10-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -324279000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-27",
+        "accn": "0001640147-24-000250",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000250/0001640147-24-000250-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-27",
+            "accn": "0001640147-24-000250",
+            "start": "2024-08-01",
+            "end": "2024-10-31",
+            "value": -324279000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000250/0001640147-24-000250-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-24-000250",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000250/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -324279000.0,
+          "expected_value": -324279000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-05-01",
+        "end": "2024-07-31",
+        "ttm": null,
+        "missing": false,
+        "value": -316899000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-29",
+        "accn": "0001640147-24-000207",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000207/0001640147-24-000207-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-29",
+            "accn": "0001640147-24-000207",
+            "start": "2024-05-01",
+            "end": "2024-07-31",
+            "value": -316899000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000207/0001640147-24-000207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-24-000207",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000207/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -316899000.0,
+          "expected_value": -316899000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-02-01",
+        "end": "2024-04-30",
+        "ttm": null,
+        "missing": false,
+        "value": -316988000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-31",
+        "accn": "0001640147-24-000135",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000135/0001640147-24-000135-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-31",
+            "accn": "0001640147-24-000135",
+            "start": "2024-02-01",
+            "end": "2024-04-30",
+            "value": -316988000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000135/0001640147-24-000135-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-24-000135",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000135/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -316988000.0,
+          "expected_value": -316988000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2023-11-01",
+        "end": "2024-01-31",
+        "ttm": null,
+        "missing": false,
+        "value": -169352000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-26",
+        "accn": "0001640147-24-000101",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/0001640147-24-000101-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-26",
+            "accn": "0001640147-24-000101",
+            "start": "2023-02-01",
+            "end": "2024-01-31",
+            "value": -836097000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/0001640147-24-000101-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-12-01",
+            "accn": "0001640147-23-000260",
+            "start": "2023-02-01",
+            "end": "2023-10-31",
+            "value": -666745000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014723000260/0001640147-23-000260-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-24-000101",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014724000101/R5.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -836097000.0,
+          "expected_value": -169352000.0,
+          "detail": "12M -836,097,000 (10-K 0001640147-24-000101) − 9M -666,745,000 (10-Q 0001640147-23-000260)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-08-01",
+        "end": "2023-10-31",
+        "ttm": null,
+        "missing": false,
+        "value": -214251000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-01",
+        "accn": "0001640147-23-000260",
+        "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014723000260/0001640147-23-000260-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-01",
+            "accn": "0001640147-23-000260",
+            "start": "2023-08-01",
+            "end": "2023-10-31",
+            "value": -214251000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014723000260/0001640147-23-000260-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001640147-23-000260",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1640147/000164014723000260/R4.htm",
+          "statement_label": "Net loss attributable to Snowflake Inc.",
+          "statement_value": -214251000.0,
+          "expected_value": -214251000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-31",

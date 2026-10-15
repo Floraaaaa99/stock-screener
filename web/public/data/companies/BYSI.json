@@ -498,22 +498,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001171843-26-005558.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -849000.0,
         "quartersInWindow": 10,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to BeyondSpring Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -524,7 +524,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 10,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -539,10 +539,473 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001171843-26-005558",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326005558/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -849000.0,
+      "statement_value": -849000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -849000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-14",
+        "accn": "0001171843-26-005558",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326005558/0001171843-26-005558-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-14",
+            "accn": "0001171843-26-005558",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -849000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326005558/0001171843-26-005558-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-26-005558",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326005558/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -849000.0,
+          "expected_value": -849000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -2159000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-13",
+        "accn": "0001171843-26-003372",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326003372/0001171843-26-003372-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-13",
+            "accn": "0001171843-26-003372",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -2159000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326003372/0001171843-26-003372-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-26-003372",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326003372/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -2159000.0,
+          "expected_value": -2159000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -2137000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-25",
+        "accn": "0001171843-26-001908",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326001908/0001171843-26-001908-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-25",
+            "accn": "0001171843-26-001908",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -1006000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326001908/0001171843-26-001908-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001171843-25-007236",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 1131000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-26-001908",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184326001908/R4.htm",
+          "statement_label": "Net loss attributable to BeyondSpring Inc.",
+          "statement_value": -1006000.0,
+          "expected_value": -2137000.0,
+          "detail": "12M -1,006,000 (10-K 0001171843-26-001908) − 9M 1,131,000 (10-Q 0001171843-25-007236)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -1540000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001171843-25-007236",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001171843-25-007236",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -1540000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-007236",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -1540000.0,
+          "expected_value": -1540000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1806000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-13",
+        "accn": "0001171843-25-005376",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/0001171843-25-005376-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-13",
+            "accn": "0001171843-25-005376",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -1806000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/0001171843-25-005376-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-005376",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -1806000.0,
+          "expected_value": -1806000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 4477000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0001171843-25-003088",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/0001171843-25-003088-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0001171843-25-003088",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 4477000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/0001171843-25-003088-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-003088",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": 4477000.0,
+          "expected_value": 4477000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1729000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-27",
+        "accn": "0001171843-25-001758",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325001758/0001171843-25-001758-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-27",
+            "accn": "0001171843-25-001758",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -11123000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325001758/0001171843-25-001758-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001171843-25-007236",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -9394000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-001758",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325001758/R4.htm",
+          "statement_label": "Net loss attributable to BeyondSpring Inc.",
+          "statement_value": -11123000.0,
+          "expected_value": -1729000.0,
+          "detail": "12M -11,123,000 (10-K 0001171843-25-001758) − 9M -9,394,000 (10-Q 0001171843-25-007236)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2132000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001171843-25-007236",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001171843-25-007236",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2132000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/0001171843-25-007236-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-007236",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325007236/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -2132000.0,
+          "expected_value": -2132000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -4031000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-13",
+        "accn": "0001171843-25-005376",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/0001171843-25-005376-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-13",
+            "accn": "0001171843-25-005376",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -4031000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/0001171843-25-005376-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-005376",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325005376/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -4031000.0,
+          "expected_value": -4031000.0
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -3231000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0001171843-25-003088",
+        "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/0001171843-25-003088-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0001171843-25-003088",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -3231000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/0001171843-25-003088-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001171843-25-003088",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1677940/000117184325003088/R4.htm",
+          "statement_label": "Net income (loss) attributable to BeyondSpring Inc.",
+          "statement_value": -3231000.0,
+          "expected_value": -3231000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

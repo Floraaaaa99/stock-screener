@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001193125-26-368246.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -604,9 +604,9 @@
         "latestValue": 13573000.0,
         "quartersInWindow": 9,
         "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 9,
-        "disagreements": 6,
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 4,
+        "disagreements": 0,
         "statementLabel": null
       },
       {
@@ -615,28 +615,582 @@
         "latestValue": 1064000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 8,
+        "disagreements": 6,
+        "statementLabel": "Net (loss) income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 1064000.0,
         "quartersInWindow": 8,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 8,
-        "disagreements": 6,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net (loss) income attributable to Great Elm Group, Inc. stockholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "concept_merged",
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-368246",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": -35444000.0,
+      "statement_value": -35444000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1064000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-08-26",
+        "accn": "0001193125-26-368246",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/0001193125-26-368246-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-08-26",
+            "accn": "0001193125-26-368246",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": -35444000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/0001193125-26-368246-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-208890",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": -36508000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-368246",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. stockholders",
+          "statement_value": -35444000.0,
+          "expected_value": 1064000.0,
+          "detail": "12M -35,444,000 (10-K 0001193125-26-368246) − 9M -36,508,000 (10-Q 0001193125-26-208890)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -13724000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001193125-26-208890",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-208890",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -13724000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-208890",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/R4.htm",
+          "statement_label": "Net loss attributable to Great Elm Group, Inc. stockholders",
+          "statement_value": -13724000.0,
+          "expected_value": -13724000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -15754000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-04",
+        "accn": "0001193125-26-037608",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/0001193125-26-037608-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-04",
+            "accn": "0001193125-26-037608",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -15754000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/0001193125-26-037608-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-037608",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. shareholders",
+          "statement_value": -15754000.0,
+          "expected_value": -15754000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -7030000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001193125-25-277599",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/0001193125-25-277599-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001193125-25-277599",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -7030000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/0001193125-25-277599-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-277599",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. shareholders",
+          "statement_value": -7030000.0,
+          "expected_value": -7030000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13573000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-08-26",
+        "accn": "0001193125-26-368246",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/0001193125-26-368246-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-08-26",
+            "accn": "0001193125-26-368246",
+            "start": "2024-07-01",
+            "end": "2025-06-30",
+            "value": 12891000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/0001193125-26-368246-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-208890",
+            "start": "2024-07-01",
+            "end": "2025-03-31",
+            "value": -682000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-368246",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526368246/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. stockholders",
+          "statement_value": 12891000.0,
+          "expected_value": 13573000.0,
+          "detail": "12M 12,891,000 (10-K 0001193125-26-368246) − 9M -682,000 (10-Q 0001193125-26-208890)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4497000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001193125-26-208890",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-208890",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -4497000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/0001193125-26-208890-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-208890",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526208890/R4.htm",
+          "statement_label": "Net loss attributable to Great Elm Group, Inc. stockholders",
+          "statement_value": -4497000.0,
+          "expected_value": -4497000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1176000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-04",
+        "accn": "0001193125-26-037608",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/0001193125-26-037608-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-04",
+            "accn": "0001193125-26-037608",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 1176000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/0001193125-26-037608-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-037608",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312526037608/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. shareholders",
+          "statement_value": 1176000.0,
+          "expected_value": 1176000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2639000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001193125-25-277599",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/0001193125-25-277599-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001193125-25-277599",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 2639000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/0001193125-25-277599-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-277599",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000119312525277599/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc. shareholders",
+          "statement_value": 2639000.0,
+          "expected_value": 2639000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -712000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-08-29",
+        "accn": "0000950170-24-101834",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024101834/0000950170-24-101834-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-08-29",
+            "accn": "0000950170-24-101834",
+            "start": "2023-07-01",
+            "end": "2024-06-30",
+            "value": -1388000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024101834/0000950170-24-101834-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0000950170-24-055820",
+            "start": "2023-07-01",
+            "end": "2024-03-31",
+            "value": -676000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024055820/0000950170-24-055820-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-101834",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024101834/R4.htm",
+          "statement_label": "Net income (loss) attributable to Great Elm Group, Inc.",
+          "statement_value": -1388000.0,
+          "expected_value": -712000.0,
+          "detail": "12M -1,388,000 (10-K 0000950170-24-101834) − 9M -676,000 (10-Q 0000950170-24-055820)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -3100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0000950170-24-055820",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024055820/0000950170-24-055820-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0000950170-24-055820",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -3100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024055820/0000950170-24-055820-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-055820",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024055820/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc.",
+          "statement_value": -3100000.0,
+          "expected_value": -3100000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -350000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-13",
+        "accn": "0000950170-24-014659",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024014659/0000950170-24-014659-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-13",
+            "accn": "0000950170-24-014659",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -350000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024014659/0000950170-24-014659-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-014659",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017024014659/R4.htm",
+          "statement_label": "Net (loss) income attributable to Great Elm Group, Inc.",
+          "statement_value": -350000.0,
+          "expected_value": -350000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 2774000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-061230",
+        "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017023061230/0000950170-23-061230-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061230",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 2774000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017023061230/0000950170-23-061230-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-061230",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1831096/000095017023061230/R4.htm",
+          "statement_label": "Net income (loss) attributable to Great Elm Group, Inc.",
+          "statement_value": 2774000.0,
+          "expected_value": 2774000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

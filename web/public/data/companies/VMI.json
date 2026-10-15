@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000102729-26-000044.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-27",
         "latestValue": 119918000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings (loss) attributable to Valmont Industries, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Net earnings (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,553 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000102729-26-000044",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000044/R2.htm",
+      "period_end": "2026-06-27",
+      "months": 3,
+      "pipeline_value": 119918000.0,
+      "statement_value": 119918000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-03-29",
+        "end": "2026-06-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 119918000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-28",
+        "accn": "0000102729-26-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000044/0000102729-26-000044-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-28",
+            "accn": "0000102729-26-000044",
+            "start": "2026-03-29",
+            "end": "2026-06-27",
+            "value": 119918000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000044/0000102729-26-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-26-000044",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000044/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Valmont Industries, Inc.",
+          "statement_value": 119918000.0,
+          "expected_value": 119918000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-12-28",
+        "end": "2026-03-28",
+        "ttm": "current",
+        "missing": false,
+        "value": 108033000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-28",
+        "accn": "0000102729-26-000020",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000020/0000102729-26-000020-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-28",
+            "accn": "0000102729-26-000020",
+            "start": "2025-12-28",
+            "end": "2026-03-28",
+            "value": 108033000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000020/0000102729-26-000020-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-26-000020",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000020/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 108033000.0,
+          "expected_value": 108033000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-28",
+        "end": "2025-12-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 168001000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-24",
+        "accn": "0000102729-26-000007",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000007/0000102729-26-000007-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-24",
+            "accn": "0000102729-26-000007",
+            "start": "2024-12-29",
+            "end": "2025-12-27",
+            "value": 350273000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000007/0000102729-26-000007-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-28",
+            "accn": "0000102729-25-000053",
+            "start": "2024-12-29",
+            "end": "2025-09-27",
+            "value": 182272000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000053/0000102729-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-26-000007",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272926000007/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 350273000.0,
+          "expected_value": 168001000.0,
+          "detail": "12M 350,273,000 (10-K 0000102729-26-000007) − 9M 182,272,000 (10-Q 0000102729-25-000053)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-29",
+        "end": "2025-09-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 99031000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-28",
+        "accn": "0000102729-25-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000053/0000102729-25-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-28",
+            "accn": "0000102729-25-000053",
+            "start": "2025-06-29",
+            "end": "2025-09-27",
+            "value": 99031000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000053/0000102729-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-25-000053",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000053/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 99031000.0,
+          "expected_value": 99031000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-30",
+        "end": "2025-06-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4020000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0000102729-25-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000039/0000102729-25-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0000102729-25-000039",
+            "start": "2025-03-30",
+            "end": "2025-06-28",
+            "value": -4020000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000039/0000102729-25-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-25-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000039/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Valmont Industries, Inc.",
+          "statement_value": -4020000.0,
+          "expected_value": -4020000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-29",
+        "end": "2025-03-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 87261000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0000102729-25-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000017/0000102729-25-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0000102729-25-000017",
+            "start": "2024-12-29",
+            "end": "2025-03-29",
+            "value": 87261000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000017/0000102729-25-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-25-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000017/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 87261000.0,
+          "expected_value": 87261000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-29",
+        "end": "2024-12-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 77653000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-25",
+        "accn": "0000102729-25-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000009/0000102729-25-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-25",
+            "accn": "0000102729-25-000009",
+            "start": "2023-12-31",
+            "end": "2024-12-28",
+            "value": 348259000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000009/0000102729-25-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000102729-24-000054",
+            "start": "2023-12-31",
+            "end": "2024-09-28",
+            "value": 270606000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-25-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272925000009/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 348259000.0,
+          "expected_value": 77653000.0,
+          "detail": "12M 348,259,000 (10-K 0000102729-25-000009) − 9M 270,606,000 (10-Q 0000102729-24-000054)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-06-30",
+        "end": "2024-09-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 83068000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0000102729-24-000054",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000102729-24-000054",
+            "start": "2024-06-30",
+            "end": "2024-09-28",
+            "value": 83068000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-24-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Valmont Industries, Inc.",
+          "statement_value": 83068000.0,
+          "expected_value": 83068000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-31",
+        "end": "2024-06-29",
+        "ttm": null,
+        "missing": false,
+        "value": 99716000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0000102729-24-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000039/0000102729-24-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0000102729-24-000039",
+            "start": "2024-03-31",
+            "end": "2024-06-29",
+            "value": 99716000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000039/0000102729-24-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-24-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000039/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 99716000.0,
+          "expected_value": 99716000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-31",
+        "end": "2024-03-30",
+        "ttm": null,
+        "missing": false,
+        "value": 87822000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0000102729-24-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000025/0000102729-24-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0000102729-24-000025",
+            "start": "2023-12-31",
+            "end": "2024-03-30",
+            "value": 87822000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000025/0000102729-24-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-24-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000025/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 87822000.0,
+          "expected_value": 87822000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-30",
+        "ttm": null,
+        "missing": false,
+        "value": 35961000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-28",
+        "accn": "0000102729-24-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000013/0000102729-24-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-28",
+            "accn": "0000102729-24-000013",
+            "start": "2023-01-01",
+            "end": "2023-12-30",
+            "value": 150849000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000013/0000102729-24-000013-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000102729-24-000054",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 114888000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-24-000013",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000013/R2.htm",
+          "statement_label": "Net earnings attributable to Valmont Industries, Inc.",
+          "statement_value": 150849000.0,
+          "expected_value": 35961000.0,
+          "detail": "12M 150,849,000 (10-K 0000102729-24-000013) − 9M 114,888,000 (10-Q 0000102729-24-000054)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-02",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -49028000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0000102729-24-000054",
+        "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000102729-24-000054",
+            "start": "2023-07-02",
+            "end": "2023-09-30",
+            "value": -49028000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/0000102729-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000102729-24-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/102729/000010272924000054/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Valmont Industries, Inc.",
+          "statement_value": -49028000.0,
+          "expected_value": -49028000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-27",

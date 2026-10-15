@@ -613,11 +613,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "ProfitLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; ProfitLoss is the net income line presented on the income statement of filing 0001650729-26-000016.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -635,11 +635,11 @@
         "latestEnd": "2026-06-28",
         "latestValue": 139300000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -650,15 +650,566 @@
         "comparedWith": "ProfitLoss",
         "overlaps": 9,
         "disagreements": 8,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to SiteOne"
       }
     ],
     "flags": [
-      "ambiguous_concept",
+      "other_concept_disagrees",
+      "negative_value",
       "supplemented_from_edgar_filing"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001650729-26-000016",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000016/R4.htm",
+      "period_end": "2026-06-28",
+      "months": 3,
+      "pipeline_value": 139300000.0,
+      "statement_value": 139300000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-28",
+        "ttm": "current",
+        "missing": false,
+        "value": 139300000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-29",
+        "accn": "0001650729-26-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000016/0001650729-26-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-29",
+            "accn": "0001650729-26-000016",
+            "start": "2026-04-01",
+            "end": "2026-06-28",
+            "value": 139300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000016/0001650729-26-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-26-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000016/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 139300000.0,
+          "expected_value": 139300000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-12-29",
+        "end": "2026-03-29",
+        "ttm": "current",
+        "missing": false,
+        "value": -24100000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-29",
+        "accn": "0001650729-26-000011",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000011/0001650729-26-000011-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-29",
+            "accn": "0001650729-26-000011",
+            "start": "2025-12-29",
+            "end": "2026-03-29",
+            "value": -24100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000011/0001650729-26-000011-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-26-000011",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000011/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -24100000.0,
+          "expected_value": -24100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-29",
+        "end": "2025-12-28",
+        "ttm": "current",
+        "missing": false,
+        "value": -7800000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-19",
+        "accn": "0001650729-26-000005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000005/0001650729-26-000005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-19",
+            "accn": "0001650729-26-000005",
+            "start": "2024-12-30",
+            "end": "2025-12-28",
+            "value": 157400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000005/0001650729-26-000005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001650729-25-000024",
+            "start": "2024-12-30",
+            "end": "2025-09-28",
+            "value": 165200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000024/0001650729-25-000024-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-26-000005",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072926000005/R5.htm",
+          "statement_label": "Net income",
+          "statement_value": 157400000.0,
+          "expected_value": -7800000.0,
+          "detail": "12M 157,400,000 (10-K 0001650729-26-000005) − 9M 165,200,000 (10-Q 0001650729-25-000024)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-30",
+        "end": "2025-09-28",
+        "ttm": "current",
+        "missing": false,
+        "value": 60600000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001650729-25-000024",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000024/0001650729-25-000024-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001650729-25-000024",
+            "start": "2025-06-30",
+            "end": "2025-09-28",
+            "value": 60600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000024/0001650729-25-000024-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000024",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000024/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 60600000.0,
+          "expected_value": 60600000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-31",
+        "end": "2025-06-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 132100000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-30",
+        "accn": "0001650729-25-000019",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000019/0001650729-25-000019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-30",
+            "accn": "0001650729-25-000019",
+            "start": "2025-03-31",
+            "end": "2025-06-29",
+            "value": 132100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000019/0001650729-25-000019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000019/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 132100000.0,
+          "expected_value": 132100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-30",
+        "end": "2025-03-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -27500000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001650729-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/0001650729-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001650729-25-000013",
+            "start": "2024-12-30",
+            "end": "2025-03-30",
+            "value": -27500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/0001650729-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -27500000.0,
+          "expected_value": -27500000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-30",
+        "end": "2024-12-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": -21500000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0001650729-25-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/0001650729-25-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0001650729-25-000004",
+            "start": "2024-01-01",
+            "end": "2024-12-29",
+            "value": 124400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/0001650729-25-000004-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001650729-24-000018",
+            "start": "2024-01-01",
+            "end": "2024-09-29",
+            "value": 145900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000004",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/R5.htm",
+          "statement_label": "Net income",
+          "statement_value": 124400000.0,
+          "expected_value": -21500000.0,
+          "detail": "12M 124,400,000 (10-K 0001650729-25-000004) − 9M 145,900,000 (10-Q 0001650729-24-000018)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 44600000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001650729-24-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001650729-24-000018",
+            "start": "2024-07-01",
+            "end": "2024-09-29",
+            "value": 44600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-24-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 44600000.0,
+          "expected_value": 44600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 120600000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0001650729-24-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000013/0001650729-24-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0001650729-24-000013",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 120600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000013/0001650729-24-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-24-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000013/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 120600000.0,
+          "expected_value": 120600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -19300000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001650729-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/0001650729-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001650729-25-000013",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -19300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/0001650729-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000013/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -19300000.0,
+          "expected_value": -19300000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-02",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -3400000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0001650729-25-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/0001650729-25-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0001650729-25-000004",
+            "start": "2023-01-02",
+            "end": "2023-12-31",
+            "value": 173400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/0001650729-25-000004-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001650729-24-000018",
+            "start": "2023-01-02",
+            "end": "2023-10-01",
+            "value": 176800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-25-000004",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072925000004/R5.htm",
+          "statement_label": "Net income",
+          "statement_value": 173400000.0,
+          "expected_value": -3400000.0,
+          "detail": "12M 173,400,000 (10-K 0001650729-25-000004) − 9M 176,800,000 (10-Q 0001650729-24-000018)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-03",
+        "end": "2023-10-01",
+        "ttm": null,
+        "missing": false,
+        "value": 57300000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001650729-24-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001650729-24-000018",
+            "start": "2023-07-03",
+            "end": "2023-10-01",
+            "value": 57300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/0001650729-24-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001650729-24-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1650729/000165072924000018/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 57300000.0,
+          "expected_value": 57300000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "applied",
       "latestFactsEnd": "2026-03-29",

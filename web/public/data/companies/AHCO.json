@@ -600,22 +600,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-052646.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -133929000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income from continuing operations attributable to AdaptHealth Corp."
       },
       {
         "concept": "ProfitLoss",
@@ -626,7 +626,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -641,10 +641,561 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-052646",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026052646/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -133929000.0,
+      "statement_value": -133929000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -133929000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001628280-26-052646",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026052646/0001628280-26-052646-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001628280-26-052646",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -133929000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026052646/0001628280-26-052646-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-052646",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026052646/R4.htm",
+          "statement_label": "Net (loss) income from continuing operations attributable to AdaptHealth Corp.",
+          "statement_value": -133929000.0,
+          "expected_value": -133929000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -16040000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-05",
+        "accn": "0001628280-26-030602",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026030602/0001628280-26-030602-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-05",
+            "accn": "0001628280-26-030602",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -16040000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026030602/0001628280-26-030602-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-030602",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026030602/R4.htm",
+          "statement_label": "Net loss attributable to AdaptHealth Corp.",
+          "statement_value": -16040000.0,
+          "expected_value": -16040000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -102770000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-24",
+        "accn": "0001628280-26-011213",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026011213/0001628280-26-011213-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-24",
+            "accn": "0001628280-26-011213",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -70794000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026011213/0001628280-26-011213-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048944",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 31976000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025048944/0001628280-25-048944-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-011213",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828026011213/R5.htm",
+          "statement_label": "Net (loss) income attributable to AdaptHealth Corp.",
+          "statement_value": -70794000.0,
+          "expected_value": -102770000.0,
+          "detail": "12M -70,794,000 (10-K 0001628280-26-011213) − 9M 31,976,000 (10-Q 0001628280-25-048944)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 24509000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001628280-25-048944",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025048944/0001628280-25-048944-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048944",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 24509000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025048944/0001628280-25-048944-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-048944",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025048944/R4.htm",
+          "statement_label": "Net income attributable to AdaptHealth Corp.",
+          "statement_value": 24509000.0,
+          "expected_value": 24509000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 14674000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001628280-25-037931",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025037931/0001628280-25-037931-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001628280-25-037931",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 14674000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025037931/0001628280-25-037931-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-037931",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-25-037931 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -7207000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0001628280-25-022716",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025022716/0001628280-25-022716-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0001628280-25-022716",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -7207000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025022716/0001628280-25-022716-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-022716",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025022716/R4.htm",
+          "statement_label": "Net loss attributable to AdaptHealth Corp.",
+          "statement_value": -7207000.0,
+          "expected_value": -7207000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 50262000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-25",
+        "accn": "0001628280-25-007740",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025007740/0001628280-25-007740-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-25",
+            "accn": "0001628280-25-007740",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 90422000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025007740/0001628280-25-007740-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001628280-24-045365",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 40160000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024045365/0001628280-24-045365-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-007740",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828025007740/R5.htm",
+          "statement_label": "Net income (loss) attributable to AdaptHealth Corp.",
+          "statement_value": 90422000.0,
+          "expected_value": 50262000.0,
+          "detail": "12M 90,422,000 (10-K 0001628280-25-007740) − 9M 40,160,000 (10-Q 0001628280-24-045365)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 22859000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-05",
+        "accn": "0001628280-24-045365",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024045365/0001628280-24-045365-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001628280-24-045365",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 22859000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024045365/0001628280-24-045365-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-045365",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024045365/R4.htm",
+          "statement_label": "Net income (loss) attributable to AdaptHealth Corp.",
+          "statement_value": 22859000.0,
+          "expected_value": 22859000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 19435000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-06",
+        "accn": "0001628280-24-035235",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024035235/0001628280-24-035235-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-06",
+            "accn": "0001628280-24-035235",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 19435000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024035235/0001628280-24-035235-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-035235",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024035235/R4.htm",
+          "statement_label": "Net income attributable to AdaptHealth Corp.",
+          "statement_value": 19435000.0,
+          "expected_value": 19435000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -2134000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0001628280-24-021191",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024021191/0001628280-24-021191-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0001628280-24-021191",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -2134000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024021191/0001628280-24-021191-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-021191",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024021191/R4.htm",
+          "statement_label": "Net (loss) income attributable to AdaptHealth Corp.",
+          "statement_value": -2134000.0,
+          "expected_value": -2134000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -254503000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-27",
+        "accn": "0001628280-24-007254",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024007254/0001628280-24-007254-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-27",
+            "accn": "0001628280-24-007254",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -678895000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024007254/0001628280-24-007254-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001628280-23-037441",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -424392000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828023037441/0001628280-23-037441-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-007254",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828024007254/R5.htm",
+          "statement_label": "Net (loss) income attributable to AdaptHealth Corp.",
+          "statement_value": -678895000.0,
+          "expected_value": -254503000.0,
+          "detail": "12M -678,895,000 (10-K 0001628280-24-007254) − 9M -424,392,000 (10-Q 0001628280-23-037441)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -454076000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001628280-23-037441",
+        "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828023037441/0001628280-23-037441-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001628280-23-037441",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -454076000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828023037441/0001628280-23-037441-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-23-037441",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1725255/000162828023037441/R4.htm",
+          "statement_label": "Net (loss) income attributable to AdaptHealth Corp.",
+          "statement_value": -454076000.0,
+          "expected_value": -454076000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

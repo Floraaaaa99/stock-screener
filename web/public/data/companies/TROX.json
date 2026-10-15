@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001530804-26-000015.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -171000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Tronox Holdings plc"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 6,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,571 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001530804-26-000015",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000015/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -171000000.0,
+      "statement_value": -171000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -171000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001530804-26-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000015/0001530804-26-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001530804-26-000015",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -171000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000015/0001530804-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-26-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000015/R2.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -171000000.0,
+          "expected_value": -171000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -103000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001530804-26-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000010/0001530804-26-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001530804-26-000010",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -103000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000010/0001530804-26-000010-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-26-000010",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000010/R2.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -103000000.0,
+          "expected_value": -103000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -176000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-20",
+        "accn": "0001530804-26-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000006/0001530804-26-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-20",
+            "accn": "0001530804-26-000006",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -470000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000006/0001530804-26-000006-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001530804-25-000019",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -294000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000019/0001530804-25-000019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-26-000006",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080426000006/R3.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -470000000.0,
+          "expected_value": -176000000.0,
+          "detail": "12M -470,000,000 (10-K 0001530804-26-000006) − 9M -294,000,000 (10-Q 0001530804-25-000019)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -99000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001530804-25-000019",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000019/0001530804-25-000019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001530804-25-000019",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -99000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000019/0001530804-25-000019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-25-000019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000019/R2.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -99000000.0,
+          "expected_value": -99000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -84000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0001530804-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000013/0001530804-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0001530804-25-000013",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -84000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000013/0001530804-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-25-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000013/R2.htm",
+          "statement_label": "Net (loss) income attributable to Tronox Holdings plc",
+          "statement_value": -84000000.0,
+          "expected_value": -84000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -111000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-01",
+        "accn": "0001530804-25-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000009/0001530804-25-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-01",
+            "accn": "0001530804-25-000009",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -111000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000009/0001530804-25-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-25-000009",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000009/R2.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -111000000.0,
+          "expected_value": -111000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -30000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-19",
+        "accn": "0001530804-25-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000004/0001530804-25-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-19",
+            "accn": "0001530804-25-000004",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -48000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000004/0001530804-25-000004-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-25",
+            "accn": "0001530804-24-000054",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -18000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000054/0001530804-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-25-000004",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080425000004/R3.htm",
+          "statement_label": "Net (loss) income attributable to Tronox Holdings plc",
+          "statement_value": -48000000.0,
+          "expected_value": -30000000.0,
+          "detail": "12M -48,000,000 (10-K 0001530804-25-000004) − 9M -18,000,000 (10-Q 0001530804-24-000054)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -25000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-25",
+        "accn": "0001530804-24-000054",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000054/0001530804-24-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-25",
+            "accn": "0001530804-24-000054",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -25000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000054/0001530804-24-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-24-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000054/R2.htm",
+          "statement_label": "Net loss attributable to Tronox Holdings plc",
+          "statement_value": -25000000.0,
+          "expected_value": -25000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 16000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-02",
+        "accn": "0001530804-24-000049",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000049/0001530804-24-000049-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-02",
+            "accn": "0001530804-24-000049",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 16000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000049/0001530804-24-000049-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-24-000049",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000049/R2.htm",
+          "statement_label": "Net income (loss) attributable to Tronox Holdings plc",
+          "statement_value": 16000000.0,
+          "expected_value": 16000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -9000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0001530804-24-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000025/0001530804-24-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001530804-24-000025",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -9000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000025/0001530804-24-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-24-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000025/R2.htm",
+          "statement_label": "Net (loss) income attributable to Tronox Holdings plc",
+          "statement_value": -9000000.0,
+          "expected_value": -9000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -56000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-21",
+        "accn": "0001530804-24-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000009/0001530804-24-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-21",
+            "accn": "0001530804-24-000009",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -316000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000009/0001530804-24-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-26",
+            "accn": "0001530804-23-000036",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -260000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080423000036/0001530804-23-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-24-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080424000009/R3.htm",
+          "statement_label": "Net (loss) income attributable to Tronox Holdings plc",
+          "statement_value": -316000000.0,
+          "expected_value": -56000000.0,
+          "detail": "12M -316,000,000 (10-K 0001530804-24-000009) − 9M -260,000,000 (10-Q 0001530804-23-000036)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -14000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-26",
+        "accn": "0001530804-23-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080423000036/0001530804-23-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-26",
+            "accn": "0001530804-23-000036",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -14000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080423000036/0001530804-23-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001530804-23-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1530804/000153080423000036/R2.htm",
+          "statement_label": "Net (loss) income attributable to Tronox Holdings plc",
+          "statement_value": -14000000.0,
+          "expected_value": -14000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

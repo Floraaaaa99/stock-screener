@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000016732-26-000026.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-08-02",
         "latestValue": -60000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to The Campbell's Company"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,557 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 1,
-        "statementLabel": null
+        "statementLabel": "Net earnings"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000016732-26-000026",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000026/R4.htm",
+      "period_end": "2026-08-02",
+      "months": 12,
+      "pipeline_value": 403000000.0,
+      "statement_value": 403000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-05-04",
+        "end": "2026-08-02",
+        "ttm": "current",
+        "missing": false,
+        "value": -60000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-09-24",
+        "accn": "0000016732-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000026/0000016732-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-09-24",
+            "accn": "0000016732-26-000026",
+            "start": "2025-08-04",
+            "end": "2026-08-02",
+            "value": 403000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000026/0000016732-26-000026-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-06-08",
+            "accn": "0000016732-26-000012",
+            "start": "2025-08-04",
+            "end": "2026-05-03",
+            "value": 463000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000012/0000016732-26-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-26-000026",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000026/R4.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 403000000.0,
+          "expected_value": -60000000.0,
+          "detail": "12M 403,000,000 (10-K 0000016732-26-000026) − 9M 463,000,000 (10-Q 0000016732-26-000012)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-02-02",
+        "end": "2026-05-03",
+        "ttm": "current",
+        "missing": false,
+        "value": 124000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-06-08",
+        "accn": "0000016732-26-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000012/0000016732-26-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-06-08",
+            "accn": "0000016732-26-000012",
+            "start": "2026-02-02",
+            "end": "2026-05-03",
+            "value": 124000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000012/0000016732-26-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-26-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000012/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 124000000.0,
+          "expected_value": 124000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-11-03",
+        "end": "2026-02-01",
+        "ttm": "current",
+        "missing": false,
+        "value": 145000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-03-11",
+        "accn": "0000016732-26-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000006/0000016732-26-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-03-11",
+            "accn": "0000016732-26-000006",
+            "start": "2025-11-03",
+            "end": "2026-02-01",
+            "value": 145000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000006/0000016732-26-000006-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-26-000006",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673226000006/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 145000000.0,
+          "expected_value": 145000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-08-04",
+        "end": "2025-11-02",
+        "ttm": "current",
+        "missing": false,
+        "value": 194000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-12-09",
+        "accn": "0000016732-25-000126",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000126/0000016732-25-000126-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-12-09",
+            "accn": "0000016732-25-000126",
+            "start": "2025-08-04",
+            "end": "2025-11-02",
+            "value": 194000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000126/0000016732-25-000126-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-25-000126",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000126/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 194000000.0,
+          "expected_value": 194000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-28",
+        "end": "2025-08-03",
+        "ttm": "previous",
+        "missing": false,
+        "value": 145000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-09-18",
+        "accn": "0000016732-25-000112",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000112/0000016732-25-000112-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-09-18",
+            "accn": "0000016732-25-000112",
+            "start": "2024-07-29",
+            "end": "2025-08-03",
+            "value": 602000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000112/0000016732-25-000112-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-06-02",
+            "accn": "0000016732-25-000064",
+            "start": "2024-07-29",
+            "end": "2025-04-27",
+            "value": 457000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000064/0000016732-25-000064-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-25-000112",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000112/R4.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 602000000.0,
+          "expected_value": 145000000.0,
+          "detail": "12M 602,000,000 (10-K 0000016732-25-000112) − 9M 457,000,000 (10-Q 0000016732-25-000064)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-27",
+        "end": "2025-04-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": 66000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-06-02",
+        "accn": "0000016732-25-000064",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000064/0000016732-25-000064-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-06-02",
+            "accn": "0000016732-25-000064",
+            "start": "2025-01-27",
+            "end": "2025-04-27",
+            "value": 66000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000064/0000016732-25-000064-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-25-000064",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000064/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 66000000.0,
+          "expected_value": 66000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-28",
+        "end": "2025-01-26",
+        "ttm": "previous",
+        "missing": false,
+        "value": 173000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-03-05",
+        "accn": "0000016732-25-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000026/0000016732-25-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-03-05",
+            "accn": "0000016732-25-000026",
+            "start": "2024-10-28",
+            "end": "2025-01-26",
+            "value": 173000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000026/0000016732-25-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-25-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673225000026/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 173000000.0,
+          "expected_value": 173000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-29",
+        "end": "2024-10-27",
+        "ttm": "previous",
+        "missing": false,
+        "value": 218000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-12-04",
+        "accn": "0000016732-24-000201",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000201/0000016732-24-000201-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-12-04",
+            "accn": "0000016732-24-000201",
+            "start": "2024-07-29",
+            "end": "2024-10-27",
+            "value": 218000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000201/0000016732-24-000201-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-24-000201",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000201/R2.htm",
+          "statement_label": "Net earnings attributable to The Campbell's Company",
+          "statement_value": 218000000.0,
+          "expected_value": 218000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-29",
+        "end": "2024-07-28",
+        "ttm": null,
+        "missing": false,
+        "value": -3000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-09-19",
+        "accn": "0000016732-24-000130",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000130/0000016732-24-000130-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-09-19",
+            "accn": "0000016732-24-000130",
+            "start": "2023-07-31",
+            "end": "2024-07-28",
+            "value": 567000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000130/0000016732-24-000130-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-06-05",
+            "accn": "0000016732-24-000082",
+            "start": "2023-07-31",
+            "end": "2024-04-28",
+            "value": 570000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000082/0000016732-24-000082-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-24-000130",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000130/R3.htm",
+          "statement_label": "Net earnings attributable to Campbell Soup Company",
+          "statement_value": 567000000.0,
+          "expected_value": -3000000.0,
+          "detail": "12M 567,000,000 (10-K 0000016732-24-000130) − 9M 570,000,000 (10-Q 0000016732-24-000082)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-29",
+        "end": "2024-04-28",
+        "ttm": null,
+        "missing": false,
+        "value": 133000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-06-05",
+        "accn": "0000016732-24-000082",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000082/0000016732-24-000082-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-06-05",
+            "accn": "0000016732-24-000082",
+            "start": "2024-01-29",
+            "end": "2024-04-28",
+            "value": 133000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000082/0000016732-24-000082-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-24-000082",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000082/R2.htm",
+          "statement_label": "Net earnings attributable to Campbell Soup Company",
+          "statement_value": 133000000.0,
+          "expected_value": 133000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-30",
+        "end": "2024-01-28",
+        "ttm": null,
+        "missing": false,
+        "value": 203000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-03-06",
+        "accn": "0000016732-24-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000039/0000016732-24-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-03-06",
+            "accn": "0000016732-24-000039",
+            "start": "2023-10-30",
+            "end": "2024-01-28",
+            "value": 203000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000039/0000016732-24-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-24-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673224000039/R2.htm",
+          "statement_label": "Net earnings attributable to Campbell Soup Company",
+          "statement_value": 203000000.0,
+          "expected_value": 203000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-31",
+        "end": "2023-10-29",
+        "ttm": null,
+        "missing": false,
+        "value": 234000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-06",
+        "accn": "0000016732-23-000176",
+        "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673223000176/0000016732-23-000176-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-06",
+            "accn": "0000016732-23-000176",
+            "start": "2023-07-31",
+            "end": "2023-10-29",
+            "value": 234000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673223000176/0000016732-23-000176-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000016732-23-000176",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16732/000001673223000176/R2.htm",
+          "statement_label": "Net earnings attributable to Campbell Soup Company",
+          "statement_value": 234000000.0,
+          "expected_value": 234000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-08-02",

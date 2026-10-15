@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001624794-26-000046.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 49759000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to CSW"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,552 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001624794-26-000046",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000046/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 49759000.0,
+      "statement_value": 49759000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 49759000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0001624794-26-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000046/0001624794-26-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0001624794-26-000046",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 49759000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000046/0001624794-26-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-26-000046",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000046/R2.htm",
+          "statement_label": "Net income attributable to CSW",
+          "statement_value": 49759000.0,
+          "expected_value": 49759000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 20202000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-26",
+        "accn": "0001624794-26-000027",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000027/0001624794-26-000027-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-26",
+            "accn": "0001624794-26-000027",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": 112045000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000027/0001624794-26-000027-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-01-29",
+            "accn": "0001624794-26-000014",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": 91843000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000014/0001624794-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-26-000027",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000027/R5.htm",
+          "statement_label": "Net income attributable to CSW",
+          "statement_value": 112045000.0,
+          "expected_value": 20202000.0,
+          "detail": "12M 112,045,000 (10-K 0001624794-26-000027) − 9M 91,843,000 (10-Q 0001624794-26-000014)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 10261000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-01-29",
+        "accn": "0001624794-26-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000014/0001624794-26-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-01-29",
+            "accn": "0001624794-26-000014",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 10261000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000014/0001624794-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-26-000014",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479426000014/R2.htm",
+          "statement_label": "Net income attributable to CSW",
+          "statement_value": 10261000.0,
+          "expected_value": 10261000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 40656000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0001624794-25-000103",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000103/0001624794-25-000103-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0001624794-25-000103",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 40656000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000103/0001624794-25-000103-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-25-000103",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000103/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 40656000.0,
+          "expected_value": 40656000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 40925000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0001624794-25-000080",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000080/0001624794-25-000080-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0001624794-25-000080",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 40925000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000080/0001624794-25-000080-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-25-000080",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000080/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 40925000.0,
+          "expected_value": 40925000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 35062000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-22",
+        "accn": "0001624794-25-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000056/0001624794-25-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-22",
+            "accn": "0001624794-25-000056",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": 136652000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000056/0001624794-25-000056-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-01-30",
+            "accn": "0001624794-25-000012",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": 101590000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000012/0001624794-25-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-25-000056",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000056/R5.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 136652000.0,
+          "expected_value": 35062000.0,
+          "detail": "12M 136,652,000 (10-K 0001624794-25-000056) − 9M 101,590,000 (10-Q 0001624794-25-000012)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 26948000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-01-30",
+        "accn": "0001624794-25-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000012/0001624794-25-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-01-30",
+            "accn": "0001624794-25-000012",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 26948000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000012/0001624794-25-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-25-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479425000012/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 26948000.0,
+          "expected_value": 26948000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 36051000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001624794-24-000091",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000091/0001624794-24-000091-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001624794-24-000091",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 36051000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000091/0001624794-24-000091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-24-000091",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000091/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 36051000.0,
+          "expected_value": 36051000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 38591000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0001624794-24-000058",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000058/0001624794-24-000058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0001624794-24-000058",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 38591000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000058/0001624794-24-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-24-000058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000058/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 38591000.0,
+          "expected_value": 38591000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 31759000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-23",
+        "accn": "0001624794-24-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000032/0001624794-24-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-23",
+            "accn": "0001624794-24-000032",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": 101648000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000032/0001624794-24-000032-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-01",
+            "accn": "0001624794-24-000007",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": 69889000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000007/0001624794-24-000007-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-24-000032",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000032/R5.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 101648000.0,
+          "expected_value": 31759000.0,
+          "detail": "12M 101,648,000 (10-K 0001624794-24-000032) − 9M 69,889,000 (10-Q 0001624794-24-000007)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 9222000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-01",
+        "accn": "0001624794-24-000007",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000007/0001624794-24-000007-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-01",
+            "accn": "0001624794-24-000007",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 9222000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000007/0001624794-24-000007-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-24-000007",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479424000007/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 9222000.0,
+          "expected_value": 9222000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 30055000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001624794-23-000105",
+        "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479423000105/0001624794-23-000105-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001624794-23-000105",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 30055000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479423000105/0001624794-23-000105-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001624794-23-000105",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1624794/000162479423000105/R2.htm",
+          "statement_label": "Net income attributable to CSW Industrials, Inc.",
+          "statement_value": 30055000.0,
+          "expected_value": 30055000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

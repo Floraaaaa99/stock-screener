@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-337903.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -51741000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Viasat, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,573 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-337903",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526337903/R3.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -51741000.0,
+      "statement_value": -51741000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -51741000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001193125-26-337903",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526337903/0001193125-26-337903-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001193125-26-337903",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -51741000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526337903/0001193125-26-337903-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-337903",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526337903/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -51741000.0,
+          "expected_value": -51741000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 58824000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-29",
+        "accn": "0001193125-26-248290",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526248290/0001193125-26-248290-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-29",
+            "accn": "0001193125-26-248290",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": -34086000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526248290/0001193125-26-248290-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-06",
+            "accn": "0001193125-26-041421",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": -92910000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526041421/0001193125-26-041421-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-248290",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526248290/R4.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -34086000.0,
+          "expected_value": 58824000.0,
+          "detail": "12M -34,086,000 (10-K 0001193125-26-248290) − 9M -92,910,000 (10-Q 0001193125-26-041421)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 24968000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-06",
+        "accn": "0001193125-26-041421",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526041421/0001193125-26-041421-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-06",
+            "accn": "0001193125-26-041421",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 24968000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526041421/0001193125-26-041421-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-041421",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312526041421/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": 24968000.0,
+          "expected_value": 24968000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -61444000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001193125-25-272830",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312525272830/0001193125-25-272830-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001193125-25-272830",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -61444000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312525272830/0001193125-25-272830-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-272830",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000119312525272830/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -61444000.0,
+          "expected_value": -61444000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -56434000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-08",
+        "accn": "0000950170-25-105320",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025105320/0000950170-25-105320-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-08",
+            "accn": "0000950170-25-105320",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -56434000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025105320/0000950170-25-105320-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-105320",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025105320/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -56434000.0,
+          "expected_value": -56434000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -246053000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-27",
+        "accn": "0000950170-25-077138",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025077138/0000950170-25-077138-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-27",
+            "accn": "0000950170-25-077138",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": -574962000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025077138/0000950170-25-077138-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-10",
+            "accn": "0000950170-25-016993",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": -328909000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025016993/0000950170-25-016993-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-077138",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025077138/R4.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -574962000.0,
+          "expected_value": -246053000.0,
+          "detail": "12M -574,962,000 (10-K 0000950170-25-077138) − 9M -328,909,000 (10-Q 0000950170-25-016993)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -158413000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-10",
+        "accn": "0000950170-25-016993",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025016993/0000950170-25-016993-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-10",
+            "accn": "0000950170-25-016993",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -158413000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025016993/0000950170-25-016993-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-016993",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017025016993/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -158413000.0,
+          "expected_value": -158413000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -137584000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-08",
+        "accn": "0000950170-24-124119",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024124119/0000950170-24-124119-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0000950170-24-124119",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -137584000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024124119/0000950170-24-124119-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-124119",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024124119/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -137584000.0,
+          "expected_value": -137584000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -32912000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0000950170-24-094591",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024094591/0000950170-24-094591-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0000950170-24-094591",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -32912000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024094591/0000950170-24-094591-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-094591",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024094591/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -32912000.0,
+          "expected_value": -32912000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -100263000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-29",
+        "accn": "0000950170-24-066031",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024066031/0000950170-24-066031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-29",
+            "accn": "0000950170-24-066031",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": -1068904000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024066031/0000950170-24-066031-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-09",
+            "accn": "0000950170-24-013013",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": -968641000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024013013/0000950170-24-013013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-066031",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024066031/R4.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -1068904000.0,
+          "expected_value": -100263000.0,
+          "detail": "12M -1,068,904,000 (10-K 0000950170-24-066031) − 9M -968,641,000 (10-Q 0000950170-24-013013)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -124399000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-09",
+        "accn": "0000950170-24-013013",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024013013/0000950170-24-013013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-09",
+            "accn": "0000950170-24-013013",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -124399000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024013013/0000950170-24-013013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-013013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017024013013/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -124399000.0,
+          "expected_value": -124399000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -767238000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0000950170-23-062152",
+        "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017023062152/0000950170-23-062152-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000950170-23-062152",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -767238000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017023062152/0000950170-23-062152-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-062152",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/797721/000095017023062152/R3.htm",
+          "statement_label": "Net income (loss) attributable to Viasat, Inc.",
+          "statement_value": -767238000.0,
+          "expected_value": -767238000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

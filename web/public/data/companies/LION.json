@@ -457,22 +457,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0002052959-26-000067.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -28800000.0,
         "quartersInWindow": 9,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Lionsgate Studios Corp. shareholders"
       },
       {
         "concept": "ProfitLoss",
@@ -483,7 +483,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 9,
         "disagreements": 9,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -498,10 +498,430 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0002052959-26-000067",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000067/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -28800000.0,
+      "statement_value": -28800000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -28800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0002052959-26-000067",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000067/0002052959-26-000067-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0002052959-26-000067",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -28800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000067/0002052959-26-000067-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-26-000067",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000067/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -28800000.0,
+          "expected_value": -28800000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 70200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-27",
+        "accn": "0002052959-26-000049",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000049/0002052959-26-000049-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-27",
+            "accn": "0002052959-26-000049",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": -198300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000049/0002052959-26-000049-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0002052959-26-000014",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": -268500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-26-000049",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000049/R5.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -198300000.0,
+          "expected_value": 70200000.0,
+          "detail": "12M -198,300,000 (10-K 0002052959-26-000049) − 9M -268,500,000 (10-Q 0002052959-26-000014)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -46200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-05",
+        "accn": "0002052959-26-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0002052959-26-000014",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -46200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-26-000014",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -46200000.0,
+          "expected_value": -46200000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -113500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-07",
+        "accn": "0002052959-25-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/0002052959-25-000044-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0002052959-25-000044",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -113500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/0002052959-25-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-25-000044",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -113500000.0,
+          "expected_value": -113500000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -108900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0002052959-25-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/0002052959-25-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0002052959-25-000018",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -108900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/0002052959-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-25-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -108900000.0,
+          "expected_value": -108900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -117300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2025-07-29",
+        "accn": "0001193125-25-167991",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000119312525167991/0001193125-25-167991-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2025-07-29",
+            "accn": "0001193125-25-167991",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": -362000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000119312525167991/0001193125-25-167991-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0002052959-26-000014",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": -244700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001193125-25-167991",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001193125-25-167991 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -21900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-05",
+        "accn": "0002052959-26-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-05",
+            "accn": "0002052959-26-000014",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -21900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/0002052959-26-000014-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-26-000014",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295926000014/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -21900000.0,
+          "expected_value": -21900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -163300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-07",
+        "accn": "0002052959-25-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/0002052959-25-000044-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0002052959-25-000044",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -163300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/0002052959-25-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-25-000044",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000044/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -163300000.0,
+          "expected_value": -163300000.0
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -59400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0002052959-25-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/0002052959-25-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0002052959-25-000018",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -59400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/0002052959-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052959-25-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052959/000205295925000018/R4.htm",
+          "statement_label": "Net loss attributable to Lionsgate Studios Corp. shareholders",
+          "statement_value": -59400000.0,
+          "expected_value": -59400000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

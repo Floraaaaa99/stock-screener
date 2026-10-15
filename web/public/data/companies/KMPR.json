@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000860748-26-000084.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -464800000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net (Loss) Income attributable to Kemper Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,563 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net (Loss) Income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000860748-26-000084",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000084/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -464800000.0,
+      "statement_value": -464800000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -464800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0000860748-26-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000084/0000860748-26-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0000860748-26-000084",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -464800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000084/0000860748-26-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-26-000084",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000084/R2.htm",
+          "statement_label": "Net (Loss) Income attributable to Kemper Corporation",
+          "statement_value": -464800000.0,
+          "expected_value": -464800000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0000860748-26-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000045/0000860748-26-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0000860748-26-000045",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -1700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000045/0000860748-26-000045-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-26-000045",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000045/R2.htm",
+          "statement_label": "Net (Loss) Income attributable to Kemper Corporation",
+          "statement_value": -1700000.0,
+          "expected_value": -1700000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -8000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-11",
+        "accn": "0000860748-26-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000014/0000860748-26-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-11",
+            "accn": "0000860748-26-000014",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 143300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000014/0000860748-26-000014-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000860748-25-000214",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 151300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000214/0000860748-25-000214-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-26-000014",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074826000014/R3.htm",
+          "statement_label": "Net Income (Loss) attributable to Kemper Corporation",
+          "statement_value": 143300000.0,
+          "expected_value": -8000000.0,
+          "detail": "12M 143,300,000 (10-K 0000860748-26-000014) − 9M 151,300,000 (10-Q 0000860748-25-000214)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0000860748-25-000214",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000214/0000860748-25-000214-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000860748-25-000214",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000214/0000860748-25-000214-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-25-000214",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000214/R2.htm",
+          "statement_label": "Net (Loss) Income attributable to Kemper Corporation",
+          "statement_value": -21000000.0,
+          "expected_value": -21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 72600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0000860748-25-000184",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000184/0000860748-25-000184-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0000860748-25-000184",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 72600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000184/0000860748-25-000184-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-25-000184",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000184/R2.htm",
+          "statement_label": "Net Income attributable to Kemper Corporation",
+          "statement_value": 72600000.0,
+          "expected_value": 72600000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 99700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0000860748-25-000131",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000131/0000860748-25-000131-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0000860748-25-000131",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 99700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000131/0000860748-25-000131-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-25-000131",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000131/R2.htm",
+          "statement_label": "Net Income attributable to Kemper Corporation",
+          "statement_value": 99700000.0,
+          "expected_value": 99700000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 97400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-07",
+        "accn": "0000860748-25-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000053/0000860748-25-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-07",
+            "accn": "0000860748-25-000053",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 317800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000053/0000860748-25-000053-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000860748-24-000227",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 220400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000227/0000860748-24-000227-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-25-000053",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074825000053/R3.htm",
+          "statement_label": "Net Income (Loss) attributable to Kemper Corporation",
+          "statement_value": 317800000.0,
+          "expected_value": 97400000.0,
+          "detail": "12M 317,800,000 (10-K 0000860748-25-000053) − 9M 220,400,000 (10-Q 0000860748-24-000227)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 73700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0000860748-24-000227",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000227/0000860748-24-000227-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0000860748-24-000227",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 73700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000227/0000860748-24-000227-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-24-000227",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000227/R2.htm",
+          "statement_label": "Net Income (Loss) attributable to Kemper Corporation",
+          "statement_value": 73700000.0,
+          "expected_value": 73700000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 75400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-05",
+        "accn": "0000860748-24-000200",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000200/0000860748-24-000200-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-05",
+            "accn": "0000860748-24-000200",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 75400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000200/0000860748-24-000200-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-24-000200",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000200/R2.htm",
+          "statement_label": "Net Income (Loss) attributable to Kemper Corporation",
+          "statement_value": 75400000.0,
+          "expected_value": 75400000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 71300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-01",
+        "accn": "0000860748-24-000132",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000132/0000860748-24-000132-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-01",
+            "accn": "0000860748-24-000132",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 71300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000132/0000860748-24-000132-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-24-000132",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000132/R2.htm",
+          "statement_label": "Net Income (Loss) attributable to Kemper Corporation",
+          "statement_value": 71300000.0,
+          "expected_value": 71300000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 51400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-07",
+        "accn": "0000860748-24-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000046/0000860748-24-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-07",
+            "accn": "0000860748-24-000046",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -272100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000046/0000860748-24-000046-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0000860748-23-000185",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -323500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074823000185/0000860748-23-000185-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-24-000046",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074824000046/R3.htm",
+          "statement_label": "Net Loss attributable to Kemper Corporation",
+          "statement_value": -272100000.0,
+          "expected_value": 51400000.0,
+          "detail": "12M -272,100,000 (10-K 0000860748-24-000046) − 9M -323,500,000 (10-Q 0000860748-23-000185)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -146300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-30",
+        "accn": "0000860748-23-000185",
+        "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074823000185/0000860748-23-000185-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0000860748-23-000185",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -146300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074823000185/0000860748-23-000185-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000860748-23-000185",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/860748/000086074823000185/R2.htm",
+          "statement_label": "Net Loss attributable to Kemper Corporation",
+          "statement_value": -146300000.0,
+          "expected_value": -146300000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -559,11 +559,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "ProfitLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; ProfitLoss is the net income line presented on the income statement of filing 0001104659-26-091284.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -571,9 +571,9 @@
         "latestValue": 9606000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
+        "comparedWith": "ProfitLoss",
+        "overlaps": 13,
+        "disagreements": 3,
         "statementLabel": null
       },
       {
@@ -581,11 +581,11 @@
         "latestEnd": "2026-06-30",
         "latestValue": 9606000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 3,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss) after income and mining taxes"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -593,17 +593,570 @@
         "latestValue": 9606000.0,
         "quartersInWindow": 4,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "ProfitLoss",
         "overlaps": 4,
         "disagreements": 0,
         "statementLabel": null
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-091284",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926091284/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 9606000.0,
+      "statement_value": 9606000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 9606000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001104659-26-091284",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926091284/0001104659-26-091284-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001104659-26-091284",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 9606000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926091284/0001104659-26-091284-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-091284",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926091284/R2.htm",
+          "statement_label": "Net income (loss) after income and mining taxes",
+          "statement_value": 9606000.0,
+          "expected_value": 9606000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 33379000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001104659-26-056349",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926056349/0001104659-26-056349-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001104659-26-056349",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 33379000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926056349/0001104659-26-056349-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-056349",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926056349/R2.htm",
+          "statement_label": "Net income (loss) after income and mining taxes",
+          "statement_value": 33379000.0,
+          "expected_value": 33379000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 38126000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-17",
+        "accn": "0001104659-26-028705",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926028705/0001104659-26-028705-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-17",
+            "accn": "0001104659-26-028705",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 34434000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926028705/0001104659-26-028705-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001104659-25-107117",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -3692000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465925107117/0001104659-25-107117-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-028705",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465926028705/R2.htm",
+          "statement_label": "Net income (loss) after income and mining taxes",
+          "statement_value": 34434000.0,
+          "expected_value": 38126000.0,
+          "detail": "12M 34,434,000 (10-K 0001104659-26-028705) − 9M -3,692,000 (10-Q 0001104659-25-107117)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -462000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001104659-25-107117",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465925107117/0001104659-25-107117-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001104659-25-107117",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -462000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465925107117/0001104659-25-107117-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-107117",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000110465925107117/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -462000.0,
+          "expected_value": -462000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 3040000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001558370-25-010563",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025010563/0001558370-25-010563-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001558370-25-010563",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 3040000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025010563/0001558370-25-010563-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-010563",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025010563/R2.htm",
+          "statement_label": "Net income (loss) after income and mining taxes",
+          "statement_value": 3040000.0,
+          "expected_value": 3040000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6270000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001558370-25-006772",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025006772/0001558370-25-006772-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001558370-25-006772",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -6270000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025006772/0001558370-25-006772-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-006772",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025006772/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -6270000.0,
+          "expected_value": -6270000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -8232000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-14",
+        "accn": "0001558370-25-003017",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025003017/0001558370-25-003017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-14",
+            "accn": "0001558370-25-003017",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -43691000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025003017/0001558370-25-003017-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001558370-24-014459",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -35459000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024014459/0001558370-24-014459-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-003017",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837025003017/R2.htm",
+          "statement_label": "Net (loss) income after income and mining taxes",
+          "statement_value": -43691000.0,
+          "expected_value": -8232000.0,
+          "detail": "12M -43,691,000 (10-K 0001558370-25-003017) − 9M -35,459,000 (10-Q 0001558370-24-014459)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2081000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-05",
+        "accn": "0001558370-24-014459",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024014459/0001558370-24-014459-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001558370-24-014459",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2081000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024014459/0001558370-24-014459-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-014459",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024014459/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -2081000.0,
+          "expected_value": -2081000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -12995000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001558370-24-011396",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024011396/0001558370-24-011396-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001558370-24-011396",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -12995000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024011396/0001558370-24-011396-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-011396",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024011396/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -12995000.0,
+          "expected_value": -12995000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -20383000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0001558370-24-007329",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024007329/0001558370-24-007329-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0001558370-24-007329",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -20383000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024007329/0001558370-24-007329-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-007329",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024007329/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -20383000.0,
+          "expected_value": -20383000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 141221000.0,
+        "concept": "ProfitLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-15",
+        "accn": "0001558370-24-003434",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024003434/0001558370-24-003434-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-15",
+            "accn": "0001558370-24-003434",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 33177000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024003434/0001558370-24-003434-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0001558370-23-018256",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -108044000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837023018256/0001558370-23-018256-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-003434",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837024003434/R2.htm",
+          "statement_label": "Net income (loss) after income and mining taxes",
+          "statement_value": 33177000.0,
+          "expected_value": 141221000.0,
+          "detail": "12M 33,177,000 (10-K 0001558370-24-003434) − 9M -108,044,000 (10-Q 0001558370-23-018256)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -28373000.0,
+        "concept": "ProfitLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0001558370-23-018256",
+        "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837023018256/0001558370-23-018256-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0001558370-23-018256",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -28373000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837023018256/0001558370-23-018256-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-23-018256",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/314203/000155837023018256/R2.htm",
+          "statement_label": "Net loss after income and mining taxes",
+          "statement_value": -28373000.0,
+          "expected_value": -28373000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",
