@@ -68,7 +68,7 @@ export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort,
               <th scope="col">Company</th>
               <th scope="col">Exchange</th>
               <th scope="col">SEC SIC major group</th>
-              <th scope="col">SEC SIC industry</th>
+              <th className="sic" scope="col">SEC SIC industry</th>
               <SortHeader label="Current TTM Revenue" k="ttmCurrent" view={view} onSort={onSort} title="Sum of the latest 4 quarters, in the reporting currency" />
               <SortHeader label="Previous TTM Revenue" k="ttmPrevious" view={view} onSort={onSort} title="Sum of the 4 quarters before those, in the reporting currency" />
               <SortHeader label="TTM Revenue Growth YoY" k="ttmGrowth" view={view} onSort={onSort} title="Current TTM ÷ Previous TTM − 1. Default sort: descending, N/A last." />
@@ -127,7 +127,7 @@ export function ScreenerTable({ loading, rows, view, expanded, onToggle, onSort,
                       <td>
                         <SicCell row={r} field="sicMajorGroup" />
                       </td>
-                      <td>
+                      <td className="sic">
                         <SicCell row={r} field="sicIndustry" />
                       </td>
                       <td className="num">
