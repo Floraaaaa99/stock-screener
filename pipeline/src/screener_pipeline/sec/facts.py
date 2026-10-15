@@ -15,6 +15,14 @@ REVENUE_CONCEPTS: list[str] = [
     "RevenuesNetOfInterestExpense",
 ]
 
+# Bottom-line earnings. Priority is only a tie-breaker when values agree.
+EARNINGS_CONCEPTS: list[str] = [
+    "NetIncomeLoss",
+    "ProfitLoss",
+    "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "NetIncomeLossAttributableToParent",
+]
+
 QUARTERLY_FORMS = {"10-Q", "10-Q/A", "10-QT", "10-QT/A"}
 ANNUAL_FORMS = {"10-K", "10-K/A", "10-KT", "10-KT/A"}
 DOMESTIC_FORMS = QUARTERLY_FORMS | ANNUAL_FORMS
@@ -98,27 +106,20 @@ def _pick_unit(units: dict[str, list]) -> str | None:
     return monetary[0] if len(monetary) == 1 else None
 
 
-def extract_revenue_facts(companyfacts: dict) -> RevenueFacts:
-    """Revenue duration facts from 10-Q/10-K filings, grouped by concept, plus per-filing metadata.
-
-    A filing's period end is the latest end date among its revenue facts. Company Facts tags every
-    fact with the fiscal year/period of the *filing*, so comparative prior-year figures carry the
-    filing's fy/fp; quarters are therefore labelled from the filing in which they are the current period.
-    """
+def extract_duration_facts(companyfacts: dict, concepts: list[str]) -> RevenueFacts:
+    """Duration facts from 10-Q/10-K filings for the given us-gaap concepts."""
     cik = str(companyfacts.get("cik", "")).zfill(10)
     root = companyfacts.get("facts", {})
     gaap = root.get("us-gaap", {})
     forms_seen = _forms_in(root)
 
-    currencies = {
-        _pick_unit(gaap[c].get("units", {})) for c in REVENUE_CONCEPTS if c in gaap
-    } - {None}
+    currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
     currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
 
     by_concept: dict[str, list[Fact]] = {}
     filings: dict[str, FilingInfo] = {}
     if currency:
-        for concept in REVENUE_CONCEPTS:
+        for concept in concepts:
             raw_list = gaap.get(concept, {}).get("units", {}).get(currency, [])
             facts = [
                 f
@@ -142,29 +143,48 @@ def extract_revenue_facts(companyfacts: dict) -> RevenueFacts:
     )
 
 
-def compact_revenue_facts(rf: RevenueFacts) -> dict:
+def extract_revenue_facts(companyfacts: dict) -> RevenueFacts:
+    """Revenue duration facts from 10-Q/10-K filings, grouped by concept, plus per-filing metadata.
+
+    A filing's period end is the latest end date among its revenue facts. Company Facts tags every
+    fact with the fiscal year/period of the *filing*, so comparative prior-year figures carry the
+    filing's fy/fp; quarters are therefore labelled from the filing in which they are the current period.
+    """
+    return extract_duration_facts(companyfacts, REVENUE_CONCEPTS)
+
+
+def extract_earnings_facts(companyfacts: dict) -> RevenueFacts:
+    return extract_duration_facts(companyfacts, EARNINGS_CONCEPTS)
+
+
+def _compact_facts_list(facts: list[Fact]) -> list[dict]:
+    return [
+        {
+            "start": f.start.isoformat(),
+            "end": f.end.isoformat(),
+            "val": f.val,
+            "accn": f.accn,
+            "fy": f.fy,
+            "fp": f.fp,
+            "form": f.form,
+            "filed": f.filed.isoformat(),
+        }
+        for f in facts
+    ]
+
+
+def compact_by_concept(rf: RevenueFacts) -> dict[str, list[dict]]:
+    return {concept: _compact_facts_list(facts) for concept, facts in rf.by_concept.items()}
+
+
+def compact_revenue_facts(rf: RevenueFacts, earnings: RevenueFacts | None = None) -> dict:
     """JSON-ready extracted facts only — not the full Company Facts payload."""
-    return {
+    payload = {
         "cik": rf.cik,
         "entityName": rf.entity_name,
         "currency": rf.currency,
         "formsSeen": sorted(rf.forms_seen),
-        "byConcept": {
-            concept: [
-                {
-                    "start": f.start.isoformat(),
-                    "end": f.end.isoformat(),
-                    "val": f.val,
-                    "accn": f.accn,
-                    "fy": f.fy,
-                    "fp": f.fp,
-                    "form": f.form,
-                    "filed": f.filed.isoformat(),
-                }
-                for f in facts
-            ]
-            for concept, facts in rf.by_concept.items()
-        },
+        "byConcept": compact_by_concept(rf),
         "filings": {
             accn: {
                 "accn": info.accn,
@@ -177,11 +197,34 @@ def compact_revenue_facts(rf: RevenueFacts) -> dict:
             for accn, info in rf.filings.items()
         },
     }
+    if earnings is not None:
+        payload["earningsByConcept"] = compact_by_concept(earnings)
+        payload["earningsCurrency"] = earnings.currency
+        payload["earningsFilings"] = {
+            accn: {
+                "accn": info.accn,
+                "form": info.form,
+                "filed": info.filed.isoformat(),
+                "fy": info.fy,
+                "fp": info.fp,
+                "period_end": info.period_end.isoformat(),
+            }
+            for accn, info in earnings.filings.items()
+        }
+        payload["earningsFormsSeen"] = sorted(earnings.forms_seen)
+    return payload
 
 
-def revenue_facts_from_compact(data: dict) -> RevenueFacts:
+def duration_facts_from_compact(
+    data: dict,
+    *,
+    concept_key: str = "byConcept",
+    currency_key: str = "currency",
+    filings_key: str = "filings",
+    forms_key: str = "formsSeen",
+) -> RevenueFacts:
     by_concept: dict[str, list[Fact]] = {}
-    for concept, rows in (data.get("byConcept") or {}).items():
+    for concept, rows in (data.get(concept_key) or {}).items():
         facts = [parse_fact(r) for r in rows]
         by_concept[concept] = [f for f in facts if f is not None]
     filings = {
@@ -193,15 +236,31 @@ def revenue_facts_from_compact(data: dict) -> RevenueFacts:
             fp=info.get("fp"),
             period_end=_d(info["period_end"]),
         )
-        for accn, info in (data.get("filings") or {}).items()
+        for accn, info in (data.get(filings_key) or {}).items()
     }
     return RevenueFacts(
         cik=str(data.get("cik", "")).zfill(10),
         entity_name=data.get("entityName", ""),
-        currency=data.get("currency"),
+        currency=data.get(currency_key),
         by_concept=by_concept,
         filings=filings,
-        forms_seen=set(data.get("formsSeen") or []),
+        forms_seen=set(data.get(forms_key) or []),
+    )
+
+
+def revenue_facts_from_compact(data: dict) -> RevenueFacts:
+    return duration_facts_from_compact(data)
+
+
+def earnings_facts_from_compact(data: dict) -> RevenueFacts | None:
+    if not data.get("earningsByConcept"):
+        return None
+    return duration_facts_from_compact(
+        data,
+        concept_key="earningsByConcept",
+        currency_key="earningsCurrency",
+        filings_key="earningsFilings",
+        forms_key="earningsFormsSeen",
     )
 
 

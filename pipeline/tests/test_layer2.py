@@ -405,3 +405,17 @@ def test_unrounded_decisions_not_display_rounding():
     row = analyze_company(company(values, ttm_growth=0.0000001), Thresholds(None, None))
     assert row["bucket"] == BUCKET_PASSED
     assert all(e["rate"] > 0 for e in row["yoy"])
+
+
+def test_earnings_detail_does_not_change_bucket():
+    c = company([12, 11, 11, 11, 10, 10, 10, 10], ttm_growth=20.0)
+    c["earnings"] = {
+        "concept": "NetIncomeLoss",
+        "quarters": eight_quarters([-5, -4, -3, -2, -1, -1, -1, -1], concept="NetIncomeLoss"),
+    }
+    row = analyze_company(c, Thresholds(None, None))
+    assert row["bucket"] == BUCKET_PASSED
+    assert row["earningsConcept"] == "NetIncomeLoss"
+    assert len(row["earningsYoy"]) == 4
+    assert all(e["reason"] == "nonpositive_denominator" for e in row["earningsYoy"])
+    assert all(e["rate"] is None for e in row["earningsYoy"])

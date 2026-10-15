@@ -14,7 +14,7 @@ from .cache import read_json, write_json_atomic
 from .gate import evaluate_gate
 from .layer2 import write_layer2
 from .output import SCHEMA_VERSION, company_json, screener_row, sort_screener_rows
-from .revenue import analyze_company
+from .revenue import EARNINGS_SPEC, analyze_company
 from .sec.bulk import (
     download_companyfacts_zip,
     download_submissions_zip,
@@ -23,7 +23,13 @@ from .sec.bulk import (
     zip_info,
 )
 from .sec.client import SecClient, load_overrides
-from .sec.edgar import facts_may_lag, latest_facts_period_end, newer_filings, supplement_revenue_facts
+from .sec.edgar import (
+    facts_may_lag,
+    latest_facts_period_end,
+    newer_filings,
+    supplement_earnings_facts,
+    supplement_revenue_facts,
+)
 from .sec.sic import SicInfo
 from .sec.store import FactsStore, PeriodicStore, SicStore, StatementStore
 from .universe.fetch import load_universe
@@ -185,7 +191,9 @@ def build(
         rec = rec_by_ticker[listing.symbol]
         facts_hash = facts_store.hash_of(cik) if cik else None
         rev = None
+        earn = None
         supp_dict = None
+        earn_supp_dict = None
         sec_name = rec["name"] if rec else None
         sic: SicInfo | None = None
         if cik:
@@ -216,14 +224,23 @@ def build(
                 if supp.status == "applied" and "supplemented_from_edgar_filing" not in rev.flags:
                     rev.flags.append("supplemented_from_edgar_filing")
                 supp_dict = supp.to_dict()
+                ef = sec.earnings_facts(cik)
+                if ef is not None:
+                    ef, e_supp = supplement_earnings_facts(ef, periodic, fetch, as_of)
+                    earn = analyze_company(ef, fetch, spec=EARNINGS_SPEC, verify_quarters=verify_quarters)
+                    if e_supp.status == "applied" and "supplemented_from_edgar_filing" not in earn.flags:
+                        earn.flags.append("supplemented_from_edgar_filing")
+                    earn_supp_dict = e_supp.to_dict()
                 log.info("%s: %s %s supplement=%s", listing.symbol, rev.status, rev.ttm, supp.status)
         issues = classification_issues(listing, cik, sic)
         issues_all.extend(issues)
-        c = company_json(listing, cik, sec_name, rev, sic, issues)
+        c = company_json(listing, cik, sec_name, rev, sic, issues, earnings=earn)
         if rev is None:
             c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
         if supp_dict and c.get("revenue"):
             c["revenue"]["edgarSupplement"] = supp_dict
+        if earn_supp_dict and c.get("earnings"):
+            c["earnings"]["edgarSupplement"] = earn_supp_dict
         companies.append(c)
         processed[listing.symbol] = {
             "cik": cik,

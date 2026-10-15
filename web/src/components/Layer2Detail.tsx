@@ -3,7 +3,17 @@ import { formatCompactMoney, formatDate, formatPercent } from "../lib/format";
 import type { Layer2Rate, Layer2Row } from "../types";
 import { CompanyDetailPanel } from "./CompanyDetail";
 
-function RateTable({ title, rows, currency }: { title: string; rows: Layer2Rate[]; currency: string | null }) {
+function RateTable({
+  title,
+  rows,
+  currency,
+  valueLabel = "Revenue",
+}: {
+  title: string;
+  rows: Layer2Rate[];
+  currency: string | null;
+  valueLabel?: string;
+}) {
   return (
     <div className="table-scroll">
       <table className="quarters layer2-rates">
@@ -12,7 +22,7 @@ function RateTable({ title, rows, currency }: { title: string; rows: Layer2Rate[
           <tr>
             <th>Fiscal quarter</th>
             <th>Period end</th>
-            <th className="num">Revenue</th>
+            <th className="num">{valueLabel}</th>
             <th className="num">Prior used</th>
             <th className="num">Absolute change</th>
             <th className="num">Rate</th>
@@ -82,6 +92,26 @@ export function Layer2Detail({ row }: { row: Layer2Row }) {
       )}
       <RateTable title="Quarterly YoY" rows={row.yoy} currency={row.revenueCurrency} />
       <RateTable title="Quarterly QoQ" rows={row.qoq} currency={row.revenueCurrency} />
+      {(row.earningsYoy?.length || row.earningsQoq?.length) ? (
+        <>
+          <p className="note">
+            Net income uses the same quarter pairing and growth math as revenue. It is detail only and does not
+            change Passed / Watchlist. Concept <code>{row.earningsConcept ?? "N/A"}</code>.
+          </p>
+          <RateTable
+            title="Net income YoY"
+            rows={row.earningsYoy ?? []}
+            currency={row.revenueCurrency}
+            valueLabel="Net income"
+          />
+          <RateTable
+            title="Net income QoQ"
+            rows={row.earningsQoq ?? []}
+            currency={row.revenueCurrency}
+            valueLabel="Net income"
+          />
+        </>
+      ) : null}
       <h3 className="layer2-l1-heading">Layer 1 quarterly window</h3>
       <CompanyDetailPanel ticker={row.ticker} />
     </div>

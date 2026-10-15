@@ -9,7 +9,7 @@ from ..cache import is_fresh, read_json, write_text_atomic
 from ..http import RateLimitedClient
 from ..universe.symbols import sec_symbol_variants
 from .edgar import PeriodicFiling, parse_periodic_filings
-from .facts import RevenueFacts, extract_revenue_facts
+from .facts import RevenueFacts, extract_earnings_facts, extract_revenue_facts
 from .sic import SicInfo
 from .statement import Statement, has_revenue_line, income_statement_candidates, parse_statement_html
 from .store import FactsStore, PeriodicStore, SicStore, StatementStore
@@ -102,8 +102,26 @@ class SecClient:
         if raw is None:
             return None
         rf = extract_revenue_facts(raw)
-        self.facts_store.put(rf)
+        earnings = extract_earnings_facts(raw)
+        self.facts_store.put(rf, earnings)
         return rf
+
+    def earnings_facts(self, cik: str) -> RevenueFacts | None:
+        cached = self.facts_store.get_earnings(cik)
+        if cached is not None:
+            return cached
+        try:
+            raw = self.companyfacts(cik)
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+        if raw is None:
+            return None
+        rf = self.facts_store.get(cik) or extract_revenue_facts(raw)
+        earnings = extract_earnings_facts(raw)
+        self.facts_store.put(rf, earnings)
+        return earnings if earnings.by_concept else earnings
 
     def submissions_payload(self, cik: str, *, refresh: bool = False) -> dict | None:
         """EDGAR submissions JSON. `refresh` bypasses a stale cache so Company Facts is not treated as latest."""
