@@ -302,8 +302,8 @@ def test_non_calendar_fiscal_year_labels():
 
 
 def test_sample_dataset_buckets_from_layer1_json():
-    """Layer 2 on the committed validation sample must not re-fetch revenue."""
-    data_dir = Path(__file__).resolve().parents[2] / "web" / "public" / "data"
+    """Layer 2 on the frozen validation sample must not re-fetch revenue."""
+    data_dir = Path(__file__).resolve().parent / "fixtures" / "sample-data"
     payload = build_layer2(data_dir, Thresholds(None, None))
     by = {r["ticker"]: r for r in payload["rows"]}
     assert payload["counts"] == {
@@ -333,6 +333,42 @@ def test_sample_dataset_buckets_from_layer1_json():
     assert by["KRYS"]["freshness"]["status"] == "current"
     assert CAT_OTHER not in applied(by["ARGX"])
     assert CAT_UNABLE in applied(by["ARGX"])
+
+
+def test_committed_pages_payload_is_full_universe_with_gate():
+    """Pages deploy reads committed web/public/data; full mode requires gate.ok."""
+    import json
+
+    data_dir = Path(__file__).resolve().parents[2] / "web" / "public" / "data"
+    meta = json.loads((data_dir / "meta.json").read_text())
+    layer2 = json.loads((data_dir / "layer2.json").read_text())
+    assert meta["dataset"]["mode"] == "full"
+    assert meta["gate"]["ok"] is True
+    assert meta["coverage"]["listings"] == 5593
+    assert layer2["counts"] == {
+        "passed": 1445,
+        "watchlist": 693,
+        "dataReview": 2631,
+        "ttmNonpositive": 824,
+        "listings": 5593,
+    }
+    assert layer2["rulesVersion"] == RULES_VERSION
+    by = {r["ticker"]: r for r in layer2["rows"]}
+    assert by["INCY"]["bucket"] == BUCKET_PASSED
+    assert by["INCY"]["freshness"]["status"] == "current"
+    assert by["AMH"]["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_FILING_NO_REVENUE in by["AMH"]["dataReviewReasons"]
+    assert by["GYRO"]["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_FILING_UNPARSED in by["GYRO"]["dataReviewReasons"]
+    assert by["KO"]["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_QUARTER_NOT_IN_WINDOW in by["KO"]["dataReviewReasons"]
+    stale_pw = [
+        r["ticker"]
+        for r in layer2["rows"]
+        if r["bucket"] in {BUCKET_PASSED, BUCKET_WATCHLIST}
+        and any(str(x).startswith("official_") for x in r["dataReviewReasons"])
+    ]
+    assert stale_pw == []
 
 
 def test_freshness_distinguishes_verified_window_from_expected_next():

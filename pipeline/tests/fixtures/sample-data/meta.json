@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T22:56:40+00:00",
+  "buildStartedAt": "2026-10-14T22:56:39+00:00",
+  "dataset": {
+    "mode": "sample",
+    "id": "biotech20",
+    "name": "Biotechnology validation sample",
+    "description": "20 domestic SEC 10-Q/10-K biotechnology filers plus 2 foreign-filer ADRs (ARGX, BNTX) to exercise N/A handling. Used to validate 12-quarter revenue, TTM calculations, and SEC SIC against filings before the full-universe build."
+  },
+  "run": {
+    "status": "complete",
+    "startedAt": "2026-10-14T22:56:39+00:00",
+    "finishedAt": "2026-10-14T22:56:40+00:00",
+    "listingsTarget": 22,
+    "listingsDone": 22,
+    "pending": [],
+    "timeBudgetS": null,
+    "bulk": null
+  },
+  "universe": {
+    "source": "NASDAQ Trader symbol directory (nasdaqlisted.txt, otherlisted.txt)",
+    "exchanges": [
+      "NASDAQ",
+      "NYSE",
+      "NYSE American"
+    ],
+    "eligibleListings": 5593,
+    "byExchange": {
+      "NYSE": 1951,
+      "NASDAQ": 3399,
+      "NYSE American": 243
+    },
+    "bySecurityType": {
+      "common": 5287,
+      "adr": 306
+    },
+    "excludedByReason": {
+      "etf": 1375,
+      "unit": 301,
+      "warrant": 434,
+      "right": 127,
+      "preferred": 512,
+      "debt": 171,
+      "fund": 304,
+      "when_issued": 3,
+      "test_issue": 37,
+      "exchange_out_of_scope": 4425,
+      "structured_product": 5
+    },
+    "fileCreated": {
+      "nasdaqlisted": "1014202614:01",
+      "otherlisted": "1014202614:01"
+    }
+  },
+  "sources": {
+    "nasdaqTrader": {
+      "url": "https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs",
+      "fileCreated": {
+        "nasdaqlisted": "1014202614:01",
+        "otherlisted": "1014202614:01"
+      }
+    },
+    "sec": {
+      "url": "https://www.sec.gov/edgar",
+      "companyFacts": "XBRL Company Facts (nightly companyfacts.zip)",
+      "sic": "EDGAR submissions sic / sicDescription",
+      "periodicFilings": "EDGAR submissions recent 10-Q/10-K. When Company Facts lag a newer filing, Layer 1 uses that filing's official income-statement revenue.",
+      "latestFilingDate": "2026-08-06"
+    }
+  },
+  "coverage": {
+    "listings": 22,
+    "companies": 22,
+    "cikMatched": 22,
+    "sicAssigned": 22,
+    "includedWithoutRevenue": 2,
+    "foreignFilers": 2,
+    "ambiguousConcept": 0,
+    "eightQuarters": 20,
+    "currentTtm": 20,
+    "growth": 20,
+    "statementVerified": 20,
+    "quarterChecks": {
+      "match": 240
+    },
+    "naReasons": {
+      "foreign_filer": 2
+    },
+    "classificationIssues": 0,
+    "byCurrency": {
+      "USD": 20
+    },
+    "edgarSupplemented": 1,
+    "edgarUnresolved": 0,
+    "edgarLaggingBeforeSupplement": 1
+  },
+  "sicMajorGroups": {
+    "Chemicals and Allied Products": [
+      "2834 — Pharmaceutical Preparations",
+      "2835 — In Vitro & In Vivo Diagnostic Substances",
+      "2836 — Biological Products, (No Diagnostic Substances)"
+    ],
+    "Engineering, Accounting, Research, Management, and Related Services": [
+      "8731 — Services-Commercial Physical & Biological Research"
+    ]
+  },
+  "currencies": [
+    "USD"
+  ],
+  "gate": {
+    "ok": true,
+    "reasons": [],
+    "metrics": {
+      "mode": "sample",
+      "status": "complete",
+      "listings": 22,
+      "eligible": 5593,
+      "cikMatched": 22,
+      "growthRatio": 0.9090909090909091,
+      "currentTtmRatio": 0.9090909090909091,
+      "quarterMismatchRatio": 0.0,
+      "edgarUnresolved": 0,
+      "edgarSupplemented": 1
+    }
+  }
+}
