@@ -276,6 +276,138 @@ main.container {
   color: var(--muted);
 }
 
+.sic-select {
+  position: relative;
+  min-width: 260px;
+}
+
+.sic-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sic-select-trigger:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+.sic-select-trigger:disabled {
+  background: var(--surface-2);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.sic-select-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-select-value.placeholder {
+  color: var(--text);
+}
+
+.sic-select-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--muted);
+  flex-shrink: 0;
+}
+
+.sic-select-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.sic-select-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sic-select-search {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.sic-select-search:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+.sic-select-clear {
+  flex-shrink: 0;
+  height: auto;
+  padding: 0;
+}
+
+.sic-select-list {
+  overflow: auto;
+  padding: 4px 0;
+}
+
+.sic-select-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.sic-select-opt:hover,
+.sic-select-opt.on {
+  background: var(--accent-soft);
+}
+
+.sic-select-opt input {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.sic-select-empty {
+  margin: 0;
+  padding: 12px 10px;
+}
+
 .filters-meta {
   display: flex;
   align-items: center;

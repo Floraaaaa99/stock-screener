@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { formatCount } from "../lib/format";
-import { formatSicIndustry, type ViewState } from "../lib/screener";
+import { type ViewState } from "../lib/screener";
+import { SicIndustrySelect } from "./SicIndustrySelect";
 
 interface Props {
   majorGroups: string[];
@@ -35,7 +36,8 @@ export function Filters({
     return () => window.clearTimeout(t);
   }, [query, view.query, onChange]);
 
-  const active = Boolean(view.sicMajorGroup || view.sicIndustry || view.currency || view.query);
+  const active = Boolean(view.sicMajorGroup || view.sicIndustries.length || view.currency || view.query);
+  const allIndustryLabel = view.sicMajorGroup ? `All in ${view.sicMajorGroup}` : "All SEC SIC industries";
 
   return (
     <section className="panel filters" aria-label="Filters">
@@ -45,7 +47,7 @@ export function Filters({
           id="sic-group"
           value={view.sicMajorGroup}
           disabled={disabled}
-          onChange={(e) => onChange({ sicMajorGroup: e.target.value, sicIndustry: "" })}
+          onChange={(e) => onChange({ sicMajorGroup: e.target.value, sicIndustries: [] })}
         >
           <option value="">All SEC SIC major groups</option>
           {majorGroups.map((s) => (
@@ -55,22 +57,13 @@ export function Filters({
           ))}
         </select>
       </div>
-      <div className="field">
-        <label htmlFor="sic-industry">SEC SIC industry</label>
-        <select
-          id="sic-industry"
-          value={view.sicIndustry}
-          disabled={disabled}
-          onChange={(e) => onChange({ sicIndustry: e.target.value })}
-        >
-          <option value="">{view.sicMajorGroup ? `All in ${view.sicMajorGroup}` : "All SEC SIC industries"}</option>
-          {industries.map((i) => (
-            <option key={i} value={i}>
-              {formatSicIndustry(i)}
-            </option>
-          ))}
-        </select>
-      </div>
+      <SicIndustrySelect
+        industries={industries}
+        selected={view.sicIndustries}
+        disabled={disabled}
+        allLabel={allIndustryLabel}
+        onChange={(sicIndustries) => onChange({ sicIndustries })}
+      />
       {currencies.length > 0 && (
         <div className="field">
           <label htmlFor="currency">Revenue currency</label>

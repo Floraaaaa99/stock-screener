@@ -5,12 +5,16 @@ import {
   filterRows,
   formatSicIndustry,
   industriesFor,
+  industryMatchesSearch,
   mixedCurrencies,
   PAGE_SIZE,
   pageCount,
   paginate,
   readViewFromSearch,
+  sicSelectSummary,
   sortRows,
+  toggleSicIndustry,
+  uniqueSicIndustries,
   viewToSearch,
 } from "./screener";
 
@@ -95,13 +99,33 @@ describe("filterRows", () => {
   ];
 
   it("filters by SEC SIC major group, industry, and currency", () => {
-    expect(tickers(filterRows(rows, { sicMajorGroup: "Electronic and Other Electrical Equipment", sicIndustry: "", currency: "", query: "" }))).toEqual(["AAPL"]);
-    expect(tickers(filterRows(rows, { sicMajorGroup: "", sicIndustry: "2836 — Biological Products", currency: "", query: "" }))).toEqual(["VRTX", "NESN"]);
-    expect(tickers(filterRows(rows, { sicMajorGroup: "", sicIndustry: "", currency: "CHF", query: "" }))).toEqual(["NESN"]);
+    expect(tickers(filterRows(rows, { sicMajorGroup: "Electronic and Other Electrical Equipment", sicIndustries: [], currency: "", query: "" }))).toEqual(["AAPL"]);
+    expect(tickers(filterRows(rows, { sicMajorGroup: "", sicIndustries: ["2836 — Biological Products"], currency: "", query: "" }))).toEqual(["VRTX", "NESN"]);
+    expect(tickers(filterRows(rows, { sicMajorGroup: "", sicIndustries: [], currency: "CHF", query: "" }))).toEqual(["NESN"]);
+  });
+
+  it("ORs selected industries and does not duplicate companies", () => {
+    const f = { sicMajorGroup: "", sicIndustries: ["2836 — Biological Products", "3571 — Electronic Computers"], currency: "", query: "" };
+    expect(tickers(filterRows(rows, f))).toEqual(["VRTX", "AAPL", "NESN"]);
+    expect(tickers(filterRows(rows, f))).toEqual([...new Set(tickers(filterRows(rows, f)))]);
+    expect(tickers(filterRows(rows, { ...f, sicIndustries: [] }))).toEqual(["VRTX", "AAPL", "NESN", "UNK"]);
+  });
+
+  it("ANDs industry selection with major group", () => {
+    expect(
+      tickers(
+        filterRows(rows, {
+          sicMajorGroup: "Chemicals and Allied Products",
+          sicIndustries: ["2836 — Biological Products", "3571 — Electronic Computers"],
+          currency: "",
+          query: "",
+        }),
+      ),
+    ).toEqual(["VRTX", "NESN"]);
   });
 
   it("matches ticker prefix or name substring, case and accent insensitive", () => {
-    const f = { sicMajorGroup: "", sicIndustry: "", currency: "", query: "" };
+    const f = { sicMajorGroup: "", sicIndustries: [], currency: "", query: "" };
     expect(tickers(filterRows(rows, { ...f, query: "vr" }))).toEqual(["VRTX"]);
     expect(tickers(filterRows(rows, { ...f, query: "PHARMA" }))).toEqual(["VRTX"]);
     expect(tickers(filterRows(rows, { ...f, query: "nestle" }))).toEqual(["NESN"]);
@@ -148,11 +172,31 @@ describe("industriesFor and mixedCurrencies", () => {
   });
 });
 
+describe("SIC industry multi-select helpers", () => {
+  it("toggles, de-duplicates, and summarizes selected industries", () => {
+    expect(toggleSicIndustry([], "2836 — Bio")).toEqual(["2836 — Bio"]);
+    expect(toggleSicIndustry(["2836 — Bio"], "2836 — Bio")).toEqual([]);
+    expect(uniqueSicIndustries(["2836 — Bio", "", "2836 — Bio", "3571 — Computers"])).toEqual([
+      "2836 — Bio",
+      "3571 — Computers",
+    ]);
+    expect(sicSelectSummary([], "All SEC SIC industries")).toBe("All SEC SIC industries");
+    expect(sicSelectSummary(["2836 — Biological Products"], "All")).toBe("Biological Products — 2836");
+    expect(sicSelectSummary(["a", "b"], "All")).toBe("2 industries");
+  });
+
+  it("matches industry search on code or displayed name", () => {
+    expect(industryMatchesSearch("2836 — Biological Products", "bio")).toBe(true);
+    expect(industryMatchesSearch("2836 — Biological Products", "2836")).toBe(true);
+    expect(industryMatchesSearch("2836 — Biological Products", "computers")).toBe(false);
+  });
+});
+
 describe("URL state", () => {
   it("round-trips a view", () => {
     const v = {
       sicMajorGroup: "Chemicals and Allied Products",
-      sicIndustry: "2836 — Biological Products",
+      sicIndustries: ["2836 — Biological Products"],
       currency: "USD",
       query: "al",
       sort: "ttmCurrent" as const,
@@ -160,6 +204,16 @@ describe("URL state", () => {
       page: 2,
     };
     expect(readViewFromSearch(viewToSearch(v))).toEqual(v);
+  });
+
+  it("round-trips multiple SIC industries, including names with commas", () => {
+    const v = {
+      ...DEFAULT_VIEW,
+      sicIndustries: ["7372 — Prepackaged Software", "7374 — Computer Processing, Data Preparation"],
+    };
+    const search = viewToSearch(v);
+    expect(search).toContain("sic=");
+    expect(readViewFromSearch(search).sicIndustries).toEqual(v.sicIndustries);
   });
 
   it("omits defaults and rejects invalid values", () => {
