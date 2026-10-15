@@ -155,7 +155,7 @@ Classification rules are versioned (`rulesVersion`, currently 3). Decisions use 
 - `meta.json`: build timestamps, source file dates, universe and exclusion counts, coverage statistics and N/A reason counts.
 - `screener.json`: one compact row per listing, used by the table.
 - `layer2.json`: sequential-growth rows and bucket counts derived from Layer 1 company JSON.
-- `companies/<TICKER>.json`: per-company detail, loaded when a row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered. When available, **net income** is included as a parallel series (same quarter math as revenue) and is shown only in the expanded row. It does not change Layer 1 TTM columns or Layer 2 Passed / Watchlist. A newer official filing used only for net income does not move a company into Data Review.
+- `companies/<TICKER>.json`: per-company detail, loaded when a Layer 1 row is expanded. It contains all 12 quarters with periods, filings, formulas, verification results, flags and the concepts considered. When available, **net income** is included as a parallel series (same quarter math as revenue) and is shown only in expanded detail. Layer 2 expand uses one comparison table (revenue and net income, YoY and QoQ) instead of repeating those amounts in separate rate tables. It does not change Layer 1 TTM columns or Layer 2 Passed / Watchlist. A newer official filing used only for net income does not move a company into Data Review.
 - `classification_issues.json`: missing CIK or missing SEC SIC for listings that are still included.
 
 Files are written atomically: the whole dataset directory is built next to the old one and then swapped in. A failed
