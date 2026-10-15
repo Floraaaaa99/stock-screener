@@ -16,6 +16,9 @@ from screener_pipeline.layer2 import (
     CAT_STABLE,
     CAT_UNABLE,
     CAT_VOL,
+    REASON_FILING_NO_REVENUE,
+    REASON_FILING_UNPARSED,
+    REASON_QUARTER_NOT_IN_WINDOW,
     RULES_VERSION,
     Thresholds,
     analyze_company,
@@ -91,7 +94,43 @@ def applied(row):
 
 
 def test_rules_version_is_set():
-    assert RULES_VERSION == 3
+    assert RULES_VERSION == 4
+
+
+def test_stale_official_filing_is_not_passed_or_watchlist():
+    values = [104, 106, 108, 110, 100, 100, 100, 100]
+    parsed = company(values, ttm_growth=7.0, q0=q(2025, 1, "2025-03-31", 104))
+    parsed["revenue"]["edgarSupplement"] = {
+        "status": "unresolved",
+        "newerFilings": [{"accn": "a", "form": "10-Q", "filed": "2026-08-13", "reportDate": "2026-06-30"}],
+        "unresolved": [{"accn": "a", "reason": "income_statement_unavailable"}],
+        "applied": [],
+    }
+    row = analyze_company(parsed, Thresholds(None, None))
+    assert row["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_FILING_UNPARSED in row["dataReviewReasons"]
+
+    no_rev = company(values, ttm_growth=7.0, q0=q(2020, 4, "2020-12-31", 104))
+    no_rev["revenue"]["edgarSupplement"] = {
+        "status": "current",
+        "newerFilings": [{"accn": "b", "form": "10-Q", "filed": "2026-07-31", "reportDate": "2026-06-30"}],
+        "unresolved": [{"accn": "b", "reason": "no_official_revenue_column"}],
+        "applied": [],
+    }
+    row = analyze_company(no_rev, Thresholds(None, None))
+    assert row["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_FILING_NO_REVENUE in row["dataReviewReasons"]
+
+    applied_missing = company(values, ttm_growth=7.0, q0=q(2026, 1, "2026-03-31", 104))
+    applied_missing["revenue"]["edgarSupplement"] = {
+        "status": "applied",
+        "newerFilings": [{"accn": "c", "form": "10-Q", "filed": "2026-07-29", "reportDate": "2026-07-03"}],
+        "unresolved": [],
+        "applied": [{"accn": "c", "end": "2026-07-03", "months": 3, "value": 1.0}],
+    }
+    row = analyze_company(applied_missing, Thresholds(None, None))
+    assert row["bucket"] == BUCKET_DATA_REVIEW
+    assert REASON_QUARTER_NOT_IN_WINDOW in row["dataReviewReasons"]
 
 
 def test_four_positive_yoy_passes_even_if_decelerating():

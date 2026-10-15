@@ -16,7 +16,7 @@ from pathlib import Path
 from . import config
 from .cache import read_json, write_json_atomic
 
-RULES_VERSION = 3
+RULES_VERSION = 4
 LAYER2_SCHEMA_VERSION = 1
 N_YOY = 4
 N_WINDOW = 8
@@ -327,6 +327,62 @@ def _fiscal_label(fy, fq) -> str | None:
     return None
 
 
+FISCAL_END_SLACK_DAYS = 10
+
+REASON_FILING_UNPARSED = "official_filing_unparsed"
+REASON_FILING_NO_REVENUE = "official_filing_no_applicable_revenue"
+REASON_QUARTER_NOT_IN_WINDOW = "official_quarter_not_in_window"
+
+
+def official_window_gap_reason(company: dict, window: list[dict]) -> str | None:
+    """Why a newer official filing is not in the verified Layer 1 window.
+
+    Confirmed absence of a total-revenue line is not a parse failure. Either case
+    makes the window stale relative to EDGAR, so Passed/Watchlist must not use it.
+    """
+    supp = (company.get("revenue") or {}).get("edgarSupplement") or {}
+    latest = next((q for q in window if q and not q.get("missing") and q.get("end")), None)
+    if not latest:
+        return None
+    try:
+        latest_end = date.fromisoformat(latest["end"])
+    except ValueError:
+        return None
+    cutoff = latest_end + timedelta(days=FISCAL_END_SLACK_DAYS)
+
+    for applied in supp.get("applied") or []:
+        raw = applied.get("end")
+        if not raw:
+            continue
+        try:
+            applied_end = date.fromisoformat(raw)
+        except ValueError:
+            continue
+        if applied_end > cutoff:
+            return REASON_QUARTER_NOT_IN_WINDOW
+
+    unresolved_by_accn = {u.get("accn"): u.get("reason") for u in (supp.get("unresolved") or [])}
+    for filing in supp.get("newerFilings") or []:
+        raw = filing.get("reportDate")
+        if not raw:
+            continue
+        try:
+            report = date.fromisoformat(raw)
+        except ValueError:
+            continue
+        if report <= cutoff:
+            continue
+        why = unresolved_by_accn.get(filing.get("accn"))
+        if why == "income_statement_unavailable":
+            return REASON_FILING_UNPARSED
+        if why == "no_official_revenue_column":
+            return REASON_FILING_NO_REVENUE
+        if supp.get("status") == "unresolved":
+            return REASON_FILING_UNPARSED
+        return REASON_FILING_NO_REVENUE
+    return None
+
+
 def assess_freshness(window: list[dict], as_of: date | None) -> dict:
     """Compare Layer 1's verified latest quarter with the next quarter expected at as-of.
 
@@ -459,6 +515,12 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
         bucket = BUCKET_PASSED
     else:
         bucket = BUCKET_WATCHLIST
+
+    stale = official_window_gap_reason(company, window)
+    if stale:
+        unique_reasons.append(stale)
+        if bucket in (BUCKET_PASSED, BUCKET_WATCHLIST):
+            bucket = BUCKET_DATA_REVIEW
 
     badges = classify_qoq_badges(qoq_rates, thresholds)
     freshness = assess_freshness(window, as_of)
