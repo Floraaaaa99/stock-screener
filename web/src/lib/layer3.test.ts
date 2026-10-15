@@ -8,6 +8,7 @@ import {
   isTickerSaved,
   normalizeCik,
   removeIssuer,
+  restrictSelectionToCurrentList,
   selectFiltered,
   selectedAlreadySavedCount,
   toggleFilteredSelection,
@@ -112,8 +113,20 @@ describe("filtered select-all", () => {
   const filtered = [...page1, ...page2];
 
   it("selects every currently filtered ticker, including other pages", () => {
-    const next = selectFiltered(new Set(["ZZZ"]), filtered);
-    expect([...next].sort()).toEqual(["AAA", "BBB", "CCC", "DDD", "ZZZ"]);
+    const next = selectFiltered(new Set(), filtered);
+    expect([...next].sort()).toEqual(["AAA", "BBB", "CCC", "DDD"]);
+  });
+
+  it("replaces leftover tickers so select-all is only the current list", () => {
+    const next = selectFiltered(new Set(["ZZZ", "OLD"]), filtered);
+    expect(next.has("ZZZ")).toBe(false);
+    expect([...next].sort()).toEqual(["AAA", "BBB", "CCC", "DDD"]);
+  });
+
+  it("drops companies that leave the list after a tighter filter", () => {
+    const selectedAll = selectFiltered(new Set(), ["A", "B", "C", "D", "E"]);
+    const afterIndustry = restrictSelectionToCurrentList(selectedAll, ["A", "B", "C"]);
+    expect([...afterIndustry].sort()).toEqual(["A", "B", "C"]);
   });
 
   it("does not add unfiltered tickers on select-all", () => {

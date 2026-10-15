@@ -15,6 +15,8 @@ import {
   headerCheckState,
   isTickerSaved,
   removeIssuer,
+  restrictSelectionToCurrentList,
+  sameTickerSet,
   selectedAlreadySavedCount,
   toggleFilteredSelection,
   toggleTicker,
@@ -164,6 +166,21 @@ export default function App() {
     if (status === "unavailable") setStorageStatus("unavailable");
   };
 
+  const persistRestricted = useCallback((tickers: string[]) => {
+    setSelected((prev) => {
+      const next = restrictSelectionToCurrentList(prev, tickers);
+      if (sameTickerSet(prev, next)) return prev;
+      const status = layer3Store.saveSelection([...next]);
+      if (status === "unavailable") setStorageStatus("unavailable");
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (layer !== 1 || load.status !== "ready" || rows.length === 0) return;
+    persistRestricted(filteredTickers);
+  }, [layer, load.status, rows.length, view.sicMajorGroup, view.sicIndustries, view.currency, view.query, filteredTickers, persistRestricted]);
+
   const persistMembership = (next: Layer3Entry[]) => {
     setMembership(next);
     const status = layer3Store.saveMembership(next);
@@ -273,6 +290,7 @@ export default function App() {
                 onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
                 onToggleSelect={onToggleSelect}
                 onToggleFiltered={onToggleFiltered}
+                onRestrictSelection={persistRestricted}
                 selectedCount={selected.size}
                 alreadySavedCount={alreadySavedSelected}
                 lastAdd={lastAdd}
