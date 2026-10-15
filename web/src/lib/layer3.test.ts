@@ -10,6 +10,7 @@ import {
   removeIssuer,
   restrictSelectionToCurrentList,
   selectFiltered,
+  syncSelectionToCurrentList,
   selectedAlreadySavedCount,
   toggleFilteredSelection,
   toggleTicker,
@@ -127,6 +128,28 @@ describe("filtered select-all", () => {
     const selectedAll = selectFiltered(new Set(), ["A", "B", "C", "D", "E"]);
     const afterIndustry = restrictSelectionToCurrentList(selectedAll, ["A", "B", "C"]);
     expect([...afterIndustry].sort()).toEqual(["A", "B", "C"]);
+  });
+
+  it("keeps select-all when adding a category grows the list", () => {
+    const previous = ["A", "B", "C"];
+    const selected = selectFiltered(new Set(), previous);
+    const next = syncSelectionToCurrentList(selected, previous, ["A", "B", "C", "D", "E"]);
+    expect([...next].sort()).toEqual(["A", "B", "C", "D", "E"]);
+  });
+
+  it("does not auto-select newcomers when only some rows were checked", () => {
+    const previous = ["A", "B", "C"];
+    const next = syncSelectionToCurrentList(new Set(["A", "B"]), previous, ["A", "B", "C", "D"]);
+    expect([...next].sort()).toEqual(["A", "B"]);
+  });
+
+  it("keeps select-all when tightening and then widening the list", () => {
+    const all20 = ["A", "B", "C", "D", "E"];
+    const selected20 = selectFiltered(new Set(), all20);
+    const afterCut = syncSelectionToCurrentList(selected20, all20, ["A", "B", "C"]);
+    expect([...afterCut].sort()).toEqual(["A", "B", "C"]);
+    const afterAdd = syncSelectionToCurrentList(afterCut, ["A", "B", "C"], all20);
+    expect([...afterAdd].sort()).toEqual(all20);
   });
 
   it("does not add unfiltered tickers on select-all", () => {

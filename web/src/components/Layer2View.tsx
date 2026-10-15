@@ -40,7 +40,7 @@ interface Props {
   onToggle: (ticker: string) => void;
   onToggleSelect: (ticker: string, checked: boolean) => void;
   onToggleFiltered: (tickers: string[]) => void;
-  onRestrictSelection: (tickers: string[]) => void;
+  onSyncSelection: (previousTickers: string[], currentTickers: string[]) => void;
   selectedCount: number;
   alreadySavedCount: number;
   lastAdd: AddToLayer3Result | null;
@@ -62,7 +62,7 @@ export function Layer2View({
   onToggle,
   onToggleSelect,
   onToggleFiltered,
-  onRestrictSelection,
+  onSyncSelection,
   selectedCount,
   alreadySavedCount,
   lastAdd,
@@ -91,13 +91,12 @@ export function Layer2View({
   const pageRows = useMemo(() => paginate(filtered, page), [filtered, page]);
   const filteredTickers = useMemo(() => filtered.map((r) => r.ticker), [filtered]);
   const selectHeader: HeaderCheckState = headerCheckState(selected, filteredTickers);
-  const skipRestrictOnMount = useRef(true);
+  const previousTickersRef = useRef<string[] | null>(null);
   useEffect(() => {
-    if (skipRestrictOnMount.current) {
-      skipRestrictOnMount.current = false;
-      return;
-    }
-    onRestrictSelection(filteredTickers);
+    const previous = previousTickersRef.current;
+    previousTickersRef.current = filteredTickers;
+    if (previous === null) return;
+    onSyncSelection(previous, filteredTickers);
   }, [
     view.tab,
     view.sicMajorGroup,
@@ -107,7 +106,7 @@ export function Layer2View({
     view.niProfitability,
     view.niImprovement,
     filteredTickers,
-    onRestrictSelection,
+    onSyncSelection,
   ]);
   const majorGroups = Object.keys(meta.sicMajorGroups);
   const industries = industriesFor(meta.sicMajorGroups, view.sicMajorGroup);

@@ -92,6 +92,23 @@ export function restrictSelectionToCurrentList(
   return next;
 }
 
+/**
+ * Keep selection on the current list only.
+ * If the previous list was fully selected (select-all), the new list is fully selected too —
+ * adding a category/industry selects the newcomers. Otherwise newcomers stay unchecked,
+ * and companies that left the list are dropped.
+ */
+export function syncSelectionToCurrentList(
+  selected: ReadonlySet<string>,
+  previousTickers: readonly string[],
+  currentTickers: readonly string[],
+): Set<string> {
+  if (previousTickers.length > 0 && headerCheckState(selected, previousTickers) === "all") {
+    return new Set(currentTickers);
+  }
+  return restrictSelectionToCurrentList(selected, currentTickers);
+}
+
 /** Replace the selection with the current filtered list. Does not keep leftover tickers. */
 export function selectFiltered(_selected: ReadonlySet<string>, filteredTickers: readonly string[]): Set<string> {
   return new Set(filteredTickers);
