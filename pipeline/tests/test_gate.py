@@ -4,19 +4,18 @@ from screener_pipeline.build import _is_current_edgar_unresolved
 from screener_pipeline.gate import evaluate_gate
 
 
+def _supp(reason, latest_facts_end):
+    return {
+        "ttm": {"reason": reason},
+        "revenue": {"edgarSupplement": {"status": "unresolved", "latestFactsEnd": latest_facts_end}},
+    }
+
+
 def test_unresolved_count_ignores_foreign_empty_and_stale_facts():
-    assert not _is_current_edgar_unresolved(
-        {"ttm": {"reason": "foreign_filer"}, "revenue": {"edgarSupplement": {"status": "unresolved", "latestFactsEnd": None}}}
-    )
-    assert not _is_current_edgar_unresolved(
-        {"ttm": {"reason": "no_revenue_concept"}, "revenue": {"edgarSupplement": {"status": "unresolved", "latestFactsEnd": None}}}
-    )
-    assert not _is_current_edgar_unresolved(
-        {"ttm": {"reason": "insufficient_quarters"}, "revenue": {"edgarSupplement": {"status": "unresolved", "latestFactsEnd": "2015-08-31"}}}
-    )
-    assert _is_current_edgar_unresolved(
-        {"ttm": {"reason": None}, "revenue": {"edgarSupplement": {"status": "unresolved", "latestFactsEnd": "2026-03-31"}}}
-    )
+    assert not _is_current_edgar_unresolved(_supp("foreign_filer", None))
+    assert not _is_current_edgar_unresolved(_supp("no_revenue_concept", None))
+    assert not _is_current_edgar_unresolved(_supp("insufficient_quarters", "2015-08-31"))
+    assert _is_current_edgar_unresolved(_supp(None, "2026-03-31"))
 
 
 def _meta(*, mode="full", status="complete", listings=100, eligible=100, growth=80, mismatches=0, checks=200):
