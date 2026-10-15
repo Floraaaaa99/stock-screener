@@ -1088,6 +1088,134 @@ a.badge:hover {
   border: 1px solid var(--border);
 }
 
+.ni-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cat-badge.ni_all_profitable,
+.cat-badge.ni_four_yoy_improvements,
+.cat-badge.ni_four_quarter_sequential {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.cat-badge.ni_one_loss,
+.cat-badge.ni_contains_breakeven {
+  background: var(--warn-soft-bg);
+  color: var(--warn-soft-fg);
+}
+
+.cat-badge.ni_two_or_three_loss,
+.cat-badge.ni_all_loss,
+.cat-badge.ni_latest_turned_to_loss {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.cat-badge.ni_latest_turnaround {
+  background: var(--current-bg);
+  color: var(--current-fg);
+}
+
+.cat-badge.ni_insufficient_data {
+  background: var(--surface-2);
+  color: var(--text-2);
+  border: 1px dashed var(--border-strong);
+}
+
+.rate-chip.zero,
+.zero {
+  color: var(--muted);
+}
+
+.rate-chip.latest-loss {
+  outline: 1px solid var(--neg);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.ni-summary {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.ni-summary > p {
+  margin: 0 0 8px;
+}
+
+.ni-badge-block {
+  margin-top: 8px;
+}
+
+.ni-badge-block .k {
+  display: block;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text-2);
+  margin-bottom: 4px;
+}
+
+.ni-no-badge-note {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+
+.ni-rules {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ni-rules li {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(10rem, 18rem) 1fr;
+  gap: 8px 12px;
+  align-items: start;
+  font-size: 13px;
+}
+
+.ni-rule-status {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  width: fit-content;
+}
+
+.ni-rule-status.applied {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.ni-rule-status.unmet {
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--border-strong);
+}
+
+.ni-rule-status.unavailable {
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px dashed var(--border-strong);
+}
+
+.ni-rule-tip {
+  font-size: 12px;
+}
+
+.latest-loss-row td:first-child {
+  box-shadow: inset 3px 0 0 var(--neg);
+}
+
 .qoq-chart {
   display: block;
 }
@@ -1193,5 +1321,9 @@ a.badge:hover {
 
   .field {
     min-width: 100%;
+  }
+
+  .ni-rules li {
+    grid-template-columns: 1fr;
   }
 }

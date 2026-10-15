@@ -109,6 +109,30 @@ describe("filterLayer2", () => {
       "BBB",
     ]);
   });
+
+  it("ANDs profitability and improvement filters and ORs within each", () => {
+    const rows = [
+      row("P1", { ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+      row("P2", { ni: { appliedProfitability: ["ni_one_loss"], appliedImprovement: ["ni_latest_turnaround"] } } as Partial<Layer2Row>),
+      row("P3", { ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_latest_turnaround"] } } as Partial<Layer2Row>),
+    ];
+    const base = { sicMajorGroup: "", sicIndustry: "", query: "", categories: [] };
+    expect(
+      filterLayer2(rows, "passed", { ...base, niProfitability: ["ni_all_profitable"], niImprovement: ["ni_latest_turnaround"] }).map((r) => r.ticker),
+    ).toEqual(["P3"]);
+    expect(filterLayer2(rows, "passed", { ...base, niProfitability: ["ni_all_profitable", "ni_one_loss"] }).map((r) => r.ticker)).toEqual([
+      "P1",
+      "P2",
+      "P3",
+    ]);
+    const watch = row("W1", {
+      bucket: "watchlist",
+      ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: [] },
+    });
+    expect(
+      filterLayer2([watch], "watchlist", { ...base, niProfitability: ["ni_one_loss"] }).map((r) => r.ticker),
+    ).toEqual(["W1"]);
+  });
 });
 
 describe("Layer2View type", () => {
@@ -119,6 +143,8 @@ describe("Layer2View type", () => {
       sicIndustry: "",
       query: "",
       categories: [],
+      niProfitability: [],
+      niImprovement: [],
       stableSpreadPp: null,
       recentJumpPp: null,
       page: 1,
@@ -135,6 +161,8 @@ describe("layer2 URL state", () => {
       sicIndustry: "2834 — Pharma",
       query: "inc",
       categories: ["qoq_volatility", "latest_quarter_revenue_decline"],
+      niProfitability: ["ni_all_profitable"],
+      niImprovement: ["ni_latest_turnaround"],
       stableSpreadPp: 5,
       recentJumpPp: 10,
       page: 2,

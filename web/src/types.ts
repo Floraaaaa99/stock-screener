@@ -264,6 +264,11 @@ export interface Layer2Row {
   earningsConcept?: string | null;
   earningsYoy?: Layer2Rate[];
   earningsQoq?: Layer2Rate[];
+  /** Client (and future pipeline) NI badges. Never used for revenue eligibility. */
+  ni?: {
+    appliedProfitability: string[];
+    appliedImprovement: string[];
+  };
   badges: Layer2Badge[];
   appliedCategories: string[];
   freshness: Layer2Freshness;

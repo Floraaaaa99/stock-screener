@@ -13,6 +13,13 @@ import {
   withLiveBadges,
   type Layer2View as View,
 } from "../lib/layer2";
+import {
+  NI_IMP_LABELS,
+  NI_IMPROVEMENT_IDS,
+  NI_PROF_LABELS,
+  NI_PROFITABILITY_IDS,
+  NI_RULES_VERSION,
+} from "../lib/niAnalysis";
 import { industriesFor, pageCount, paginate, type ViewState } from "../lib/screener";
 import type { Layer2File, Meta } from "../types";
 import { Filters } from "./Filters";
@@ -40,6 +47,8 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         sicIndustry: view.sicIndustry,
         query: view.query,
         categories: view.categories,
+        niProfitability: view.niProfitability,
+        niImprovement: view.niImprovement,
       }),
     [rows, view],
   );
@@ -77,7 +86,9 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         strictly positive quarterly YoY rates (deceleration is allowed). Watchlist is the same data quality with at
         least one YoY ≤ 0%. Companies with valid TTM growth ≤ 0% are listed separately and are not Data Review. QoQ is
         descriptive and never removes a company. A freshness warning appears when the next fiscal quarter was past its
-        typical filing window at the dataset as-of date. Rules v{file.rulesVersion}.
+        typical filing window at the dataset as-of date. On Passed companies, net-income profitability and
+        improvement badges are descriptive filters only and never change revenue-based eligibility. Missing or
+        unverified NI is N/A, never zero. Rules v{file.rulesVersion}; NI rules v{NI_RULES_VERSION}.
       </p>
       <div className="layer2-settings panel">
         <div className="field">
@@ -130,7 +141,7 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         resultCount={filtered.length}
         totalCount={counts[view.tab]}
         onChange={onFilterChange}
-        onReset={() => onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [] })}
+        onReset={() => onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [], niProfitability: [], niImprovement: [] })}
       />
       <div className="cat-filter" aria-label="QoQ category filter">
         <span className="k">Category (match any)</span>
@@ -147,6 +158,48 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
           </label>
         ))}
       </div>
+      {view.tab === "passed" && (
+        <div className="ni-filters">
+          <div className="cat-filter" aria-label="Net income profitability filter">
+            <span className="k">NI profitability (match any)</span>
+            {NI_PROFITABILITY_IDS.map((id) => (
+              <label key={id} className="cat-opt">
+                <input
+                  type="checkbox"
+                  checked={view.niProfitability.includes(id)}
+                  disabled={loading}
+                  onChange={() => {
+                    const next = view.niProfitability.includes(id)
+                      ? view.niProfitability.filter((c) => c !== id)
+                      : [...view.niProfitability, id];
+                    onChange({ niProfitability: next });
+                  }}
+                />
+                {NI_PROF_LABELS[id]}
+              </label>
+            ))}
+          </div>
+          <div className="cat-filter" aria-label="Net income improvement filter">
+            <span className="k">NI improvement (match any; combined with profitability)</span>
+            {NI_IMPROVEMENT_IDS.map((id) => (
+              <label key={id} className="cat-opt">
+                <input
+                  type="checkbox"
+                  checked={view.niImprovement.includes(id)}
+                  disabled={loading}
+                  onChange={() => {
+                    const next = view.niImprovement.includes(id)
+                      ? view.niImprovement.filter((c) => c !== id)
+                      : [...view.niImprovement, id];
+                    onChange({ niImprovement: next });
+                  }}
+                />
+                {NI_IMP_LABELS[id]}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="tabs" role="tablist" aria-label="Layer 2 buckets">
         {TABS.map((t) => (
           <button
@@ -168,7 +221,10 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         rows={pageRows}
         expanded={expanded}
         onToggle={onToggle}
-        onClearFilters={() => onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [] })}
+        showNi={view.tab === "passed"}
+        onClearFilters={() =>
+          onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [], niProfitability: [], niImprovement: [] })
+        }
       />
       {!loading && filtered.length > 0 && (
         <Pagination

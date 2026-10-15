@@ -32,8 +32,8 @@ export function Footer({ meta }: { meta: Meta | null }) {
             Current TTM is the sum of the latest four standalone fiscal quarters; Previous TTM is the four quarters
             before those. Growth = Current ÷ Previous − 1, shown only when all eight quarters are available, consecutive
             and comparable and Previous TTM is positive. Sequential growth (Layer 2) uses that same eight-quarter window:
-            four quarterly YoY rates decide Passed / Watchlist / Data Review; QoQ rates and category badges are
-            descriptive and never remove a company. Quarters missing from 10-Qs are derived from year-to-date totals
+            four quarterly YoY rates decide Passed / Watchlist / Data Review; QoQ rates, category badges, and Passed
+            net-income profitability / improvement badges are descriptive and never remove a company. Quarters missing from 10-Qs are derived from year-to-date totals
             (for example Q4 = annual − nine months). Missing values are shown as N/A, never as zero. Industry filters use
             SEC SIC codes and descriptions, not a commercial sector taxonomy.
           </p>

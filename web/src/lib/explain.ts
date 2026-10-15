@@ -25,7 +25,9 @@ export const NA_REASONS: Record<string, string> = {
   missing_quarter: "A required quarter is missing from the Layer 1 eight-quarter window.",
   missing_quarter_current: "The current quarter is missing from the Layer 1 eight-quarter window.",
   missing_quarter_prior_year: "The same fiscal quarter last year is missing from the Layer 1 eight-quarter window.",
-  incomparable_concept: "The two quarters use different revenue concepts, so they are not comparable.",
+  incomparable_concept: "The two quarters use different accounting concepts, so they are not comparable.",
+  insufficient_ni_window:
+    "Need four verified standalone net-income quarters in the same window as revenue; missing quarters are N/A and are not replaced with older figures.",
   incomplete_yoy: "The four YoY rates cannot all be computed from validated, comparable quarters.",
   official_filing_unparsed:
     "A newer official 10-Q/10-K is on EDGAR, but its income statement could not be read, so this window is stale.",

@@ -19,7 +19,7 @@ export function Header({ meta, layer, onLayer }: { meta: Meta | null; layer: 1 |
           <p className="subtitle">
             {layer === 1
               ? "SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted."
-              : "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and category badges. No valuation screen."}
+              : "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and on Passed companies descriptive net-income badges. No valuation screen."}
           </p>
           <nav className="layer-nav" aria-label="Screener layer">
             <button type="button" className={`layer-btn ${layer === 1 ? "on" : ""}`} onClick={() => onLayer(1)}>
