@@ -71,14 +71,33 @@ export function headerCheckState(selected: ReadonlySet<string>, filteredTickers:
   return "some";
 }
 
-/** Union the currently filtered tickers into the selection. Does not add hidden unfiltered rows. */
-export function selectFiltered(selected: ReadonlySet<string>, filteredTickers: readonly string[]): Set<string> {
-  const next = new Set(selected);
-  for (const t of filteredTickers) next.add(t);
+export function sameTickerSet(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
+  if (a.size !== b.size) return false;
+  for (const t of a) {
+    if (!b.has(t)) return false;
+  }
+  return true;
+}
+
+/** Keep only tickers that are still on the current filtered list. */
+export function restrictSelectionToCurrentList(
+  selected: ReadonlySet<string>,
+  currentTickers: readonly string[],
+): Set<string> {
+  const keep = new Set(currentTickers);
+  const next = new Set<string>();
+  for (const t of selected) {
+    if (keep.has(t)) next.add(t);
+  }
   return next;
 }
 
-/** Remove only currently filtered tickers. Other selections stay. */
+/** Replace the selection with the current filtered list. Does not keep leftover tickers. */
+export function selectFiltered(_selected: ReadonlySet<string>, filteredTickers: readonly string[]): Set<string> {
+  return new Set(filteredTickers);
+}
+
+/** Clear the current filtered list from the selection. */
 export function deselectFiltered(selected: ReadonlySet<string>, filteredTickers: readonly string[]): Set<string> {
   const drop = new Set(filteredTickers);
   const next = new Set<string>();

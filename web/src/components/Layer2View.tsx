@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { formatCount } from "../lib/format";
 import {
   CAT_JUMP,
@@ -40,6 +40,7 @@ interface Props {
   onToggle: (ticker: string) => void;
   onToggleSelect: (ticker: string, checked: boolean) => void;
   onToggleFiltered: (tickers: string[]) => void;
+  onRestrictSelection: (tickers: string[]) => void;
   selectedCount: number;
   alreadySavedCount: number;
   lastAdd: AddToLayer3Result | null;
@@ -61,6 +62,7 @@ export function Layer2View({
   onToggle,
   onToggleSelect,
   onToggleFiltered,
+  onRestrictSelection,
   selectedCount,
   alreadySavedCount,
   lastAdd,
@@ -89,6 +91,24 @@ export function Layer2View({
   const pageRows = useMemo(() => paginate(filtered, page), [filtered, page]);
   const filteredTickers = useMemo(() => filtered.map((r) => r.ticker), [filtered]);
   const selectHeader: HeaderCheckState = headerCheckState(selected, filteredTickers);
+  const skipRestrictOnMount = useRef(true);
+  useEffect(() => {
+    if (skipRestrictOnMount.current) {
+      skipRestrictOnMount.current = false;
+      return;
+    }
+    onRestrictSelection(filteredTickers);
+  }, [
+    view.tab,
+    view.sicMajorGroup,
+    view.sicIndustries,
+    view.query,
+    view.categories,
+    view.niProfitability,
+    view.niImprovement,
+    filteredTickers,
+    onRestrictSelection,
+  ]);
   const majorGroups = Object.keys(meta.sicMajorGroups);
   const industries = industriesFor(meta.sicMajorGroups, view.sicMajorGroup);
   const catOptions = [...OBJECTIVE_CATS, ...THRESHOLD_CATS];

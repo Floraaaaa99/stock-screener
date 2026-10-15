@@ -32,9 +32,9 @@ export function SelectionBar({
           )}
         </p>
         <p className="selection-scope muted">
-          Header checkbox selects all <strong>{formatCount(filteredCount)}</strong> currently filtered
-          companies, including other pages — not the unfiltered universe. Checking a row does not add
-          it until you click Add to Layer 3.
+          Header checkbox selects all <strong>{formatCount(filteredCount)}</strong> companies on this
+          filtered list, including other pages. Changing filters keeps only companies still on the
+          list. Checking a row does not add it until you click Add to Layer 3.
         </p>
       </div>
       <div className="selection-actions">
