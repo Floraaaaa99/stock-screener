@@ -6,6 +6,7 @@ from screener_pipeline.sec.statement import (
     income_statement_candidates,
     is_net_income_label,
     is_total_revenue_label,
+    net_income_scope,
     parse_statement_html,
 )
 
@@ -103,6 +104,10 @@ def test_net_income_labels():
         "Net earnings",
         "Net income (loss)",
         "Net income attributable to the Company",
+        "Net income attributable to common stockholders",
+        "Net Loss Available to Common Shareholders",
+        "Net Loss Applicable to Common Stockholders",
+        "Net Earnings of Zimmer Biomet Holdings, Inc.",
         "Profit (loss)",
     ]:
         assert is_net_income_label(label), label
@@ -112,5 +117,16 @@ def test_net_income_labels():
         "Operating income",
         "Comprehensive income",
         "Net income from continuing operations",
+        "Less: Net income attributable to noncontrolling interests",
+        "Net income attributable to noncontrolling interests",
     ]:
         assert not is_net_income_label(label), label
+
+
+def test_net_income_scope_distinguishes_consolidated_from_common():
+    assert net_income_scope("Net income", "ProfitLoss") == "consolidated"
+    assert net_income_scope("Net income attributable to common stockholders", "NetIncomeLoss") == "common"
+    assert net_income_scope("Net income attributable to IonQ, Inc.", "NetIncomeLoss") == "parent"
+    assert net_income_scope("Net Loss Available to Common Shareholders", "NetIncomeLoss") == "common"
+    assert net_income_scope("Net Earnings of Zimmer Biomet Holdings, Inc.", "NetIncomeLoss") == "parent"
+    assert net_income_scope("Net income attributable to noncontrolling interests", "ProfitLoss") == "nci"

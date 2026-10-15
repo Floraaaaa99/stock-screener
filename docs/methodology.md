@@ -73,7 +73,27 @@ The concept is **never** chosen because its values are larger. The rules, in ord
 3. **Income-statement evidence.** If the candidates disagree, the pipeline opens the latest filing's rendered income statement on EDGAR (`FilingSummary.xml` → `R*.htm`). It uses the candidate that appears there as the total-revenue line.
 4. **Ambiguous.** If nothing resolves the disagreement, the company is flagged `ambiguous_concept` and no TTM figures are produced.
 
-### 3.4 Verification against filings
+### 3.4 Net income concept (not mixed with revenue)
+
+Net income is selected independently of revenue, from `NetIncomeLoss`, `ProfitLoss`,
+`NetIncomeLossAvailableToCommonStockholdersBasic`, and `NetIncomeLossAttributableToParent`.
+
+Consolidated net income (`ProfitLoss`) and income attributable to the parent or to common
+shareholders (`NetIncomeLoss` and related tags) are **both valid GAAP lines**. They differ when
+noncontrolling interest or preferred dividends exist. That is not treated as a data conflict.
+
+The income statement decides the scope, in this order:
+
+1. Net income attributable to **common** shareholders, when that line is presented.
+2. Net income attributable to the **parent** / the company.
+3. **Consolidated** net income, only when no attributable-to-parent/common line is presented.
+
+One concept is used for every quarter. The two scopes are never mixed in one series. Q4 may still
+be derived as FY − 9M YTD from the selected concept. A quarter stays N/A only when no reliable
+standalone amount can be established (missing fact, unverified statement column, or a remaining
+true ambiguity).
+
+### 3.5 Verification against filings
 
 Every quarter on the site is checked against the income statement of the filing it comes from, using EDGAR's rendered
 statement pages. A quarter taken from a filing that Company Facts had not yet indexed is checked the same way and
@@ -89,7 +109,7 @@ The company stays in the table with N/A and the reason. The 10% quarter-mismatch
 only: if more than 10% of checked quarters in the file are mismatches, the dataset may not replace live Pages. It does
 not allow mismatched or unverified numbers into TTM.
 
-### 3.5 Foreign private issuers
+### 3.6 Foreign private issuers
 
 Companies that file 20-F and 6-K reports have no quarterly 10-Q data in Company Facts. Their revenue columns show N/A
 with the reason `foreign_filer`. Annual figures are not divided or substituted.
@@ -147,8 +167,9 @@ Classification rules are versioned (`rulesVersion`, currently 3). Decisions use 
   is incomplete (`unable_to_classify` covers that). An unavailable earlier QoQ does not block identifying a
   latest-quarter decline.
 - **Net income on Passed (descriptive).** Layer 2 reuses the existing validated standalone quarterly GAAP net-income
-  series (same quarter window as revenue; one concept per company, so consolidated net income is never mixed with
-  income attributable to common shareholders). Figures are not year-to-date totals and are not adjusted earnings.
+  series (same quarter window as revenue; one concept per company). Consolidated net income and income
+  attributable to parent/common are distinguished on the income statement; they are not mixed across
+  quarters. Figures are not year-to-date totals and are not adjusted earnings.
   Missing or unverified amounts are **N/A, never zero**, and an older quarter is never substituted. TTM Net Income is
   the sum of those four verified amounts. Two independent badge dimensions run only as filters on Passed companies
   and **do not change** revenue-based Passed / Watchlist / Data Review eligibility:
