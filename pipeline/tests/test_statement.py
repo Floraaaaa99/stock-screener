@@ -4,6 +4,7 @@ from helpers import FIXTURES
 
 from screener_pipeline.sec.statement import (
     income_statement_candidates,
+    is_net_income_label,
     is_total_revenue_label,
     parse_statement_html,
 )
@@ -93,3 +94,23 @@ def test_total_revenue_labels():
         assert is_total_revenue_label(label), label
     for label in ["Product revenue, net", "Collaboration revenue", "Cost of sales", "Royalty revenues"]:
         assert not is_total_revenue_label(label), label
+
+
+def test_net_income_labels():
+    for label in [
+        "Net income",
+        "Net loss",
+        "Net earnings",
+        "Net income (loss)",
+        "Net income attributable to the Company",
+        "Profit (loss)",
+    ]:
+        assert is_net_income_label(label), label
+    for label in [
+        "Net income per share",
+        "Income from operations",
+        "Operating income",
+        "Comprehensive income",
+        "Net income from continuing operations",
+    ]:
+        assert not is_net_income_label(label), label

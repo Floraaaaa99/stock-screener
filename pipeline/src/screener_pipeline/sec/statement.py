@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from html.parser import HTMLParser
+from pathlib import Path
 
 _INCOME_RX = re.compile(r"operations|income|earnings|loss", re.I)
 _NOT_INCOME_RX = re.compile(
@@ -28,6 +29,27 @@ _TOTAL_REVENUE_RX = re.compile(
 
 def is_total_revenue_label(label: str) -> bool:
     return bool(_TOTAL_REVENUE_RX.search(label))
+
+
+_NET_INCOME_RX = re.compile(
+    r"^\s*(net\s+(income|loss|earnings)(\s*\(\s*loss\s*\))?(\s*\(\s*income\s*\))?"
+    r"|profit(\s*\(\s*loss\s*\))?(\s+or\s+loss)?)"
+    r"(\s+attributable\s+to(\s+the)?\s+.{0,80})?\s*$",
+    re.I,
+)
+_NOT_NET_INCOME_RX = re.compile(
+    r"per\s+(common\s+)?(share|unit)|comprehensive|operating|operations|continuing|"
+    r"discontinued|before|taxable|interest|available.?for.?distribution",
+    re.I,
+)
+
+
+def is_net_income_label(label: str) -> bool:
+    """Face-line net income / net loss, not EPS or operating income."""
+    text = (label or "").replace("\n", " ").strip()
+    if _NOT_NET_INCOME_RX.search(text):
+        return False
+    return bool(_NET_INCOME_RX.search(text))
 
 
 def income_statement_candidates(filing_summary_xml: str) -> list[tuple[str, str]]:
@@ -61,6 +83,13 @@ def income_statement_candidates(filing_summary_xml: str) -> list[tuple[str, str]
 def has_revenue_line(st: Statement) -> bool:
     return any(
         re.search(r"revenue|sales", r.concept.split(":", 1)[-1], re.I) or re.search(r"revenue|sales", r.label, re.I)
+        for r in st.rows
+    )
+
+
+def statement_has_net_income(st: Statement) -> bool:
+    return any(
+        re.search(r"netincome|profitloss", r.concept.split(":", 1)[-1], re.I) or is_net_income_label(r.label)
         for r in st.rows
     )
 
@@ -237,11 +266,47 @@ class StatementEvidence:
         return [r for r in self.rows if r[0] == f"us-gaap:{concept}"]
 
 
+def _keep_statement_row(r: StatementRow) -> bool:
+    short = r.concept.split(":", 1)[-1]
+    if re.search(r"revenue|sales|netincome|profitloss|incomeloss", short, re.I):
+        return True
+    if re.search(r"revenue|sales", r.label, re.I) or is_net_income_label(r.label):
+        return True
+    return False
+
+
+def parse_income_statement_from_dir(fdir: Path) -> tuple[Statement, str] | None:
+    """Re-parse a cached EDGAR filing directory so compact statements can pick up net-income rows."""
+    if not fdir.is_dir():
+        return None
+    summary_path = fdir / "FilingSummary.xml"
+    summary = summary_path.read_text(encoding="utf-8", errors="replace") if summary_path.exists() else None
+    names: list[str] = []
+    if summary:
+        try:
+            names = [n for n, _ in income_statement_candidates(summary)]
+        except ET.ParseError:
+            names = []
+    if not names:
+        names = sorted(p.name for p in fdir.iterdir() if p.suffix.lower() in {".htm", ".html"})
+    result: tuple[Statement, str] | None = None
+    for html_name in names:
+        path = fdir / html_name
+        if not path.is_file():
+            continue
+        st = parse_statement_html(path.read_text(encoding="utf-8", errors="replace"))
+        if has_revenue_line(st) or statement_has_net_income(st):
+            return st, html_name
+        if result is None:
+            result = (st, html_name)
+    return result
+
+
 def statement_to_compact(st: Statement, url: str) -> dict:
-    """Keep revenue-like rows only so the statement cache stays small."""
+    """Keep revenue and net-income rows so the statement cache stays small."""
     rows = []
     for r in st.rows:
-        if re.search(r"revenue|sales", r.concept.split(":", 1)[-1], re.I) or re.search(r"revenue|sales", r.label, re.I):
+        if _keep_statement_row(r):
             rows.append({"concept": r.concept, "label": r.label, "values": r.values})
     return {
         "url": url,

@@ -172,6 +172,26 @@ export interface CompanyDetail {
     } | null;
     quarters: QuarterEntry[];
   } | null;
+  earnings: {
+    status: string;
+    currency: string | null;
+    concept: string | null;
+    conceptStatus: string | null;
+    conceptNote: string;
+    candidates: ConceptCandidate[];
+    flags: string[];
+    statementCheck: {
+      status: string;
+      accn: string | null;
+      form: string | null;
+      url: string | null;
+      period_end: string | null;
+      months: number | null;
+      pipeline_value: number | null;
+      statement_value: number | null;
+    } | null;
+    quarters: QuarterEntry[];
+  } | null;
   classificationIssues: { ticker: string; issue: string; detail: string }[];
 }
 
@@ -241,6 +261,9 @@ export interface Layer2Row {
   dataReviewReasons: string[];
   yoy: Layer2Rate[];
   qoq: Layer2Rate[];
+  earningsConcept?: string | null;
+  earningsYoy?: Layer2Rate[];
+  earningsQoq?: Layer2Rate[];
   badges: Layer2Badge[];
   appliedCategories: string[];
   freshness: Layer2Freshness;

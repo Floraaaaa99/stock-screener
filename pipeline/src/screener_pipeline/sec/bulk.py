@@ -10,7 +10,12 @@ from pathlib import Path
 from .. import config
 from ..cache import canonical_hash, is_fresh, read_json, sha256_file, write_json_atomic
 from ..http import RateLimitedClient
-from .facts import compact_revenue_facts, extract_revenue_facts
+from .facts import (
+    compact_revenue_facts,
+    extract_earnings_facts,
+    extract_revenue_facts,
+    revenue_facts_from_compact,
+)
 
 log = logging.getLogger(__name__)
 
@@ -47,15 +52,20 @@ def extract_compact_facts(
         for cik in sorted(wanted):
             name = zip_member(cik)
             out = facts_dir / f"{cik}.json"
-            if out.exists() and not force:
-                hashes[cik] = canonical_hash(read_json(out))
+            existing = read_json(out) if out.exists() and not force else None
+            if existing is not None and "earningsByConcept" in existing:
+                hashes[cik] = canonical_hash(existing)
                 found.add(cik)
                 continue
             if name not in available:
                 continue
             with zf.open(name) as fh:
                 payload = json.load(fh)
-            compact = compact_revenue_facts(extract_revenue_facts(payload))
+            earnings = extract_earnings_facts(payload)
+            if existing is not None:
+                compact = compact_revenue_facts(revenue_facts_from_compact(existing), earnings)
+            else:
+                compact = compact_revenue_facts(extract_revenue_facts(payload), earnings)
             write_json_atomic(out, compact)
             hashes[cik] = canonical_hash(compact)
             found.add(cik)

@@ -29,9 +29,50 @@ def test_extract_compact_facts_from_zip(tmp_path: Path):
     assert rf.cik == original.cik
     assert set(rf.by_concept) == set(original.by_concept)
     assert hashes[cik] == canonical_hash(compact)
+    assert "earningsByConcept" in compact
     # Second run keeps the file (no force)
     again = extract_compact_facts(zpath, [cik], facts_dir)
     assert again[cik] == hashes[cik]
+
+
+def test_extract_merges_earnings_without_rewriting_revenue(tmp_path: Path):
+    raw = json.loads((FIXTURES / "companyfacts" / "VRTX.json").read_text())
+    cik = str(raw["cik"]).zfill(10)
+    gaap = raw.setdefault("facts", {}).setdefault("us-gaap", {})
+    gaap["NetIncomeLoss"] = {
+        "units": {
+            "USD": [
+                {
+                    "start": "2026-01-01",
+                    "end": "2026-03-31",
+                    "val": 111,
+                    "accn": "0000000000-26-000001",
+                    "fy": 2026,
+                    "fp": "Q1",
+                    "form": "10-Q",
+                    "filed": "2026-04-30",
+                }
+            ]
+        }
+    }
+    zpath = tmp_path / "companyfacts.zip"
+    with zipfile.ZipFile(zpath, "w") as zf:
+        zf.writestr(zip_member(cik), json.dumps(raw))
+
+    facts_dir = tmp_path / "facts"
+    extract_compact_facts(zpath, [cik], facts_dir)
+    compact = json.loads((facts_dir / f"{cik}.json").read_text())
+    compact.pop("earningsByConcept", None)
+    compact.pop("earningsCurrency", None)
+    compact.pop("earningsFilings", None)
+    compact.pop("earningsFormsSeen", None)
+    compact["byConcept"]["marker"] = []
+    (facts_dir / f"{cik}.json").write_text(json.dumps(compact))
+
+    extract_compact_facts(zpath, [cik], facts_dir)
+    merged = json.loads((facts_dir / f"{cik}.json").read_text())
+    assert "marker" in merged["byConcept"]
+    assert merged["earningsByConcept"]["NetIncomeLoss"][0]["val"] == 111
 
 
 def test_extract_compact_sic_from_zip(tmp_path: Path):

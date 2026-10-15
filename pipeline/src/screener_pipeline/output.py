@@ -61,6 +61,21 @@ def quarter_json(slot, index: int, cik: str, rev: CompanyRevenue) -> dict:
     }
 
 
+def metric_json(rev: CompanyRevenue, cik: str) -> dict:
+    sel = rev.selection
+    return {
+        "status": rev.status,
+        "currency": rev.currency,
+        "concept": sel.concept if sel else None,
+        "conceptStatus": sel.status if sel else None,
+        "conceptNote": sel.note if sel else "",
+        "candidates": sel.candidates if sel else [],
+        "flags": rev.flags,
+        "statementCheck": rev.statement_check,
+        "quarters": [quarter_json(s, i, cik, rev) for i, s in enumerate(rev.slots)],
+    }
+
+
 def company_json(
     listing,
     cik: str | None,
@@ -68,21 +83,10 @@ def company_json(
     rev: CompanyRevenue | None,
     sic: SicInfo | None,
     issues: list[dict],
+    earnings: CompanyRevenue | None = None,
 ) -> dict:
-    revenue = None
-    if rev is not None:
-        sel = rev.selection
-        revenue = {
-            "status": rev.status,
-            "currency": rev.currency,
-            "concept": sel.concept if sel else None,
-            "conceptStatus": sel.status if sel else None,
-            "conceptNote": sel.note if sel else "",
-            "candidates": sel.candidates if sel else [],
-            "flags": rev.flags,
-            "statementCheck": rev.statement_check,
-            "quarters": [quarter_json(s, i, cik or "", rev) for i, s in enumerate(rev.slots)],
-        }
+    revenue = metric_json(rev, cik or "") if rev is not None else None
+    earnings_payload = metric_json(earnings, cik or "") if earnings is not None else None
     ttm = rev.ttm if rev else None
     empty_sic = SicInfo(None, None, None, None)
     return {
@@ -102,6 +106,7 @@ def company_json(
             "currency": rev.currency if rev else None,
         },
         "revenue": revenue,
+        "earnings": earnings_payload,
         "classificationIssues": issues,
     }
 

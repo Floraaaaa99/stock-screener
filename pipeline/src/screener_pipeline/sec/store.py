@@ -8,7 +8,14 @@ from pathlib import Path
 from .. import config
 from ..cache import canonical_hash, read_json, write_json_atomic
 from .edgar import PeriodicFiling
-from .facts import RevenueFacts, compact_revenue_facts, extract_revenue_facts, revenue_facts_from_compact
+from .facts import (
+    RevenueFacts,
+    compact_revenue_facts,
+    earnings_facts_from_compact,
+    extract_earnings_facts,
+    extract_revenue_facts,
+    revenue_facts_from_compact,
+)
 from .sic import SicInfo, sic_from_submissions
 from .statement import Statement, statement_from_compact, statement_to_compact
 
@@ -25,14 +32,22 @@ class FactsStore:
         data = read_json(self.path(cik))
         return revenue_facts_from_compact(data) if data else None
 
-    def put(self, rf: RevenueFacts) -> str:
-        compact = compact_revenue_facts(rf)
+    def get_earnings(self, cik: str) -> RevenueFacts | None:
+        data = read_json(self.path(cik))
+        return earnings_facts_from_compact(data) if data else None
+
+    def put(self, rf: RevenueFacts, earnings: RevenueFacts | None = None) -> str:
+        existing = read_json(self.path(rf.cik)) or {}
+        if earnings is None:
+            earnings = earnings_facts_from_compact(existing)
+        compact = compact_revenue_facts(rf, earnings)
         write_json_atomic(self.path(rf.cik), compact)
         return canonical_hash(compact)
 
     def put_raw(self, companyfacts: dict) -> tuple[RevenueFacts, str]:
         rf = extract_revenue_facts(companyfacts)
-        return rf, self.put(rf)
+        earnings = extract_earnings_facts(companyfacts)
+        return rf, self.put(rf, earnings)
 
     def hash_of(self, cik: str) -> str | None:
         data = read_json(self.path(cik))

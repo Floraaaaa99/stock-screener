@@ -13,9 +13,18 @@ def test_statement_compact_roundtrip_keeps_revenue_rows(tmp_path):
     st = parse_statement_html(html)
     compact = statement_to_compact(st, "https://example.test/R4.htm")
     assert compact["rows"]
-    assert all("revenue" in r["concept"].lower() or "sales" in r["concept"].lower()
-               or "revenue" in r["label"].lower() or "sales" in r["label"].lower()
-               for r in compact["rows"])
+    from screener_pipeline.sec.statement import is_net_income_label
+
+    def kept(r: dict) -> bool:
+        c, lab = r["concept"].lower(), r["label"].lower()
+        return (
+            any(tok in c for tok in ("revenue", "sales", "netincome", "profitloss", "incomeloss"))
+            or "revenue" in lab
+            or "sales" in lab
+            or is_net_income_label(r["label"])
+        )
+
+    assert all(kept(r) for r in compact["rows"])
     restored, url = statement_from_compact(compact)
     assert url.endswith("R4.htm")
     assert restored.scale == st.scale

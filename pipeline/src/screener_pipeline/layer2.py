@@ -457,20 +457,9 @@ def assess_freshness(window: list[dict], as_of: date | None) -> dict:
     }
 
 
-def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: date | None = None) -> dict:
-    """Derive Layer 2 metrics from one Layer 1 company JSON object."""
-    thresholds = thresholds or Thresholds(None, None)
-    ttm = company.get("ttm") or {}
-    rev = company.get("revenue") or {}
-    sic = company.get("sic") or {}
-    quarters = list(rev.get("quarters") or [])
-    window = quarters[:N_WINDOW]
-    ttm_growth = ttm.get("growthPct")
+def sequential_rates(window: list[dict | None]) -> tuple[list[dict], list[dict], list[str]]:
+    """Four YoY and four QoQ rates, oldest-first. Reasons do not change Layer 2 buckets."""
     reasons: list[str] = []
-
-    if len(window) < N_WINDOW:
-        reasons.append("insufficient_quarters")
-
     yoy_newest_first: list[dict] = []
     for i in range(N_YOY):
         cur = window[i] if i < len(window) else None
@@ -492,9 +481,31 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
         if reason is None:
             rate, reason = pct_change(cur["value"], prev["value"])
         qoq_newest_first.append(_rate_entry(current=cur, other=prev, rate=rate, reason=reason, kind="qoq"))
+    return list(reversed(yoy_newest_first)), list(reversed(qoq_newest_first)), reasons
 
-    yoy = list(reversed(yoy_newest_first))
-    qoq = list(reversed(qoq_newest_first))
+
+def align_quarters(reference: list[dict], other: list[dict]) -> list[dict | None]:
+    """Match `other` quarters onto `reference` by period end so tables line up."""
+    by_end = {q.get("end"): q for q in other if q and q.get("end") and not q.get("missing")}
+    return [by_end.get(q.get("end")) if q else None for q in reference]
+
+
+def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: date | None = None) -> dict:
+    """Derive Layer 2 metrics from one Layer 1 company JSON object."""
+    thresholds = thresholds or Thresholds(None, None)
+    ttm = company.get("ttm") or {}
+    rev = company.get("revenue") or {}
+    sic = company.get("sic") or {}
+    quarters = list(rev.get("quarters") or [])
+    window = quarters[:N_WINDOW]
+    ttm_growth = ttm.get("growthPct")
+    reasons: list[str] = []
+
+    if len(window) < N_WINDOW:
+        reasons.append("insufficient_quarters")
+
+    yoy, qoq, yoy_reasons = sequential_rates(window)
+    reasons.extend(yoy_reasons)
     yoy_rates = [e["rate"] for e in yoy]
     qoq_rates = [e["rate"] for e in qoq]
     yoy_complete = all(r is not None for r in yoy_rates)
@@ -524,6 +535,12 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
 
     badges = classify_qoq_badges(qoq_rates, thresholds)
     freshness = assess_freshness(window, as_of)
+    earnings = company.get("earnings") or {}
+    earn_qs = list(earnings.get("quarters") or [])
+    if earn_qs:
+        earnings_yoy, earnings_qoq, _ = sequential_rates(align_quarters(window, earn_qs))
+    else:
+        earnings_yoy, earnings_qoq = [], []
     return {
         "ticker": company["ticker"],
         "name": company["name"],
@@ -541,6 +558,9 @@ def analyze_company(company: dict, thresholds: Thresholds | None = None, as_of: 
         "dataReviewReasons": unique_reasons if bucket == BUCKET_DATA_REVIEW else [],
         "yoy": yoy,
         "qoq": qoq,
+        "earningsConcept": earnings.get("concept"),
+        "earningsYoy": earnings_yoy,
+        "earningsQoq": earnings_qoq,
         "badges": badges,
         "appliedCategories": [b["id"] for b in badges if b["applied"]],
         "freshness": freshness,

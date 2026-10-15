@@ -79,6 +79,23 @@ def main(argv: list[str] | None = None) -> int:
     l2.add_argument("--output", help="Destination layer2.json (default: <data-dir>/layer2.json)")
     l2.add_argument("--config", help="Thresholds JSON (default: pipeline/config/layer2.json)")
 
+    ae = sub.add_parser(
+        "attach-earnings",
+        help="Add net-income detail to an existing Layer 1 dataset (does not change revenue, TTM, or buckets)",
+    )
+    ae.add_argument(
+        "--data-dir",
+        default=str(config.OUTPUT_DIR),
+        help="Directory with meta.json, screener.json, companies/",
+    )
+    ae.add_argument("--state-dir", help="Compact state directory (facts/statements/periodic)")
+    ae.add_argument(
+        "--no-merge-facts",
+        action="store_true",
+        help="Do not merge earnings into compact facts from the zip",
+    )
+    ae.add_argument("--no-verify", action="store_true", help="Skip per-quarter filing checks for net income")
+
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -162,6 +179,16 @@ def main(argv: list[str] | None = None) -> int:
                 {"counts": payload["counts"], "rulesVersion": payload["rulesVersion"], "output": str(dest)},
                 indent=2,
             ))
+        elif args.cmd == "attach-earnings":
+            from .attach_earnings import attach_earnings
+
+            report = attach_earnings(
+                Path(args.data_dir),
+                state_dir=Path(args.state_dir) if args.state_dir else None,
+                merge_facts=not args.no_merge_facts,
+                verify_quarters=not args.no_verify,
+            )
+            print(json.dumps(report, indent=2))
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

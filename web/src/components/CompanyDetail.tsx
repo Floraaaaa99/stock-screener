@@ -80,7 +80,20 @@ function TtmBadge({ role }: { role: QuarterEntry["ttm"] }) {
   return null;
 }
 
-function QuarterRow({ q, currency }: { q: QuarterEntry; currency: string | null }) {
+function NetIncomeCell({ q, currency }: { q: ReportedQuarter | undefined; currency: string | null }) {
+  if (!q) return <span className="na">N/A</span>;
+  return <span className={q.value < 0 ? "neg" : ""}>{formatMillions(q.value, currency)}</span>;
+}
+
+function QuarterRow({
+  q,
+  currency,
+  earnings,
+}: {
+  q: QuarterEntry;
+  currency: string | null;
+  earnings?: ReportedQuarter;
+}) {
   const label = fiscalLabel(q.fiscalYear, q.fiscalQuarter);
   if (q.missing) {
     return (
@@ -91,6 +104,9 @@ function QuarterRow({ q, currency }: { q: QuarterEntry; currency: string | null 
         </td>
         <td className="num">
           <span className="na">N/A</span>
+        </td>
+        <td className="num">
+          <NetIncomeCell q={earnings} currency={currency} />
         </td>
         <td>
           <TtmBadge role={q.ttm} />
@@ -115,6 +131,9 @@ function QuarterRow({ q, currency }: { q: QuarterEntry; currency: string | null 
         {formatDate(q.start)} – {formatDate(q.end)}
       </td>
       <td className={`num ${q.value < 0 ? "neg" : ""}`}>{formatMillions(q.value, currency)}</td>
+      <td className="num">
+        <NetIncomeCell q={earnings} currency={currency} />
+      </td>
       <td>
         <TtmBadge role={q.ttm} />
       </td>
@@ -146,7 +165,12 @@ function QuarterRow({ q, currency }: { q: QuarterEntry; currency: string | null 
 function Detail({ data }: { data: CompanyDetail }) {
   const rev = data.revenue;
   const quarters = rev?.quarters ?? [];
-  const currency = rev?.currency ?? "USD";
+  const currency = rev?.currency ?? data.earnings?.currency ?? "USD";
+  const earningsByEnd = new Map(
+    (data.earnings?.quarters ?? [])
+      .filter((q): q is ReportedQuarter => !q.missing && Boolean(q.end))
+      .map((q) => [q.end, q]),
+  );
   const sc = rev?.statementCheck;
   const flags = (rev?.flags ?? []).filter((f) => f !== data.ttm.reason);
   const edgar = data.cik ? `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${data.cik}&type=10-&dateb=&owner=include&count=40` : null;
@@ -232,6 +256,9 @@ function Detail({ data }: { data: CompanyDetail }) {
                 <th scope="col" className="num">
                   Revenue
                 </th>
+                <th scope="col" className="num">
+                  Net income
+                </th>
                 <th scope="col">TTM window</th>
                 <th scope="col">How obtained</th>
                 <th scope="col">SEC filing</th>
@@ -240,7 +267,7 @@ function Detail({ data }: { data: CompanyDetail }) {
             </thead>
             <tbody>
               {quarters.map((q) => (
-                <QuarterRow key={q.end} q={q} currency={currency} />
+                <QuarterRow key={q.end} q={q} currency={currency} earnings={earningsByEnd.get(q.end)} />
               ))}
             </tbody>
           </table>

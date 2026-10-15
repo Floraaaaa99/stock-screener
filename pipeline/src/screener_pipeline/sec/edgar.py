@@ -9,11 +9,21 @@ rendered income statement and adds the officially reported revenue fact. No esti
 from __future__ import annotations
 
 from calendar import monthrange
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
-from .facts import ANNUAL_FORMS, DOMESTIC_FORMS, QUARTERLY_FORMS, REVENUE_CONCEPTS, Fact, FilingInfo, RevenueFacts
-from .statement import Statement, is_total_revenue_label
+from .facts import (
+    ANNUAL_FORMS,
+    DOMESTIC_FORMS,
+    EARNINGS_CONCEPTS,
+    QUARTERLY_FORMS,
+    REVENUE_CONCEPTS,
+    Fact,
+    FilingInfo,
+    RevenueFacts,
+)
+from .statement import Statement, is_net_income_label, is_total_revenue_label
 
 # Slower 10-Q window (accelerated filers). Used only to decide whether submissions should be
 # re-fetched because Company Facts look stale — not to invent a quarter.
@@ -190,26 +200,34 @@ def period_start(end: date, months: int) -> date:
     return date(y, m, 1)
 
 
-def pick_official_value(st: Statement, months: int, end: date) -> tuple[str, str, float] | None:
-    """First total-revenue line (else first known revenue concept) for that statement column.
+def pick_official_value(
+    st: Statement,
+    months: int,
+    end: date,
+    *,
+    is_face_line: Callable[[str], bool] = is_total_revenue_label,
+    concepts: list[str] | None = None,
+) -> tuple[str, str, float] | None:
+    """First matching face line (else first known concept) for that statement column.
 
     Later rows with the same label are segment breakdowns, not a second guess at the total.
     """
+    known = concepts or REVENUE_CONCEPTS
     totals: list[tuple[str, str, float]] = []
-    concepts: list[tuple[str, str, float]] = []
+    tagged: list[tuple[str, str, float]] = []
     for row in st.rows:
         val = st.value(row, months, end)
         if val is None:
             continue
         short = row.concept.split(":", 1)[-1]
-        if is_total_revenue_label(row.label):
+        if is_face_line(row.label):
             totals.append((short, row.label, val))
-        elif short in REVENUE_CONCEPTS:
-            concepts.append((short, row.label, val))
+        elif short in known:
+            tagged.append((short, row.label, val))
     if totals:
         return totals[0]
-    if concepts:
-        return concepts[0]
+    if tagged:
+        return tagged[0]
     return None
 
 
@@ -243,17 +261,17 @@ def _months_to_try(form: str) -> list[int]:
     return [3, 12, 9, 6]
 
 
-def supplement_revenue_facts(
+def supplement_duration_facts(
     rf: RevenueFacts,
     filings: list[PeriodicFiling],
     fetch,
     as_of: date | None = None,
+    *,
+    is_face_line: Callable[[str], bool] = is_total_revenue_label,
+    concepts: list[str] | None = None,
+    missing_column_reason: str = "no_official_revenue_column",
 ) -> tuple[RevenueFacts, SupplementResult]:
-    """Add officially reported facts from EDGAR filings newer than Company Facts.
-
-    `fetch(accn)` returns `(Statement, url)` or None. Existing standalone-quarter derivation and
-    statement checks run on the merged facts afterward.
-    """
+    """Add officially reported facts from EDGAR filings newer than Company Facts."""
     del as_of  # reserved; detection uses filing report dates, not the calendar heuristic
     latest = latest_facts_period_end(rf)
     newer = newer_filings(filings, latest)
@@ -287,7 +305,9 @@ def supplement_revenue_facts(
         picked = None
         used_months = None
         for months in _months_to_try(pf.form):
-            picked = pick_official_value(st, months, pf.report_date)
+            picked = pick_official_value(
+                st, months, pf.report_date, is_face_line=is_face_line, concepts=concepts
+            )
             if picked is not None:
                 used_months = months
                 break
@@ -297,7 +317,7 @@ def supplement_revenue_facts(
                     "accn": pf.accn,
                     "form": pf.form,
                     "reportDate": pf.report_date.isoformat(),
-                    "reason": "no_official_revenue_column",
+                    "reason": missing_column_reason,
                 }
             )
             continue
@@ -325,6 +345,34 @@ def supplement_revenue_facts(
         else:
             result.status = "current"
     return rf, result
+
+
+def supplement_revenue_facts(
+    rf: RevenueFacts,
+    filings: list[PeriodicFiling],
+    fetch,
+    as_of: date | None = None,
+) -> tuple[RevenueFacts, SupplementResult]:
+    """Add officially reported revenue from EDGAR filings newer than Company Facts."""
+    return supplement_duration_facts(rf, filings, fetch, as_of)
+
+
+def supplement_earnings_facts(
+    rf: RevenueFacts,
+    filings: list[PeriodicFiling],
+    fetch,
+    as_of: date | None = None,
+) -> tuple[RevenueFacts, SupplementResult]:
+    """Add officially reported net income from EDGAR filings newer than Company Facts."""
+    return supplement_duration_facts(
+        rf,
+        filings,
+        fetch,
+        as_of,
+        is_face_line=is_net_income_label,
+        concepts=EARNINGS_CONCEPTS,
+        missing_column_reason="no_official_earnings_column",
+    )
 
 
 def dataset_latest_end(company: dict) -> date | None:

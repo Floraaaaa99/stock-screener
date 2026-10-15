@@ -12,12 +12,15 @@ A concept is never chosen because its values are larger. The rules, in order:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
 from .quarters import CHAIN_TOLERANCE_DAYS, Period, Quarter, values_agree
 from .sec.facts import REVENUE_CONCEPTS
 from .sec.statement import StatementEvidence, is_total_revenue_label
+
+FaceLine = Callable[[str], bool]
 
 WINDOW_DAYS = 12 * 92
 
@@ -70,11 +73,15 @@ def _coverage(s: ConceptSeries, window_start: date) -> int:
     return sum(1 for e in s.quarters if e >= window_start)
 
 
-def _priority(concept: str) -> int:
-    return REVENUE_CONCEPTS.index(concept) if concept in REVENUE_CONCEPTS else len(REVENUE_CONCEPTS)
+def _priority(concept: str, concepts: list[str]) -> int:
+    return concepts.index(concept) if concept in concepts else len(concepts)
 
 
-def _resolve_by_statement(group: list[ConceptSeries], evidence: StatementEvidence | None) -> ConceptSeries | None:
+def _resolve_by_statement(
+    group: list[ConceptSeries],
+    evidence: StatementEvidence | None,
+    is_face_line: FaceLine,
+) -> ConceptSeries | None:
     if evidence is None:
         return None
     present = [(s, row) for s in group for row in evidence.concept_rows(s.concept)]
@@ -83,12 +90,12 @@ def _resolve_by_statement(group: list[ConceptSeries], evidence: StatementEvidenc
     if len(present) == 1:
         s, row = present[0]
         other_totals = [
-            r for r in evidence.rows if is_total_revenue_label(r[1]) and r[0] != f"us-gaap:{s.concept}"
+            r for r in evidence.rows if is_face_line(r[1]) and r[0] != f"us-gaap:{s.concept}"
         ]
-        if is_total_revenue_label(row[1]) or not other_totals:
+        if is_face_line(row[1]) or not other_totals:
             return s
         return None
-    totals = {s.concept: s for s, row in present if is_total_revenue_label(row[1])}
+    totals = {s.concept: s for s, row in present if is_face_line(row[1])}
     if len(totals) == 1:
         return next(iter(totals.values()))
     return None
@@ -98,22 +105,27 @@ def select_concept(
     series: list[ConceptSeries],
     evidence: StatementEvidence | None = None,
     override: str | None = None,
+    *,
+    is_face_line: FaceLine = is_total_revenue_label,
+    concepts: list[str] | None = None,
+    line_name: str = "total revenue",
 ) -> Selection:
+    rank = concepts or REVENUE_CONCEPTS
     usable = [s for s in series if s.quarters]
     if not usable:
-        return Selection("none", None, {}, None, note="No quarterly revenue facts in 10-Q/10-K filings.")
+        return Selection("none", None, {}, None, note=f"No quarterly {line_name} facts in 10-Q/10-K filings.")
 
     latest = max(s.latest_end for s in usable if s.latest_end)
     window_start = latest - timedelta(days=WINDOW_DAYS)
     current = [s for s in usable if s.latest_end and abs((s.latest_end - latest).days) <= CHAIN_TOLERANCE_DAYS]
     relevant = [s for s in usable if _coverage(s, window_start) > 0]
-    current.sort(key=lambda s: (-_coverage(s, window_start), _priority(s.concept)))
+    current.sort(key=lambda s: (-_coverage(s, window_start), _priority(s.concept, rank)))
 
     def summary(chosen: ConceptSeries | None, reference: ConceptSeries | None = None) -> list[dict]:
         """Candidate overview; overlaps are measured against the chosen (or reference) concept."""
         ref = chosen or reference
         out = []
-        for s in sorted(relevant, key=lambda s: _priority(s.concept)):
+        for s in sorted(relevant, key=lambda s: _priority(s.concept, rank)):
             lq = s.quarters[s.latest_end] if s.latest_end else None
             ov, dis = compare(s, ref, window_start) if ref and s is not ref else (0, 0)
             on_statement = None
@@ -150,15 +162,17 @@ def select_concept(
             status = "single" if len(relevant) == 1 else "equivalent"
         else:
             group = [primary] + [s for s in conflicts if s in current]
-            resolved = _resolve_by_statement(group, evidence)
+            resolved = _resolve_by_statement(group, evidence, is_face_line)
             if resolved is not None:
                 chosen, status = resolved, "statement_verified"
                 note = (
-                    f"Candidate concepts disagree; {resolved.concept} is the revenue line presented on the "
+                    f"Candidate concepts disagree; {resolved.concept} is the {line_name} line presented on the "
                     f"income statement of filing {evidence.accn}."
                 )
             else:
-                names = ", ".join(sorted({primary.concept, *(s.concept for s in conflicts)}, key=_priority))
+                names = ", ".join(
+                    sorted({primary.concept, *(s.concept for s in conflicts)}, key=lambda c: _priority(c, rank))
+                )
                 return Selection(
                     "ambiguous",
                     None,
@@ -166,12 +180,12 @@ def select_concept(
                     latest,
                     flags=["ambiguous_concept"],
                     candidates=summary(None, primary),
-                    note=f"Revenue concepts disagree ({names}) and the income statement does not resolve which "
-                    "is total revenue.",
+                    note=f"Concepts disagree ({names}) and the income statement does not resolve which "
+                    f"is {line_name}.",
                 )
 
     merged: dict[date, Quarter] = dict(chosen.quarters)
-    for s in sorted(relevant, key=lambda s: _priority(s.concept)):
+    for s in sorted(relevant, key=lambda s: _priority(s.concept, rank)):
         if s is chosen:
             continue
         overlaps, disagreements = compare(s, chosen, window_start)
@@ -193,7 +207,11 @@ def select_concept(
 
 
 def verify_against_statement(
-    selection: Selection, series: dict[str, ConceptSeries], evidence: StatementEvidence | None
+    selection: Selection,
+    series: dict[str, ConceptSeries],
+    evidence: StatementEvidence | None,
+    *,
+    is_face_line: FaceLine = is_total_revenue_label,
 ) -> tuple[str, float | None, float | None]:
     """Compare the pipeline value for the evidence period with the face of the income statement.
 
@@ -219,7 +237,7 @@ def verify_against_statement(
     for r in same:
         if values_agree(r[2], ours):
             return "verified", ours, r[2]
-    totals = [r for r in evidence.rows if r[2] is not None and is_total_revenue_label(r[1])]
+    totals = [r for r in evidence.rows if r[2] is not None and is_face_line(r[1])]
     for r in totals:
         if values_agree(r[2], ours):
             return "verified_value", ours, r[2]
