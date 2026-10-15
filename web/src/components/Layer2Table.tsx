@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { naReason } from "../lib/explain";
 import { formatPercent } from "../lib/format";
+import { formatSicIndustry } from "../lib/screener";
 import type { Layer2Rate, Layer2Row } from "../types";
 import { CategoryBadges } from "./CategoryBadges";
 import { Layer2Detail } from "./Layer2Detail";
@@ -90,7 +91,7 @@ export function Layer2Table({
                           </div>
                         )}
                       </td>
-                      <td className="sic">{r.sicIndustry ?? "N/A"}</td>
+                      <td className="sic">{r.sicIndustry ? formatSicIndustry(r.sicIndustry) : "N/A"}</td>
                       <td className="num">
                         {r.ttmGrowth == null ? <span className="na">N/A</span> : <span className={r.ttmGrowth > 0 ? "pos" : r.ttmGrowth < 0 ? "neg" : ""}>{formatPercent(r.ttmGrowth)}</span>}
                       </td>

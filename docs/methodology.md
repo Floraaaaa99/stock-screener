@@ -23,7 +23,7 @@ Industry comes from each company's EDGAR submissions JSON (`sic` and `sicDescrip
 
 - Bulk source: nightly `https://www.sec.gov/Archives/edgar/daily-index/bulkdata/submissions.zip`. The per-CIK submissions API is the fallback.
 - Compact SIC records are stored in pipeline state (`sic/*.json`) and packed into the `pipeline-state` release.
-- Filters are **SEC SIC major group** and **SEC SIC industry** (`code — description`). They are not Yahoo or commercial sector/industry names.
+- Filters are **SEC SIC major group** and **SEC SIC industry** (`description — code`, sorted by name). They are not Yahoo or commercial sector/industry names.
 - Stock price and market cap are not collected.
 
 ## 3. Quarterly revenue (SEC EDGAR filings)

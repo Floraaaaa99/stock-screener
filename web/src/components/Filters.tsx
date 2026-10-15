@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { formatCount } from "../lib/format";
-import type { ViewState } from "../lib/screener";
+import { formatSicIndustry, type ViewState } from "../lib/screener";
 
 interface Props {
   majorGroups: string[];
@@ -66,7 +66,7 @@ export function Filters({
           <option value="">{view.sicMajorGroup ? `All in ${view.sicMajorGroup}` : "All SEC SIC industries"}</option>
           {industries.map((i) => (
             <option key={i} value={i}>
-              {i}
+              {formatSicIndustry(i)}
             </option>
           ))}
         </select>

@@ -63,7 +63,7 @@ def test_extract_compact_sic_from_zip(tmp_path: Path):
     payload = json.loads((sic_dir / f"{cik}.json").read_text())
     assert payload["code"] == "2834"
     assert payload["majorGroup"] == "Chemicals and Allied Products"
-    assert payload["label"].startswith("2834")
+    assert payload["label"] == "Pharmaceutical Preparations — 2834"
     periodic = json.loads((periodic_dir / f"{cik}.json").read_text())
     assert periodic["filings"][0]["accn"] == "0000000000-26-000001"
     assert periodic["filings"][0]["reportDate"] == "2026-06-30"

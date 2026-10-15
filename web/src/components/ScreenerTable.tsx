@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { naReason } from "../lib/explain";
 import { formatCompactMoney, formatPercent } from "../lib/format";
-import type { SortKey, ViewState } from "../lib/screener";
+import { formatSicIndustry, type SortKey, type ViewState } from "../lib/screener";
 import type { ScreenerRow } from "../types";
 import { CompanyDetailPanel } from "./CompanyDetail";
 
@@ -49,9 +49,10 @@ function Growth({ row }: { row: ScreenerRow }) {
 function SicCell({ row, field }: { row: ScreenerRow; field: "sicMajorGroup" | "sicIndustry" }) {
   const value = row[field];
   if (!value) return <NA reason={row.sicCode ? null : "no_sic"} />;
+  const shown = field === "sicIndustry" ? formatSicIndustry(value) : value;
   return (
     <span className="sic" title={row.sicCode ? `SEC SIC ${row.sicCode}` : "SEC SIC"}>
-      {value}
+      {shown}
     </span>
   );
 }

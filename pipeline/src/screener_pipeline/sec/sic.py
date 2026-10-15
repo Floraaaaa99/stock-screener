@@ -117,7 +117,7 @@ def industry_label(code: str | None, description: str | None) -> str | None:
     if not code:
         return None
     desc = (description or "").strip()
-    return f"{code} — {desc}" if desc else code
+    return f"{desc} — {code}" if desc else code
 
 
 @dataclass(frozen=True)

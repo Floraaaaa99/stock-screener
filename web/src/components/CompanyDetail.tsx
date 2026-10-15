@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { loadCompany } from "../api";
 import { CONCEPT_STATUS, flagText, naReason } from "../lib/explain";
 import { fiscalLabel, formatDate, formatMillions } from "../lib/format";
+import { formatSicIndustry } from "../lib/screener";
 import type { CompanyDetail, QuarterEntry, ReportedQuarter } from "../types";
 
 type State = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; data: CompanyDetail };
@@ -199,7 +200,7 @@ function Detail({ data }: { data: CompanyDetail }) {
           <span className="v">
             {data.sic?.label ? (
               <>
-                {data.sic.label}
+                {formatSicIndustry(data.sic.label)}
                 {data.sic.majorGroup && <span className="muted"> — {data.sic.majorGroup}</span>}
                 <span className="muted"> ({data.sic.source || "SEC EDGAR submissions"})</span>
               </>
