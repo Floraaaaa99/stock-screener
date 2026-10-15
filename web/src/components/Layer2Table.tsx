@@ -3,11 +3,13 @@ import { naReason } from "../lib/explain";
 import { formatMillions, formatPercent } from "../lib/format";
 import type { Layer2RowLive } from "../lib/layer2";
 import type { NiQuarter } from "../lib/niAnalysis";
+import type { HeaderCheckState } from "../lib/layer3";
 import { formatSicIndustry } from "../lib/screener";
 import type { Layer2Rate } from "../types";
 import { CategoryBadges } from "./CategoryBadges";
 import { Layer2Detail } from "./Layer2Detail";
 import { QoqChart } from "./QoqChart";
+import { SelectCell, SelectHeader } from "./SelectColumn";
 
 function Rates({ rows }: { rows: Layer2Rate[] }) {
   return (
@@ -56,6 +58,12 @@ export function Layer2Table({
   onToggle,
   onClearFilters,
   showNi = false,
+  selected,
+  savedTickers,
+  headerState,
+  filteredCount,
+  onToggleSelect,
+  onToggleFiltered,
 }: {
   loading: boolean;
   rows: Layer2RowLive[];
@@ -63,14 +71,21 @@ export function Layer2Table({
   onToggle: (ticker: string) => void;
   onClearFilters: () => void;
   showNi?: boolean;
+  selected: ReadonlySet<string>;
+  savedTickers: ReadonlySet<string>;
+  headerState: HeaderCheckState;
+  filteredCount: number;
+  onToggleSelect: (ticker: string, checked: boolean) => void;
+  onToggleFiltered: () => void;
 }) {
-  const cols = showNi ? 12 : 8;
+  const cols = showNi ? 13 : 9;
   return (
     <section className="panel table-panel">
       <div className="table-scroll">
         <table className="screener layer2-table">
           <thead>
             <tr>
+              <SelectHeader state={headerState} filteredCount={filteredCount} disabled={loading} onToggle={onToggleFiltered} />
               <th>Ticker</th>
               <th>Company</th>
               <th className="sic">SEC SIC industry</th>
@@ -115,7 +130,13 @@ export function Layer2Table({
                 const open = expanded === r.ticker;
                 return (
                   <Fragment key={r.ticker}>
-                    <tr className={`row ${open ? "open" : ""}`} onClick={() => onToggle(r.ticker)}>
+                    <tr className={`row ${open ? "open" : ""} ${selected.has(r.ticker) ? "is-selected" : ""}`} onClick={() => onToggle(r.ticker)}>
+                      <SelectCell
+                        ticker={r.ticker}
+                        checked={selected.has(r.ticker)}
+                        saved={savedTickers.has(r.ticker)}
+                        onChange={onToggleSelect}
+                      />
                       <td className="ticker">
                         <button type="button" className="expand" aria-expanded={open} onClick={(e) => { e.stopPropagation(); onToggle(r.ticker); }}>
                           <span className="chev">▸</span>

@@ -232,9 +232,12 @@ function parseNum(raw: string | null): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-export function readLayer2View(search: string): { layer: 1 | 2; view: Layer2View } {
+export type LayerId = 1 | 2 | 3;
+
+export function readLayer2View(search: string): { layer: LayerId; view: Layer2View } {
   const p = new URLSearchParams(search);
-  const layer: 1 | 2 = p.get("layer") === "2" ? 2 : 1;
+  const raw = p.get("layer");
+  const layer: LayerId = raw === "3" ? 3 : raw === "2" ? 2 : 1;
   const tab = p.get("tab") as Layer2Bucket | null;
   const cats = (p.get("cat") ?? "").split(",").filter(Boolean);
   return {
@@ -254,7 +257,8 @@ export function readLayer2View(search: string): { layer: 1 | 2; view: Layer2View
   };
 }
 
-export function layer2ToSearch(layer: 1 | 2, v: Layer2View, layer1Search: string): string {
+export function layer2ToSearch(layer: LayerId, v: Layer2View, layer1Search: string): string {
+  if (layer === 3) return "?layer=3";
   if (layer !== 2) return layer1Search;
   const p = new URLSearchParams();
   p.set("layer", "2");

@@ -24,6 +24,12 @@ export interface ScreenerFile {
   rows: ScreenerRow[];
 }
 
+/** Compact ticker → SEC CIK map for Layer 3 issuer identity. */
+export interface IssuersFile {
+  schemaVersion: number;
+  byTicker: Record<string, string | null>;
+}
+
 export interface Coverage {
   listings: number;
   companies: number;

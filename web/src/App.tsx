@@ -1,13 +1,28 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { loadLayer2, loadMeta, loadScreener } from "./api";
+import { loadIssuers, loadLayer2, loadMeta, loadScreener } from "./api";
 import { CoveragePanel } from "./components/CoveragePanel";
 import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Layer2View } from "./components/Layer2View";
+import { Layer3View } from "./components/Layer3View";
 import { Pagination } from "./components/Pagination";
 import { ScreenerTable } from "./components/ScreenerTable";
-import { layer2ToSearch, readLayer2View, type Layer2View as Layer2ViewState } from "./lib/layer2";
+import { SelectionBar } from "./components/SelectionBar";
+import { type Layer2View as Layer2ViewState, type LayerId, layer2ToSearch, readLayer2View } from "./lib/layer2";
+import {
+  addSelectedToMembership,
+  headerCheckState,
+  isTickerSaved,
+  removeIssuer,
+  selectedAlreadySavedCount,
+  toggleFilteredSelection,
+  toggleTicker,
+  type AddToLayer3Result,
+  type Layer3CatalogRow,
+  type Layer3Entry,
+} from "./lib/layer3";
+import { Layer3Store, browserKvStore, storageBanner, type StorageStatus } from "./lib/layer3Storage";
 import {
   DEFAULT_VIEW,
   filterRows,
@@ -28,7 +43,17 @@ type LoadState =
   | { status: "error"; message: string }
   | { status: "ready"; meta: Meta; rows: ScreenerRow[]; layer2: Layer2File | null };
 
-function parseLocation(search: string): { layer: 1 | 2; layer1: ViewState; layer2: Layer2ViewState } {
+const layer3Store = new Layer3Store(browserKvStore());
+
+function worstStorageStatus(...statuses: StorageStatus[]): StorageStatus {
+  if (statuses.includes("unavailable")) return "unavailable";
+  if (statuses.includes("recovered")) return "recovered";
+  if (statuses.includes("migrated")) return "migrated";
+  if (statuses.includes("ok")) return "ok";
+  return "empty";
+}
+
+function parseLocation(search: string): { layer: LayerId; layer1: ViewState; layer2: Layer2ViewState } {
   const parsed = readLayer2View(search);
   return {
     layer: parsed.layer,
@@ -39,24 +64,36 @@ function parseLocation(search: string): { layer: 1 | 2; layer1: ViewState; layer
 
 export default function App() {
   const initial = parseLocation(window.location.search);
+  const initialLayer3 = layer3Store.loadSelection();
+  const initialMembership = layer3Store.loadMembership();
   const [load, setLoad] = useState<LoadState>({ status: "loading" });
-  const [layer, setLayer] = useState<1 | 2>(initial.layer);
+  const [layer, setLayer] = useState<LayerId>(initial.layer);
   const [view, setView] = useState<ViewState>(initial.layer1);
   const [layer2View, setLayer2View] = useState<Layer2ViewState>(initial.layer2);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(initialLayer3.tickers));
+  const [membership, setMembership] = useState<Layer3Entry[]>(() => initialMembership.entries);
+  const [storageStatus, setStorageStatus] = useState<StorageStatus>(() =>
+    worstStorageStatus(initialLayer3.status, initialMembership.status),
+  );
+  const [cikByTicker, setCikByTicker] = useState<Record<string, string | null>>({});
+  const [lastAdd, setLastAdd] = useState<AddToLayer3Result | null>(null);
 
   const fetchData = useCallback(() => {
     setLoad({ status: "loading" });
-    Promise.all([loadMeta(), loadScreener(), loadLayer2().catch(() => null)])
-      .then(([meta, screener, layer2]) => setLoad({ status: "ready", meta, rows: screener.rows, layer2 }))
+    Promise.all([loadMeta(), loadScreener(), loadLayer2().catch(() => null), loadIssuers()])
+      .then(([meta, screener, layer2, issuers]) => {
+        setCikByTicker(issuers);
+        setLoad({ status: "ready", meta, rows: screener.rows, layer2 });
+      })
       .catch((err: unknown) => setLoad({ status: "error", message: err instanceof Error ? err.message : String(err) }));
   }, []);
 
   useEffect(fetchData, [fetchData]);
 
   useEffect(() => {
-    const url = `${window.location.pathname}${layer === 2 ? layer2ToSearch(2, layer2View, "") : viewToSearch(view)}`;
-    window.history.replaceState(null, "", url);
+    const search = layer === 3 ? "?layer=3" : layer === 2 ? layer2ToSearch(2, layer2View, "") : viewToSearch(view);
+    window.history.replaceState(null, "", `${window.location.pathname}${search}`);
   }, [layer, view, layer2View]);
 
   useEffect(() => {
@@ -89,6 +126,49 @@ export default function App() {
   const page = Math.min(view.page, pages);
   const pageRows = useMemo(() => paginate(sorted, page), [sorted, page]);
   const mixed = useMemo(() => mixedCurrencies(filtered), [filtered]);
+  const filteredTickers = useMemo(() => sorted.map((r) => r.ticker), [sorted]);
+  const layer1HeaderState = headerCheckState(selected, filteredTickers);
+
+  const catalog = useMemo<Layer3CatalogRow[]>(
+    () =>
+      rows.map((r) => ({
+        ticker: r.ticker,
+        name: r.name,
+        exchange: r.exchange,
+        sicIndustry: r.sicIndustry,
+        sicMajorGroup: r.sicMajorGroup,
+      })),
+    [rows],
+  );
+
+  const savedTickers = useMemo(() => {
+    const out = new Set<string>();
+    for (const row of rows) {
+      if (isTickerSaved(row.ticker, membership, cikByTicker)) out.add(row.ticker);
+    }
+    for (const entry of membership) {
+      for (const ticker of entry.tickers) out.add(ticker);
+    }
+    return out;
+  }, [rows, membership, cikByTicker]);
+
+  const alreadySavedSelected = useMemo(
+    () => selectedAlreadySavedCount([...selected], membership, cikByTicker),
+    [selected, membership, cikByTicker],
+  );
+  const notice = storageBanner(storageStatus);
+
+  const persistSelection = (next: Set<string>) => {
+    setSelected(next);
+    const status = layer3Store.saveSelection([...next]);
+    if (status === "unavailable") setStorageStatus("unavailable");
+  };
+
+  const persistMembership = (next: Layer3Entry[]) => {
+    setMembership(next);
+    const status = layer3Store.saveMembership(next);
+    if (status === "unavailable") setStorageStatus("unavailable");
+  };
 
   const majorGroups = meta ? Object.keys(meta.sicMajorGroups) : [];
   const industries = meta ? industriesFor(meta.sicMajorGroups, view.sicMajorGroup) : [];
@@ -113,16 +193,43 @@ export default function App() {
     }));
   };
 
-  const onLayer = (next: 1 | 2) => {
+  const onLayer = (next: LayerId) => {
     setLayer(next);
     setExpanded(null);
   };
 
   const clearFilters = () => update({ sicMajorGroup: "", sicIndustries: [], currency: "", query: "" });
 
+  const onToggleSelect = (ticker: string, checked: boolean) => {
+    persistSelection(toggleTicker(selected, ticker, checked));
+  };
+
+  const onToggleFiltered = (tickers: string[]) => {
+    persistSelection(toggleFilteredSelection(selected, tickers));
+  };
+
+  const onAddToLayer3 = () => {
+    const { entries, result } = addSelectedToMembership(membership, [...selected], cikByTicker, catalog);
+    persistMembership(entries);
+    setLastAdd(result);
+  };
+
+  const selectionBar = (
+    <SelectionBar
+      selectedCount={selected.size}
+      alreadySavedCount={alreadySavedSelected}
+      filteredCount={filteredTickers.length}
+      lastResult={lastAdd}
+      storageNotice={notice}
+      onClear={() => persistSelection(new Set())}
+      onAdd={onAddToLayer3}
+      onOpenLayer3={() => onLayer(3)}
+    />
+  );
+
   return (
     <div className="app">
-      <Header meta={meta} layer={layer} onLayer={onLayer} />
+      <Header meta={meta} layer={layer} layer3Count={membership.length} onLayer={onLayer} />
       <main className="container">
         {load.status === "error" && (
           <div className="panel error-panel" role="alert">
@@ -132,6 +239,15 @@ export default function App() {
               Try again
             </button>
           </div>
+        )}
+
+        {load.status !== "error" && layer === 3 && (
+          <Layer3View
+            entries={membership}
+            storageNotice={notice}
+            onRemove={(issuerId) => persistMembership(removeIssuer(membership, issuerId))}
+            onOpenScreener={() => onLayer(1)}
+          />
         )}
 
         {load.status !== "error" && layer === 2 && (
@@ -151,8 +267,19 @@ export default function App() {
                 meta={meta}
                 view={layer2View}
                 expanded={expanded}
+                selected={selected}
+                savedTickers={savedTickers}
                 onChange={updateLayer2}
                 onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
+                onToggleSelect={onToggleSelect}
+                onToggleFiltered={onToggleFiltered}
+                selectedCount={selected.size}
+                alreadySavedCount={alreadySavedSelected}
+                lastAdd={lastAdd}
+                storageNotice={notice}
+                onClearSelection={() => persistSelection(new Set())}
+                onAddToLayer3={onAddToLayer3}
+                onOpenLayer3={() => onLayer(3)}
               />
             )}
             {load.status === "loading" && (
@@ -186,14 +313,21 @@ export default function App() {
                 compared across currencies.
               </div>
             )}
+            {selectionBar}
             <ScreenerTable
               loading={load.status === "loading"}
               rows={pageRows}
               view={view}
               expanded={expanded}
+              selected={selected}
+              savedTickers={savedTickers}
+              headerState={layer1HeaderState}
+              filteredCount={filteredTickers.length}
               onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
               onSort={onSort}
               onClearFilters={clearFilters}
+              onToggleSelect={onToggleSelect}
+              onToggleFiltered={() => onToggleFiltered(filteredTickers)}
             />
             {load.status === "ready" && sorted.length > 0 && (
               <Pagination

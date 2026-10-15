@@ -35,7 +35,8 @@ export function Footer({ meta }: { meta: Meta | null }) {
             four quarterly YoY rates decide Passed / Watchlist / Data Review; QoQ rates, category badges, and Passed
             net-income profitability / improvement badges are descriptive and never remove a company. Quarters missing from 10-Qs are derived from year-to-date totals
             (for example Q4 = annual − nine months). Missing values are shown as N/A, never as zero. Industry filters use
-            SEC SIC codes and descriptions, not a commercial sector taxonomy.
+            SEC SIC codes and descriptions, not a commercial sector taxonomy. Layer 3 is a local, manually
+            curated research list in this browser; companies are never added from Layer 1 or Layer 2 automatically.
           </p>
           <p className="muted">
             For personal research only. Not investment advice. Data may be delayed or incomplete. Do not compare revenue
