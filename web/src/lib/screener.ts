@@ -108,9 +108,16 @@ export function paginate<T>(rows: T[], page: number, size = PAGE_SIZE): T[] {
   return rows.slice((p - 1) * size, p * size);
 }
 
+/** Show the industry name first so the filter list can be scanned alphabetically. */
+export function formatSicIndustry(label: string | null | undefined): string {
+  if (!label) return "";
+  const match = label.match(/^(\d{3,4})\s+[—–-]\s+(.+)$/);
+  return match ? `${match[2]} — ${match[1]}` : label;
+}
+
 export function industriesFor(groups: Record<string, string[]>, major: string): string[] {
-  if (major) return groups[major] ?? [];
-  return [...new Set(Object.values(groups).flat())].sort((a, b) => a.localeCompare(b));
+  const list = major ? [...(groups[major] ?? [])] : [...new Set(Object.values(groups).flat())];
+  return list.sort((a, b) => formatSicIndustry(a).localeCompare(formatSicIndustry(b), undefined, { sensitivity: "base" }));
 }
 
 export function readViewFromSearch(search: string): ViewState {

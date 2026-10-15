@@ -3,6 +3,7 @@ import type { ScreenerRow } from "../types";
 import {
   DEFAULT_VIEW,
   filterRows,
+  formatSicIndustry,
   industriesFor,
   mixedCurrencies,
   PAGE_SIZE,
@@ -125,11 +126,20 @@ describe("pagination", () => {
   });
 });
 
+describe("formatSicIndustry", () => {
+  it("puts the industry name first so lists sort alphabetically", () => {
+    expect(formatSicIndustry("2836 — Biological Products")).toBe("Biological Products — 2836");
+    expect(formatSicIndustry("Pharmaceutical Preparations — 2834")).toBe("Pharmaceutical Preparations — 2834");
+    expect(formatSicIndustry("0000")).toBe("0000");
+    expect(formatSicIndustry(null)).toBe("");
+  });
+});
+
 describe("industriesFor and mixedCurrencies", () => {
   const groups = { Chemicals: ["2834 — Pharma", "2836 — Bio"], Electronics: ["3571 — Computers"] };
-  it("returns the major group's industries or a de-duplicated sorted list", () => {
-    expect(industriesFor(groups, "Chemicals")).toEqual(["2834 — Pharma", "2836 — Bio"]);
-    expect(industriesFor(groups, "")).toEqual(["2834 — Pharma", "2836 — Bio", "3571 — Computers"]);
+  it("returns the major group's industries or a de-duplicated list sorted by name", () => {
+    expect(industriesFor(groups, "Chemicals")).toEqual(["2836 — Bio", "2834 — Pharma"]);
+    expect(industriesFor(groups, "")).toEqual(["2836 — Bio", "3571 — Computers", "2834 — Pharma"]);
     expect(industriesFor(groups, "Energy")).toEqual([]);
   });
   it("detects mixed currencies", () => {

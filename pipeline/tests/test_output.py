@@ -19,14 +19,14 @@ def test_screener_row_has_sic_not_yahoo_fields():
                 "2834",
                 "Pharmaceutical Preparations",
                 "Chemicals and Allied Products",
-                "2834 — Pharmaceutical Preparations",
+                "Pharmaceutical Preparations — 2834",
             ).to_dict(),
             "ttm": {"current": 1.0, "previous": 0.5, "growthPct": 100.0, "reason": None, "currency": "USD"},
             "revenue": {"currency": "USD", "quarters": []},
         }
     )
     assert row["sicCode"] == "2834"
-    assert row["sicIndustry"].startswith("2834")
+    assert row["sicIndustry"] == "Pharmaceutical Preparations — 2834"
     assert row["revenueCurrency"] == "USD"
     assert "sector" not in row
     assert "industry" not in row
