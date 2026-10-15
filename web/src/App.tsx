@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { loadIssuers, loadLayer2, loadMeta, loadScreener } from "./api";
 import { CoveragePanel } from "./components/CoveragePanel";
 import { Filters } from "./components/Filters";
@@ -15,8 +15,8 @@ import {
   headerCheckState,
   isTickerSaved,
   removeIssuer,
-  restrictSelectionToCurrentList,
   sameTickerSet,
+  syncSelectionToCurrentList,
   selectedAlreadySavedCount,
   toggleFilteredSelection,
   toggleTicker,
@@ -166,9 +166,9 @@ export default function App() {
     if (status === "unavailable") setStorageStatus("unavailable");
   };
 
-  const persistRestricted = useCallback((tickers: string[]) => {
+  const persistSynced = useCallback((previousTickers: string[], currentTickers: string[]) => {
     setSelected((prev) => {
-      const next = restrictSelectionToCurrentList(prev, tickers);
+      const next = syncSelectionToCurrentList(prev, previousTickers, currentTickers);
       if (sameTickerSet(prev, next)) return prev;
       const status = layer3Store.saveSelection([...next]);
       if (status === "unavailable") setStorageStatus("unavailable");
@@ -176,10 +176,14 @@ export default function App() {
     });
   }, []);
 
+  const previousTickersRef = useRef<string[] | null>(null);
   useEffect(() => {
     if (layer !== 1 || load.status !== "ready" || rows.length === 0) return;
-    persistRestricted(filteredTickers);
-  }, [layer, load.status, rows.length, view.sicMajorGroup, view.sicIndustries, view.currency, view.query, filteredTickers, persistRestricted]);
+    const previous = previousTickersRef.current;
+    previousTickersRef.current = filteredTickers;
+    if (previous === null) return;
+    persistSynced(previous, filteredTickers);
+  }, [layer, load.status, rows.length, view.sicMajorGroup, view.sicIndustries, view.currency, view.query, filteredTickers, persistSynced]);
 
   const persistMembership = (next: Layer3Entry[]) => {
     setMembership(next);
@@ -290,7 +294,7 @@ export default function App() {
                 onToggle={(t) => setExpanded((cur) => (cur === t ? null : t))}
                 onToggleSelect={onToggleSelect}
                 onToggleFiltered={onToggleFiltered}
-                onRestrictSelection={persistRestricted}
+                onSyncSelection={persistSynced}
                 selectedCount={selected.size}
                 alreadySavedCount={alreadySavedSelected}
                 lastAdd={lastAdd}

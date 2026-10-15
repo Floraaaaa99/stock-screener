@@ -33,8 +33,9 @@ export function SelectionBar({
         </p>
         <p className="selection-scope muted">
           Header checkbox selects all <strong>{formatCount(filteredCount)}</strong> companies on this
-          filtered list, including other pages. Changing filters keeps only companies still on the
-          list. Checking a row does not add it until you click Add to Layer 3.
+          filtered list, including other pages. While select-all is on, adding or removing a
+          category keeps the new list fully selected. Checking a row does not add it until you
+          click Add to Layer 3.
         </p>
       </div>
       <div className="selection-actions">
