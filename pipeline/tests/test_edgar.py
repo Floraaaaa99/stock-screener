@@ -106,6 +106,103 @@ def test_infer_fy_fp_steps_q1_to_q2():
     assert infer_fy_fp(filings, "10-Q") == (2026, "Q2")
 
 
+def _empty_facts() -> RevenueFacts:
+    return RevenueFacts(
+        cik="0002128115",
+        entity_name="AAC HOLDINGS",
+        currency=None,
+        by_concept={},
+        filings={},
+        forms_seen=set(),
+    )
+
+
+def test_empty_facts_try_only_the_latest_filing_as_a_seed():
+    older = PeriodicFiling("old", "10-Q", date(2026, 5, 15), date(2026, 3, 31))
+    newest = PeriodicFiling("new", "10-Q", date(2026, 8, 13), date(2026, 6, 30))
+    fetched: list[str] = []
+
+    def fetch(accn: str):
+        fetched.append(accn)
+        return None
+
+    out, result = supplement_revenue_facts(_empty_facts(), [older, newest], fetch, date(2026, 10, 14))
+    assert fetched == ["new"]
+    assert out.by_concept == {}
+    assert result.status == "unresolved"
+    assert result.unresolved[0]["reason"] == "income_statement_unavailable"
+
+
+def test_empty_facts_seed_official_revenue_from_latest_10q():
+    st = parse_statement_html(Q2_HTML)
+    older = PeriodicFiling("old", "10-Q", date(2026, 5, 15), date(2026, 3, 31))
+    newest = PeriodicFiling(INCY_Q2_ACCN, "10-Q", date(2026, 7, 28), date(2026, 6, 30))
+    fetched: list[str] = []
+
+    def fetch(accn: str):
+        fetched.append(accn)
+        if accn != INCY_Q2_ACCN:
+            return None
+        return st, INCY_Q2_URL
+
+    out, result = supplement_revenue_facts(_empty_facts(), [older, newest], fetch, date(2026, 10, 14))
+    assert fetched == [INCY_Q2_ACCN]
+    assert result.status == "applied"
+    assert result.applied[0].value == INCY_Q2_REVENUE
+    assert latest_facts_period_end(out) == date(2026, 6, 30)
+
+
+def test_fiscal_period_a_few_days_after_facts_is_not_newer():
+    rf = _rf_through_q1()
+    # Facts already include 2026-03-31; a 10-Q report date of 2026-04-03 is the same quarter.
+    same = PeriodicFiling("same-q", "10-Q", date(2026, 5, 12), date(2026, 4, 3))
+    fetched: list[str] = []
+    out, result = supplement_revenue_facts(rf, [same], lambda accn: fetched.append(accn) or None, date(2026, 10, 14))
+    assert fetched == []
+    assert result.status == "current"
+    assert result.newer == []
+    assert out is rf
+
+
+def test_newer_10q_without_revenue_line_is_current_not_unresolved():
+    rf = _rf_through_q1()
+    st = parse_statement_html(
+        """
+        <html><body><table class="report">
+        <tr><th class="tl">Income</th><th class="th">3 Months Ended</th></tr>
+        <tr><th class="th"><div>Jun. 30, 2026</div></th></tr>
+        <tr class="re"><td class="pl">Research and development</td><td class="nump">12,000</td></tr>
+        </table></body></html>
+        """
+    )
+    out, result = supplement_revenue_facts(
+        rf, [_q2_filing()], lambda accn: (st, INCY_Q2_URL), date(2026, 10, 14)
+    )
+    assert result.status == "current"
+    assert result.applied == []
+    assert latest_facts_period_end(out) == date(2026, 3, 31)
+
+
+def test_empty_facts_without_revenue_line_is_current_not_unresolved():
+    st = parse_statement_html(
+        """
+        <html><body><table class="report">
+        <tr><th class="tl">Income</th><th class="th">3 Months Ended</th></tr>
+        <tr><th class="th"><div>Jun. 30, 2026</div></th></tr>
+        <tr class="re"><td class="pl">Interest income</td><td class="nump">12</td></tr>
+        </table></body></html>
+        """
+    )
+    filing = PeriodicFiling("spac", "10-Q", date(2026, 8, 13), date(2026, 6, 30))
+    out, result = supplement_revenue_facts(
+        _empty_facts(), [filing], lambda accn: (st, "http://example.test/R4.htm"), date(2026, 10, 14)
+    )
+    assert result.status == "current"
+    assert result.applied == []
+    assert result.unresolved and result.unresolved[0]["reason"] == "no_official_revenue_column"
+    assert out.by_concept == {}
+
+
 def test_no_newer_filing_leaves_facts_unchanged():
     rf = _rf_through_q1()
     out, result = supplement_revenue_facts(rf, [], lambda accn: None, date(2026, 10, 14))

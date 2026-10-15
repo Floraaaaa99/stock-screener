@@ -127,8 +127,31 @@ def latest_facts_period_end(rf: RevenueFacts) -> date | None:
     return max(info.period_end for info in rf.filings.values())
 
 
+# Fiscal year-ends that land a few days after the calendar quarter are the same period.
+FISCAL_END_SLACK_DAYS = 10
+
+
 def newer_filings(filings: list[PeriodicFiling], latest_end: date | None) -> list[PeriodicFiling]:
-    return [f for f in filings if f.report_date and (latest_end is None or f.report_date > latest_end)]
+    """The single latest official 10-Q/10-K that Company Facts does not already cover.
+
+    Trying every historical filing after a stale Company Facts snapshot would fetch years
+    of 10-Qs for REITs, banks, and pre-revenue biotechs, then treat a missing revenue
+    line as an unresolved lag. Only the newest dated report can change Layer 1's latest
+    quarter. Report dates within FISCAL_END_SLACK_DAYS of the facts period are the same
+    fiscal quarter (e.g. 2026-07-03 vs 2026-06-30).
+    """
+    dated = [f for f in filings if f.report_date]
+    if not dated:
+        return []
+    if latest_end is None:
+        cutoff = None
+        candidates = dated
+    else:
+        cutoff = latest_end + timedelta(days=FISCAL_END_SLACK_DAYS)
+        candidates = [f for f in dated if f.report_date > cutoff]
+    if not candidates:
+        return []
+    return [max(candidates, key=lambda f: (f.report_date, f.filed))]
 
 
 def add_months(d: date, months: int) -> date:
@@ -279,7 +302,14 @@ def supplement_revenue_facts(
         result.status = "applied"
         rf = RevenueFacts(rf.cik, rf.entity_name, rf.currency, by_concept, filing_map, forms_seen)
     elif result.unresolved:
-        result.status = "unresolved"
+        # A newer 10-Q with no total-revenue line (pre-revenue biotech, SPAC, bank) is
+        # not a failed ingest. unresolved_edgar_lag is only for a statement we could
+        # not obtain, or a report date we could not read.
+        fetch_failures = {"income_statement_unavailable", "no_report_date"}
+        if any(u.get("reason") in fetch_failures for u in result.unresolved):
+            result.status = "unresolved"
+        else:
+            result.status = "current"
     return rf, result
 
 
