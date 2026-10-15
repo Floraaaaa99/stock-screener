@@ -73,7 +73,7 @@ export function Layer2Table({
             <tr>
               <th>Ticker</th>
               <th>Company</th>
-              <th>SEC SIC industry</th>
+              <th className="sic">SEC SIC industry</th>
               <th className="num">TTM Revenue Growth</th>
               <th title="Oldest to newest; fiscal labels and period-end dates">Latest four YoY</th>
               <th title="Oldest to newest; descriptive only">Latest four QoQ</th>
