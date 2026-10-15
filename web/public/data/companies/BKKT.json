@@ -614,22 +614,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-055275.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 80842000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Bakkt, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -640,7 +640,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -655,10 +655,556 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-055275",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026055275/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 80842000.0,
+      "statement_value": 80842000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 80842000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-10",
+        "accn": "0001628280-26-055275",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026055275/0001628280-26-055275-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-10",
+            "accn": "0001628280-26-055275",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 80842000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026055275/0001628280-26-055275-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-055275",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026055275/R4.htm",
+          "statement_label": "Net income (loss) attributable to Bakkt, Inc.",
+          "statement_value": 80842000.0,
+          "expected_value": 80842000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -11650000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001628280-26-033576",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026033576/0001628280-26-033576-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001628280-26-033576",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -11650000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026033576/0001628280-26-033576-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-26-033576",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-26-033576 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -85270000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-19",
+        "accn": "0001628280-26-019870",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026019870/0001628280-26-019870-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-19",
+            "accn": "0001628280-26-019870",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -107212000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828026019870/0001628280-26-019870-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001628280-25-051180",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -21942000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025051180/0001628280-25-051180-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-051180",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-25-051180 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -14918000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001628280-25-051180",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025051180/0001628280-25-051180-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001628280-25-051180",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -14918000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025051180/0001628280-25-051180-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-051180",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-25-051180 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -14734000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0001628280-25-039625",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025039625/0001628280-25-039625-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0001628280-25-039625",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -14734000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025039625/0001628280-25-039625-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-039625",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025039625/R4.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -14734000.0,
+          "expected_value": -14734000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 7710000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0001628280-25-024743",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025024743/0001628280-25-024743-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0001628280-25-024743",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 7710000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025024743/0001628280-25-024743-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-024743",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025024743/R4.htm",
+          "statement_label": "Net income (loss) attributable to Bakkt Holdings, Inc.",
+          "statement_value": 7710000.0,
+          "expected_value": 7710000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -19179000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-20",
+        "accn": "0001628280-25-013959",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025013959/0001628280-25-013959-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-20",
+            "accn": "0001628280-25-013959",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -46659000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828025013959/0001628280-25-013959-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001628280-24-047906",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -27480000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828024047906/0001628280-24-047906-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-25-013959",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001628280-25-013959 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2893000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-14",
+        "accn": "0001628280-24-047906",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828024047906/0001628280-24-047906-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-14",
+            "accn": "0001628280-24-047906",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -2893000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828024047906/0001628280-24-047906-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-047906",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000162828024047906/R4.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -2893000.0,
+          "expected_value": -2893000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -16424000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-14",
+        "accn": "0001820302-24-000119",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000119/0001820302-24-000119-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-14",
+            "accn": "0001820302-24-000119",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -16424000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000119/0001820302-24-000119-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001820302-24-000119",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000119/R4.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -16424000.0,
+          "expected_value": -16424000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -8165000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-15",
+        "accn": "0001820302-24-000094",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000094/0001820302-24-000094-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-15",
+            "accn": "0001820302-24-000094",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -8165000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000094/0001820302-24-000094-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001820302-24-000094",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000094/R4.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -8165000.0,
+          "expected_value": -8165000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -26699000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-25",
+        "accn": "0001820302-24-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000056/0001820302-24-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-25",
+            "accn": "0001820302-24-000056",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -74854000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000056/0001820302-24-000056-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001820302-23-000091",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -48155000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030223000091/0001820302-23-000091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001820302-24-000056",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030224000056/R5.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -74854000.0,
+          "expected_value": -26699000.0,
+          "detail": "12M -74,854,000 (10-K 0001820302-24-000056) − 9M -48,155,000 (10-Q 0001820302-23-000091)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -17331000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-14",
+        "accn": "0001820302-23-000091",
+        "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030223000091/0001820302-23-000091-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001820302-23-000091",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -17331000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030223000091/0001820302-23-000091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001820302-23-000091",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1820302/000182030223000091/R4.htm",
+          "statement_label": "Net loss attributable to Bakkt Holdings, Inc.",
+          "statement_value": -17331000.0,
+          "expected_value": -17331000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

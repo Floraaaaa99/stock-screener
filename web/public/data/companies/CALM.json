@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001562762-26-000113.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-08-29",
         "latestValue": -58615000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Cal-Maine Foods, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,557 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001562762-26-000113",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000113/R4.htm",
+      "period_end": "2026-08-29",
+      "months": 3,
+      "pipeline_value": -58615000.0,
+      "statement_value": -58615000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-05-31",
+        "end": "2026-08-29",
+        "ttm": "current",
+        "missing": false,
+        "value": -58615000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-09-30",
+        "accn": "0001562762-26-000113",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000113/0001562762-26-000113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-09-30",
+            "accn": "0001562762-26-000113",
+            "start": "2026-05-31",
+            "end": "2026-08-29",
+            "value": -58615000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000113/0001562762-26-000113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-26-000113",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000113/R4.htm",
+          "statement_label": "Net income (loss) attributable to Cal-Maine Foods, Inc.",
+          "statement_value": -58615000.0,
+          "expected_value": -58615000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-03-01",
+        "end": "2026-05-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -35876000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-07-22",
+        "accn": "0001562762-26-000080",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000080/0001562762-26-000080-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-07-22",
+            "accn": "0001562762-26-000080",
+            "start": "2025-06-01",
+            "end": "2026-05-30",
+            "value": 316682000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000080/0001562762-26-000080-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-04-01",
+            "accn": "0001562762-26-000046",
+            "start": "2025-06-01",
+            "end": "2026-02-28",
+            "value": 352558000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000046/0001562762-26-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-26-000080",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000080/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 316682000.0,
+          "expected_value": -35876000.0,
+          "detail": "12M 316,682,000 (10-K 0001562762-26-000080) − 9M 352,558,000 (10-Q 0001562762-26-000046)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-11-30",
+        "end": "2026-02-28",
+        "ttm": "current",
+        "missing": false,
+        "value": 50459000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-01",
+        "accn": "0001562762-26-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000046/0001562762-26-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-01",
+            "accn": "0001562762-26-000046",
+            "start": "2025-11-30",
+            "end": "2026-02-28",
+            "value": 50459000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000046/0001562762-26-000046-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-26-000046",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000046/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 50459000.0,
+          "expected_value": 50459000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-08-31",
+        "end": "2025-11-29",
+        "ttm": "current",
+        "missing": false,
+        "value": 102759000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-01-07",
+        "accn": "0001562762-26-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000004/0001562762-26-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-01-07",
+            "accn": "0001562762-26-000004",
+            "start": "2025-08-31",
+            "end": "2025-11-29",
+            "value": 102759000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000004/0001562762-26-000004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-26-000004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276226000004/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 102759000.0,
+          "expected_value": 102759000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-06-01",
+        "end": "2025-08-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 199340000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-01",
+        "accn": "0001562762-25-000251",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000251/0001562762-25-000251-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-01",
+            "accn": "0001562762-25-000251",
+            "start": "2025-06-01",
+            "end": "2025-08-30",
+            "value": 199340000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000251/0001562762-25-000251-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-25-000251",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000251/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 199340000.0,
+          "expected_value": 199340000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-03-02",
+        "end": "2025-05-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 342475000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-07-22",
+        "accn": "0001562762-25-000170",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000170/0001562762-25-000170-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-07-22",
+            "accn": "0001562762-25-000170",
+            "start": "2024-06-02",
+            "end": "2025-05-31",
+            "value": 1220048000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000170/0001562762-25-000170-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-04-08",
+            "accn": "0001562762-25-000084",
+            "start": "2024-06-02",
+            "end": "2025-03-01",
+            "value": 877573000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000084/0001562762-25-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-25-000170",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000170/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 1220048000.0,
+          "expected_value": 342475000.0,
+          "detail": "12M 1,220,048,000 (10-K 0001562762-25-000170) − 9M 877,573,000 (10-Q 0001562762-25-000084)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-12-01",
+        "end": "2025-03-01",
+        "ttm": "previous",
+        "missing": false,
+        "value": 508533000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-08",
+        "accn": "0001562762-25-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000084/0001562762-25-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-08",
+            "accn": "0001562762-25-000084",
+            "start": "2024-12-01",
+            "end": "2025-03-01",
+            "value": 508533000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000084/0001562762-25-000084-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-25-000084",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000084/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 508533000.0,
+          "expected_value": 508533000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-09-01",
+        "end": "2024-11-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 219064000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-01-07",
+        "accn": "0001562762-25-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000004/0001562762-25-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-01-07",
+            "accn": "0001562762-25-000004",
+            "start": "2024-09-01",
+            "end": "2024-11-30",
+            "value": 219064000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000004/0001562762-25-000004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-25-000004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276225000004/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 219064000.0,
+          "expected_value": 219064000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-06-02",
+        "end": "2024-08-31",
+        "ttm": null,
+        "missing": false,
+        "value": 149976000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-01",
+        "accn": "0001562762-24-000230",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000230/0001562762-24-000230-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-01",
+            "accn": "0001562762-24-000230",
+            "start": "2024-06-02",
+            "end": "2024-08-31",
+            "value": 149976000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000230/0001562762-24-000230-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-24-000230",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000230/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 149976000.0,
+          "expected_value": 149976000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-03-03",
+        "end": "2024-06-01",
+        "ttm": null,
+        "missing": false,
+        "value": 113241000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-07-23",
+        "accn": "0001562762-24-000177",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000177/0001562762-24-000177-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-07-23",
+            "accn": "0001562762-24-000177",
+            "start": "2023-06-04",
+            "end": "2024-06-01",
+            "value": 277888000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000177/0001562762-24-000177-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-04-02",
+            "accn": "0001562762-24-000077",
+            "start": "2023-06-04",
+            "end": "2024-03-02",
+            "value": 164647000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000077/0001562762-24-000077-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-24-000177",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000177/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 277888000.0,
+          "expected_value": 113241000.0,
+          "detail": "12M 277,888,000 (10-K 0001562762-24-000177) − 9M 164,647,000 (10-Q 0001562762-24-000077)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-12-03",
+        "end": "2024-03-02",
+        "ttm": null,
+        "missing": false,
+        "value": 146712000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-02",
+        "accn": "0001562762-24-000077",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000077/0001562762-24-000077-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-02",
+            "accn": "0001562762-24-000077",
+            "start": "2023-12-03",
+            "end": "2024-03-02",
+            "value": 146712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000077/0001562762-24-000077-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-24-000077",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000077/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 146712000.0,
+          "expected_value": 146712000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-09-03",
+        "end": "2023-12-02",
+        "ttm": null,
+        "missing": false,
+        "value": 17009000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-01-03",
+        "accn": "0001562762-24-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000004/0001562762-24-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-01-03",
+            "accn": "0001562762-24-000004",
+            "start": "2023-09-03",
+            "end": "2023-12-02",
+            "value": 17009000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000004/0001562762-24-000004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001562762-24-000004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/16160/000156276224000004/R4.htm",
+          "statement_label": "Net income attributable to Cal-Maine Foods, Inc.",
+          "statement_value": 17009000.0,
+          "expected_value": 17009000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-08-29",

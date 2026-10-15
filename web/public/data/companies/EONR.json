@@ -563,22 +563,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001437749-26-032510.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-03-31",
         "latestValue": -5772595.0,
         "quartersInWindow": 12,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to EON Resources, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -589,14 +589,519 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 12,
         "disagreements": 4,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001437749-26-032510",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/R4.htm",
+      "period_end": "2026-03-31",
+      "months": 3,
+      "pipeline_value": -5772595.0,
+      "statement_value": -5772595.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -5772595.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-13",
+        "accn": "0001437749-26-032510",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/0001437749-26-032510-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-13",
+            "accn": "0001437749-26-032510",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -5772595.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/0001437749-26-032510-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-032510",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/R4.htm",
+          "statement_label": "Net loss attributable to EON Resources, Inc.",
+          "statement_value": -5772595.0,
+          "expected_value": -5772595.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -10453835.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2026-10-13",
+        "accn": "0001213900-26-108617",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390026108617/0001213900-26-108617-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2026-10-13",
+            "accn": "0001213900-26-108617",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -7466082.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390026108617/0001213900-26-108617-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-17",
+            "accn": "0001213900-25-111207",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 2987753.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001213900-26-108617",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001213900-26-108617 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 5624875.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-17",
+        "accn": "0001213900-25-111207",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-17",
+            "accn": "0001213900-25-111207",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 5624875.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-25-111207",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/R4.htm",
+          "statement_label": "Net income (loss) attributable to Eon Resources, Inc.",
+          "statement_value": 5624875.0,
+          "expected_value": 5624875.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -1300479.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-14",
+        "accn": "0001213900-25-076743",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025076743/0001213900-25-076743-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-14",
+            "accn": "0001213900-25-076743",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -1300479.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025076743/0001213900-25-076743-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-25-076743",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025076743/R4.htm",
+          "statement_label": "Net loss attributable to HNR Acquisition Corp.",
+          "statement_value": -1300479.0,
+          "expected_value": -1300479.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2027984.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-13",
+        "accn": "0001437749-26-032510",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/0001437749-26-032510-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-13",
+            "accn": "0001437749-26-032510",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -2027984.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/0001437749-26-032510-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-032510",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000143774926032510/R4.htm",
+          "statement_label": "Net loss attributable to EON Resources, Inc.",
+          "statement_value": -2027984.0,
+          "expected_value": -2027984.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4146842.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2026-04-27",
+        "accn": "0001213900-26-047665",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390026047665/0001213900-26-047665-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2026-04-27",
+            "accn": "0001213900-26-047665",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -8128679.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390026047665/0001213900-26-047665-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-17",
+            "accn": "0001213900-25-111207",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -3981837.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001213900-26-047665",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001213900-26-047665 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1349460.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-17",
+        "accn": "0001213900-25-111207",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-17",
+            "accn": "0001213900-25-111207",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 1349460.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/0001213900-25-111207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-25-111207",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025111207/R4.htm",
+          "statement_label": "Net income (loss) attributable to Eon Resources, Inc.",
+          "statement_value": 1349460.0,
+          "expected_value": 1349460.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -637795.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-19",
+        "accn": "0001213900-24-070390",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/0001213900-24-070390-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-19",
+            "accn": "0001213900-24-070390",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -637795.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/0001213900-24-070390-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-24-070390",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/R4.htm",
+          "statement_label": "Net income (loss) attributable to HNR Acquisition Corp.",
+          "statement_value": -637795.0,
+          "expected_value": -637795.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -4693502.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0001213900-25-044224",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025044224/0001213900-25-044224-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001213900-25-044224",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -4693502.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390025044224/0001213900-25-044224-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001213900-25-044224",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001213900-25-044224 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-09-29",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -651152.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-15",
+        "accn": "0001213900-24-099136",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024099136/0001213900-24-099136-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-15",
+            "accn": "0001213900-24-099136",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -651152.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024099136/0001213900-24-099136-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-24-099136",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024099136/R4.htm",
+          "statement_label": "Net income (loss) attributable to EON Resources, Inc..",
+          "statement_value": -651152.0,
+          "expected_value": -651152.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 2,
+        "start": "2023-04-01",
+        "end": "2023-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 2676760.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-19",
+        "accn": "0001213900-24-070390",
+        "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/0001213900-24-070390-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-19",
+            "accn": "0001213900-24-070390",
+            "start": "2023-04-01",
+            "end": "2023-06-30",
+            "value": 2676760.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/0001213900-24-070390-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001213900-24-070390",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1842556/000121390024070390/R4.htm",
+          "statement_label": "Net income (loss) attributable to HNR Acquisition Corp.",
+          "statement_value": 2676760.0,
+          "expected_value": 2676760.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-03-31",

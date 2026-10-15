@@ -416,22 +416,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0002052568-26-000026.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -27841000.0,
         "quartersInWindow": 8,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 8,
-        "disagreements": 8,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net loss attributable to Legence"
       },
       {
         "concept": "ProfitLoss",
@@ -439,10 +439,10 @@
         "latestValue": -34564000.0,
         "quartersInWindow": 10,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 8,
+        "disagreements": 8,
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -450,17 +450,394 @@
         "latestValue": -27841000.0,
         "quartersInWindow": 2,
         "selected": false,
-        "comparedWith": "ProfitLoss",
+        "comparedWith": "NetIncomeLoss",
         "overlaps": 2,
-        "disagreements": 2,
+        "disagreements": 0,
         "statementLabel": null
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0002052568-26-000026",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -27841000.0,
+      "statement_value": -27841000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -27841000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-13",
+        "accn": "0002052568-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/0002052568-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-13",
+            "accn": "0002052568-26-000026",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -27841000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/0002052568-26-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/R4.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -27841000.0,
+          "expected_value": -27841000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 16094000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-14",
+        "accn": "0002052568-26-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/0002052568-26-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0002052568-26-000017",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 16094000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/0002052568-26-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/R4.htm",
+          "statement_label": "Net income (loss) attributable to Legence",
+          "statement_value": 16094000.0,
+          "expected_value": 16094000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -32721000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-30",
+        "accn": "0002052568-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/0002052568-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-30",
+            "accn": "0002052568-26-000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -59780000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/0002052568-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0002052568-25-000018",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -27059000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/R5.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -59780000.0,
+          "expected_value": -32721000.0,
+          "detail": "12M -59,780,000 (10-K 0002052568-26-000008) − 9M -27,059,000 (10-Q 0002052568-25-000018)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -576000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0002052568-25-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0002052568-25-000018",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -576000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-25-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/R4.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -576000.0,
+          "expected_value": -576000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5270000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-13",
+        "accn": "0002052568-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/0002052568-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-13",
+            "accn": "0002052568-26-000026",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -5270000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/0002052568-26-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000026/R4.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -5270000.0,
+          "expected_value": -5270000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -21213000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-14",
+        "accn": "0002052568-26-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/0002052568-26-000017-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0002052568-26-000017",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -21213000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/0002052568-26-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000017/R4.htm",
+          "statement_label": "Net income (loss) attributable to Legence",
+          "statement_value": -21213000.0,
+          "expected_value": -21213000.0
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -18705000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-30",
+        "accn": "0002052568-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/0002052568-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-30",
+            "accn": "0002052568-26-000008",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -28555000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/0002052568-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0002052568-25-000018",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -9850000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256826000008/R5.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -28555000.0,
+          "expected_value": -18705000.0,
+          "detail": "12M -28,555,000 (10-K 0002052568-26-000008) − 9M -9,850,000 (10-Q 0002052568-25-000018)"
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1083000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0002052568-25-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0002052568-25-000018",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -1083000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/0002052568-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002052568-25-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2052568/000205256825000018/R4.htm",
+          "statement_label": "Net loss attributable to Legence",
+          "statement_value": -1083000.0,
+          "expected_value": -1083000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

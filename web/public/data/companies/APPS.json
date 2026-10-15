@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-053446.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -11329000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "ProfitLoss",
@@ -622,10 +622,571 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-053446",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026053446/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -11329000.0,
+      "statement_value": -11329000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -11329000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001628280-26-053446",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026053446/0001628280-26-053446-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001628280-26-053446",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -11329000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026053446/0001628280-26-053446-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-053446",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026053446/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -11329000.0,
+          "expected_value": -11329000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -7340000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-26",
+        "accn": "0001628280-26-038115",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026038115/0001628280-26-038115-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-26",
+            "accn": "0001628280-26-038115",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": -37732000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026038115/0001628280-26-038115-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-03",
+            "accn": "0001628280-26-005047",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": -30392000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026005047/0001628280-26-005047-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-038115",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026038115/R5.htm",
+          "statement_label": "Net loss attributable to Digital Turbine, Inc.",
+          "statement_value": -37732000.0,
+          "expected_value": -7340000.0,
+          "detail": "12M -37,732,000 (10-K 0001628280-26-038115) − 9M -30,392,000 (10-Q 0001628280-26-005047)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 5107000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-03",
+        "accn": "0001628280-26-005047",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026005047/0001628280-26-005047-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-03",
+            "accn": "0001628280-26-005047",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 5107000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026005047/0001628280-26-005047-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-005047",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828026005047/R4.htm",
+          "statement_label": "Net income (loss)",
+          "statement_value": 5107000.0,
+          "expected_value": 5107000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -21395000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001628280-25-048946",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025048946/0001628280-25-048946-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001628280-25-048946",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -21395000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025048946/0001628280-25-048946-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-048946",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025048946/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -21395000.0,
+          "expected_value": -21395000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -14104000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001628280-25-037888",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025037888/0001628280-25-037888-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001628280-25-037888",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -14104000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025037888/0001628280-25-037888-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-037888",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025037888/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -14104000.0,
+          "expected_value": -14104000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -18826000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-06-16",
+        "accn": "0001628280-25-031628",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025031628/0001628280-25-031628-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-06-16",
+            "accn": "0001628280-25-031628",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": -92099000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025031628/0001628280-25-031628-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001628280-25-004090",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": -73273000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025004090/0001628280-25-004090-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-031628",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025031628/R5.htm",
+          "statement_label": "Net (loss) income attributable to Digital Turbine, Inc.",
+          "statement_value": -92099000.0,
+          "expected_value": -18826000.0,
+          "detail": "12M -92,099,000 (10-K 0001628280-25-031628) − 9M -73,273,000 (10-Q 0001628280-25-004090)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -23131000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-05",
+        "accn": "0001628280-25-004090",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025004090/0001628280-25-004090-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001628280-25-004090",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -23131000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025004090/0001628280-25-004090-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-004090",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828025004090/R4.htm",
+          "statement_label": "Net loss attributable to Digital Turbine, Inc.",
+          "statement_value": -23131000.0,
+          "expected_value": -23131000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -24986000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001628280-24-045815",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024045815/0001628280-24-045815-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001628280-24-045815",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -24986000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024045815/0001628280-24-045815-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-045815",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024045815/R4.htm",
+          "statement_label": "Net loss attributable to Digital Turbine, Inc.",
+          "statement_value": -24986000.0,
+          "expected_value": -24986000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -25156000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001628280-24-035686",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024035686/0001628280-24-035686-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001628280-24-035686",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -25156000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024035686/0001628280-24-035686-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-035686",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024035686/R4.htm",
+          "statement_label": "Net loss attributable to Digital Turbine, Inc.",
+          "statement_value": -25156000.0,
+          "expected_value": -25156000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -236506000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-28",
+        "accn": "0001628280-24-025455",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024025455/0001628280-24-025455-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-28",
+            "accn": "0001628280-24-025455",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": -420228000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024025455/0001628280-24-025455-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-07",
+            "accn": "0001628280-24-003730",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": -183722000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024003730/0001628280-24-003730-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-025455",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024025455/R5.htm",
+          "statement_label": "Net (loss) income to Digital Turbine, Inc.",
+          "statement_value": -420228000.0,
+          "expected_value": -236506000.0,
+          "detail": "12M -420,228,000 (10-K 0001628280-24-025455) − 9M -183,722,000 (10-Q 0001628280-24-003730)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -14061000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-07",
+        "accn": "0001628280-24-003730",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024003730/0001628280-24-003730-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-07",
+            "accn": "0001628280-24-003730",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -14061000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024003730/0001628280-24-003730-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-003730",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828024003730/R4.htm",
+          "statement_label": "Net (loss) income attributable to Digital Turbine, Inc.",
+          "statement_value": -14061000.0,
+          "expected_value": -14061000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -161482000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0001628280-23-037841",
+        "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828023037841/0001628280-23-037841-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0001628280-23-037841",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -161482000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828023037841/0001628280-23-037841-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-23-037841",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/317788/000162828023037841/R4.htm",
+          "statement_label": "Net (loss) income attributable to Digital Turbine, Inc.",
+          "statement_value": -161482000.0,
+          "expected_value": -161482000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

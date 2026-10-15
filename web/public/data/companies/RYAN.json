@@ -616,22 +616,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001849253-26-000036.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 42315000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC."
       },
       {
         "concept": "ProfitLoss",
@@ -642,7 +642,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "NET INCOME"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -657,10 +657,553 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001849253-26-000036",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000036/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 42315000.0,
+      "statement_value": 42315000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 42315000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-31",
+        "accn": "0001849253-26-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000036/0001849253-26-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-31",
+            "accn": "0001849253-26-000036",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 42315000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000036/0001849253-26-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001849253-26-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000036/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 42315000.0,
+          "expected_value": 42315000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 17646000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-01",
+        "accn": "0001849253-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000026/0001849253-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-01",
+            "accn": "0001849253-26-000026",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 17646000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000026/0001849253-26-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001849253-26-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000026/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 17646000.0,
+          "expected_value": 17646000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 7980000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-13",
+        "accn": "0001849253-26-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000006/0001849253-26-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-13",
+            "accn": "0001849253-26-000006",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 63399000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000006/0001849253-26-000006-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-31",
+            "accn": "0001849253-25-000016",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 55419000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925325000016/0001849253-25-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001849253-26-000006",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925326000006/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 63399000.0,
+          "expected_value": 7980000.0,
+          "detail": "12M 63,399,000 (10-K 0001849253-26-000006) − 9M 55,419,000 (10-Q 0001849253-25-000016)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 31085000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-31",
+        "accn": "0001849253-25-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925325000016/0001849253-25-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-31",
+            "accn": "0001849253-25-000016",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 31085000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925325000016/0001849253-25-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001849253-25-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000184925325000016/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 31085000.0,
+          "expected_value": 31085000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 51976000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-01",
+        "accn": "0001628280-25-037141",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025037141/0001628280-25-037141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-01",
+            "accn": "0001628280-25-037141",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 51976000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025037141/0001628280-25-037141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-037141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025037141/R2.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 51976000.0,
+          "expected_value": 51976000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -27642000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-02",
+        "accn": "0001628280-25-021664",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025021664/0001628280-25-021664-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-02",
+            "accn": "0001628280-25-021664",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -27642000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025021664/0001628280-25-021664-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-021664",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025021664/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": -27642000.0,
+          "expected_value": -27642000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13754000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-21",
+        "accn": "0001628280-25-006973",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025006973/0001628280-25-006973-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-21",
+            "accn": "0001628280-25-006973",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 94665000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025006973/0001628280-25-006973-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0001628280-24-044413",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 80911000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828024044413/0001628280-24-044413-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-006973",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828025006973/R3.htm",
+          "statement_label": "NET INCOME ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 94665000.0,
+          "expected_value": 13754000.0,
+          "detail": "12M 94,665,000 (10-K 0001628280-25-006973) − 9M 80,911,000 (10-Q 0001628280-24-044413)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 17589000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-31",
+        "accn": "0001628280-24-044413",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828024044413/0001628280-24-044413-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0001628280-24-044413",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 17589000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828024044413/0001628280-24-044413-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-044413",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000162828024044413/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": 17589000.0,
+          "expected_value": 17589000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 46787000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-02",
+        "accn": "0000950170-24-089593",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024089593/0000950170-24-089593-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-02",
+            "accn": "0000950170-24-089593",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 46787000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024089593/0000950170-24-089593-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-089593",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024089593/R2.htm",
+          "statement_label": "Net income attributable to Ryan Specialty Holdings, Inc.",
+          "statement_value": 46787000.0,
+          "expected_value": 46787000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 16535000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-03",
+        "accn": "0000950170-24-052483",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024052483/0000950170-24-052483-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-03",
+            "accn": "0000950170-24-052483",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 16535000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024052483/0000950170-24-052483-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-052483",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024052483/R2.htm",
+          "statement_label": "Net income attributable to Ryan Specialty Holdings, Inc.",
+          "statement_value": 16535000.0,
+          "expected_value": 16535000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 22846000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-28",
+        "accn": "0000950170-24-021657",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024021657/0000950170-24-021657-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-28",
+            "accn": "0000950170-24-021657",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 61037000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024021657/0000950170-24-021657-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0000950170-23-058503",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 38191000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017023058503/0000950170-23-058503-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-021657",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017024021657/R2.htm",
+          "statement_label": "Net income attributable to Ryan Specialty Holdings, Inc.",
+          "statement_value": 61037000.0,
+          "expected_value": 22846000.0,
+          "detail": "12M 61,037,000 (10-K 0000950170-24-021657) − 9M 38,191,000 (10-Q 0000950170-23-058503)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -5047000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0000950170-23-058503",
+        "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017023058503/0000950170-23-058503-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0000950170-23-058503",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -5047000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017023058503/0000950170-23-058503-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-058503",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1849253/000095017023058503/R2.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO RYAN SPECIALTY HOLDINGS, INC.",
+          "statement_value": -5047000.0,
+          "expected_value": -5047000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

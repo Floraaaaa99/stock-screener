@@ -247,11 +247,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001829126-23-002986.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -259,10 +259,10 @@
         "latestValue": -3614639.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 11,
+        "disagreements": 6,
+        "statementLabel": "NET (LOSS)/INCOME"
       },
       {
         "concept": "ProfitLoss",
@@ -270,9 +270,9 @@
         "latestValue": -3614638.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 2,
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 11,
+        "disagreements": 7,
         "statementLabel": null
       },
       {
@@ -280,18 +280,477 @@
         "latestEnd": "2023-03-31",
         "latestValue": -3500025.0,
         "quartersInWindow": 11,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 11,
-        "disagreements": 6,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "NET (LOSS)/INCOME ATTRIBUTABLE TO MICROCLOUD HOLOGRAM INC. ORDINARY SHAREHOLDERS"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch",
+      "stale_filings",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001829126-23-002986",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/R4.htm",
+      "period_end": "2023-03-31",
+      "months": 3,
+      "pipeline_value": -3500025.0,
+      "statement_value": -3500025.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 1,
+        "start": "2023-01-01",
+        "end": "2023-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -3500025.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-04-28",
+        "accn": "0001829126-23-002986",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/0001829126-23-002986-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-04-28",
+            "accn": "0001829126-23-002986",
+            "start": "2023-01-01",
+            "end": "2023-03-31",
+            "value": -3500025.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/0001829126-23-002986-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-23-002986",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/R4.htm",
+          "statement_label": "NET (LOSS)/INCOME ATTRIBUTABLE TO MICROCLOUD HOLOGRAM INC. ORDINARY SHAREHOLDERS",
+          "statement_value": -3500025.0,
+          "expected_value": -3500025.0
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 4,
+        "start": "2022-10-01",
+        "end": "2022-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -26772492.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2023-03-14",
+        "accn": "0001829126-23-002018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002018/0001829126-23-002018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2023-03-14",
+            "accn": "0001829126-23-002018",
+            "start": "2022-01-01",
+            "end": "2022-12-31",
+            "value": -20322616.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002018/0001829126-23-002018-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2022-11-10",
+            "accn": "0001829126-22-019119",
+            "start": "2022-01-01",
+            "end": "2022-09-30",
+            "value": 6449876.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622019119/0001829126-22-019119-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-019119",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622019119/R3.htm",
+          "detail": "No 9-month net income column ending 2022-09-30 on 10-Q 0001829126-22-019119."
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 3,
+        "start": "2022-07-01",
+        "end": "2022-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1285946.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2022-11-10",
+        "accn": "0001829126-22-019119",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622019119/0001829126-22-019119-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2022-11-10",
+            "accn": "0001829126-22-019119",
+            "start": "2022-07-01",
+            "end": "2022-09-30",
+            "value": 1285946.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622019119/0001829126-22-019119-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-019119",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622019119/R3.htm",
+          "detail": "No 3-month net income column ending 2022-09-30 on 10-Q 0001829126-22-019119."
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 2,
+        "start": "2022-04-01",
+        "end": "2022-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 103801.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2022-08-15",
+        "accn": "0001829126-22-015807",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622015807/0001829126-22-015807-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2022-08-15",
+            "accn": "0001829126-22-015807",
+            "start": "2022-04-01",
+            "end": "2022-06-30",
+            "value": 103801.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622015807/0001829126-22-015807-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-015807",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001829126-22-015807 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 1,
+        "start": "2022-01-01",
+        "end": "2022-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 3395984.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-04-28",
+        "accn": "0001829126-23-002986",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/0001829126-23-002986-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-04-28",
+            "accn": "0001829126-23-002986",
+            "start": "2022-01-01",
+            "end": "2022-03-31",
+            "value": 3395984.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/0001829126-23-002986-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-23-002986",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002986/R4.htm",
+          "statement_label": "NET (LOSS)/INCOME ATTRIBUTABLE TO MICROCLOUD HOLOGRAM INC. ORDINARY SHAREHOLDERS",
+          "statement_value": 3395984.0,
+          "expected_value": 3395984.0
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 4,
+        "start": "2021-10-01",
+        "end": "2021-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13344324.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2023-03-14",
+        "accn": "0001829126-23-002018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002018/0001829126-23-002018-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2023-03-14",
+            "accn": "0001829126-23-002018",
+            "start": "2021-01-01",
+            "end": "2021-12-31",
+            "value": 12750041.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912623002018/0001829126-23-002018-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2021-11-15",
+            "accn": "0001829126-21-014258",
+            "start": "2021-01-01",
+            "end": "2021-09-30",
+            "value": -594283.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912621014258/0001829126-21-014258-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-21-014258",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001829126-21-014258 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 3,
+        "start": "2021-07-01",
+        "end": "2021-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -394292.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2021-11-15",
+        "accn": "0001829126-21-014258",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912621014258/0001829126-21-014258-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2021-11-15",
+            "accn": "0001829126-21-014258",
+            "start": "2021-07-01",
+            "end": "2021-09-30",
+            "value": -394292.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912621014258/0001829126-21-014258-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-21-014258",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001829126-21-014258 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 2,
+        "start": "2021-04-01",
+        "end": "2021-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 143212.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2022-08-15",
+        "accn": "0001829126-22-015807",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622015807/0001829126-22-015807-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2022-08-15",
+            "accn": "0001829126-22-015807",
+            "start": "2021-04-01",
+            "end": "2021-06-30",
+            "value": 143212.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622015807/0001829126-22-015807-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-015807",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001829126-22-015807 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 1,
+        "start": "2021-01-01",
+        "end": "2021-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -56779.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2022-05-16",
+        "accn": "0001829126-22-011130",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622011130/0001829126-22-011130-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2022-05-16",
+            "accn": "0001829126-22-011130",
+            "start": "2021-01-01",
+            "end": "2021-03-31",
+            "value": -56779.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622011130/0001829126-22-011130-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-011130",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001829126-22-011130 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2020,
+        "fiscalQuarter": 4,
+        "start": "2020-09-29",
+        "end": "2020-12-31",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2020,
+        "fiscalQuarter": 3,
+        "start": "2020-06-29",
+        "end": "2020-09-28",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2020-04-01",
+        "end": "2020-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -4805.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2022-01-20",
+        "accn": "0001829126-22-001216",
+        "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622001216/0001829126-22-001216-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2022-01-20",
+            "accn": "0001829126-22-001216",
+            "start": "2020-04-01",
+            "end": "2020-06-30",
+            "value": -4805.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1841209/000182912622001216/0001829126-22-001216-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-001216",
+          "form": "10-Q/A",
+          "detail": "Income statement of 10-Q/A 0001829126-22-001216 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2023-03-31",

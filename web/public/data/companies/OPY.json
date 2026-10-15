@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-051238.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 27351000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Oppenheimer Holdings Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 5,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-051238",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026051238/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 27351000.0,
+      "statement_value": 27351000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 27351000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-31",
+        "accn": "0001628280-26-051238",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026051238/0001628280-26-051238-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-31",
+            "accn": "0001628280-26-051238",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 27351000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026051238/0001628280-26-051238-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-051238",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026051238/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 27351000.0,
+          "expected_value": 27351000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -20578000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-01",
+        "accn": "0001628280-26-029113",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026029113/0001628280-26-029113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-01",
+            "accn": "0001628280-26-029113",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -20578000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026029113/0001628280-26-029113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-029113",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026029113/R4.htm",
+          "statement_label": "Net (loss) income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": -20578000.0,
+          "expected_value": -20578000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 74362000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001628280-26-012313",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026012313/0001628280-26-012313-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001628280-26-012313",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 148403000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026012313/0001628280-26-012313-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-31",
+            "accn": "0001628280-25-047684",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 74041000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828025047684/0001628280-25-047684-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-012313",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828026012313/R5.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 148403000.0,
+          "expected_value": 74362000.0,
+          "detail": "12M 148,403,000 (10-K 0001628280-26-012313) − 9M 74,041,000 (10-Q 0001628280-25-047684)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 21712000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-31",
+        "accn": "0001628280-25-047684",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828025047684/0001628280-25-047684-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-31",
+            "accn": "0001628280-25-047684",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 21712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828025047684/0001628280-25-047684-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-047684",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000162828025047684/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 21712000.0,
+          "expected_value": 21712000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 21674000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-01",
+        "accn": "0000791963-25-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000037/0000791963-25-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-01",
+            "accn": "0000791963-25-000037",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 21674000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000037/0000791963-25-000037-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-25-000037",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000037/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 21674000.0,
+          "expected_value": 21674000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 30655000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-25",
+        "accn": "0000791963-25-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000022/0000791963-25-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-25",
+            "accn": "0000791963-25-000022",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 30655000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000022/0000791963-25-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-25-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000022/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 30655000.0,
+          "expected_value": 30655000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 10729000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-27",
+        "accn": "0000791963-25-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000010/0000791963-25-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-27",
+            "accn": "0000791963-25-000010",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 71557000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000010/0000791963-25-000010-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-25",
+            "accn": "0000791963-24-000051",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 60828000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000051/0000791963-24-000051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-25-000010",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196325000010/R5.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 71557000.0,
+          "expected_value": 10729000.0,
+          "detail": "12M 71,557,000 (10-K 0000791963-25-000010) − 9M 60,828,000 (10-Q 0000791963-24-000051)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 24508000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-25",
+        "accn": "0000791963-24-000051",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000051/0000791963-24-000051-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-25",
+            "accn": "0000791963-24-000051",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 24508000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000051/0000791963-24-000051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-24-000051",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000051/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 24508000.0,
+          "expected_value": 24508000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 10266000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-26",
+        "accn": "0000791963-24-000042",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000042/0000791963-24-000042-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-26",
+            "accn": "0000791963-24-000042",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 10266000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000042/0000791963-24-000042-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-24-000042",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000042/R4.htm",
+          "statement_label": "Net income (loss) attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 10266000.0,
+          "expected_value": 10266000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 26054000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-26",
+        "accn": "0000791963-24-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000026/0000791963-24-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-26",
+            "accn": "0000791963-24-000026",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 26054000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000026/0000791963-24-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-24-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000026/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 26054000.0,
+          "expected_value": 26054000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 11100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-01",
+        "accn": "0000791963-24-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000015/0000791963-24-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-01",
+            "accn": "0000791963-24-000015",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 30179000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000015/0000791963-24-000015-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-27",
+            "accn": "0000791963-23-000042",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 19079000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196323000042/0000791963-23-000042-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-24-000015",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196324000015/R5.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 30179000.0,
+          "expected_value": 11100000.0,
+          "detail": "12M 30,179,000 (10-K 0000791963-24-000015) − 9M 19,079,000 (10-Q 0000791963-23-000042)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 13861000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-27",
+        "accn": "0000791963-23-000042",
+        "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196323000042/0000791963-23-000042-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-27",
+            "accn": "0000791963-23-000042",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 13861000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196323000042/0000791963-23-000042-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000791963-23-000042",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/791963/000079196323000042/R4.htm",
+          "statement_label": "Net income attributable to Oppenheimer Holdings Inc.",
+          "statement_value": 13861000.0,
+          "expected_value": 13861000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

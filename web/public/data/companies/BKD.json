@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001332349-26-000064.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 23268000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 2,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,571 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001332349-26-000064",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000064/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 23268000.0,
+      "statement_value": 23268000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 23268000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-10",
+        "accn": "0001332349-26-000064",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000064/0001332349-26-000064-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-10",
+            "accn": "0001332349-26-000064",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 23268000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000064/0001332349-26-000064-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-26-000064",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000064/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": 23268000.0,
+          "expected_value": 23268000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -6892000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001332349-26-000048",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000048/0001332349-26-000048-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001332349-26-000048",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -6892000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000048/0001332349-26-000048-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-26-000048",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000048/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -6892000.0,
+          "expected_value": -6892000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -39963000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-19",
+        "accn": "0001332349-26-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000032/0001332349-26-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-19",
+            "accn": "0001332349-26-000032",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -262692000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000032/0001332349-26-000032-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0001332349-25-000143",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -222729000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000143/0001332349-25-000143-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-26-000032",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234926000032/R5.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -262692000.0,
+          "expected_value": -39963000.0,
+          "detail": "12M -262,692,000 (10-K 0001332349-26-000032) − 9M -222,729,000 (10-Q 0001332349-25-000143)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -114726000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-07",
+        "accn": "0001332349-25-000143",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000143/0001332349-25-000143-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0001332349-25-000143",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -114726000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000143/0001332349-25-000143-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-25-000143",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000143/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -114726000.0,
+          "expected_value": -114726000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -43024000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001332349-25-000129",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000129/0001332349-25-000129-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001332349-25-000129",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -43024000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000129/0001332349-25-000129-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-25-000129",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000129/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -43024000.0,
+          "expected_value": -43024000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -64979000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001332349-25-000100",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000100/0001332349-25-000100-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001332349-25-000100",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -64979000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000100/0001332349-25-000100-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-25-000100",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000100/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -64979000.0,
+          "expected_value": -64979000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -83922000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-19",
+        "accn": "0001332349-25-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000037/0001332349-25-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-19",
+            "accn": "0001332349-25-000037",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -201935000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000037/0001332349-25-000037-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001332349-24-000129",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -118013000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000129/0001332349-24-000129-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-25-000037",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234925000037/R5.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -201935000.0,
+          "expected_value": -83922000.0,
+          "detail": "12M -201,935,000 (10-K 0001332349-25-000037) − 9M -118,013,000 (10-Q 0001332349-24-000129)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -50720000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0001332349-24-000129",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000129/0001332349-24-000129-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001332349-24-000129",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -50720000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000129/0001332349-24-000129-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-24-000129",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000129/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -50720000.0,
+          "expected_value": -50720000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -37727000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0001332349-24-000102",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000102/0001332349-24-000102-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0001332349-24-000102",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -37727000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000102/0001332349-24-000102-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-24-000102",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000102/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -37727000.0,
+          "expected_value": -37727000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -29566000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0001332349-24-000078",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000078/0001332349-24-000078-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0001332349-24-000078",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -29566000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000078/0001332349-24-000078-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-24-000078",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000078/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -29566000.0,
+          "expected_value": -29566000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -91156000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-21",
+        "accn": "0001332349-24-000041",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000041/0001332349-24-000041-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-21",
+            "accn": "0001332349-24-000041",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -189011000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000041/0001332349-24-000041-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001332349-23-000104",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -97855000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234923000104/0001332349-23-000104-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-24-000041",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234924000041/R5.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -189011000.0,
+          "expected_value": -91156000.0,
+          "detail": "12M -189,011,000 (10-K 0001332349-24-000041) − 9M -97,855,000 (10-Q 0001332349-23-000104)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -48796000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001332349-23-000104",
+        "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234923000104/0001332349-23-000104-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001332349-23-000104",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -48796000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234923000104/0001332349-23-000104-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001332349-23-000104",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1332349/000133234923000104/R4.htm",
+          "statement_label": "Net income (loss) attributable to Brookdale Senior Living Inc. common stockholders",
+          "statement_value": -48796000.0,
+          "expected_value": -48796000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

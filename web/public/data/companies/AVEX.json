@@ -270,22 +270,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0002096300-26-000022.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 2328000.0,
         "quartersInWindow": 4,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to AEVEX Corp."
       },
       {
         "concept": "ProfitLoss",
@@ -296,14 +296,235 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 4,
         "disagreements": 3,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0002096300-26-000022",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 2328000.0,
+      "statement_value": 2328000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 2328000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-12",
+        "accn": "0002096300-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 2328000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002096300-26-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to AEVEX Corp.",
+          "statement_value": 2328000.0,
+          "expected_value": 2328000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 20926000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "6M YTD − Q2",
+        "form": "10-Q",
+        "filed": "2026-08-12",
+        "accn": "0002096300-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2026-01-01",
+            "end": "2026-06-30",
+            "value": 23254000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 2328000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002096300-26-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to AEVEX Corp.",
+          "statement_value": 23254000.0,
+          "expected_value": 20926000.0,
+          "detail": "6M 23,254,000 (10-Q 0002096300-26-000022) − 3M 2,328,000 (10-Q 0002096300-26-000022)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-29",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-29",
+        "end": "2025-09-28",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -11844000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-12",
+        "accn": "0002096300-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -11844000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002096300-26-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to AEVEX Corp.",
+          "statement_value": -11844000.0,
+          "expected_value": -11844000.0
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -27329000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "6M YTD − Q2",
+        "form": "10-Q",
+        "filed": "2026-08-12",
+        "accn": "0002096300-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2025-01-01",
+            "end": "2025-06-30",
+            "value": -39173000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-08-12",
+            "accn": "0002096300-26-000022",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -11844000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/0002096300-26-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002096300-26-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2096300/000209630026000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to AEVEX Corp.",
+          "statement_value": -39173000.0,
+          "expected_value": -27329000.0,
+          "detail": "6M -39,173,000 (10-Q 0002096300-26-000022) − 3M -11,844,000 (10-Q 0002096300-26-000022)"
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

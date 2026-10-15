@@ -241,22 +241,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-108926.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-08-15",
         "latestValue": 641000000.0,
         "quartersInWindow": 10,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to The Kroger Co."
       },
       {
         "concept": "ProfitLoss",
@@ -267,7 +267,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 10,
         "disagreements": 8,
-        "statementLabel": null
+        "statementLabel": "Net earnings including noncontrolling interests"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -282,10 +282,200 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-108926",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926108926/R2.htm",
+      "period_end": "2026-08-15",
+      "months": 3,
+      "pipeline_value": 641000000.0,
+      "statement_value": 641000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-05-24",
+        "end": "2026-08-15",
+        "ttm": "current",
+        "missing": false,
+        "value": 641000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-09-18",
+        "accn": "0001104659-26-108926",
+        "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926108926/0001104659-26-108926-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-09-18",
+            "accn": "0001104659-26-108926",
+            "start": "2026-05-24",
+            "end": "2026-08-15",
+            "value": 641000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926108926/0001104659-26-108926-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-108926",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465926108926/R2.htm",
+          "statement_label": "Net earnings attributable to The Kroger Co.",
+          "statement_value": 641000000.0,
+          "expected_value": 641000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-02-24",
+        "end": "2026-05-23",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-11-24",
+        "end": "2026-02-23",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-08-24",
+        "end": "2025-11-23",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-05-25",
+        "end": "2025-08-16",
+        "ttm": "previous",
+        "missing": false,
+        "value": 609000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-09-19",
+        "accn": "0001104659-25-091648",
+        "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465925091648/0001104659-25-091648-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-09-19",
+            "accn": "0001104659-25-091648",
+            "start": "2025-05-25",
+            "end": "2025-08-16",
+            "value": 609000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465925091648/0001104659-25-091648-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-091648",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000110465925091648/R2.htm",
+          "statement_label": "Net earnings attributable to The Kroger Co.",
+          "statement_value": 609000000.0,
+          "expected_value": 609000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-02-25",
+        "end": "2025-05-24",
+        "ttm": "previous",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-11-25",
+        "end": "2025-02-24",
+        "ttm": "previous",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-08-25",
+        "end": "2024-11-24",
+        "ttm": "previous",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-05-26",
+        "end": "2024-08-17",
+        "ttm": null,
+        "missing": false,
+        "value": 466000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-09-20",
+        "accn": "0001558370-24-012921",
+        "url": "https://www.sec.gov/Archives/edgar/data/56873/000155837024012921/0001558370-24-012921-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-09-20",
+            "accn": "0001558370-24-012921",
+            "start": "2024-05-26",
+            "end": "2024-08-17",
+            "value": 466000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/56873/000155837024012921/0001558370-24-012921-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-012921",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/56873/000155837024012921/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to The Kroger Co.",
+          "statement_value": 466000000.0,
+          "expected_value": 466000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-08-15",

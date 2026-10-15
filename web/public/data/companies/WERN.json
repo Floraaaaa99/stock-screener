@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000793074-26-000140.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 6350000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Werner"
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,561 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000793074-26-000140",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000140/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 6350000.0,
+      "statement_value": 6350000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 6350000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-07",
+        "accn": "0000793074-26-000140",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000140/0000793074-26-000140-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-07",
+            "accn": "0000793074-26-000140",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 6350000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000140/0000793074-26-000140-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-26-000140",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000140/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 6350000.0,
+          "expected_value": 6350000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -4262000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-08",
+        "accn": "0000793074-26-000096",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000096/0000793074-26-000096-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-08",
+            "accn": "0000793074-26-000096",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -4262000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000096/0000793074-26-000096-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-26-000096",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000096/R2.htm",
+          "statement_label": "Net loss attributable to Werner",
+          "statement_value": -4262000.0,
+          "expected_value": -4262000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -27788000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0000793074-26-000071",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000071/0000793074-26-000071-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0000793074-26-000071",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -14399000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000071/0000793074-26-000071-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0000793074-25-000058",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 13389000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000058/0000793074-25-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-26-000071",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307426000071/R3.htm",
+          "statement_label": "Net income (loss) attributable to Werner",
+          "statement_value": -14399000.0,
+          "expected_value": -27788000.0,
+          "detail": "12M -14,399,000 (10-K 0000793074-26-000071) − 9M 13,389,000 (10-Q 0000793074-25-000058)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -20575000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-07",
+        "accn": "0000793074-25-000058",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000058/0000793074-25-000058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0000793074-25-000058",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -20575000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000058/0000793074-25-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-25-000058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000058/R2.htm",
+          "statement_label": "Net income (loss) attributable to Werner",
+          "statement_value": -20575000.0,
+          "expected_value": -20575000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 44062000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0000793074-25-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000044/0000793074-25-000044-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0000793074-25-000044",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 44062000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000044/0000793074-25-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-25-000044",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000044/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 44062000.0,
+          "expected_value": 44062000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -10098000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-09",
+        "accn": "0000793074-25-000027",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000027/0000793074-25-000027-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-09",
+            "accn": "0000793074-25-000027",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -10098000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000027/0000793074-25-000027-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-25-000027",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000027/R2.htm",
+          "statement_label": "Net income (loss) attributable to Werner",
+          "statement_value": -10098000.0,
+          "expected_value": -10098000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 11891000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-26",
+        "accn": "0000793074-25-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000009/0000793074-25-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-26",
+            "accn": "0000793074-25-000009",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 34233000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000009/0000793074-25-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000793074-24-000064",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 22342000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000064/0000793074-24-000064-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-25-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307425000009/R3.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 34233000.0,
+          "expected_value": 11891000.0,
+          "detail": "12M 34,233,000 (10-K 0000793074-25-000009) − 9M 22,342,000 (10-Q 0000793074-24-000064)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 6565000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0000793074-24-000064",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000064/0000793074-24-000064-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000793074-24-000064",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 6565000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000064/0000793074-24-000064-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-24-000064",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000064/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 6565000.0,
+          "expected_value": 6565000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 9465000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000793074-24-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000056/0000793074-24-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000793074-24-000056",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 9465000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000056/0000793074-24-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-24-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000056/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 9465000.0,
+          "expected_value": 9465000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 6312000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-09",
+        "accn": "0000793074-24-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000037/0000793074-24-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-09",
+            "accn": "0000793074-24-000037",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 6312000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000037/0000793074-24-000037-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-24-000037",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000037/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 6312000.0,
+          "expected_value": 6312000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 23573000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-26",
+        "accn": "0000793074-24-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000014/0000793074-24-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-26",
+            "accn": "0000793074-24-000014",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 112382000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000014/0000793074-24-000014-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000793074-23-000058",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 88809000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307423000058/0000793074-23-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-24-000014",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307424000014/R3.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 112382000.0,
+          "expected_value": 23573000.0,
+          "detail": "12M 112,382,000 (10-K 0000793074-24-000014) − 9M 88,809,000 (10-Q 0000793074-23-000058)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 23704000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000793074-23-000058",
+        "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307423000058/0000793074-23-000058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000793074-23-000058",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 23704000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307423000058/0000793074-23-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000793074-23-000058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/793074/000079307423000058/R2.htm",
+          "statement_label": "Net income attributable to Werner",
+          "statement_value": 23704000.0,
+          "expected_value": 23704000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

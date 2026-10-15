@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000027996-26-000112.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 19100000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Deluxe"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,551 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000027996-26-000112",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000112/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 19100000.0,
+      "statement_value": 19100000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 19100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0000027996-26-000112",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000112/0000027996-26-000112-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0000027996-26-000112",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 19100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000112/0000027996-26-000112-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-26-000112",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000112/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 19100000.0,
+          "expected_value": 19100000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 35800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0000027996-26-000096",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000096/0000027996-26-000096-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0000027996-26-000096",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 35800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000096/0000027996-26-000096-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-26-000096",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000096/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 35800000.0,
+          "expected_value": 35800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 11974000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-13",
+        "accn": "0000027996-26-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000037/0000027996-26-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-13",
+            "accn": "0000027996-26-000037",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 82100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000037/0000027996-26-000037-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000027996-25-000189",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 70126000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000189/0000027996-25-000189-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-26-000037",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799626000037/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 82100000.0,
+          "expected_value": 11974000.0,
+          "detail": "12M 82,100,000 (10-K 0000027996-26-000037) − 9M 70,126,000 (10-Q 0000027996-25-000189)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 33729000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0000027996-25-000189",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000189/0000027996-25-000189-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000027996-25-000189",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 33729000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000189/0000027996-25-000189-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-25-000189",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000189/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 33729000.0,
+          "expected_value": 33729000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 22385000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000027996-25-000163",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000163/0000027996-25-000163-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000027996-25-000163",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 22385000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000163/0000027996-25-000163-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-25-000163",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000163/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 22385000.0,
+          "expected_value": 22385000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 14013000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-02",
+        "accn": "0000027996-25-000142",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000142/0000027996-25-000142-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-02",
+            "accn": "0000027996-25-000142",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 14013000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000142/0000027996-25-000142-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-25-000142",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000142/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 14013000.0,
+          "expected_value": 14013000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 12609000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-21",
+        "accn": "0000027996-25-000051",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000051/0000027996-25-000051-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-21",
+            "accn": "0000027996-25-000051",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 52802000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000051/0000027996-25-000051-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000027996-24-000172",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 40193000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000172/0000027996-24-000172-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-25-000051",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799625000051/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 52802000.0,
+          "expected_value": 12609000.0,
+          "detail": "12M 52,802,000 (10-K 0000027996-25-000051) − 9M 40,193,000 (10-Q 0000027996-24-000172)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 8931000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000027996-24-000172",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000172/0000027996-24-000172-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000027996-24-000172",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 8931000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000172/0000027996-24-000172-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-24-000172",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000172/R4.htm",
+          "statement_label": "Net income (loss) attributable to Deluxe",
+          "statement_value": 8931000.0,
+          "expected_value": 8931000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 20459000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-02",
+        "accn": "0000027996-24-000141",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000141/0000027996-24-000141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-02",
+            "accn": "0000027996-24-000141",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 20459000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000141/0000027996-24-000141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-24-000141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000141/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 20459000.0,
+          "expected_value": 20459000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 10803000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-03",
+        "accn": "0000027996-24-000120",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000120/0000027996-24-000120-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-03",
+            "accn": "0000027996-24-000120",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 10803000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000120/0000027996-24-000120-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-24-000120",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000120/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 10803000.0,
+          "expected_value": 10803000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 14976000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0000027996-24-000065",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000065/0000027996-24-000065-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0000027996-24-000065",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 26120000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000065/0000027996-24-000065-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0000027996-23-000176",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 11144000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799623000176/0000027996-23-000176-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-24-000065",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799624000065/R4.htm",
+          "statement_label": "Net income attributable to Deluxe",
+          "statement_value": 26120000.0,
+          "expected_value": 14976000.0,
+          "detail": "12M 26,120,000 (10-K 0000027996-24-000065) − 9M 11,144,000 (10-Q 0000027996-23-000176)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -7983000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0000027996-23-000176",
+        "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799623000176/0000027996-23-000176-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0000027996-23-000176",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -7983000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799623000176/0000027996-23-000176-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000027996-23-000176",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/27996/000002799623000176/R4.htm",
+          "statement_label": "Net (loss) income attributable to Deluxe",
+          "statement_value": -7983000.0,
+          "expected_value": -7983000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

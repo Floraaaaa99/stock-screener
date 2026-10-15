@@ -603,11 +603,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001635327-26-000056.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -615,9 +615,9 @@
         "latestValue": -177000000.0,
         "quartersInWindow": 1,
         "selected": false,
-        "comparedWith": "ProfitLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 1,
-        "disagreements": 0,
+        "disagreements": 1,
         "statementLabel": null
       },
       {
@@ -626,28 +626,581 @@
         "latestValue": -296000000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net (loss) income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -274000000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net (loss) income attributable to Flutter shareholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001635327-26-000056",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000056/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -274000000.0,
+      "statement_value": -274000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -274000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001635327-26-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000056/0001635327-26-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001635327-26-000056",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -274000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000056/0001635327-26-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635327-26-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000056/R4.htm",
+          "statement_label": "Net (loss) income attributable to Flutter shareholders",
+          "statement_value": -274000000.0,
+          "expected_value": -274000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 218000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001635327-26-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000045/0001635327-26-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001635327-26-000045",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 218000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000045/0001635327-26-000045-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635327-26-000045",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000045/R4.htm",
+          "statement_label": "Net income attributable to Flutter shareholders - basic",
+          "statement_value": 218000000.0,
+          "expected_value": 218000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -8000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001635327-26-000005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000005/0001635327-26-000005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001635327-26-000005",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -310000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000005/0001635327-26-000005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001635327-25-000030",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -302000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532725000030/0001635327-25-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635327-26-000005",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532726000005/R5.htm",
+          "statement_label": "Net (loss) income attributable to Flutter shareholders - basic",
+          "statement_value": -310000000.0,
+          "expected_value": -8000000.0,
+          "detail": "12M -310,000,000 (10-K 0001635327-26-000005) − 9M -302,000,000 (10-Q 0001635327-25-000030)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -690000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001635327-25-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532725000030/0001635327-25-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001635327-25-000030",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -690000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532725000030/0001635327-25-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001635327-25-000030",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000163532725000030/R4.htm",
+          "statement_label": "Net loss attributable to Flutter shareholder- basic",
+          "statement_value": -690000000.0,
+          "expected_value": -690000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 105000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001628280-25-038893",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025038893/0001628280-25-038893-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001628280-25-038893",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 105000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025038893/0001628280-25-038893-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-038893",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025038893/R4.htm",
+          "statement_label": "Net income attributable to Flutter shareholders - basic",
+          "statement_value": 105000000.0,
+          "expected_value": 105000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 283000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001628280-25-023168",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025023168/0001628280-25-023168-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001628280-25-023168",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 283000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025023168/0001628280-25-023168-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-023168",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025023168/R4.htm",
+          "statement_label": "Net income (loss) attributable to Flutter shareholder - basic",
+          "statement_value": 283000000.0,
+          "expected_value": 283000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 81000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-04",
+        "accn": "0001628280-25-009852",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/0001628280-25-009852-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-04",
+            "accn": "0001628280-25-009852",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 43000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/0001628280-25-009852-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001628280-24-047147",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -38000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-009852",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/R5.htm",
+          "statement_label": "Net loss attributable to Flutter shareholder - basic",
+          "statement_value": 43000000.0,
+          "expected_value": 81000000.0,
+          "detail": "12M 43,000,000 (10-K 0001628280-25-009852) − 9M -38,000,000 (10-Q 0001628280-24-047147)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -103000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001628280-24-047147",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001628280-24-047147",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -103000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-047147",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/R4.htm",
+          "statement_label": "Net loss attributable to Flutter shareholders",
+          "statement_value": -103000000.0,
+          "expected_value": -103000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 261000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-13",
+        "accn": "0001193125-24-199779",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524199779/0001193125-24-199779-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-13",
+            "accn": "0001193125-24-199779",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 261000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524199779/0001193125-24-199779-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-24-199779",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524199779/R4.htm",
+          "statement_label": "Net income (loss) attributable to Flutter shareholders",
+          "statement_value": 261000000.0,
+          "expected_value": 261000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -196000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-14",
+        "accn": "0001193125-24-137671",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524137671/0001193125-24-137671-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-14",
+            "accn": "0001193125-24-137671",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -196000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524137671/0001193125-24-137671-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-24-137671",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000119312524137671/R4.htm",
+          "statement_label": "Net loss attributable to Flutter shareholders",
+          "statement_value": -196000000.0,
+          "expected_value": -196000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -912000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-04",
+        "accn": "0001628280-25-009852",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/0001628280-25-009852-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-04",
+            "accn": "0001628280-25-009852",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -1222000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/0001628280-25-009852-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001628280-24-047147",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -310000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-009852",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828025009852/R5.htm",
+          "statement_label": "Net loss attributable to Flutter shareholder - basic",
+          "statement_value": -1222000000.0,
+          "expected_value": -912000000.0,
+          "detail": "12M -1,222,000,000 (10-K 0001628280-25-009852) − 9M -310,000,000 (10-Q 0001628280-24-047147)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -275000000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001628280-24-047147",
+        "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001628280-24-047147",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -275000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/0001628280-24-047147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-047147",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1635327/000162828024047147/R4.htm",
+          "statement_label": "Net loss attributable to Flutter shareholders",
+          "statement_value": -275000000.0,
+          "expected_value": -275000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

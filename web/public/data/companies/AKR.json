@@ -516,11 +516,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001193125-26-323776.",
     "candidates": [
       {
         "concept": "ProfitLoss",
@@ -528,28 +528,555 @@
         "latestValue": 22830000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 11038000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income attributable to Acadia shareholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-323776",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526323776/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 11038000.0,
+      "statement_value": 11038000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 11038000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-29",
+        "accn": "0001193125-26-323776",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526323776/0001193125-26-323776-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-29",
+            "accn": "0001193125-26-323776",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 11038000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526323776/0001193125-26-323776-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-323776",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526323776/R4.htm",
+          "statement_label": "Net income attributable to Acadia shareholders",
+          "statement_value": 11038000.0,
+          "expected_value": 11038000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 30477000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-29",
+        "accn": "0001193125-26-191611",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526191611/0001193125-26-191611-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-29",
+            "accn": "0001193125-26-191611",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 30477000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526191611/0001193125-26-191611-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-191611",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526191611/R4.htm",
+          "statement_label": "Net income attributable to Acadia shareholders",
+          "statement_value": 30477000.0,
+          "expected_value": 30477000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 7707000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-13",
+        "accn": "0001193125-26-051677",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526051677/0001193125-26-051677-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-13",
+            "accn": "0001193125-26-051677",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 16896000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312526051677/0001193125-26-051677-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001193125-25-256341",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 9189000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312525256341/0001193125-25-256341-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001193125-25-256341",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001193125-25-256341 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 5618000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001193125-25-256341",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312525256341/0001193125-25-256341-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001193125-25-256341",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 5618000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000119312525256341/0001193125-25-256341-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001193125-25-256341",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001193125-25-256341 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1963000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-30",
+        "accn": "0000950170-25-100264",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025100264/0000950170-25-100264-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-30",
+            "accn": "0000950170-25-100264",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1963000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025100264/0000950170-25-100264-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-25-100264",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-25-100264 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1608000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0000950170-25-061198",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025061198/0000950170-25-061198-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0000950170-25-061198",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 1608000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025061198/0000950170-25-061198-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-25-061198",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0000950170-25-061198 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 8524000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-14",
+        "accn": "0000950170-25-021145",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025021145/0000950170-25-021145-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-14",
+            "accn": "0000950170-25-021145",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 21650000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017025021145/0000950170-25-021145-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-28",
+            "accn": "0000950170-24-117714",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 13126000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024117714/0000950170-24-117714-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000950170-25-021145",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0000950170-25-021145 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 8414000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-28",
+        "accn": "0000950170-24-117714",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024117714/0000950170-24-117714-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-28",
+            "accn": "0000950170-24-117714",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 8414000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024117714/0000950170-24-117714-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-117714",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024117714/R4.htm",
+          "statement_label": "Net income (loss) attributable to Acadia shareholders",
+          "statement_value": 8414000.0,
+          "expected_value": 8414000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 1443000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0000950170-24-088594",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024088594/0000950170-24-088594-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0000950170-24-088594",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 1443000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024088594/0000950170-24-088594-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-088594",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024088594/R4.htm",
+          "statement_label": "Net income attributable to Acadia shareholders",
+          "statement_value": 1443000.0,
+          "expected_value": 1443000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 3269000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-30",
+        "accn": "0000950170-24-050536",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024050536/0000950170-24-050536-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-30",
+            "accn": "0000950170-24-050536",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 3269000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024050536/0000950170-24-050536-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-050536",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024050536/R4.htm",
+          "statement_label": "Net income attributable to Acadia shareholders",
+          "statement_value": 3269000.0,
+          "expected_value": 3269000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -1337000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-16",
+        "accn": "0000950170-24-016567",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024016567/0000950170-24-016567-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-16",
+            "accn": "0000950170-24-016567",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 19873000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024016567/0000950170-24-016567-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-31",
+            "accn": "0000950170-23-056974",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 21210000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017023056974/0000950170-23-056974-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-016567",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017024016567/R4.htm",
+          "statement_label": "Net income (loss) attributable to Acadia shareholders",
+          "statement_value": 19873000.0,
+          "expected_value": -1337000.0,
+          "detail": "12M 19,873,000 (10-K 0000950170-24-016567) − 9M 21,210,000 (10-Q 0000950170-23-056974)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -1426000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-31",
+        "accn": "0000950170-23-056974",
+        "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017023056974/0000950170-23-056974-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-31",
+            "accn": "0000950170-23-056974",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -1426000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017023056974/0000950170-23-056974-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-056974",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/899629/000095017023056974/R4.htm",
+          "statement_label": "Net (loss) income attributable to Acadia shareholders",
+          "statement_value": -1426000.0,
+          "expected_value": -1426000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

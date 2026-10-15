@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-323769.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 15500000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Ryerson Holding Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,565 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-323769",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526323769/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 15500000.0,
+      "statement_value": 15500000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 15500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-29",
+        "accn": "0001193125-26-323769",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526323769/0001193125-26-323769-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-29",
+            "accn": "0001193125-26-323769",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 15500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526323769/0001193125-26-323769-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-323769",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526323769/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": 15500000.0,
+          "expected_value": 15500000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 4500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001193125-26-209016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526209016/0001193125-26-209016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-209016",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 4500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526209016/0001193125-26-209016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-209016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526209016/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": 4500000.0,
+          "expected_value": 4500000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -37900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-23",
+        "accn": "0001193125-26-062397",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526062397/0001193125-26-062397-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-23",
+            "accn": "0001193125-26-062397",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -56400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526062397/0001193125-26-062397-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-28",
+            "accn": "0001193125-25-253579",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -18500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312525253579/0001193125-25-253579-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-062397",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526062397/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": -56400000.0,
+          "expected_value": -37900000.0,
+          "detail": "12M -56,400,000 (10-K 0001193125-26-062397) − 9M -18,500,000 (10-Q 0001193125-25-253579)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -14800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-28",
+        "accn": "0001193125-25-253579",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312525253579/0001193125-25-253579-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-28",
+            "accn": "0001193125-25-253579",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -14800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312525253579/0001193125-25-253579-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-253579",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312525253579/R2.htm",
+          "statement_label": "Net loss attributable to Ryerson Holding Corporation",
+          "statement_value": -14800000.0,
+          "expected_value": -14800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-29",
+        "accn": "0000950170-25-099646",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025099646/0000950170-25-099646-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-29",
+            "accn": "0000950170-25-099646",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025099646/0000950170-25-099646-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-099646",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025099646/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": 1900000.0,
+          "expected_value": 1900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0000950170-25-061080",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025061080/0000950170-25-061080-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0000950170-25-061080",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -5600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025061080/0000950170-25-061080-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-061080",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025061080/R2.htm",
+          "statement_label": "Net loss attributable to Ryerson Holding Corporation",
+          "statement_value": -5600000.0,
+          "expected_value": -5600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0000950170-25-024199",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025024199/0000950170-25-024199-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0000950170-25-024199",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -8600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025024199/0000950170-25-024199-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0000950170-24-118254",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -4300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024118254/0000950170-24-118254-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-024199",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017025024199/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": -8600000.0,
+          "expected_value": -4300000.0,
+          "detail": "12M -8,600,000 (10-K 0000950170-25-024199) − 9M -4,300,000 (10-Q 0000950170-24-118254)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-29",
+        "accn": "0000950170-24-118254",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024118254/0000950170-24-118254-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0000950170-24-118254",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -6600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024118254/0000950170-24-118254-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-118254",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024118254/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": -6600000.0,
+          "expected_value": -6600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 9900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-30",
+        "accn": "0000950170-24-087880",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024087880/0000950170-24-087880-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-30",
+            "accn": "0000950170-24-087880",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 9900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024087880/0000950170-24-087880-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-087880",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024087880/R2.htm",
+          "statement_label": "Net income attributable to Ryerson Holding Corporation",
+          "statement_value": 9900000.0,
+          "expected_value": 9900000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -7600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-30",
+        "accn": "0000950170-24-050548",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024050548/0000950170-24-050548-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-30",
+            "accn": "0000950170-24-050548",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -7600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024050548/0000950170-24-050548-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-050548",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024050548/R2.htm",
+          "statement_label": "Net income (loss) attributable to Ryerson Holding Corporation",
+          "statement_value": -7600000.0,
+          "expected_value": -7600000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 25800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-21",
+        "accn": "0000950170-24-018005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024018005/0000950170-24-018005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-21",
+            "accn": "0000950170-24-018005",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 145700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024018005/0000950170-24-018005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0000950170-23-056356",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 119900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017023056356/0000950170-23-056356-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-018005",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017024018005/R2.htm",
+          "statement_label": "Net income attributable to Ryerson Holding Corporation",
+          "statement_value": 145700000.0,
+          "expected_value": 25800000.0,
+          "detail": "12M 145,700,000 (10-K 0000950170-24-018005) − 9M 119,900,000 (10-Q 0000950170-23-056356)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 35000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-30",
+        "accn": "0000950170-23-056356",
+        "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017023056356/0000950170-23-056356-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0000950170-23-056356",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 35000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017023056356/0000950170-23-056356-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-056356",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1481582/000095017023056356/R2.htm",
+          "statement_label": "Net income attributable to Ryerson Holding Corporation",
+          "statement_value": 35000000.0,
+          "expected_value": 35000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

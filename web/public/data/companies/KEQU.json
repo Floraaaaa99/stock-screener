@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000055529-26-000035.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-31",
         "latestValue": 1706000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to Kewaunee Scientific Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,552 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net earnings"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000055529-26-000035",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000035/R2.htm",
+      "period_end": "2026-07-31",
+      "months": 3,
+      "pipeline_value": 1706000.0,
+      "statement_value": 1706000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-05-01",
+        "end": "2026-07-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1706000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-09-11",
+        "accn": "0000055529-26-000035",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000035/0000055529-26-000035-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-09-11",
+            "accn": "0000055529-26-000035",
+            "start": "2026-05-01",
+            "end": "2026-07-31",
+            "value": 1706000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000035/0000055529-26-000035-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-26-000035",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000035/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 1706000.0,
+          "expected_value": 1706000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-02-01",
+        "end": "2026-04-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 3388000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-06-26",
+        "accn": "0000055529-26-000020",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000020/0000055529-26-000020-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-06-26",
+            "accn": "0000055529-26-000020",
+            "start": "2025-05-01",
+            "end": "2026-04-30",
+            "value": 9618000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000020/0000055529-26-000020-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-03-13",
+            "accn": "0000055529-26-000009",
+            "start": "2025-05-01",
+            "end": "2026-01-31",
+            "value": 6230000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000009/0000055529-26-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-26-000020",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000020/R3.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 9618000.0,
+          "expected_value": 3388000.0,
+          "detail": "12M 9,618,000 (10-K 0000055529-26-000020) − 9M 6,230,000 (10-Q 0000055529-26-000009)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-11-01",
+        "end": "2026-01-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 692000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-03-13",
+        "accn": "0000055529-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000009/0000055529-26-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-03-13",
+            "accn": "0000055529-26-000009",
+            "start": "2025-11-01",
+            "end": "2026-01-31",
+            "value": 692000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000009/0000055529-26-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-26-000009",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552926000009/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 692000.0,
+          "expected_value": 692000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-08-01",
+        "end": "2025-10-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 2445000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-12-12",
+        "accn": "0000055529-25-000054",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000054/0000055529-25-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-12-12",
+            "accn": "0000055529-25-000054",
+            "start": "2025-08-01",
+            "end": "2025-10-31",
+            "value": 2445000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000054/0000055529-25-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-25-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000054/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 2445000.0,
+          "expected_value": 2445000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-05-01",
+        "end": "2025-07-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 3093000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-09-12",
+        "accn": "0000055529-25-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000040/0000055529-25-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-09-12",
+            "accn": "0000055529-25-000040",
+            "start": "2025-05-01",
+            "end": "2025-07-31",
+            "value": 3093000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000040/0000055529-25-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-25-000040",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000040/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 3093000.0,
+          "expected_value": 3093000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-02-01",
+        "end": "2025-04-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 4850000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-07-02",
+        "accn": "0000055529-25-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000026/0000055529-25-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-07-02",
+            "accn": "0000055529-25-000026",
+            "start": "2024-05-01",
+            "end": "2025-04-30",
+            "value": 11405000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000026/0000055529-25-000026-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-03-14",
+            "accn": "0000055529-25-000013",
+            "start": "2024-05-01",
+            "end": "2025-01-31",
+            "value": 6555000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000013/0000055529-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-25-000026",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000026/R3.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 11405000.0,
+          "expected_value": 4850000.0,
+          "detail": "12M 11,405,000 (10-K 0000055529-25-000026) − 9M 6,555,000 (10-Q 0000055529-25-000013)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-11-01",
+        "end": "2025-01-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1354000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-03-14",
+        "accn": "0000055529-25-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000013/0000055529-25-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-03-14",
+            "accn": "0000055529-25-000013",
+            "start": "2024-11-01",
+            "end": "2025-01-31",
+            "value": 1354000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000013/0000055529-25-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-25-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552925000013/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 1354000.0,
+          "expected_value": 1354000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-08-01",
+        "end": "2024-10-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 3008000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-12-13",
+        "accn": "0000055529-24-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000040/0000055529-24-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-12-13",
+            "accn": "0000055529-24-000040",
+            "start": "2024-08-01",
+            "end": "2024-10-31",
+            "value": 3008000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000040/0000055529-24-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-24-000040",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000040/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 3008000.0,
+          "expected_value": 3008000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-05-01",
+        "end": "2024-07-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2193000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-09-13",
+        "accn": "0000055529-24-000031",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000031/0000055529-24-000031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-09-13",
+            "accn": "0000055529-24-000031",
+            "start": "2024-05-01",
+            "end": "2024-07-31",
+            "value": 2193000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000031/0000055529-24-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-24-000031",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000031/R2.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 2193000.0,
+          "expected_value": 2193000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-02-01",
+        "end": "2024-04-30",
+        "ttm": null,
+        "missing": false,
+        "value": 11026000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-06-28",
+        "accn": "0000055529-24-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000021/0000055529-24-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-06-28",
+            "accn": "0000055529-24-000021",
+            "start": "2023-05-01",
+            "end": "2024-04-30",
+            "value": 18753000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000021/0000055529-24-000021-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-03-08",
+            "accn": "0000055529-24-000009",
+            "start": "2023-05-01",
+            "end": "2024-01-31",
+            "value": 7727000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000009/0000055529-24-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-24-000021",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000021/R3.htm",
+          "statement_label": "Net earnings attributable to Kewaunee Scientific Corporation",
+          "statement_value": 18753000.0,
+          "expected_value": 11026000.0,
+          "detail": "12M 18,753,000 (10-K 0000055529-24-000021) − 9M 7,727,000 (10-Q 0000055529-24-000009)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-11-01",
+        "end": "2024-01-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2521000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-03-08",
+        "accn": "0000055529-24-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000009/0000055529-24-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-03-08",
+            "accn": "0000055529-24-000009",
+            "start": "2023-11-01",
+            "end": "2024-01-31",
+            "value": 2521000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000009/0000055529-24-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-24-000009",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552924000009/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Kewaunee Scientific Corporation",
+          "statement_value": 2521000.0,
+          "expected_value": 2521000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-08-01",
+        "end": "2023-10-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2732000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-08",
+        "accn": "0000055529-23-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552923000029/0000055529-23-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-08",
+            "accn": "0000055529-23-000029",
+            "start": "2023-08-01",
+            "end": "2023-10-31",
+            "value": 2732000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552923000029/0000055529-23-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000055529-23-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/55529/000005552923000029/R2.htm",
+          "statement_label": "Net earnings (loss) attributable to Kewaunee Scientific Corporation",
+          "statement_value": 2732000.0,
+          "expected_value": 2732000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-31",

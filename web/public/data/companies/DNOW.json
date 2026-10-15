@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-338381.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -21000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income attributable to DNOW Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 2,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,558 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-338381",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -21000000.0,
+      "statement_value": -21000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001193125-26-338381",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/0001193125-26-338381-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001193125-26-338381",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/0001193125-26-338381-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-338381",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": -21000000.0,
+          "expected_value": -21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -44000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001193125-26-211564",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/0001193125-26-211564-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001193125-26-211564",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -44000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/0001193125-26-211564-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-211564",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": -44000000.0,
+          "expected_value": -44000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -161000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001193125-26-072828",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001193125-26-072828",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -89000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001193125-25-266494",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 72000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312525266494/0001193125-25-266494-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-072828",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": -89000000.0,
+          "expected_value": -161000000.0,
+          "detail": "12M -89,000,000 (10-K 0001193125-26-072828) − 9M 72,000,000 (10-Q 0001193125-25-266494)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 25000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001193125-25-266494",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312525266494/0001193125-25-266494-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001193125-25-266494",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 25000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312525266494/0001193125-25-266494-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-266494",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312525266494/R4.htm",
+          "statement_label": "Net income attributable to DNOW Inc.",
+          "statement_value": 25000000.0,
+          "expected_value": 25000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 14000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001193125-26-338381",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/0001193125-26-338381-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001193125-26-338381",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 14000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/0001193125-26-338381-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-338381",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526338381/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": 14000000.0,
+          "expected_value": 14000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001193125-26-211564",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/0001193125-26-211564-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001193125-26-211564",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/0001193125-26-211564-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-211564",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526211564/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": 21000000.0,
+          "expected_value": 21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 20000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001193125-26-072828",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001193125-26-072828",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 78000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123220",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 58000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024123220/0000950170-24-123220-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-072828",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": 78000000.0,
+          "expected_value": 20000000.0,
+          "detail": "12M 78,000,000 (10-K 0001193125-26-072828) − 9M 58,000,000 (10-Q 0000950170-24-123220)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000950170-24-123220",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024123220/0000950170-24-123220-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123220",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 13000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024123220/0000950170-24-123220-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-123220",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024123220/R4.htm",
+          "statement_label": "Net income attributable to DNOW Inc",
+          "statement_value": 13000000.0,
+          "expected_value": 13000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 24000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0000950170-24-092492",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024092492/0000950170-24-092492-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0000950170-24-092492",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 24000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024092492/0000950170-24-092492-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-092492",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024092492/R4.htm",
+          "statement_label": "Net income attributable to DNOW Inc",
+          "statement_value": 24000000.0,
+          "expected_value": 24000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 21000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-10",
+        "accn": "0000950170-24-057616",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024057616/0000950170-24-057616-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-10",
+            "accn": "0000950170-24-057616",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 21000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024057616/0000950170-24-057616-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-057616",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017024057616/R4.htm",
+          "statement_label": "Net income attributable to DNOW Inc",
+          "statement_value": 21000000.0,
+          "expected_value": 21000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 150000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001193125-26-072828",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001193125-26-072828",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 250000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/0001193125-26-072828-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000950170-23-058182",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 100000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017023058182/0000950170-23-058182-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-072828",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000119312526072828/R4.htm",
+          "statement_label": "Net (loss) income attributable to DNOW Inc.",
+          "statement_value": 250000000.0,
+          "expected_value": 150000000.0,
+          "detail": "12M 250,000,000 (10-K 0001193125-26-072828) − 9M 100,000,000 (10-Q 0000950170-23-058182)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 35000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0000950170-23-058182",
+        "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017023058182/0000950170-23-058182-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000950170-23-058182",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 35000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017023058182/0000950170-23-058182-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-058182",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1599617/000095017023058182/R4.htm",
+          "statement_label": "Net income attributable to NOW Inc",
+          "statement_value": 35000000.0,
+          "expected_value": 35000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001568651-26-000069.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 361808000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Oscar Health, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,567 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 6,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001568651-26-000069",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000069/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 361808000.0,
+      "statement_value": 361808000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 361808000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-07",
+        "accn": "0001568651-26-000069",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000069/0001568651-26-000069-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-07",
+            "accn": "0001568651-26-000069",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 361808000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000069/0001568651-26-000069-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-26-000069",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000069/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": 361808000.0,
+          "expected_value": 361808000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 678996000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001568651-26-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000040/0001568651-26-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001568651-26-000040",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 678996000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000040/0001568651-26-000040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-26-000040",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000040/R2.htm",
+          "statement_label": "Net income attributable to Oscar Health, Inc.",
+          "statement_value": 678996000.0,
+          "expected_value": 678996000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -352611000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-13",
+        "accn": "0001568651-26-000011",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000011/0001568651-26-000011-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-13",
+            "accn": "0001568651-26-000011",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -443151000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000011/0001568651-26-000011-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001568651-25-000037",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -90540000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000037/0001568651-25-000037-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-26-000011",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865126000011/R3.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": -443151000.0,
+          "expected_value": -352611000.0,
+          "detail": "12M -443,151,000 (10-K 0001568651-26-000011) − 9M -90,540,000 (10-Q 0001568651-25-000037)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -137450000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001568651-25-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000037/0001568651-25-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001568651-25-000037",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -137450000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000037/0001568651-25-000037-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-25-000037",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000037/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": -137450000.0,
+          "expected_value": -137450000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -228361000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001568651-25-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000025/0001568651-25-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001568651-25-000025",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -228361000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000025/0001568651-25-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-25-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000025/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": -228361000.0,
+          "expected_value": -228361000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 275271000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0001568651-25-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000015/0001568651-25-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0001568651-25-000015",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 275271000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000015/0001568651-25-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-25-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000015/R2.htm",
+          "statement_label": "Net income attributable to Oscar Health, Inc.",
+          "statement_value": 275271000.0,
+          "expected_value": 275271000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -153547000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0001568651-25-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000008/0001568651-25-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0001568651-25-000008",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 25432000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000008/0001568651-25-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001568651-24-000032",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 178979000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000032/0001568651-24-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-25-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865125000008/R3.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": 25432000.0,
+          "expected_value": -153547000.0,
+          "detail": "12M 25,432,000 (10-K 0001568651-25-000008) − 9M 178,979,000 (10-Q 0001568651-24-000032)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -54596000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0001568651-24-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000032/0001568651-24-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001568651-24-000032",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -54596000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000032/0001568651-24-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-24-000032",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000032/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": -54596000.0,
+          "expected_value": -54596000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 56207000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001568651-24-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000023/0001568651-24-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001568651-24-000023",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 56207000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000023/0001568651-24-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-24-000023",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000023/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": 56207000.0,
+          "expected_value": 56207000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 177368000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0001568651-24-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000015/0001568651-24-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0001568651-24-000015",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 177368000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000015/0001568651-24-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-24-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000015/R2.htm",
+          "statement_label": "Net income (loss) attributable to Oscar Health, Inc.",
+          "statement_value": 177368000.0,
+          "expected_value": 177368000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -150030000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-15",
+        "accn": "0001568651-24-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000006/0001568651-24-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-15",
+            "accn": "0001568651-24-000006",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -270728000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000006/0001568651-24-000006-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001568651-23-000056",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -120698000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865123000056/0001568651-23-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-24-000006",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865124000006/R5.htm",
+          "statement_label": "Net loss attributable to Oscar Health, Inc.",
+          "statement_value": -270728000.0,
+          "expected_value": -150030000.0,
+          "detail": "12M -270,728,000 (10-K 0001568651-24-000006) − 9M -120,698,000 (10-Q 0001568651-23-000056)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -65398000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001568651-23-000056",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865123000056/0001568651-23-000056-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001568651-23-000056",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -65398000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865123000056/0001568651-23-000056-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568651-23-000056",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568651/000156865123000056/R4.htm",
+          "statement_label": "Net loss attributable to Oscar Health, Inc.",
+          "statement_value": -65398000.0,
+          "expected_value": -65398000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

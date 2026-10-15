@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001493152-26-036270.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 294000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Acorn Energy, Inc. stockholders"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001493152-26-036270",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226036270/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 294000.0,
+      "statement_value": 294000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 294000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001493152-26-036270",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226036270/0001493152-26-036270-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001493152-26-036270",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 294000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226036270/0001493152-26-036270-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-036270",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226036270/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 294000.0,
+          "expected_value": 294000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -77000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001493152-26-021622",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226021622/0001493152-26-021622-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001493152-26-021622",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -77000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226021622/0001493152-26-021622-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-021622",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226021622/R4.htm",
+          "statement_label": "Net (loss) income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": -77000.0,
+          "expected_value": -77000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1074000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-05",
+        "accn": "0001493152-26-008937",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226008937/0001493152-26-008937-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-05",
+            "accn": "0001493152-26-008937",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 2510000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226008937/0001493152-26-008937-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001493152-25-020996",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 1436000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225020996/0001493152-25-020996-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-008937",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315226008937/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders.",
+          "statement_value": 2510000.0,
+          "expected_value": 1074000.0,
+          "detail": "12M 2,510,000 (10-K 0001493152-26-008937) − 9M 1,436,000 (10-Q 0001493152-25-020996)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 252000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001493152-25-020996",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225020996/0001493152-25-020996-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001493152-25-020996",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 252000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225020996/0001493152-25-020996-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-020996",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225020996/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 252000.0,
+          "expected_value": 252000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 720000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001641172-25-022519",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225022519/0001641172-25-022519-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001641172-25-022519",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 720000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225022519/0001641172-25-022519-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-022519",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225022519/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 720000.0,
+          "expected_value": 720000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 464000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0001641172-25-009174",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225009174/0001641172-25-009174-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0001641172-25-009174",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 464000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225009174/0001641172-25-009174-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-009174",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000164117225009174/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 464000.0,
+          "expected_value": 464000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 5233000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-06",
+        "accn": "0001493152-25-009325",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225009325/0001493152-25-009325-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-06",
+            "accn": "0001493152-25-009325",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 6294000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225009325/0001493152-25-009325-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001493152-24-043923",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 1061000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224043923/0001493152-24-043923-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-009325",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315225009325/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders.",
+          "statement_value": 6294000.0,
+          "expected_value": 5233000.0,
+          "detail": "12M 6,294,000 (10-K 0001493152-25-009325) − 9M 1,061,000 (10-Q 0001493152-24-043923)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 725000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0001493152-24-043923",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224043923/0001493152-24-043923-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0001493152-24-043923",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 725000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224043923/0001493152-24-043923-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-043923",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224043923/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 725000.0,
+          "expected_value": 725000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 271000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0001493152-24-030676",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224030676/0001493152-24-030676-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0001493152-24-030676",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 271000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224030676/0001493152-24-030676-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-030676",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224030676/R4.htm",
+          "statement_label": "Net income attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 271000.0,
+          "expected_value": 271000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 65000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-09",
+        "accn": "0001493152-24-018334",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224018334/0001493152-24-018334-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-09",
+            "accn": "0001493152-24-018334",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 65000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224018334/0001493152-24-018334-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-018334",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224018334/R4.htm",
+          "statement_label": "Net income (loss) attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 65000.0,
+          "expected_value": 65000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 84000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-07",
+        "accn": "0001493152-24-009150",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224009150/0001493152-24-009150-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-07",
+            "accn": "0001493152-24-009150",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 119000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224009150/0001493152-24-009150-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001493152-23-040001",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 35000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315223040001/0001493152-23-040001-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-009150",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315224009150/R4.htm",
+          "statement_label": "Net income (loss) attributable to Acorn Energy, Inc. stockholders.",
+          "statement_value": 119000.0,
+          "expected_value": 84000.0,
+          "detail": "12M 119,000 (10-K 0001493152-24-009150) − 9M 35,000 (10-Q 0001493152-23-040001)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 24000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0001493152-23-040001",
+        "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315223040001/0001493152-23-040001-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001493152-23-040001",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 24000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315223040001/0001493152-23-040001-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-23-040001",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/880984/000149315223040001/R4.htm",
+          "statement_label": "Net income (loss) attributable to Acorn Energy, Inc. stockholders",
+          "statement_value": 24000.0,
+          "expected_value": 24000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000048287-26-000125.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-04",
         "latestValue": 51100000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to HNI Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 1,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,556 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000048287-26-000125",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000125/R2.htm",
+      "period_end": "2026-07-04",
+      "months": 3,
+      "pipeline_value": 51100000.0,
+      "statement_value": 51100000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-05",
+        "end": "2026-07-04",
+        "ttm": "current",
+        "missing": false,
+        "value": 51100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0000048287-26-000125",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000125/0000048287-26-000125-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0000048287-26-000125",
+            "start": "2026-04-05",
+            "end": "2026-07-04",
+            "value": 51100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000125/0000048287-26-000125-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-26-000125",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000125/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 51100000.0,
+          "expected_value": 51100000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-04",
+        "end": "2026-04-04",
+        "ttm": "current",
+        "missing": false,
+        "value": -38800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0000048287-26-000100",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000100/0000048287-26-000100-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0000048287-26-000100",
+            "start": "2026-01-04",
+            "end": "2026-04-04",
+            "value": -38800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000100/0000048287-26-000100-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-26-000100",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000100/R2.htm",
+          "statement_label": "Net income (loss) attributable to HNI Corporation",
+          "statement_value": -38800000.0,
+          "expected_value": -38800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-28",
+        "end": "2026-01-03",
+        "ttm": "current",
+        "missing": false,
+        "value": -49200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-03",
+        "accn": "0000048287-26-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000084/0000048287-26-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-03",
+            "accn": "0000048287-26-000084",
+            "start": "2024-12-29",
+            "end": "2026-01-03",
+            "value": 54200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000084/0000048287-26-000084-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000048287-25-000137",
+            "start": "2024-12-29",
+            "end": "2025-09-27",
+            "value": 103400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000137/0000048287-25-000137-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-26-000084",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828726000084/R3.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 54200000.0,
+          "expected_value": -49200000.0,
+          "detail": "12M 54,200,000 (10-K 0000048287-26-000084) − 9M 103,400,000 (10-Q 0000048287-25-000137)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-29",
+        "end": "2025-09-27",
+        "ttm": "current",
+        "missing": false,
+        "value": 41200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0000048287-25-000137",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000137/0000048287-25-000137-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0000048287-25-000137",
+            "start": "2025-06-29",
+            "end": "2025-09-27",
+            "value": 41200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000137/0000048287-25-000137-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-25-000137",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000137/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 41200000.0,
+          "expected_value": 41200000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-30",
+        "end": "2025-06-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 48200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-29",
+        "accn": "0001628280-25-036323",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025036323/0001628280-25-036323-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-29",
+            "accn": "0001628280-25-036323",
+            "start": "2025-03-30",
+            "end": "2025-06-28",
+            "value": 48200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025036323/0001628280-25-036323-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-036323",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025036323/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 48200000.0,
+          "expected_value": 48200000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-29",
+        "end": "2025-03-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001628280-25-023236",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025023236/0001628280-25-023236-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001628280-25-023236",
+            "start": "2024-12-29",
+            "end": "2025-03-29",
+            "value": 13900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025023236/0001628280-25-023236-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-023236",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000162828025023236/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 13900000.0,
+          "expected_value": 13900000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-29",
+        "end": "2024-12-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 38300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-25",
+        "accn": "0000048287-25-000084",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000084/0000048287-25-000084-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-25",
+            "accn": "0000048287-25-000084",
+            "start": "2023-12-31",
+            "end": "2024-12-28",
+            "value": 139500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000084/0000048287-25-000084-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0000048287-24-000193",
+            "start": "2023-12-31",
+            "end": "2024-09-28",
+            "value": 101200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000193/0000048287-24-000193-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-25-000084",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828725000084/R3.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 139500000.0,
+          "expected_value": 38300000.0,
+          "detail": "12M 139,500,000 (10-K 0000048287-25-000084) − 9M 101,200,000 (10-Q 0000048287-24-000193)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-06-30",
+        "end": "2024-09-28",
+        "ttm": "previous",
+        "missing": false,
+        "value": 47500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-29",
+        "accn": "0000048287-24-000193",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000193/0000048287-24-000193-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0000048287-24-000193",
+            "start": "2024-06-30",
+            "end": "2024-09-28",
+            "value": 47500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000193/0000048287-24-000193-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-24-000193",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000193/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 47500000.0,
+          "expected_value": 47500000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-03-31",
+        "end": "2024-06-29",
+        "ttm": null,
+        "missing": false,
+        "value": 36000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-30",
+        "accn": "0000048287-24-000161",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000161/0000048287-24-000161-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-30",
+            "accn": "0000048287-24-000161",
+            "start": "2024-03-31",
+            "end": "2024-06-29",
+            "value": 36000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000161/0000048287-24-000161-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-24-000161",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000161/R2.htm",
+          "statement_label": "Net income (loss) attributable to HNI Corporation",
+          "statement_value": 36000000.0,
+          "expected_value": 36000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-12-31",
+        "end": "2024-03-30",
+        "ttm": null,
+        "missing": false,
+        "value": 17700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-30",
+        "accn": "0000048287-24-000097",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000097/0000048287-24-000097-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-30",
+            "accn": "0000048287-24-000097",
+            "start": "2023-12-31",
+            "end": "2024-03-30",
+            "value": 17700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000097/0000048287-24-000097-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-24-000097",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000097/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 17700000.0,
+          "expected_value": 17700000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-30",
+        "ttm": null,
+        "missing": false,
+        "value": 22700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-27",
+        "accn": "0000048287-24-000080",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000080/0000048287-24-000080-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-27",
+            "accn": "0000048287-24-000080",
+            "start": "2023-01-01",
+            "end": "2023-12-30",
+            "value": 49200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000080/0000048287-24-000080-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-31",
+            "accn": "0000048287-23-000205",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 26500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828723000205/0000048287-23-000205-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-24-000080",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828724000080/R3.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 49200000.0,
+          "expected_value": 22700000.0,
+          "detail": "12M 49,200,000 (10-K 0000048287-24-000080) − 9M 26,500,000 (10-Q 0000048287-23-000205)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-02",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 37800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-31",
+        "accn": "0000048287-23-000205",
+        "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828723000205/0000048287-23-000205-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-31",
+            "accn": "0000048287-23-000205",
+            "start": "2023-07-02",
+            "end": "2023-09-30",
+            "value": 37800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828723000205/0000048287-23-000205-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000048287-23-000205",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/48287/000004828723000205/R2.htm",
+          "statement_label": "Net income attributable to HNI Corporation",
+          "statement_value": 37800000.0,
+          "expected_value": 37800000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-04",

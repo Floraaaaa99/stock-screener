@@ -607,22 +607,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001493152-26-044483.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 3759920.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to NetSol"
       },
       {
         "concept": "ProfitLoss",
@@ -633,7 +633,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -648,10 +648,553 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001493152-26-044483",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226044483/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": 2950353.0,
+      "statement_value": 2950353.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 3759920.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-09-28",
+        "accn": "0001493152-26-044483",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226044483/0001493152-26-044483-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-09-28",
+            "accn": "0001493152-26-044483",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": 2950353.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226044483/0001493152-26-044483-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0001493152-26-022930",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": -809567.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226022930/0001493152-26-022930-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-044483",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226044483/R4.htm",
+          "statement_label": "Net income attributable to NetSol",
+          "statement_value": 2950353.0,
+          "expected_value": 3759920.0,
+          "detail": "12M 2,950,353 (10-K 0001493152-26-044483) − 9M -809,567 (10-Q 0001493152-26-022930)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1300964.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-14",
+        "accn": "0001493152-26-022930",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226022930/0001493152-26-022930-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0001493152-26-022930",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 1300964.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226022930/0001493152-26-022930-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-022930",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226022930/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 1300964.0,
+          "expected_value": 1300964.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 246757.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-12",
+        "accn": "0001493152-26-006335",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226006335/0001493152-26-006335-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-12",
+            "accn": "0001493152-26-006335",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 246757.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226006335/0001493152-26-006335-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-006335",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315226006335/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 246757.0,
+          "expected_value": 246757.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2357288.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001493152-25-021835",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225021835/0001493152-25-021835-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001493152-25-021835",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -2357288.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225021835/0001493152-25-021835-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-021835",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225021835/R4.htm",
+          "statement_label": "Net income attributable to NetSol",
+          "statement_value": -2357288.0,
+          "expected_value": -2357288.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2575512.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-09-29",
+        "accn": "0001493152-25-015950",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225015950/0001493152-25-015950-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-09-29",
+            "accn": "0001493152-25-015950",
+            "start": "2024-07-01",
+            "end": "2025-06-30",
+            "value": 2923233.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225015950/0001493152-25-015950-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-05-14",
+            "accn": "0001641172-25-010127",
+            "start": "2024-07-01",
+            "end": "2025-03-31",
+            "value": 347721.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000164117225010127/0001641172-25-010127-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-015950",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225015950/R4.htm",
+          "statement_label": "Net income attributable to NetSol",
+          "statement_value": 2923233.0,
+          "expected_value": 2575512.0,
+          "detail": "12M 2,923,233 (10-K 0001493152-25-015950) − 9M 347,721 (10-Q 0001641172-25-010127)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1423968.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-14",
+        "accn": "0001641172-25-010127",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000164117225010127/0001641172-25-010127-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-14",
+            "accn": "0001641172-25-010127",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 1423968.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000164117225010127/0001641172-25-010127-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-010127",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000164117225010127/R4.htm",
+          "statement_label": "Net income attributable to NetSol",
+          "statement_value": 1423968.0,
+          "expected_value": 1423968.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1147042.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-13",
+        "accn": "0001493152-25-006348",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225006348/0001493152-25-006348-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-13",
+            "accn": "0001493152-25-006348",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -1147042.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315225006348/0001493152-25-006348-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001493152-25-006348",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001493152-25-006348 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 70795.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-13",
+        "accn": "0001493152-24-045055",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224045055/0001493152-24-045055-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-13",
+            "accn": "0001493152-24-045055",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 70795.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224045055/0001493152-24-045055-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-045055",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224045055/R4.htm",
+          "statement_label": "Net income attributable to NetSol",
+          "statement_value": 70795.0,
+          "expected_value": 70795.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -82882.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-09-30",
+        "accn": "0001493152-24-038751",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224038751/0001493152-24-038751-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-09-30",
+            "accn": "0001493152-24-038751",
+            "start": "2023-07-01",
+            "end": "2024-06-30",
+            "value": 683873.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224038751/0001493152-24-038751-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-05-20",
+            "accn": "0001493152-24-020606",
+            "start": "2023-07-01",
+            "end": "2024-03-31",
+            "value": 766755.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224020606/0001493152-24-020606-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-038751",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224038751/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 683873.0,
+          "expected_value": -82882.0,
+          "detail": "12M 683,873 (10-K 0001493152-24-038751) − 9M 766,755 (10-Q 0001493152-24-020606)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 327549.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-20",
+        "accn": "0001493152-24-020606",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224020606/0001493152-24-020606-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-20",
+            "accn": "0001493152-24-020606",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 327549.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224020606/0001493152-24-020606-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-020606",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224020606/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 327549.0,
+          "expected_value": 327549.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 408316.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-13",
+        "accn": "0001493152-24-006104",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224006104/0001493152-24-006104-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-13",
+            "accn": "0001493152-24-006104",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 408316.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224006104/0001493152-24-006104-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-006104",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315224006104/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 408316.0,
+          "expected_value": 408316.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 1,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 30890.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001493152-23-039723",
+        "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315223039723/0001493152-23-039723-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001493152-23-039723",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 30890.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315223039723/0001493152-23-039723-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-23-039723",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039280/000149315223039723/R4.htm",
+          "statement_label": "Net income (loss) attributable to NetSol",
+          "statement_value": 30890.0,
+          "expected_value": 30890.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

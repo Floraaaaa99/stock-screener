@@ -568,22 +568,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001546417-26-000032.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-28",
         "latestValue": 31344000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Bloomin’ Brands"
       },
       {
         "concept": "ProfitLoss",
@@ -594,14 +594,542 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001546417-26-000032",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000032/R4.htm",
+      "period_end": "2026-06-28",
+      "months": 3,
+      "pipeline_value": 31344000.0,
+      "statement_value": 31344000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-03-30",
+        "end": "2026-06-28",
+        "ttm": "current",
+        "missing": false,
+        "value": 31344000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001546417-26-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000032/0001546417-26-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001546417-26-000032",
+            "start": "2026-03-30",
+            "end": "2026-06-28",
+            "value": 31344000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000032/0001546417-26-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-26-000032",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000032/R4.htm",
+          "statement_label": "Net income attributable to Bloomin’ Brands",
+          "statement_value": 31344000.0,
+          "expected_value": 31344000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-12-29",
+        "end": "2026-03-29",
+        "ttm": "current",
+        "missing": false,
+        "value": 55654000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001546417-26-000026",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000026/0001546417-26-000026-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001546417-26-000026",
+            "start": "2025-12-29",
+            "end": "2026-03-29",
+            "value": 55654000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000026/0001546417-26-000026-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-26-000026",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000026/R4.htm",
+          "statement_label": "Net income attributable to Bloomin’ Brands",
+          "statement_value": 55654000.0,
+          "expected_value": 55654000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-09-29",
+        "end": "2025-12-28",
+        "ttm": "current",
+        "missing": false,
+        "value": -13475000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001546417-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000009/0001546417-26-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001546417-26-000009",
+            "start": "2024-12-30",
+            "end": "2025-12-28",
+            "value": 8237000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000009/0001546417-26-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001546417-25-000141",
+            "start": "2024-12-30",
+            "end": "2025-09-28",
+            "value": 21712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000141/0001546417-25-000141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-26-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641726000009/R5.htm",
+          "statement_label": "Net income (loss) attributable to Bloomin’ Brands",
+          "statement_value": 8237000.0,
+          "expected_value": -13475000.0,
+          "detail": "12M 8,237,000 (10-K 0001546417-26-000009) − 9M 21,712,000 (10-Q 0001546417-25-000141)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-06-30",
+        "end": "2025-09-28",
+        "ttm": "current",
+        "missing": false,
+        "value": -45859000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001546417-25-000141",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000141/0001546417-25-000141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001546417-25-000141",
+            "start": "2025-06-30",
+            "end": "2025-09-28",
+            "value": -45859000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000141/0001546417-25-000141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-25-000141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000141/R4.htm",
+          "statement_label": "Net (loss) income attributable to Bloomin’ Brands",
+          "statement_value": -45859000.0,
+          "expected_value": -45859000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-03-31",
+        "end": "2025-06-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 25419000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0001546417-25-000111",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000111/0001546417-25-000111-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0001546417-25-000111",
+            "start": "2025-03-31",
+            "end": "2025-06-29",
+            "value": 25419000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000111/0001546417-25-000111-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-25-000111",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000111/R4.htm",
+          "statement_label": "Net income (loss) attributable to Bloomin’ Brands",
+          "statement_value": 25419000.0,
+          "expected_value": 25419000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-12-30",
+        "end": "2025-03-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 42152000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-08",
+        "accn": "0001546417-25-000103",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000103/0001546417-25-000103-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-08",
+            "accn": "0001546417-25-000103",
+            "start": "2024-12-30",
+            "end": "2025-03-30",
+            "value": 42152000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000103/0001546417-25-000103-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001546417-25-000103",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000103/R4.htm",
+          "statement_label": "Net income (loss) attributable to Bloomin’ Brands",
+          "statement_value": 42152000.0,
+          "expected_value": 42152000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-09-30",
+        "end": "2024-12-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": -79461000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-26",
+        "accn": "0001546417-25-000034",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000034/0001546417-25-000034-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-26",
+            "accn": "0001546417-25-000034",
+            "start": "2024-01-01",
+            "end": "2024-12-29",
+            "value": -128018000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641725000034/0001546417-25-000034-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0001546417-24-000160",
+            "start": "2024-01-01",
+            "end": "2024-09-29",
+            "value": -48557000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000160/0001546417-24-000160-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-24-000160",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001546417-24-000160 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-29",
+        "ttm": "previous",
+        "missing": false,
+        "value": 6912000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-08",
+        "accn": "0001546417-24-000160",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000160/0001546417-24-000160-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0001546417-24-000160",
+            "start": "2024-07-01",
+            "end": "2024-09-29",
+            "value": 6912000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000160/0001546417-24-000160-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-24-000160",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001546417-24-000160 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 28403000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001546417-24-000125",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000125/0001546417-24-000125-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001546417-24-000125",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 28403000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000125/0001546417-24-000125-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-24-000125",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001546417-24-000125 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -83872000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0001546417-24-000113",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000113/0001546417-24-000113-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0001546417-24-000113",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -83872000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000113/0001546417-24-000113-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-24-000113",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001546417-24-000113 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-09-25",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 43270000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-28",
+        "accn": "0001546417-24-000037",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000037/0001546417-24-000037-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-28",
+            "accn": "0001546417-24-000037",
+            "start": "2022-12-26",
+            "end": "2023-12-31",
+            "value": 247386000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641724000037/0001546417-24-000037-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001546417-23-000120",
+            "start": "2022-12-26",
+            "end": "2023-09-24",
+            "value": 204116000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641723000120/0001546417-23-000120-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-24-000037",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001546417-24-000037 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-06-26",
+        "end": "2023-09-24",
+        "ttm": null,
+        "missing": false,
+        "value": 44528000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001546417-23-000120",
+        "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641723000120/0001546417-23-000120-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001546417-23-000120",
+            "start": "2023-06-26",
+            "end": "2023-09-24",
+            "value": 44528000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1546417/000154641723000120/0001546417-23-000120-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001546417-23-000120",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001546417-23-000120 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-28",

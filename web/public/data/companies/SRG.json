@@ -605,11 +605,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001193125-26-352329.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -617,9 +617,9 @@
         "latestValue": 3684000.0,
         "quartersInWindow": 3,
         "selected": false,
-        "comparedWith": "ProfitLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 3,
-        "disagreements": 0,
+        "disagreements": 3,
         "statementLabel": null
       },
       {
@@ -628,28 +628,589 @@
         "latestValue": -6128000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -7353000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net loss attributable to Seritage common shareholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-352329",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526352329/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -7353000.0,
+      "statement_value": -7353000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -7353000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-14",
+        "accn": "0001193125-26-352329",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526352329/0001193125-26-352329-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-14",
+            "accn": "0001193125-26-352329",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -7353000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526352329/0001193125-26-352329-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-352329",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526352329/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -7353000.0,
+          "expected_value": -7353000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -31543000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-15",
+        "accn": "0001193125-26-224751",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526224751/0001193125-26-224751-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-15",
+            "accn": "0001193125-26-224751",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -31543000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526224751/0001193125-26-224751-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-224751",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526224751/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -31543000.0,
+          "expected_value": -31543000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -6310000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-31",
+        "accn": "0001193125-26-134736",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526134736/0001193125-26-134736-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-31",
+            "accn": "0001193125-26-134736",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -73115000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526134736/0001193125-26-134736-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001193125-25-283262",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -66805000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312525283262/0001193125-25-283262-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-134736",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312526134736/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -73115000.0,
+          "expected_value": -6310000.0,
+          "detail": "12M -73,115,000 (10-K 0001193125-26-134736) − 9M -66,805,000 (10-Q 0001193125-25-283262)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -13647000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-14",
+        "accn": "0001193125-25-283262",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312525283262/0001193125-25-283262-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-14",
+            "accn": "0001193125-25-283262",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -13647000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312525283262/0001193125-25-283262-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-283262",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000119312525283262/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -13647000.0,
+          "expected_value": -13647000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -29731000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-14",
+        "accn": "0000950170-25-108985",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025108985/0000950170-25-108985-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-14",
+            "accn": "0000950170-25-108985",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -29731000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025108985/0000950170-25-108985-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-108985",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025108985/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -29731000.0,
+          "expected_value": -29731000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -23427000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0000950170-25-072777",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025072777/0000950170-25-072777-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0000950170-25-072777",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -23427000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025072777/0000950170-25-072777-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-072777",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025072777/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -23427000.0,
+          "expected_value": -23427000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -12576000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-31",
+        "accn": "0000950170-25-047860",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025047860/0000950170-25-047860-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-31",
+            "accn": "0000950170-25-047860",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -158436000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025047860/0000950170-25-047860-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125603",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -145860000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024125603/0000950170-24-125603-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-047860",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017025047860/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -158436000.0,
+          "expected_value": -12576000.0,
+          "detail": "12M -158,436,000 (10-K 0000950170-25-047860) − 9M -145,860,000 (10-Q 0000950170-24-125603)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -23198000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0000950170-24-125603",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024125603/0000950170-24-125603-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0000950170-24-125603",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -23198000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024125603/0000950170-24-125603-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-125603",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024125603/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -23198000.0,
+          "expected_value": -23198000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -102452000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-14",
+        "accn": "0000950170-24-097088",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024097088/0000950170-24-097088-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-14",
+            "accn": "0000950170-24-097088",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -102452000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024097088/0000950170-24-097088-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-097088",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024097088/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -102452000.0,
+          "expected_value": -102452000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -20210000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-10",
+        "accn": "0000950170-24-057853",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024057853/0000950170-24-057853-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-10",
+            "accn": "0000950170-24-057853",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -20210000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024057853/0000950170-24-057853-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-057853",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024057853/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -20210000.0,
+          "expected_value": -20210000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2459000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-04-01",
+        "accn": "0000950170-24-039550",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024039550/0000950170-24-039550-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-04-01",
+            "accn": "0000950170-24-039550",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -159811000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024039550/0000950170-24-039550-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061211",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -162270000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017023061211/0000950170-23-061211-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-039550",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017024039550/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -159811000.0,
+          "expected_value": 2459000.0,
+          "detail": "12M -159,811,000 (10-K 0000950170-24-039550) − 9M -162,270,000 (10-Q 0000950170-23-061211)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -2127000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-061211",
+        "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017023061211/0000950170-23-061211-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-061211",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -2127000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017023061211/0000950170-23-061211-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-061211",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1628063/000095017023061211/R4.htm",
+          "statement_label": "Net loss attributable to Seritage common shareholders",
+          "statement_value": -2127000.0,
+          "expected_value": -2127000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -561,22 +561,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-109274.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -5285000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income attributable to Bloomia Holdings, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -587,14 +587,585 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net (loss) income including noncontrolling interest"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "annual_sum_mismatch",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-109274",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926109274/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": -11180000.0,
+      "statement_value": -11180000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -5285000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-09-21",
+        "accn": "0001104659-26-109274",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926109274/0001104659-26-109274-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-09-21",
+            "accn": "0001104659-26-109274",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": -11180000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926109274/0001104659-26-109274-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-13",
+            "accn": "0001104659-26-059920",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": -5895000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926059920/0001104659-26-059920-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-109274",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926109274/R4.htm",
+          "statement_label": "Net (loss) income attributable to Bloomia Holdings, Inc.",
+          "statement_value": -11180000.0,
+          "expected_value": -5285000.0,
+          "detail": "12M -11,180,000 (10-K 0001104659-26-109274) − 9M -5,895,000 (10-Q 0001104659-26-059920)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -765000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-13",
+        "accn": "0001104659-26-059920",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926059920/0001104659-26-059920-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-13",
+            "accn": "0001104659-26-059920",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -765000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926059920/0001104659-26-059920-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-059920",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926059920/R4.htm",
+          "statement_label": "Net (loss) income attributable to Bloomia Holdings, Inc.",
+          "statement_value": -765000.0,
+          "expected_value": -765000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -2276000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-13",
+        "accn": "0001104659-26-014724",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/0001104659-26-014724-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-13",
+            "accn": "0001104659-26-014724",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": -2276000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/0001104659-26-014724-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-014724",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/R4.htm",
+          "statement_label": "Net loss attributable to Bloomia Holdings, Inc.",
+          "statement_value": -2276000.0,
+          "expected_value": -2276000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2854000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001104659-25-109207",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/0001104659-25-109207-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001104659-25-109207",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -2854000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/0001104659-25-109207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-109207",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/R4.htm",
+          "statement_label": "Net loss attributable to Lendway, Inc.",
+          "statement_value": -2854000.0,
+          "expected_value": -2854000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1047000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "6M YTD − 3M",
+        "form": "10-KT",
+        "filed": "2025-08-28",
+        "accn": "0001558370-25-011807",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025011807/0001558370-25-011807-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-KT",
+            "filed": "2025-08-28",
+            "accn": "0001558370-25-011807",
+            "start": "2025-01-01",
+            "end": "2025-06-30",
+            "value": 1496000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025011807/0001558370-25-011807-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-05-13",
+            "accn": "0001558370-25-007580",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 449000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/0001558370-25-007580-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-011807",
+          "form": "10-KT",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025011807/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lendway, Inc.",
+          "statement_value": 1496000.0,
+          "expected_value": 1047000.0,
+          "detail": "6M 1,496,000 (10-KT 0001558370-25-011807) − 3M 449,000 (10-Q 0001558370-25-007580)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 449000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-13",
+        "accn": "0001558370-25-007580",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/0001558370-25-007580-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-13",
+            "accn": "0001558370-25-007580",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 449000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/0001558370-25-007580-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-007580",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lendway, Inc.",
+          "statement_value": 449000.0,
+          "expected_value": 449000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2940000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-13",
+        "accn": "0001104659-26-014724",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/0001104659-26-014724-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-13",
+            "accn": "0001104659-26-014724",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -2940000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/0001104659-26-014724-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-014724",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465926014724/R4.htm",
+          "statement_label": "Net loss attributable to Bloomia Holdings, Inc.",
+          "statement_value": -2940000.0,
+          "expected_value": -2940000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1125000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-10",
+        "accn": "0001104659-25-109207",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/0001104659-25-109207-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-10",
+            "accn": "0001104659-25-109207",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -1125000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/0001104659-25-109207-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-109207",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000110465925109207/R4.htm",
+          "statement_label": "Net loss attributable to Lendway, Inc.",
+          "statement_value": -1125000.0,
+          "expected_value": -1125000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -534000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-19",
+        "accn": "0001654954-24-014661",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495424014661/0001654954-24-014661-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-19",
+            "accn": "0001654954-24-014661",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -534000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495424014661/0001654954-24-014661-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001654954-24-014661",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495424014661/R4.htm",
+          "detail": "No 3-month net income column ending 2024-06-30 on 10-Q 0001654954-24-014661."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -1163000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-13",
+        "accn": "0001558370-25-007580",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/0001558370-25-007580-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-13",
+            "accn": "0001558370-25-007580",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -1163000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/0001558370-25-007580-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-007580",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/875355/000155837025007580/R4.htm",
+          "statement_label": "Net income (loss) attributable to Lendway, Inc.",
+          "statement_value": -1163000.0,
+          "expected_value": -1163000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -324000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − (Q1 + Q2 + Q3)",
+        "form": "10-K",
+        "filed": "2024-04-01",
+        "accn": "0001654954-24-004013",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495424004013/0001654954-24-004013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-04-01",
+            "accn": "0001654954-24-004013",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 2414000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495424004013/0001654954-24-004013-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-05-11",
+            "accn": "0001654954-23-006144",
+            "start": "2023-01-01",
+            "end": "2023-03-31",
+            "value": 1648000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495423006144/0001654954-23-006144-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-08-14",
+            "accn": "0001654954-23-010665",
+            "start": "2023-04-01",
+            "end": "2023-06-30",
+            "value": -36000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495423010665/0001654954-23-010665-index.htm"
+          },
+          {
+            "role": "quarter",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001654954-23-014295",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 1126000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495423014295/0001654954-23-014295-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001654954-24-004013",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001654954-24-004013 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 1126000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-14",
+        "accn": "0001654954-23-014295",
+        "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495423014295/0001654954-23-014295-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001654954-23-014295",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 1126000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/875355/000165495423014295/0001654954-23-014295-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001654954-23-014295",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001654954-23-014295 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

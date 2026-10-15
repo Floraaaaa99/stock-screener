@@ -67,22 +67,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0002074176-26-000053.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 142000000.0,
         "quartersInWindow": 8,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 8,
-        "disagreements": 8,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income (loss) attributable to Viper Energy, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -90,10 +90,10 @@
         "latestValue": 331000000.0,
         "quartersInWindow": 10,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLoss",
+        "overlaps": 8,
+        "disagreements": 8,
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -101,17 +101,365 @@
         "latestValue": 141000000.0,
         "quartersInWindow": 8,
         "selected": false,
-        "comparedWith": "ProfitLoss",
+        "comparedWith": "NetIncomeLoss",
         "overlaps": 8,
-        "disagreements": 8,
+        "disagreements": 2,
         "statementLabel": null
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0002074176-26-000053",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 142000000.0,
+      "statement_value": 142000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 142000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0002074176-26-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/0002074176-26-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0002074176-26-000053",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 142000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/0002074176-26-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002074176-26-000053",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/R2.htm",
+          "statement_label": "Net income (loss) attributable to Viper Energy, Inc.",
+          "statement_value": 142000000.0,
+          "expected_value": 142000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 97000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0002074176-26-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000030/0002074176-26-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0002074176-26-000030",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 97000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000030/0002074176-26-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-26-000030",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0002074176-26-000030 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -103000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0002074176-26-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000010/0002074176-26-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0002074176-26-000010",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -68000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000010/0002074176-26-000010-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0002074176-25-000053",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 35000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-26-000010",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0002074176-26-000010 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -77000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0002074176-25-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0002074176-25-000053",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -77000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-25-000053",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0002074176-25-000053 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 37000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0002074176-26-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/0002074176-26-000053-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0002074176-26-000053",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 37000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/0002074176-26-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0002074176-26-000053",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000053/R2.htm",
+          "statement_label": "Net income (loss) attributable to Viper Energy, Inc.",
+          "statement_value": 37000000.0,
+          "expected_value": 37000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 75000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0002074176-26-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000030/0002074176-26-000030-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0002074176-26-000030",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 75000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000030/0002074176-26-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-26-000030",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0002074176-26-000030 could not be read."
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 210000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0002074176-26-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000010/0002074176-26-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0002074176-26-000010",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 359000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417626000010/0002074176-26-000010-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0002074176-25-000053",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 149000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-26-000010",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0002074176-26-000010 could not be read."
+        }
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 49000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0002074176-25-000053",
+        "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0002074176-25-000053",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 49000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/2074176/000207417625000053/0002074176-25-000053-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0002074176-25-000053",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0002074176-25-000053 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

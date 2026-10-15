@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001493152-26-044490.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 206000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to InterGroup"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,571 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001493152-26-044490",
+      "form": "10-K",
+      "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226044490/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 12,
+      "pipeline_value": 1643000.0,
+      "statement_value": 1643000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 206000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-09-28",
+        "accn": "0001493152-26-044490",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226044490/0001493152-26-044490-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-09-28",
+            "accn": "0001493152-26-044490",
+            "start": "2025-07-01",
+            "end": "2026-06-30",
+            "value": 1643000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226044490/0001493152-26-044490-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001493152-26-022173",
+            "start": "2025-07-01",
+            "end": "2026-03-31",
+            "value": 1437000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226022173/0001493152-26-022173-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-044490",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226044490/R4.htm",
+          "statement_label": "Net income (loss) attributable to InterGroup",
+          "statement_value": 1643000.0,
+          "expected_value": 206000.0,
+          "detail": "12M 1,643,000 (10-K 0001493152-26-044490) − 9M 1,437,000 (10-Q 0001493152-26-022173)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 457000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001493152-26-022173",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226022173/0001493152-26-022173-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001493152-26-022173",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 457000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226022173/0001493152-26-022173-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-022173",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226022173/R4.htm",
+          "statement_label": "Net income (loss) attributable to The InterGroup Corporation",
+          "statement_value": 457000.0,
+          "expected_value": 457000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1515000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-12",
+        "accn": "0001493152-26-006429",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226006429/0001493152-26-006429-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-12",
+            "accn": "0001493152-26-006429",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 1515000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226006429/0001493152-26-006429-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-26-006429",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315226006429/R4.htm",
+          "statement_label": "Net income (loss) attributable to The InterGroup Corporation",
+          "statement_value": 1515000.0,
+          "expected_value": 1515000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -535000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001493152-25-021858",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225021858/0001493152-25-021858-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001493152-25-021858",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -535000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225021858/0001493152-25-021858-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-021858",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225021858/R4.htm",
+          "statement_label": "Net loss attributable to The InterGroup Corporation",
+          "statement_value": -535000.0,
+          "expected_value": -535000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1647000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-09-30",
+        "accn": "0001493152-25-016154",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225016154/0001493152-25-016154-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-09-30",
+            "accn": "0001493152-25-016154",
+            "start": "2024-07-01",
+            "end": "2025-06-30",
+            "value": -5348000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225016154/0001493152-25-016154-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001641172-25-010724",
+            "start": "2024-07-01",
+            "end": "2025-03-31",
+            "value": -3701000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000164117225010724/0001641172-25-010724-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-016154",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225016154/R4.htm",
+          "statement_label": "Net loss attributable to InterGroup",
+          "statement_value": -5348000.0,
+          "expected_value": -1647000.0,
+          "detail": "12M -5,348,000 (10-K 0001493152-25-016154) − 9M -3,701,000 (10-Q 0001641172-25-010724)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -578000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-15",
+        "accn": "0001641172-25-010724",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000164117225010724/0001641172-25-010724-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-15",
+            "accn": "0001641172-25-010724",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -578000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000164117225010724/0001641172-25-010724-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001641172-25-010724",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000164117225010724/R4.htm",
+          "statement_label": "Net loss attributable to The InterGroup Corporation",
+          "statement_value": -578000.0,
+          "expected_value": -578000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2725000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-14",
+        "accn": "0001493152-25-006758",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225006758/0001493152-25-006758-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-14",
+            "accn": "0001493152-25-006758",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -2725000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225006758/0001493152-25-006758-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-25-006758",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315225006758/R4.htm",
+          "statement_label": "Net loss attributable to The InterGroup Corporation",
+          "statement_value": -2725000.0,
+          "expected_value": -2725000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -398000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-13",
+        "accn": "0001493152-24-045051",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224045051/0001493152-24-045051-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-13",
+            "accn": "0001493152-24-045051",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -398000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224045051/0001493152-24-045051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-045051",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224045051/R4.htm",
+          "statement_label": "Net loss attributable to The InterGroup Corporation",
+          "statement_value": -398000.0,
+          "expected_value": -398000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -3860000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-10-01",
+        "accn": "0001493152-24-038852",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224038852/0001493152-24-038852-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-10-01",
+            "accn": "0001493152-24-038852",
+            "start": "2023-07-01",
+            "end": "2024-06-30",
+            "value": -9797000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224038852/0001493152-24-038852-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-05-14",
+            "accn": "0001493152-24-019168",
+            "start": "2023-07-01",
+            "end": "2024-03-31",
+            "value": -5937000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224019168/0001493152-24-019168-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-038852",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224038852/R4.htm",
+          "statement_label": "Net loss attributable to InterGroup",
+          "statement_value": -9797000.0,
+          "expected_value": -3860000.0,
+          "detail": "12M -9,797,000 (10-K 0001493152-24-038852) − 9M -5,937,000 (10-Q 0001493152-24-019168)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -3164000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-14",
+        "accn": "0001493152-24-019168",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224019168/0001493152-24-019168-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-14",
+            "accn": "0001493152-24-019168",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -3164000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224019168/0001493152-24-019168-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-019168",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224019168/R4.htm",
+          "statement_label": "Net (loss) income attributable to The InterGroup Corporation",
+          "statement_value": -3164000.0,
+          "expected_value": -3164000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -1529000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-20",
+        "accn": "0001493152-24-007070",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224007070/0001493152-24-007070-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-20",
+            "accn": "0001493152-24-007070",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -1529000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224007070/0001493152-24-007070-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-24-007070",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315224007070/R4.htm",
+          "statement_label": "Net (loss) income attributable to The InterGroup Corporation",
+          "statement_value": -1529000.0,
+          "expected_value": -1529000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -1244000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-14",
+        "accn": "0001493152-23-041160",
+        "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315223041160/0001493152-23-041160-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-14",
+            "accn": "0001493152-23-041160",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -1244000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315223041160/0001493152-23-041160-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001493152-23-041160",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/69422/000149315223041160/R4.htm",
+          "statement_label": "Net loss attributable to The InterGroup Corporation",
+          "statement_value": -1244000.0,
+          "expected_value": -1244000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

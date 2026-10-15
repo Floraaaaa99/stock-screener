@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001901440-26-000023.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 246000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to stockholders of UL Solutions"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001901440-26-000023",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000023/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 246000000.0,
+      "statement_value": 246000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 246000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001901440-26-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000023/0001901440-26-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001901440-26-000023",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 246000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000023/0001901440-26-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-26-000023",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000023/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 246000000.0,
+          "expected_value": 246000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 92000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-05",
+        "accn": "0001901440-26-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000012/0001901440-26-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-05",
+            "accn": "0001901440-26-000012",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 92000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000012/0001901440-26-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-26-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000012/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 92000000.0,
+          "expected_value": 92000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 67000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-19",
+        "accn": "0001901440-26-000005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000005/0001901440-26-000005-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-19",
+            "accn": "0001901440-26-000005",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 325000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000005/0001901440-26-000005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001901440-25-000047",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 258000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000047/0001901440-25-000047-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-26-000005",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144026000005/R3.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 325000000.0,
+          "expected_value": 67000000.0,
+          "detail": "12M 325,000,000 (10-K 0001901440-26-000005) − 9M 258,000,000 (10-Q 0001901440-25-000047)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 100000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001901440-25-000047",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000047/0001901440-25-000047-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001901440-25-000047",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 100000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000047/0001901440-25-000047-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-25-000047",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000047/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 100000000.0,
+          "expected_value": 100000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 91000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001901440-25-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000030/0001901440-25-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001901440-25-000030",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 91000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000030/0001901440-25-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-25-000030",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000030/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 91000000.0,
+          "expected_value": 91000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 67000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0001901440-25-000019",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000019/0001901440-25-000019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0001901440-25-000019",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 67000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000019/0001901440-25-000019-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-25-000019",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000019/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 67000000.0,
+          "expected_value": 67000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 81000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0001901440-25-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/0001901440-25-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0001901440-25-000012",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 326000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/0001901440-25-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001901440-24-000023",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 245000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-25-000012",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/R3.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 326000000.0,
+          "expected_value": 81000000.0,
+          "detail": "12M 326,000,000 (10-K 0001901440-25-000012) − 9M 245,000,000 (10-Q 0001901440-24-000023)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 88000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-05",
+        "accn": "0001901440-24-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001901440-24-000023",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 88000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-24-000023",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 88000000.0,
+          "expected_value": 88000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 101000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0001901440-24-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000012/0001901440-24-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0001901440-24-000012",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 101000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000012/0001901440-24-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-24-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000012/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 101000000.0,
+          "expected_value": 101000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 56000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-20",
+        "accn": "0001628280-24-024348",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000162828024024348/0001628280-24-024348-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-20",
+            "accn": "0001628280-24-024348",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 56000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000162828024024348/0001628280-24-024348-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-024348",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000162828024024348/R2.htm",
+          "statement_label": "Net income attributable to stockholder of UL Solutions",
+          "statement_value": 56000000.0,
+          "expected_value": 56000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 58000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-20",
+        "accn": "0001901440-25-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/0001901440-25-000012-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-20",
+            "accn": "0001901440-25-000012",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 260000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/0001901440-25-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001901440-24-000023",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 202000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-25-000012",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144025000012/R3.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 260000000.0,
+          "expected_value": 58000000.0,
+          "detail": "12M 260,000,000 (10-K 0001901440-25-000012) − 9M 202,000,000 (10-Q 0001901440-24-000023)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 53000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-05",
+        "accn": "0001901440-24-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm",
+        "restated": false,
+        "labelInferred": true,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001901440-24-000023",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 53000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/0001901440-24-000023-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001901440-24-000023",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1901440/000190144024000023/R2.htm",
+          "statement_label": "Net income attributable to stockholders of UL Solutions",
+          "statement_value": 53000000.0,
+          "expected_value": 53000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

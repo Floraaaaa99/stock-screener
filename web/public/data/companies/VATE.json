@@ -603,22 +603,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001006837-26-000063.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 10700000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to INNOVATE Corp."
       },
       {
         "concept": "ProfitLoss",
@@ -629,7 +629,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -644,10 +644,559 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001006837-26-000063",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000063/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 10700000.0,
+      "statement_value": 10700000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 10700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001006837-26-000063",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000063/0001006837-26-000063-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001006837-26-000063",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 10700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000063/0001006837-26-000063-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-26-000063",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000063/R2.htm",
+          "statement_label": "Net income (loss) attributable to INNOVATE Corp.",
+          "statement_value": 10700000.0,
+          "expected_value": 10700000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -16800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-14",
+        "accn": "0001006837-26-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000039/0001006837-26-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-14",
+            "accn": "0001006837-26-000039",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -16800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000039/0001006837-26-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-26-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000039/R2.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -16800000.0,
+          "expected_value": -16800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -7400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-26",
+        "accn": "0001006837-26-000014",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000014/0001006837-26-000014-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-26",
+            "accn": "0001006837-26-000014",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -60600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000014/0001006837-26-000014-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001006837-25-000127",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -53200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000127/0001006837-25-000127-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-26-000014",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683726000014/R3.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -60600000.0,
+          "expected_value": -7400000.0,
+          "detail": "12M -60,600,000 (10-K 0001006837-26-000014) − 9M -53,200,000 (10-Q 0001006837-25-000127)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -8900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-12",
+        "accn": "0001006837-25-000127",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000127/0001006837-25-000127-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-12",
+            "accn": "0001006837-25-000127",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -8900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000127/0001006837-25-000127-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-25-000127",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000127/R2.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -8900000.0,
+          "expected_value": -8900000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -19800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001006837-25-000104",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000104/0001006837-25-000104-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001006837-25-000104",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -19800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000104/0001006837-25-000104-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-25-000104",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000104/R2.htm",
+          "statement_label": "Net (loss) income attributable to INNOVATE Corp.",
+          "statement_value": -19800000.0,
+          "expected_value": -19800000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -24500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0001006837-25-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000045/0001006837-25-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0001006837-25-000045",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -24500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000045/0001006837-25-000045-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-25-000045",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000045/R2.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -24500000.0,
+          "expected_value": -24500000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -16600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-31",
+        "accn": "0001006837-25-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000021/0001006837-25-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-31",
+            "accn": "0001006837-25-000021",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -34600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000021/0001006837-25-000021-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001006837-24-000155",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -18000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000155/0001006837-24-000155-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-25-000021",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683725000021/R3.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -34600000.0,
+          "expected_value": -16600000.0,
+          "detail": "12M -34,600,000 (10-K 0001006837-25-000021) − 9M -18,000,000 (10-Q 0001006837-24-000155)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -15000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001006837-24-000155",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000155/0001006837-24-000155-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001006837-24-000155",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -15000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000155/0001006837-24-000155-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-24-000155",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000155/R2.htm",
+          "statement_label": "Net loss attributable to INNOVATE Corp.",
+          "statement_value": -15000000.0,
+          "expected_value": -15000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 14400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001006837-24-000122",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/0001006837-24-000122-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001006837-24-000122",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 14400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/0001006837-24-000122-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001006837-24-000122",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/R2.htm",
+          "statement_label": "Net income (loss) attributable to INNOVATE Corp.",
+          "statement_value": 14400000.0,
+          "expected_value": 14400000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -17400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0001006837-24-000079",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000079/0001006837-24-000079-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0001006837-24-000079",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -17400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000079/0001006837-24-000079-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001006837-24-000079",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001006837-24-000079 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -9300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0001006837-24-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000023/0001006837-24-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0001006837-24-000023",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -35200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683724000023/0001006837-24-000023-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001006837-23-000128",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -25900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683723000128/0001006837-23-000128-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001006837-24-000023",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001006837-24-000023 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -7000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0001006837-23-000128",
+        "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683723000128/0001006837-23-000128-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001006837-23-000128",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -7000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1006837/000100683723000128/0001006837-23-000128-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001006837-23-000128",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001006837-23-000128 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

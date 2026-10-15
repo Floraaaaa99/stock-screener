@@ -605,11 +605,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001104659-26-088153.",
     "candidates": [
       {
         "concept": "ProfitLoss",
@@ -617,28 +617,571 @@
         "latestValue": 286417000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net income and comprehensive income including noncontrolling interests"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 278657000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income and comprehensive income attributable to Antero Resources Corporation"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-088153",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926088153/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 278657000.0,
+      "statement_value": 278657000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 278657000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-29",
+        "accn": "0001104659-26-088153",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926088153/0001104659-26-088153-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-29",
+            "accn": "0001104659-26-088153",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 278657000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926088153/0001104659-26-088153-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-088153",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926088153/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 278657000.0,
+          "expected_value": 278657000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 535216000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-29",
+        "accn": "0001104659-26-051530",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926051530/0001104659-26-051530-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-29",
+            "accn": "0001104659-26-051530",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 535216000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926051530/0001104659-26-051530-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-051530",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926051530/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 535216000.0,
+          "expected_value": 535216000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 193683000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-11",
+        "accn": "0001104659-26-013386",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926013386/0001104659-26-013386-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-11",
+            "accn": "0001104659-26-013386",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 634418000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926013386/0001104659-26-013386-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001104659-25-103735",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 440735000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-013386",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465926013386/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 634418000.0,
+          "expected_value": 193683000.0,
+          "detail": "12M 634,418,000 (10-K 0001104659-26-013386) − 9M 440,735,000 (10-Q 0001104659-25-103735)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 76179000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001104659-25-103735",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001104659-25-103735",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 76179000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-103735",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/R4.htm",
+          "statement_label": "Net income (loss) and comprehensive income (loss) attributable to Antero Resources Corporation",
+          "statement_value": 76179000.0,
+          "expected_value": 76179000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 156585000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-30",
+        "accn": "0001558370-25-009802",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/0001558370-25-009802-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-30",
+            "accn": "0001558370-25-009802",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 156585000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/0001558370-25-009802-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-009802",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/R4.htm",
+          "statement_label": "Net income (loss) and comprehensive income (loss) attributable to Antero Resources Corporation",
+          "statement_value": 156585000.0,
+          "expected_value": 156585000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 207971000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001558370-25-006004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/0001558370-25-006004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001558370-25-006004",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 207971000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/0001558370-25-006004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-006004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 207971000.0,
+          "expected_value": 207971000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 149649000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0001558370-25-000864",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/0001558370-25-000864-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0001558370-25-000864",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 57226000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/0001558370-25-000864-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001104659-25-103735",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -92423000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-000864",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 57226000.0,
+          "expected_value": 149649000.0,
+          "detail": "12M 57,226,000 (10-K 0001558370-25-000864) − 9M -92,423,000 (10-Q 0001104659-25-103735)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -35347000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-29",
+        "accn": "0001104659-25-103735",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-29",
+            "accn": "0001104659-25-103735",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -35347000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/0001104659-25-103735-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-103735",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000110465925103735/R4.htm",
+          "statement_label": "Net income (loss) and comprehensive income (loss) attributable to Antero Resources Corporation",
+          "statement_value": -35347000.0,
+          "expected_value": -35347000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -79806000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-30",
+        "accn": "0001558370-25-009802",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/0001558370-25-009802-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-30",
+            "accn": "0001558370-25-009802",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -79806000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/0001558370-25-009802-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-009802",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025009802/R4.htm",
+          "statement_label": "Net income (loss) and comprehensive income (loss) attributable to Antero Resources Corporation",
+          "statement_value": -79806000.0,
+          "expected_value": -79806000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 22730000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-30",
+        "accn": "0001558370-25-006004",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/0001558370-25-006004-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-30",
+            "accn": "0001558370-25-006004",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 22730000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/0001558370-25-006004-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-006004",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025006004/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 22730000.0,
+          "expected_value": 22730000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 50249000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0001558370-25-000864",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/0001558370-25-000864-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0001558370-25-000864",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 198404000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/0001558370-25-000864-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0001558370-23-016722",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 148155000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837023016722/0001558370-23-016722-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-000864",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837025000864/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 198404000.0,
+          "expected_value": 50249000.0,
+          "detail": "12M 198,404,000 (10-K 0001558370-25-000864) − 9M 148,155,000 (10-Q 0001558370-23-016722)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 17808000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-25",
+        "accn": "0001558370-23-016722",
+        "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837023016722/0001558370-23-016722-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0001558370-23-016722",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 17808000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837023016722/0001558370-23-016722-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-23-016722",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1433270/000155837023016722/R4.htm",
+          "statement_label": "Net income and comprehensive income attributable to Antero Resources Corporation",
+          "statement_value": 17808000.0,
+          "expected_value": 17808000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

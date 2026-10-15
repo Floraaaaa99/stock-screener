@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001193125-26-335226.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -604,10 +604,10 @@
         "latestValue": -52000000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 4,
+        "statementLabel": "Net (loss) income attributable to Bruker Corporation"
       },
       {
         "concept": "ProfitLoss",
@@ -615,28 +615,571 @@
         "latestValue": -50900000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Consolidated net (loss) income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": -62900000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 4,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net (loss) income attributable to Bruker Corporation common shareholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-335226",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/R3.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -62900000.0,
+      "statement_value": -62900000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -62900000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001193125-26-335226",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/0001193125-26-335226-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001193125-26-335226",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -62900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/0001193125-26-335226-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-335226",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/R3.htm",
+          "statement_label": "Net (loss) income attributable to Bruker Corporation common shareholders",
+          "statement_value": -62900000.0,
+          "expected_value": -62900000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 3500000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001193125-26-211889",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/0001193125-26-211889-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001193125-26-211889",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 3500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/0001193125-26-211889-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-211889",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/R3.htm",
+          "statement_label": "Net income attributable to Bruker Corporation common shareholders",
+          "statement_value": 3500000.0,
+          "expected_value": 3500000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 14900000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001193125-26-082523",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526082523/0001193125-26-082523-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001193125-26-082523",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -22500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526082523/0001193125-26-082523-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001193125-25-267049",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -37400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312525267049/0001193125-25-267049-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-082523",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526082523/R4.htm",
+          "statement_label": "Net (loss) income attributable to Bruker Corporation common shareholders",
+          "statement_value": -22500000.0,
+          "expected_value": 14900000.0,
+          "detail": "12M -22,500,000 (10-K 0001193125-26-082523) − 9M -37,400,000 (10-Q 0001193125-25-267049)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -62400000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001193125-25-267049",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312525267049/0001193125-25-267049-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001193125-25-267049",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -62400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312525267049/0001193125-25-267049-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-267049",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312525267049/R4.htm",
+          "statement_label": "Net (loss) income attributable to Bruker Corporation common shareholders",
+          "statement_value": -62400000.0,
+          "expected_value": -62400000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 7600000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001193125-26-335226",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/0001193125-26-335226-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001193125-26-335226",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 7600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/0001193125-26-335226-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-335226",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526335226/R3.htm",
+          "statement_label": "Net (loss) income attributable to Bruker Corporation common shareholders",
+          "statement_value": 7600000.0,
+          "expected_value": 7600000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 17400000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-07",
+        "accn": "0001193125-26-211889",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/0001193125-26-211889-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-07",
+            "accn": "0001193125-26-211889",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 17400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/0001193125-26-211889-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-211889",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000119312526211889/R3.htm",
+          "statement_label": "Net income attributable to Bruker Corporation common shareholders",
+          "statement_value": 17400000.0,
+          "expected_value": 17400000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 13700000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-03",
+        "accn": "0000950170-25-030897",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017025030897/0000950170-25-030897-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-03",
+            "accn": "0000950170-25-030897",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 113100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017025030897/0000950170-25-030897-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123298",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 99400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024123298/0000950170-24-123298-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-030897",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017025030897/R4.htm",
+          "statement_label": "Net income attributable to Bruker Corporation",
+          "statement_value": 113100000.0,
+          "expected_value": 13700000.0,
+          "detail": "12M 113,100,000 (10-K 0000950170-25-030897) − 9M 99,400,000 (10-Q 0000950170-24-123298)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 40900000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000950170-24-123298",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024123298/0000950170-24-123298-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000950170-24-123298",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 40900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024123298/0000950170-24-123298-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-123298",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024123298/R4.htm",
+          "statement_label": "Net income attributable to Bruker Corporation",
+          "statement_value": 40900000.0,
+          "expected_value": 40900000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 7600000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0000950170-24-094832",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024094832/0000950170-24-094832-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0000950170-24-094832",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 7600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024094832/0000950170-24-094832-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-094832",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024094832/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 7600000.0,
+          "expected_value": 7600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 50900000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-10",
+        "accn": "0000950170-24-057736",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024057736/0000950170-24-057736-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-10",
+            "accn": "0000950170-24-057736",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 50900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024057736/0000950170-24-057736-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-057736",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024057736/R4.htm",
+          "statement_label": "Net income attributable to Bruker Corporation",
+          "statement_value": 50900000.0,
+          "expected_value": 50900000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 205500000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-29",
+        "accn": "0000950170-24-023038",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024023038/0000950170-24-023038-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-29",
+            "accn": "0000950170-24-023038",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 427200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024023038/0000950170-24-023038-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000950170-23-062192",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 221700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017023062192/0000950170-23-062192-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-023038",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017024023038/R4.htm",
+          "statement_label": "Net income attributable to Bruker Corporation",
+          "statement_value": 427200000.0,
+          "expected_value": 205500000.0,
+          "detail": "12M 427,200,000 (10-K 0000950170-24-023038) − 9M 221,700,000 (10-Q 0000950170-23-062192)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 88100000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0000950170-23-062192",
+        "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017023062192/0000950170-23-062192-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0000950170-23-062192",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 88100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017023062192/0000950170-23-062192-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-062192",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1109354/000095017023062192/R4.htm",
+          "statement_label": "Net income attributable to Bruker Corporation",
+          "statement_value": 88100000.0,
+          "expected_value": 88100000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

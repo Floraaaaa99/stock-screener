@@ -603,22 +603,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-090356.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -93111.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Reservoir Media, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -629,14 +629,561 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-090356",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926090356/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -93111.0,
+      "statement_value": -93111.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -93111.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001104659-26-090356",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926090356/0001104659-26-090356-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001104659-26-090356",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -93111.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926090356/0001104659-26-090356-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-090356",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926090356/R2.htm",
+          "statement_label": "Net loss attributable to Reservoir Media, Inc.",
+          "statement_value": -93111.0,
+          "expected_value": -93111.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 4404497.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-05-28",
+        "accn": "0001104659-26-067615",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926067615/0001104659-26-067615-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-05-28",
+            "accn": "0001104659-26-067615",
+            "start": "2025-04-01",
+            "end": "2026-03-31",
+            "value": 8302664.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926067615/0001104659-26-067615-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-04",
+            "accn": "0001104659-26-010303",
+            "start": "2025-04-01",
+            "end": "2025-12-31",
+            "value": 3898167.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926010303/0001104659-26-010303-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-067615",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926067615/R2.htm",
+          "statement_label": "Net income attributable to Reservoir Media, Inc.",
+          "statement_value": 8302664.0,
+          "expected_value": 4404497.0,
+          "detail": "12M 8,302,664 (10-K 0001104659-26-067615) − 9M 3,898,167 (10-Q 0001104659-26-010303)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 2195985.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-04",
+        "accn": "0001104659-26-010303",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926010303/0001104659-26-010303-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-04",
+            "accn": "0001104659-26-010303",
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "value": 2195985.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926010303/0001104659-26-010303-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-010303",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465926010303/R2.htm",
+          "statement_label": "Net income attributable to Reservoir Media, Inc.",
+          "statement_value": 2195985.0,
+          "expected_value": 2195985.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 2257841.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001104659-25-106263",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465925106263/0001104659-25-106263-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001104659-25-106263",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 2257841.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465925106263/0001104659-25-106263-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-106263",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000110465925106263/R2.htm",
+          "statement_label": "Net income (loss) attributable to Reservoir Media, Inc.",
+          "statement_value": 2257841.0,
+          "expected_value": 2257841.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -555659.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001410578-25-001573",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001573/0001410578-25-001573-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001410578-25-001573",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -555659.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001573/0001410578-25-001573-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-001573",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001573/R2.htm",
+          "statement_label": "Net loss attributable to Reservoir Media, Inc.",
+          "statement_value": -555659.0,
+          "expected_value": -555659.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2667462.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-05-28",
+        "accn": "0001410578-25-001379",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001379/0001410578-25-001379-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-05-28",
+            "accn": "0001410578-25-001379",
+            "start": "2024-04-01",
+            "end": "2025-03-31",
+            "value": 7749913.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001379/0001410578-25-001379-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001410578-25-000076",
+            "start": "2024-04-01",
+            "end": "2024-12-31",
+            "value": 5082451.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825000076/0001410578-25-000076-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-001379",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825001379/R2.htm",
+          "statement_label": "Net income attributable to Reservoir Media, Inc.",
+          "statement_value": 7749913.0,
+          "expected_value": 2667462.0,
+          "detail": "12M 7,749,913 (10-K 0001410578-25-001379) − 9M 5,082,451 (10-Q 0001410578-25-000076)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 5244091.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-05",
+        "accn": "0001410578-25-000076",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825000076/0001410578-25-000076-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-05",
+            "accn": "0001410578-25-000076",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 5244091.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825000076/0001410578-25-000076-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-25-000076",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057825000076/R2.htm",
+          "statement_label": "Net income (loss) attributable to Reservoir Media, Inc.",
+          "statement_value": 5244091.0,
+          "expected_value": 5244091.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 185015.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-30",
+        "accn": "0001410578-24-001717",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001717/0001410578-24-001717-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-30",
+            "accn": "0001410578-24-001717",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 185015.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001717/0001410578-24-001717-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-24-001717",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001717/R2.htm",
+          "statement_label": "Net income (loss) attributable to Reservoir Media, Inc.",
+          "statement_value": 185015.0,
+          "expected_value": 185015.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -346655.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-31",
+        "accn": "0001410578-24-001135",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001135/0001410578-24-001135-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-31",
+            "accn": "0001410578-24-001135",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -346655.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001135/0001410578-24-001135-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-24-001135",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824001135/R2.htm",
+          "statement_label": "Net (loss) income attributable to Reservoir Media, Inc.",
+          "statement_value": -346655.0,
+          "expected_value": -346655.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2795273.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-05-30",
+        "accn": "0001410578-24-000975",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000975/0001410578-24-000975-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-05-30",
+            "accn": "0001410578-24-000975",
+            "start": "2023-04-01",
+            "end": "2024-03-31",
+            "value": 644937.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000975/0001410578-24-000975-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-07",
+            "accn": "0001410578-24-000017",
+            "start": "2023-04-01",
+            "end": "2023-12-31",
+            "value": -2150336.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000017/0001410578-24-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-24-000975",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000975/R2.htm",
+          "statement_label": "Net income attributable to Reservoir Media, Inc.",
+          "statement_value": 644937.0,
+          "expected_value": 2795273.0,
+          "detail": "12M 644,937 (10-K 0001410578-24-000975) − 9M -2,150,336 (10-Q 0001410578-24-000017)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -2963059.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-07",
+        "accn": "0001410578-24-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000017/0001410578-24-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-07",
+            "accn": "0001410578-24-000017",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": -2963059.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000017/0001410578-24-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-24-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057824000017/R2.htm",
+          "statement_label": "Net (loss) income attributable to Reservoir Media, Inc.",
+          "statement_value": -2963059.0,
+          "expected_value": -2963059.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 535390.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001410578-23-002219",
+        "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057823002219/0001410578-23-002219-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001410578-23-002219",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 535390.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057823002219/0001410578-23-002219-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001410578-23-002219",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1824403/000141057823002219/R2.htm",
+          "statement_label": "Net income attributable to Reservoir Media, Inc.",
+          "statement_value": 535390.0,
+          "expected_value": 535390.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

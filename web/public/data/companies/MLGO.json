@@ -175,11 +175,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001829126-23-003141.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -187,9 +187,9 @@
         "latestValue": -1264983.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 6,
+        "disagreements": 3,
         "statementLabel": null
       },
       {
@@ -198,28 +198,308 @@
         "latestValue": -1264983.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 3,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 6,
+        "disagreements": 2,
+        "statementLabel": "NET INCOME / (LOSS)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2023-03-31",
         "latestValue": -1258841.0,
         "quartersInWindow": 6,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 6,
-        "disagreements": 3,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "NET INCOME (LOSS) ATTRIBUTABLE TO MICRO ALGO INC."
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "stale_filings",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001829126-23-003141",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/R4.htm",
+      "period_end": "2023-03-31",
+      "months": 3,
+      "pipeline_value": -1258841.0,
+      "statement_value": -1258841.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 1,
+        "start": "2023-01-01",
+        "end": "2023-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1258841.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-05-08",
+        "accn": "0001829126-23-003141",
+        "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/0001829126-23-003141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-05-08",
+            "accn": "0001829126-23-003141",
+            "start": "2023-01-01",
+            "end": "2023-03-31",
+            "value": -1258841.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/0001829126-23-003141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-23-003141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO MICRO ALGO INC.",
+          "statement_value": -1258841.0,
+          "expected_value": -1258841.0
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 4,
+        "start": "2022-09-29",
+        "end": "2022-12-31",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 3,
+        "start": "2022-06-29",
+        "end": "2022-09-28",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 2,
+        "start": "2022-03-29",
+        "end": "2022-06-28",
+        "ttm": "current",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2022,
+        "fiscalQuarter": 1,
+        "start": "2022-01-01",
+        "end": "2022-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 873468.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-05-08",
+        "accn": "0001829126-23-003141",
+        "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/0001829126-23-003141-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-05-08",
+            "accn": "0001829126-23-003141",
+            "start": "2022-01-01",
+            "end": "2022-03-31",
+            "value": 873468.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/0001829126-23-003141-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001829126-23-003141",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912623003141/R4.htm",
+          "statement_label": "NET INCOME (LOSS) ATTRIBUTABLE TO MICRO ALGO INC.",
+          "statement_value": 873468.0,
+          "expected_value": 873468.0
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 4,
+        "start": "2021-09-29",
+        "end": "2021-12-31",
+        "ttm": "previous",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 3,
+        "start": "2021-06-29",
+        "end": "2021-09-28",
+        "ttm": "previous",
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 2,
+        "start": "2021-04-01",
+        "end": "2021-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -218140.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2022-01-18",
+        "accn": "0001829126-22-000984",
+        "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000984/0001829126-22-000984-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2022-01-18",
+            "accn": "0001829126-22-000984",
+            "start": "2021-04-01",
+            "end": "2021-06-30",
+            "value": -218140.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000984/0001829126-22-000984-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-000984",
+          "form": "10-Q/A",
+          "detail": "Income statement of 10-Q/A 0001829126-22-000984 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2021,
+        "fiscalQuarter": 1,
+        "start": "2021-01-01",
+        "end": "2021-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -3721131.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2022-01-18",
+        "accn": "0001829126-22-000982",
+        "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000982/0001829126-22-000982-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2022-01-18",
+            "accn": "0001829126-22-000982",
+            "start": "2021-01-01",
+            "end": "2021-03-31",
+            "value": -3721131.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000982/0001829126-22-000982-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-000982",
+          "form": "10-Q/A",
+          "detail": "Income statement of 10-Q/A 0001829126-22-000982 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2020,
+        "fiscalQuarter": 4,
+        "start": "2020-09-29",
+        "end": "2020-12-31",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": 2020,
+        "fiscalQuarter": 3,
+        "start": "2020-06-29",
+        "end": "2020-09-28",
+        "ttm": null,
+        "missing": true,
+        "value": null
+      },
+      {
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "start": "2020-04-01",
+        "end": "2020-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -6100.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q/A",
+        "filed": "2022-01-18",
+        "accn": "0001829126-22-000984",
+        "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000984/0001829126-22-000984-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q/A",
+            "filed": "2022-01-18",
+            "accn": "0001829126-22-000984",
+            "start": "2020-04-01",
+            "end": "2020-06-30",
+            "value": -6100.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1800392/000182912622000984/0001829126-22-000984-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001829126-22-000984",
+          "form": "10-Q/A",
+          "detail": "Income statement of 10-Q/A 0001829126-22-000984 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2023-03-31",

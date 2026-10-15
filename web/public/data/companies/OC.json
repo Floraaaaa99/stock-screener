@@ -603,22 +603,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001370946-26-000177.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 226000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "NET EARNINGS"
       },
       {
         "concept": "ProfitLoss",
@@ -629,14 +629,547 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 8,
-        "statementLabel": null
+        "statementLabel": "NET EARNINGS"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001370946-26-000177",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000177/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 226000000.0,
+      "statement_value": 226000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 226000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001370946-26-000177",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000177/0001370946-26-000177-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001370946-26-000177",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 226000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000177/0001370946-26-000177-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-26-000177",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000177/R2.htm",
+          "statement_label": "NET EARNINGS",
+          "statement_value": 226000000.0,
+          "expected_value": 226000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -105000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001370946-26-000145",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000145/0001370946-26-000145-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001370946-26-000145",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -105000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000145/0001370946-26-000145-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-26-000145",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000145/R2.htm",
+          "statement_label": "NET LOSS",
+          "statement_value": -105000000.0,
+          "expected_value": -105000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -298000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-25",
+        "accn": "0001370946-26-000067",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000067/0001370946-26-000067-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-25",
+            "accn": "0001370946-26-000067",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -522000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000067/0001370946-26-000067-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001370946-25-000241",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -224000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000241/0001370946-25-000241-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-26-000067",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094626000067/R3.htm",
+          "statement_label": "NET (LOSS) EARNINGS",
+          "statement_value": -522000000.0,
+          "expected_value": -298000000.0,
+          "detail": "12M -522,000,000 (10-K 0001370946-26-000067) − 9M -224,000,000 (10-Q 0001370946-25-000241)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -494000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001370946-25-000241",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000241/0001370946-25-000241-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001370946-25-000241",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -494000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000241/0001370946-25-000241-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-25-000241",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000241/R2.htm",
+          "statement_label": "NET (LOSS) EARNINGS ATTRIBUTABLE TO OWENS CORNING",
+          "statement_value": -494000000.0,
+          "expected_value": -494000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 363000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001370946-25-000205",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000205/0001370946-25-000205-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001370946-25-000205",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 363000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000205/0001370946-25-000205-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-25-000205",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000205/R2.htm",
+          "statement_label": "NET EARNINGS ATTRIBUTABLE TO OWENS CORNING",
+          "statement_value": 363000000.0,
+          "expected_value": 363000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -93000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001628280-25-022858",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000162828025022858/0001628280-25-022858-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001628280-25-022858",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -93000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000162828025022858/0001628280-25-022858-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-022858",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000162828025022858/R2.htm",
+          "statement_label": "NET (LOSS) EARNINGS ATTRIBUTABLE TO OWENS CORNING",
+          "statement_value": -93000000.0,
+          "expected_value": -93000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -258000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-24",
+        "accn": "0001370946-25-000077",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000077/0001370946-25-000077-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-24",
+            "accn": "0001370946-25-000077",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 647000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094625000077/0001370946-25-000077-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001370946-24-000239",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 905000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000239/0001370946-24-000239-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001370946-25-000077",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001370946-25-000077 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 321000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001370946-24-000239",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000239/0001370946-24-000239-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001370946-24-000239",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 321000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000239/0001370946-24-000239-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001370946-24-000239",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001370946-24-000239 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 285000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-06",
+        "accn": "0001370946-24-000183",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000183/0001370946-24-000183-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-06",
+            "accn": "0001370946-24-000183",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 285000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000183/0001370946-24-000183-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001370946-24-000183",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001370946-24-000183 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 299000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-24",
+        "accn": "0001370946-24-000129",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000129/0001370946-24-000129-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-24",
+            "accn": "0001370946-24-000129",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 299000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000129/0001370946-24-000129-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001370946-24-000129",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001370946-24-000129 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 131000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-14",
+        "accn": "0001370946-24-000046",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000046/0001370946-24-000046-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-14",
+            "accn": "0001370946-24-000046",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 1196000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094624000046/0001370946-24-000046-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0001370946-23-000049",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 1065000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094623000049/0001370946-23-000049-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001370946-24-000046",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001370946-24-000046 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 337000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-25",
+        "accn": "0001370946-23-000049",
+        "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094623000049/0001370946-23-000049-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-25",
+            "accn": "0001370946-23-000049",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 337000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094623000049/0001370946-23-000049-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001370946-23-000049",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1370946/000137094623000049/R2.htm",
+          "statement_label": "NET EARNINGS ATTRIBUTABLE TO OWENS CORNING",
+          "statement_value": 337000000.0,
+          "expected_value": 337000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

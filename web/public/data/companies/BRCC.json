@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001891101-26-000039.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -103000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to BRC Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,573 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001891101-26-000039",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000039/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -103000.0,
+      "statement_value": -103000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -103000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-03",
+        "accn": "0001891101-26-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000039/0001891101-26-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-03",
+            "accn": "0001891101-26-000039",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -103000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000039/0001891101-26-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-26-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000039/R4.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -103000.0,
+          "expected_value": -103000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -15000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-04",
+        "accn": "0001891101-26-000028",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000028/0001891101-26-000028-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-04",
+            "accn": "0001891101-26-000028",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -15000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000028/0001891101-26-000028-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-26-000028",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000028/R4.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -15000.0,
+          "expected_value": -15000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -3212000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-02",
+        "accn": "0001891101-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000022/0001891101-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-02",
+            "accn": "0001891101-26-000022",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -11914000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000022/0001891101-26-000022-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-03",
+            "accn": "0001891101-25-000033",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -8702000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000033/0001891101-25-000033-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-26-000022",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110126000022/R5.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -11914000.0,
+          "expected_value": -3212000.0,
+          "detail": "12M -11,914,000 (10-K 0001891101-26-000022) − 9M -8,702,000 (10-Q 0001891101-25-000033)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -486000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-03",
+        "accn": "0001891101-25-000033",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000033/0001891101-25-000033-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-03",
+            "accn": "0001891101-25-000033",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -486000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000033/0001891101-25-000033-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-25-000033",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000033/R4.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -486000.0,
+          "expected_value": -486000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -5329000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-04",
+        "accn": "0001891101-25-000018",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000018/0001891101-25-000018-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-04",
+            "accn": "0001891101-25-000018",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -5329000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000018/0001891101-25-000018-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-25-000018",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000018/R4.htm",
+          "statement_label": "Net income (loss) attributable to BRC Inc.",
+          "statement_value": -5329000.0,
+          "expected_value": -5329000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2888000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-05",
+        "accn": "0001891101-25-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000012/0001891101-25-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-05",
+            "accn": "0001891101-25-000012",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -2888000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000012/0001891101-25-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-25-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000012/R4.htm",
+          "statement_label": "Net income (loss) attributable to BRC Inc.",
+          "statement_value": -2888000.0,
+          "expected_value": -2888000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -2482000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-03",
+        "accn": "0001891101-25-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000006/0001891101-25-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-03",
+            "accn": "0001891101-25-000006",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -2952000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000006/0001891101-25-000006-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-04",
+            "accn": "0001891101-24-000031",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -470000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000031/0001891101-24-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-25-000006",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110125000006/R5.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -2952000.0,
+          "expected_value": -2482000.0,
+          "detail": "12M -2,952,000 (10-K 0001891101-25-000006) − 9M -470,000 (10-Q 0001891101-24-000031)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -535000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-04",
+        "accn": "0001891101-24-000031",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000031/0001891101-24-000031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-04",
+            "accn": "0001891101-24-000031",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -535000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000031/0001891101-24-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-24-000031",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000031/R4.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -535000.0,
+          "expected_value": -535000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -482000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001891101-24-000024",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000024/0001891101-24-000024-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001891101-24-000024",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -482000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000024/0001891101-24-000024-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-24-000024",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000024/R4.htm",
+          "statement_label": "Net income (loss) attributable to BRC Inc.",
+          "statement_value": -482000.0,
+          "expected_value": -482000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 548000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-08",
+        "accn": "0001891101-24-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000016/0001891101-24-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-08",
+            "accn": "0001891101-24-000016",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 548000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000016/0001891101-24-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-24-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000016/R4.htm",
+          "statement_label": "Net income (loss) attributable to BRC Inc.",
+          "statement_value": 548000.0,
+          "expected_value": 548000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -4485000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0001891101-24-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000008/0001891101-24-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0001891101-24-000008",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -16745000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000008/0001891101-24-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001891101-23-000044",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -12260000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110123000044/0001891101-23-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-24-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110124000008/R5.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -16745000.0,
+          "expected_value": -4485000.0,
+          "detail": "12M -16,745,000 (10-K 0001891101-24-000008) − 9M -12,260,000 (10-Q 0001891101-23-000044)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -3232000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0001891101-23-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110123000044/0001891101-23-000044-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001891101-23-000044",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -3232000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110123000044/0001891101-23-000044-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001891101-23-000044",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1891101/000189110123000044/R4.htm",
+          "statement_label": "Net loss attributable to BRC Inc.",
+          "statement_value": -3232000.0,
+          "expected_value": -3232000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

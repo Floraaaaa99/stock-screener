@@ -573,22 +573,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001144204-16-134196.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2016-09-30",
         "latestValue": -818652.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "ProfitLoss",
@@ -614,10 +614,544 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch",
+      "stale_filings",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "not_presented",
+      "accn": "0001144204-16-134196",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416134196/R4.htm",
+      "period_end": "2016-09-30",
+      "months": 3,
+      "pipeline_value": -818652.0,
+      "statement_value": null
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2017,
+        "fiscalQuarter": 1,
+        "start": "2016-07-01",
+        "end": "2016-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -818652.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2016-11-14",
+        "accn": "0001144204-16-134196",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416134196/0001144204-16-134196-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2016-11-14",
+            "accn": "0001144204-16-134196",
+            "start": "2016-07-01",
+            "end": "2016-09-30",
+            "value": -818652.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416134196/0001144204-16-134196-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-16-134196",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416134196/R4.htm",
+          "detail": "No 3-month net income column ending 2016-09-30 on 10-Q 0001144204-16-134196."
+        }
+      },
+      {
+        "fiscalYear": 2016,
+        "fiscalQuarter": 4,
+        "start": "2016-04-01",
+        "end": "2016-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -2897607.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2016-09-28",
+        "accn": "0001144204-16-125768",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/0001144204-16-125768-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2016-09-28",
+            "accn": "0001144204-16-125768",
+            "start": "2015-07-01",
+            "end": "2016-06-30",
+            "value": -6153002.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/0001144204-16-125768-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2016-05-16",
+            "accn": "0001144204-16-102354",
+            "start": "2015-07-01",
+            "end": "2016-03-31",
+            "value": -3255395.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416102354/0001144204-16-102354-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-16-125768",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/R4.htm",
+          "detail": "No 12-month net income column ending 2016-06-30 on 10-K 0001144204-16-125768."
+        }
+      },
+      {
+        "fiscalYear": 2016,
+        "fiscalQuarter": 3,
+        "start": "2016-01-01",
+        "end": "2016-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -1492771.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2016-05-16",
+        "accn": "0001144204-16-102354",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416102354/0001144204-16-102354-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2016-05-16",
+            "accn": "0001144204-16-102354",
+            "start": "2016-01-01",
+            "end": "2016-03-31",
+            "value": -1492771.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416102354/0001144204-16-102354-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-16-102354",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416102354/R4.htm",
+          "detail": "No 3-month net income column ending 2016-03-31 on 10-Q 0001144204-16-102354."
+        }
+      },
+      {
+        "fiscalYear": 2016,
+        "fiscalQuarter": 2,
+        "start": "2015-10-01",
+        "end": "2015-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -388122.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2016-02-16",
+        "accn": "0001144204-16-082850",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416082850/0001144204-16-082850-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2016-02-16",
+            "accn": "0001144204-16-082850",
+            "start": "2015-10-01",
+            "end": "2015-12-31",
+            "value": -388122.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416082850/0001144204-16-082850-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-16-082850",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416082850/R4.htm",
+          "detail": "No 3-month net income column ending 2015-12-31 on 10-Q 0001144204-16-082850."
+        }
+      },
+      {
+        "fiscalYear": 2016,
+        "fiscalQuarter": 1,
+        "start": "2015-07-01",
+        "end": "2015-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1392649.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2015-11-13",
+        "accn": "0001144204-15-065277",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415065277/0001144204-15-065277-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2015-11-13",
+            "accn": "0001144204-15-065277",
+            "start": "2015-07-01",
+            "end": "2015-09-30",
+            "value": -1392649.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415065277/0001144204-15-065277-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-15-065277",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415065277/R4.htm",
+          "detail": "No 3-month net income column ending 2015-09-30 on 10-Q 0001144204-15-065277."
+        }
+      },
+      {
+        "fiscalYear": 2015,
+        "fiscalQuarter": 4,
+        "start": "2015-04-01",
+        "end": "2015-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -4674829.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2016-09-28",
+        "accn": "0001144204-16-125768",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/0001144204-16-125768-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2016-09-28",
+            "accn": "0001144204-16-125768",
+            "start": "2014-07-01",
+            "end": "2015-06-30",
+            "value": -4734321.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/0001144204-16-125768-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2015-05-15",
+            "accn": "0001144204-15-031201",
+            "start": "2014-07-01",
+            "end": "2015-03-31",
+            "value": -59492.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415031201/0001144204-15-031201-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-16-125768",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420416125768/R4.htm",
+          "detail": "No 12-month net income column ending 2015-06-30 on 10-K 0001144204-16-125768."
+        }
+      },
+      {
+        "fiscalYear": 2015,
+        "fiscalQuarter": 3,
+        "start": "2015-01-01",
+        "end": "2015-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -250003.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2015-05-15",
+        "accn": "0001144204-15-031201",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415031201/0001144204-15-031201-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2015-05-15",
+            "accn": "0001144204-15-031201",
+            "start": "2015-01-01",
+            "end": "2015-03-31",
+            "value": -250003.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415031201/0001144204-15-031201-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-15-031201",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001144204-15-031201 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2015,
+        "fiscalQuarter": 2,
+        "start": "2014-10-01",
+        "end": "2014-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 867536.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2015-02-13",
+        "accn": "0001144204-15-009111",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415009111/0001144204-15-009111-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2015-02-13",
+            "accn": "0001144204-15-009111",
+            "start": "2014-10-01",
+            "end": "2014-12-31",
+            "value": 867536.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420415009111/0001144204-15-009111-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-15-009111",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001144204-15-009111 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2015,
+        "fiscalQuarter": 1,
+        "start": "2014-07-01",
+        "end": "2014-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -676299.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2014-11-13",
+        "accn": "0001144204-14-067794",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414067794/0001144204-14-067794-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2014-11-13",
+            "accn": "0001144204-14-067794",
+            "start": "2014-07-01",
+            "end": "2014-09-30",
+            "value": -676299.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414067794/0001144204-14-067794-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-14-067794",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001144204-14-067794 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2014,
+        "fiscalQuarter": 4,
+        "start": "2014-04-01",
+        "end": "2014-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -506734.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2014-09-29",
+        "accn": "0001144204-14-058358",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414058358/0001144204-14-058358-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2014-09-29",
+            "accn": "0001144204-14-058358",
+            "start": "2013-07-01",
+            "end": "2014-06-30",
+            "value": 131140.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414058358/0001144204-14-058358-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2014-05-15",
+            "accn": "0001144204-14-030873",
+            "start": "2013-07-01",
+            "end": "2014-03-31",
+            "value": 637874.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414030873/0001144204-14-030873-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-14-058358",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0001144204-14-058358 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2014,
+        "fiscalQuarter": 3,
+        "start": "2014-01-01",
+        "end": "2014-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -313313.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2014-05-15",
+        "accn": "0001144204-14-030873",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414030873/0001144204-14-030873-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch",
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2014-05-15",
+            "accn": "0001144204-14-030873",
+            "start": "2014-01-01",
+            "end": "2014-03-31",
+            "value": -313313.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414030873/0001144204-14-030873-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-14-030873",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001144204-14-030873 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2014,
+        "fiscalQuarter": 2,
+        "start": "2013-10-01",
+        "end": "2013-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 951603.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2014-02-13",
+        "accn": "0001144204-14-008322",
+        "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414008322/0001144204-14-008322-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2014-02-13",
+            "accn": "0001144204-14-008322",
+            "start": "2013-10-01",
+            "end": "2013-12-31",
+            "value": 951603.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1442620/000114420414008322/0001144204-14-008322-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001144204-14-008322",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001144204-14-008322 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2016-09-30",

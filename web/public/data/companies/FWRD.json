@@ -571,22 +571,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-053329.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": -207300000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss attributable to Forward Air"
       },
       {
         "concept": "ProfitLoss",
@@ -597,7 +597,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -612,10 +612,541 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-053329",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026053329/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": -207300000.0,
+      "statement_value": -207300000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -207300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001628280-26-053329",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026053329/0001628280-26-053329-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001628280-26-053329",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": -207300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026053329/0001628280-26-053329-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-053329",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026053329/R4.htm",
+          "statement_label": "Net loss attributable to Forward Air",
+          "statement_value": -207300000.0,
+          "expected_value": -207300000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -34319000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-11",
+        "accn": "0001628280-26-033501",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026033501/0001628280-26-033501-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-11",
+            "accn": "0001628280-26-033501",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -34319000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026033501/0001628280-26-033501-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-033501",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026033501/R4.htm",
+          "statement_label": "Net loss attributable to Forward Air",
+          "statement_value": -34319000.0,
+          "expected_value": -34319000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -28326000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-11",
+        "accn": "0001628280-26-016793",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026016793/0001628280-26-016793-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-11",
+            "accn": "0001628280-26-016793",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -107796000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026016793/0001628280-26-016793-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001628280-25-049525",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -79470000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025049525/0001628280-25-049525-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-016793",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828026016793/R5.htm",
+          "statement_label": "Net (loss) income attributable to Forward Air",
+          "statement_value": -107796000.0,
+          "expected_value": -28326000.0,
+          "detail": "12M -107,796,000 (10-K 0001628280-26-016793) − 9M -79,470,000 (10-Q 0001628280-25-049525)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -16250000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001628280-25-049525",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025049525/0001628280-25-049525-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001628280-25-049525",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -16250000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025049525/0001628280-25-049525-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-049525",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025049525/R4.htm",
+          "statement_label": "Net loss attributable to Forward Air",
+          "statement_value": -16250000.0,
+          "expected_value": -16250000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -12583000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-11",
+        "accn": "0001628280-25-039530",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025039530/0001628280-25-039530-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-11",
+            "accn": "0001628280-25-039530",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -12583000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025039530/0001628280-25-039530-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-039530",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025039530/R4.htm",
+          "statement_label": "Net loss attributable to Forward Air",
+          "statement_value": -12583000.0,
+          "expected_value": -12583000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -50637000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001628280-25-023268",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025023268/0001628280-25-023268-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001628280-25-023268",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -50637000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025023268/0001628280-25-023268-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-023268",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025023268/R4.htm",
+          "statement_label": "Net loss attributable to Forward Air",
+          "statement_value": -50637000.0,
+          "expected_value": -50637000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -36416000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2025-03-24",
+        "accn": "0001628280-25-014482",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025014482/0001628280-25-014482-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-24",
+            "accn": "0001628280-25-014482",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": -36416000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025014482/0001628280-25-014482-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-014482",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828025014482/R5.htm",
+          "statement_label": "Net (loss) income attributable to Forward Air",
+          "statement_value": -816969000.0,
+          "expected_value": -36416000.0,
+          "detail": "The reported 3-month figure is not on the face of 10-K 0001628280-25-014482; verified as FY − 9M YTD: 12M -816,969,000 (10-K 0001628280-25-014482) − 9M -780,553,000 (10-Q 0001628280-24-046661)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -73408000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-08",
+        "accn": "0001628280-24-046661",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024046661/0001628280-24-046661-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-08",
+            "accn": "0001628280-24-046661",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -73408000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024046661/0001628280-24-046661-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-046661",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024046661/R4.htm",
+          "statement_label": "Net (loss) income attributable to Forward Air",
+          "statement_value": -73408000.0,
+          "expected_value": -73408000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -645433000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-09",
+        "accn": "0001628280-24-036365",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024036365/0001628280-24-036365-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-09",
+            "accn": "0001628280-24-036365",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -645433000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024036365/0001628280-24-036365-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-036365",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024036365/R4.htm",
+          "statement_label": "Net (loss) income attributable to Forward Air",
+          "statement_value": -645433000.0,
+          "expected_value": -645433000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -61712000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-15",
+        "accn": "0001628280-24-023579",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024023579/0001628280-24-023579-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-15",
+            "accn": "0001628280-24-023579",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -61712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024023579/0001628280-24-023579-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-24-023579",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024023579/R4.htm",
+          "statement_label": "Net (loss) income attributable to Forward Air",
+          "statement_value": -61712000.0,
+          "expected_value": -61712000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 101744000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2024-03-15",
+        "accn": "0001628280-24-011530",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024011530/0001628280-24-011530-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-15",
+            "accn": "0001628280-24-011530",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 101744000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024011530/0001628280-24-011530-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-24-011530",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828024011530/R5.htm",
+          "detail": "No 3-month net income column ending 2023-12-31 on 10-K 0001628280-24-011530."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 9288000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-09",
+        "accn": "0001628280-23-038332",
+        "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828023038332/0001628280-23-038332-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-09",
+            "accn": "0001628280-23-038332",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 9288000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/912728/000162828023038332/0001628280-23-038332-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001628280-23-038332",
+          "form": "10-Q",
+          "detail": "Income statement of 10-Q 0001628280-23-038332 could not be read."
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

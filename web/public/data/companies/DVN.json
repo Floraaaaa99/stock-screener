@@ -605,22 +605,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001193125-26-334340.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 1911000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings attributable to Devon"
       },
       {
         "concept": "ProfitLoss",
@@ -631,14 +631,545 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net earnings"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "unverified_quarters"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001193125-26-334340",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526334340/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 1911000000.0,
+      "statement_value": 1911000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1911000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001193125-26-334340",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526334340/0001193125-26-334340-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001193125-26-334340",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 1911000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526334340/0001193125-26-334340-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-334340",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526334340/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 1911000000.0,
+          "expected_value": 1911000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 120000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001193125-26-208143",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526208143/0001193125-26-208143-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001193125-26-208143",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 120000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526208143/0001193125-26-208143-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-208143",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526208143/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 120000000.0,
+          "expected_value": 120000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 562000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-18",
+        "accn": "0001193125-26-056485",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526056485/0001193125-26-056485-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-18",
+            "accn": "0001193125-26-056485",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 2642000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526056485/0001193125-26-056485-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-268574",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 2080000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312525268574/0001193125-25-268574-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-26-056485",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312526056485/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 2642000000.0,
+          "expected_value": 562000000.0,
+          "detail": "12M 2,642,000,000 (10-K 0001193125-26-056485) − 9M 2,080,000,000 (10-Q 0001193125-25-268574)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 687000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001193125-25-268574",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312525268574/0001193125-25-268574-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001193125-25-268574",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 687000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312525268574/0001193125-25-268574-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001193125-25-268574",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000119312525268574/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 687000000.0,
+          "expected_value": 687000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 899000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0000950170-25-103695",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025103695/0000950170-25-103695-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0000950170-25-103695",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 899000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025103695/0000950170-25-103695-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-103695",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025103695/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 899000000.0,
+          "expected_value": 899000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 494000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0000950170-25-065278",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025065278/0000950170-25-065278-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0000950170-25-065278",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 494000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025065278/0000950170-25-065278-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-25-065278",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017025065278/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 494000000.0,
+          "expected_value": 494000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 641000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2026-04-21",
+        "accn": "0001104659-26-046005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000110465926046005/0001104659-26-046005-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2026-04-21",
+            "accn": "0001104659-26-046005",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 2893000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000110465926046005/0001104659-26-046005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000950170-24-121981",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 2252000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024121981/0000950170-24-121981-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001104659-26-046005",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001104659-26-046005 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 812000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0000950170-24-121981",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024121981/0000950170-24-121981-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0000950170-24-121981",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 812000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024121981/0000950170-24-121981-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-121981",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024121981/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 812000000.0,
+          "expected_value": 812000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 844000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0000950170-24-092424",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024092424/0000950170-24-092424-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0000950170-24-092424",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 844000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024092424/0000950170-24-092424-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-092424",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024092424/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 844000000.0,
+          "expected_value": 844000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 596000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0000950170-24-051757",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024051757/0000950170-24-051757-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0000950170-24-051757",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 596000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024051757/0000950170-24-051757-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-24-051757",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017024051757/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 596000000.0,
+          "expected_value": 596000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 1144000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K/A",
+        "filed": "2026-04-21",
+        "accn": "0001104659-26-046005",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000110465926046005/0001104659-26-046005-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K/A",
+            "filed": "2026-04-21",
+            "accn": "0001104659-26-046005",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 3739000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000110465926046005/0001104659-26-046005-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-060838",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 2595000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017023060838/0000950170-23-060838-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001104659-26-046005",
+          "form": "10-K/A",
+          "detail": "Income statement of 10-K/A 0001104659-26-046005 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 910000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0000950170-23-060838",
+        "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017023060838/0000950170-23-060838-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0000950170-23-060838",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 910000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017023060838/0000950170-23-060838-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000950170-23-060838",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1090012/000095017023060838/R2.htm",
+          "statement_label": "Net earnings attributable to Devon",
+          "statement_value": 910000000.0,
+          "expected_value": 910000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

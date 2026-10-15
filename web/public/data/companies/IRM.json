@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001020569-26-000071.",
     "candidates": [
       {
         "concept": "ProfitLoss",
@@ -604,28 +604,571 @@
         "latestValue": 106102000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net Income (Loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-06-30",
         "latestValue": 101430000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "ProfitLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net Income (Loss) Attributable to Iron Mountain Incorporated"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001020569-26-000071",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000071/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 101430000.0,
+      "statement_value": 101430000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 101430000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001020569-26-000071",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000071/0001020569-26-000071-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001020569-26-000071",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 101430000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000071/0001020569-26-000071-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-26-000071",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000071/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 101430000.0,
+          "expected_value": 101430000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 143665000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-30",
+        "accn": "0001020569-26-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000039/0001020569-26-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-30",
+            "accn": "0001020569-26-000039",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 143665000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000039/0001020569-26-000039-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-26-000039",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000039/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 143665000.0,
+          "expected_value": 143665000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 89270000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-12",
+        "accn": "0001020569-26-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000013/0001020569-26-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-12",
+            "accn": "0001020569-26-000013",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 144591000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000013/0001020569-26-000013-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001020569-25-000206",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 55321000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000206/0001020569-25-000206-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-26-000013",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056926000013/R5.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 144591000.0,
+          "expected_value": 89270000.0,
+          "detail": "12M 144,591,000 (10-K 0001020569-26-000013) − 9M 55,321,000 (10-Q 0001020569-25-000206)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 84290000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001020569-25-000206",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000206/0001020569-25-000206-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001020569-25-000206",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 84290000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000206/0001020569-25-000206-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-25-000206",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000206/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 84290000.0,
+          "expected_value": 84290000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -44921000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001020569-25-000176",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000176/0001020569-25-000176-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001020569-25-000176",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -44921000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000176/0001020569-25-000176-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-25-000176",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000176/R4.htm",
+          "statement_label": "Net (Loss) Income Attributable to Iron Mountain Incorporated",
+          "statement_value": -44921000.0,
+          "expected_value": -44921000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 15952000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-01",
+        "accn": "0001020569-25-000110",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000110/0001020569-25-000110-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-01",
+            "accn": "0001020569-25-000110",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 15952000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000110/0001020569-25-000110-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-25-000110",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000110/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 15952000.0,
+          "expected_value": 15952000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 103932000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-14",
+        "accn": "0001020569-25-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000040/0001020569-25-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-14",
+            "accn": "0001020569-25-000040",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 180156000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000040/0001020569-25-000040-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001020569-24-000255",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 76224000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000255/0001020569-24-000255-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-25-000040",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056925000040/R5.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 180156000.0,
+          "expected_value": 103932000.0,
+          "detail": "12M 180,156,000 (10-K 0001020569-25-000040) − 9M 76,224,000 (10-Q 0001020569-24-000255)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -33620000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001020569-24-000255",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000255/0001020569-24-000255-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001020569-24-000255",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -33620000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000255/0001020569-24-000255-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-24-000255",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000255/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": -33620000.0,
+          "expected_value": -33620000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 35783000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-01",
+        "accn": "0001020569-24-000210",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000210/0001020569-24-000210-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-01",
+            "accn": "0001020569-24-000210",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 35783000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000210/0001020569-24-000210-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-24-000210",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000210/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 35783000.0,
+          "expected_value": 35783000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 74061000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0001020569-24-000128",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000128/0001020569-24-000128-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0001020569-24-000128",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 74061000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000128/0001020569-24-000128-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-24-000128",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000128/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 74061000.0,
+          "expected_value": 74061000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 28482000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0001020569-24-000040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000040/0001020569-24-000040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0001020569-24-000040",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 184234000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000040/0001020569-24-000040-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001020569-23-000214",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 155752000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056923000214/0001020569-23-000214-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-24-000040",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056924000040/R5.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 184234000.0,
+          "expected_value": 28482000.0,
+          "detail": "12M 184,234,000 (10-K 0001020569-24-000040) − 9M 155,752,000 (10-Q 0001020569-23-000214)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 91043000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0001020569-23-000214",
+        "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056923000214/0001020569-23-000214-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0001020569-23-000214",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 91043000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056923000214/0001020569-23-000214-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001020569-23-000214",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1020569/000102056923000214/R4.htm",
+          "statement_label": "Net Income (Loss) Attributable to Iron Mountain Incorporated",
+          "statement_value": 91043000.0,
+          "expected_value": 91043000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

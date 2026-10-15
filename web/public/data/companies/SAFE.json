@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001095651-26-000025.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 30155000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to Safehold Inc. common shareholders"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,548 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001095651-26-000025",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000025/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 30155000.0,
+      "statement_value": 30155000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 30155000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-31",
+        "accn": "0001095651-26-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000025/0001095651-26-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-31",
+            "accn": "0001095651-26-000025",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 30155000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000025/0001095651-26-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-26-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000025/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 30155000.0,
+          "expected_value": 30155000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 28861000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-01",
+        "accn": "0001095651-26-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000017/0001095651-26-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-01",
+            "accn": "0001095651-26-000017",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 28861000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000017/0001095651-26-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-26-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000017/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 28861000.0,
+          "expected_value": 28861000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 27876000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-12",
+        "accn": "0001095651-26-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000010/0001095651-26-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-12",
+            "accn": "0001095651-26-000010",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 114469000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000010/0001095651-26-000010-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001095651-25-000030",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 86593000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000030/0001095651-25-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-26-000010",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565126000010/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 114469000.0,
+          "expected_value": 27876000.0,
+          "detail": "12M 114,469,000 (10-K 0001095651-26-000010) − 9M 86,593,000 (10-Q 0001095651-25-000030)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 29282000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001095651-25-000030",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000030/0001095651-25-000030-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001095651-25-000030",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 29282000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000030/0001095651-25-000030-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-25-000030",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000030/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 29282000.0,
+          "expected_value": 29282000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 27947000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001095651-25-000025",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000025/0001095651-25-000025-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001095651-25-000025",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 27947000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000025/0001095651-25-000025-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-25-000025",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000025/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 27947000.0,
+          "expected_value": 27947000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 29364000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-07",
+        "accn": "0001095651-25-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000016/0001095651-25-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-07",
+            "accn": "0001095651-25-000016",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 29364000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000016/0001095651-25-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-25-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000016/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 29364000.0,
+          "expected_value": 29364000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 26039000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-06",
+        "accn": "0001095651-25-000006",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000006/0001095651-25-000006-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-06",
+            "accn": "0001095651-25-000006",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 105763000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000006/0001095651-25-000006-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0001095651-24-000028",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 79724000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000028/0001095651-24-000028-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-25-000006",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565125000006/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 105763000.0,
+          "expected_value": 26039000.0,
+          "detail": "12M 105,763,000 (10-K 0001095651-25-000006) − 9M 79,724,000 (10-Q 0001095651-24-000028)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 19331000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-29",
+        "accn": "0001095651-24-000028",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000028/0001095651-24-000028-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-29",
+            "accn": "0001095651-24-000028",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 19331000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000028/0001095651-24-000028-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-24-000028",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000028/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 19331000.0,
+          "expected_value": 19331000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 29665000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-30",
+        "accn": "0001095651-24-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000022/0001095651-24-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-30",
+            "accn": "0001095651-24-000022",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 29665000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000022/0001095651-24-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-24-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 29665000.0,
+          "expected_value": 29665000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 30728000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0001095651-24-000016",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000016/0001095651-24-000016-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0001095651-24-000016",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 30728000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000016/0001095651-24-000016-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-24-000016",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000016/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": 30728000.0,
+          "expected_value": 30728000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 41184000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-13",
+        "accn": "0001095651-24-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000009/0001095651-24-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-13",
+            "accn": "0001095651-24-000009",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -54973000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000009/0001095651-24-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-01",
+            "accn": "0001095651-23-000012",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -96157000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565123000012/0001095651-23-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0001095651-24-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565124000009/R4.htm",
+          "detail": "No 12-month net income column ending 2023-12-31 on 10-K 0001095651-24-000009."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -122969000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-01",
+        "accn": "0001095651-23-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565123000012/0001095651-23-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-01",
+            "accn": "0001095651-23-000012",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -122969000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565123000012/0001095651-23-000012-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001095651-23-000012",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1095651/000109565123000012/R4.htm",
+          "statement_label": "Net income (loss) attributable to Safehold Inc. common shareholders",
+          "statement_value": -122969000.0,
+          "expected_value": -122969000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

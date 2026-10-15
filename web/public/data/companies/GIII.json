@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001104659-26-105950.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-31",
         "latestValue": 20213000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "ProfitLoss",
@@ -622,10 +622,551 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001104659-26-105950",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926105950/R4.htm",
+      "period_end": "2026-07-31",
+      "months": 3,
+      "pipeline_value": 20213000.0,
+      "statement_value": 20213000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-05-01",
+        "end": "2026-07-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 20213000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-09-08",
+        "accn": "0001104659-26-105950",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926105950/0001104659-26-105950-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-09-08",
+            "accn": "0001104659-26-105950",
+            "start": "2026-05-01",
+            "end": "2026-07-31",
+            "value": 20213000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926105950/0001104659-26-105950-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-105950",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926105950/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 20213000.0,
+          "expected_value": 20213000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-02-01",
+        "end": "2026-04-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 66534000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-06-08",
+        "accn": "0001104659-26-071371",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926071371/0001104659-26-071371-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-06-08",
+            "accn": "0001104659-26-071371",
+            "start": "2026-02-01",
+            "end": "2026-04-30",
+            "value": 66534000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926071371/0001104659-26-071371-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-071371",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926071371/R4.htm",
+          "statement_label": "Net income",
+          "statement_value": 66534000.0,
+          "expected_value": 66534000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-11-01",
+        "end": "2026-01-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -31938000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-24",
+        "accn": "0001104659-26-033891",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926033891/0001104659-26-033891-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-24",
+            "accn": "0001104659-26-033891",
+            "start": "2025-02-01",
+            "end": "2026-01-31",
+            "value": 67353000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926033891/0001104659-26-033891-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-12-09",
+            "accn": "0001104659-25-119655",
+            "start": "2025-02-01",
+            "end": "2025-10-31",
+            "value": 99291000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465925119655/0001104659-25-119655-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-26-033891",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465926033891/R4.htm",
+          "statement_label": "Net income attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 67353000.0,
+          "expected_value": -31938000.0,
+          "detail": "12M 67,353,000 (10-K 0001104659-26-033891) − 9M 99,291,000 (10-Q 0001104659-25-119655)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-08-01",
+        "end": "2025-10-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 80593000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-12-09",
+        "accn": "0001104659-25-119655",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465925119655/0001104659-25-119655-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-12-09",
+            "accn": "0001104659-25-119655",
+            "start": "2025-08-01",
+            "end": "2025-10-31",
+            "value": 80593000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465925119655/0001104659-25-119655-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001104659-25-119655",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000110465925119655/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 80593000.0,
+          "expected_value": 80593000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-05-01",
+        "end": "2025-07-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 10939000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-09-05",
+        "accn": "0001558370-25-011900",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025011900/0001558370-25-011900-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-09-05",
+            "accn": "0001558370-25-011900",
+            "start": "2025-05-01",
+            "end": "2025-07-31",
+            "value": 10939000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025011900/0001558370-25-011900-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-011900",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025011900/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 10939000.0,
+          "expected_value": 10939000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-02-01",
+        "end": "2025-04-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 7759000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-06-06",
+        "accn": "0001558370-25-008488",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025008488/0001558370-25-008488-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-06-06",
+            "accn": "0001558370-25-008488",
+            "start": "2025-02-01",
+            "end": "2025-04-30",
+            "value": 7759000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025008488/0001558370-25-008488-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-008488",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025008488/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 7759000.0,
+          "expected_value": 7759000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-11-01",
+        "end": "2025-01-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 48784000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-24",
+        "accn": "0001558370-25-003540",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025003540/0001558370-25-003540-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-24",
+            "accn": "0001558370-25-003540",
+            "start": "2024-02-01",
+            "end": "2025-01-31",
+            "value": 193566000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025003540/0001558370-25-003540-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-12-10",
+            "accn": "0001558370-24-016123",
+            "start": "2024-02-01",
+            "end": "2024-10-31",
+            "value": 144782000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024016123/0001558370-24-016123-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-25-003540",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837025003540/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 193566000.0,
+          "expected_value": 48784000.0,
+          "detail": "12M 193,566,000 (10-K 0001558370-25-003540) − 9M 144,782,000 (10-Q 0001558370-24-016123)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-08-01",
+        "end": "2024-10-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 114768000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-12-10",
+        "accn": "0001558370-24-016123",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024016123/0001558370-24-016123-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-12-10",
+            "accn": "0001558370-24-016123",
+            "start": "2024-08-01",
+            "end": "2024-10-31",
+            "value": 114768000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024016123/0001558370-24-016123-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-016123",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024016123/R4.htm",
+          "statement_label": "Net income attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 114768000.0,
+          "expected_value": 114768000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-05-01",
+        "end": "2024-07-31",
+        "ttm": null,
+        "missing": false,
+        "value": 24212000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-09-06",
+        "accn": "0001558370-24-012652",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024012652/0001558370-24-012652-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-09-06",
+            "accn": "0001558370-24-012652",
+            "start": "2024-05-01",
+            "end": "2024-07-31",
+            "value": 24212000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024012652/0001558370-24-012652-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-012652",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024012652/R4.htm",
+          "statement_label": "Net income attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 24212000.0,
+          "expected_value": 24212000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-02-01",
+        "end": "2024-04-30",
+        "ttm": null,
+        "missing": false,
+        "value": 5802000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-06-06",
+        "accn": "0001558370-24-008959",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024008959/0001558370-24-008959-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-06-06",
+            "accn": "0001558370-24-008959",
+            "start": "2024-02-01",
+            "end": "2024-04-30",
+            "value": 5802000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024008959/0001558370-24-008959-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-008959",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024008959/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 5802000.0,
+          "expected_value": 5802000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-11-01",
+        "end": "2024-01-31",
+        "ttm": null,
+        "missing": false,
+        "value": 28854000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-25",
+        "accn": "0001558370-24-003856",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024003856/0001558370-24-003856-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-25",
+            "accn": "0001558370-24-003856",
+            "start": "2023-02-01",
+            "end": "2024-01-31",
+            "value": 176168000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024003856/0001558370-24-003856-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-12-06",
+            "accn": "0001558370-23-019515",
+            "start": "2023-02-01",
+            "end": "2023-10-31",
+            "value": 147314000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837023019515/0001558370-23-019515-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-24-003856",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837024003856/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 176168000.0,
+          "expected_value": 28854000.0,
+          "detail": "12M 176,168,000 (10-K 0001558370-24-003856) − 9M 147,314,000 (10-Q 0001558370-23-019515)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-08-01",
+        "end": "2023-10-31",
+        "ttm": null,
+        "missing": false,
+        "value": 127640000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-06",
+        "accn": "0001558370-23-019515",
+        "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837023019515/0001558370-23-019515-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-06",
+            "accn": "0001558370-23-019515",
+            "start": "2023-08-01",
+            "end": "2023-10-31",
+            "value": 127640000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837023019515/0001558370-23-019515-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001558370-23-019515",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/821002/000155837023019515/R4.htm",
+          "statement_label": "Net income (loss) attributable to G-III Apparel Group, Ltd.",
+          "statement_value": 127640000.0,
+          "expected_value": 127640000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-31",

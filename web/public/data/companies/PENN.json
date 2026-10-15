@@ -603,22 +603,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000921738-26-000022.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 33100000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to PENN Entertainment, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -629,7 +629,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 11,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -644,10 +644,565 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000921738-26-000022",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000022/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 33100000.0,
+      "statement_value": 33100000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 33100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0000921738-26-000022",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000022/0000921738-26-000022-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0000921738-26-000022",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 33100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000022/0000921738-26-000022-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-26-000022",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000022/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": 33100000.0,
+          "expected_value": 33100000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -2300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-29",
+        "accn": "0000921738-26-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000015/0000921738-26-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-29",
+            "accn": "0000921738-26-000015",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": -2300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000015/0000921738-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-26-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000015/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": -2300000.0,
+          "expected_value": -2300000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -72900000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0000921738-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000008/0000921738-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0000921738-26-000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": -843100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000008/0000921738-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000921738-25-000043",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": -770200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000043/0000921738-25-000043-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173826000008/R5.htm",
+          "statement_label": "Net loss attributable to PENN Entertainment, Inc.",
+          "statement_value": -843100000.0,
+          "expected_value": -72900000.0,
+          "detail": "12M -843,100,000 (10-K 0000921738-26-000008) − 9M -770,200,000 (10-Q 0000921738-25-000043)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": -864600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0000921738-25-000043",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000043/0000921738-25-000043-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0000921738-25-000043",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": -864600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000043/0000921738-25-000043-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-25-000043",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000043/R4.htm",
+          "statement_label": "Net loss attributable to PENN Entertainment, Inc.",
+          "statement_value": -864600000.0,
+          "expected_value": -864600000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -17400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-07",
+        "accn": "0000921738-25-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000029/0000921738-25-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-07",
+            "accn": "0000921738-25-000029",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": -17400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000029/0000921738-25-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-25-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000029/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": -17400000.0,
+          "expected_value": -17400000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 111800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-12",
+        "accn": "0000921738-25-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000017/0000921738-25-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-12",
+            "accn": "0000921738-25-000017",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 111800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000017/0000921738-25-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-25-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000017/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": 111800000.0,
+          "expected_value": 111800000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -133300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-27",
+        "accn": "0000921738-25-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000008/0000921738-25-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-27",
+            "accn": "0000921738-25-000008",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -311500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000008/0000921738-25-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000921738-24-000038",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -178200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000038/0000921738-24-000038-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-25-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173825000008/R5.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": -311500000.0,
+          "expected_value": -133300000.0,
+          "detail": "12M -311,500,000 (10-K 0000921738-25-000008) − 9M -178,200,000 (10-Q 0000921738-24-000038)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -36700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-07",
+        "accn": "0000921738-24-000038",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000038/0000921738-24-000038-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-07",
+            "accn": "0000921738-24-000038",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -36700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000038/0000921738-24-000038-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-24-000038",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000038/R4.htm",
+          "statement_label": "Net loss attributable to PENN Entertainment, Inc.",
+          "statement_value": -36700000.0,
+          "expected_value": -36700000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -26800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0000921738-24-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000029/0000921738-24-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0000921738-24-000029",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -26800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000029/0000921738-24-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-24-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000029/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": -26800000.0,
+          "expected_value": -26800000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -114700000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-02",
+        "accn": "0000921738-24-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000021/0000921738-24-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-02",
+            "accn": "0000921738-24-000021",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -114700000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000021/0000921738-24-000021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-24-000021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000021/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment, Inc.",
+          "statement_value": -114700000.0,
+          "expected_value": -114700000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": -358100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-22",
+        "accn": "0000921738-24-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000012/0000921738-24-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-22",
+            "accn": "0000921738-24-000012",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -490000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173824000012/0000921738-24-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000921738-23-000050",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -131900000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173823000050/0000921738-23-000050-index.htm"
+          }
+        ],
+        "check": {
+          "status": "unavailable",
+          "accn": "0000921738-24-000012",
+          "form": "10-K",
+          "detail": "Income statement of 10-K 0000921738-24-000012 could not be read."
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -724800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-02",
+        "accn": "0000921738-23-000050",
+        "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173823000050/0000921738-23-000050-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-02",
+            "accn": "0000921738-23-000050",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -724800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173823000050/0000921738-23-000050-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000921738-23-000050",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/921738/000092173823000050/R4.htm",
+          "statement_label": "Net income (loss) attributable to PENN Entertainment",
+          "statement_value": -724800000.0,
+          "expected_value": -724800000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

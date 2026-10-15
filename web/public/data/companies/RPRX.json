@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001802768-26-000015.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 17883000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Royalty Pharma plc"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Consolidated net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,551 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001802768-26-000015",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 17883000.0,
+      "statement_value": 17883000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 17883000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001802768-26-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/0001802768-26-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001802768-26-000015",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 17883000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/0001802768-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-26-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 17883000.0,
+          "expected_value": 17883000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 294690000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001802768-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/0001802768-26-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001802768-26-000009",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 294690000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/0001802768-26-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-26-000009",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 294690000.0,
+          "expected_value": 294690000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 214205000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-11",
+        "accn": "0001802768-26-000003",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000003/0001802768-26-000003-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-11",
+            "accn": "0001802768-26-000003",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 770947000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000003/0001802768-26-000003-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001802768-25-000114",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 556742000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000114/0001802768-25-000114-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-26-000003",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000003/R5.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 770947000.0,
+          "expected_value": 214205000.0,
+          "detail": "12M 770,947,000 (10-K 0001802768-26-000003) − 9M 556,742,000 (10-Q 0001802768-25-000114)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 288217000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-05",
+        "accn": "0001802768-25-000114",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000114/0001802768-25-000114-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-05",
+            "accn": "0001802768-25-000114",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 288217000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000114/0001802768-25-000114-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-25-000114",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000114/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 288217000.0,
+          "expected_value": 288217000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 32176000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-05",
+        "accn": "0001802768-26-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/0001802768-26-000015-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-05",
+            "accn": "0001802768-26-000015",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 32176000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/0001802768-26-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-26-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000015/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 32176000.0,
+          "expected_value": 32176000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 239349000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-06",
+        "accn": "0001802768-26-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/0001802768-26-000009-index.htm",
+        "restated": true,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-06",
+            "accn": "0001802768-26-000009",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 239349000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/0001802768-26-000009-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-26-000009",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276826000009/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 239349000.0,
+          "expected_value": 239349000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 208214000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0001802768-25-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000010/0001802768-25-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0001802768-25-000010",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 858983000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000010/0001802768-25-000010-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001802768-24-000058",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 650769000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000058/0001802768-24-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-25-000010",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276825000010/R5.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 858983000.0,
+          "expected_value": 208214000.0,
+          "detail": "12M 858,983,000 (10-K 0001802768-25-000010) − 9M 650,769,000 (10-Q 0001802768-24-000058)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 543987000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-06",
+        "accn": "0001802768-24-000058",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000058/0001802768-24-000058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-06",
+            "accn": "0001802768-24-000058",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 543987000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000058/0001802768-24-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-24-000058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000058/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 543987000.0,
+          "expected_value": 543987000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 102004000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-08",
+        "accn": "0001802768-24-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000045/0001802768-24-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-08",
+            "accn": "0001802768-24-000045",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 102004000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000045/0001802768-24-000045-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-24-000045",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000045/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 102004000.0,
+          "expected_value": 102004000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 4778000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-09",
+        "accn": "0001802768-24-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000021/0001802768-24-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-09",
+            "accn": "0001802768-24-000021",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 4778000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000021/0001802768-24-000021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-24-000021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000021/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 4778000.0,
+          "expected_value": 4778000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 494340000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-15",
+        "accn": "0001802768-24-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000012/0001802768-24-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-15",
+            "accn": "0001802768-24-000012",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 1134834000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000012/0001802768-24-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0001802768-23-000029",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 640494000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276823000029/0001802768-23-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-24-000012",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276824000012/R5.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 1134834000.0,
+          "expected_value": 494340000.0,
+          "detail": "12M 1,134,834,000 (10-K 0001802768-24-000012) − 9M 640,494,000 (10-Q 0001802768-23-000029)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 72114000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-08",
+        "accn": "0001802768-23-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276823000029/0001802768-23-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-08",
+            "accn": "0001802768-23-000029",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 72114000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276823000029/0001802768-23-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001802768-23-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1802768/000180276823000029/R4.htm",
+          "statement_label": "Net income attributable to Royalty Pharma plc",
+          "statement_value": 72114000.0,
+          "expected_value": 72114000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

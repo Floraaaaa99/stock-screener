@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000057131-26-000035.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-07-25",
         "latestValue": -2292000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to La-Z-Boy Incorporated"
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income (loss)"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,551 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000057131-26-000035",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/R2.htm",
+      "period_end": "2026-07-25",
+      "months": 3,
+      "pipeline_value": -2292000.0,
+      "statement_value": -2292000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-04-26",
+        "end": "2026-07-25",
+        "ttm": "current",
+        "missing": false,
+        "value": -2292000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-18",
+        "accn": "0000057131-26-000035",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/0000057131-26-000035-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-18",
+            "accn": "0000057131-26-000035",
+            "start": "2026-04-26",
+            "end": "2026-07-25",
+            "value": -2292000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/0000057131-26-000035-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-26-000035",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/R2.htm",
+          "statement_label": "Net income (loss) attributable to La-Z-Boy Incorporated",
+          "statement_value": -2292000.0,
+          "expected_value": -2292000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2026-01-25",
+        "end": "2026-04-25",
+        "ttm": "current",
+        "missing": false,
+        "value": 33273000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-06-16",
+        "accn": "0000057131-26-000019",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000019/0000057131-26-000019-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-06-16",
+            "accn": "0000057131-26-000019",
+            "start": "2025-04-27",
+            "end": "2026-04-25",
+            "value": 101985000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000019/0000057131-26-000019-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2026-02-17",
+            "accn": "0000057131-26-000007",
+            "start": "2025-04-27",
+            "end": "2026-01-24",
+            "value": 68712000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000007/0000057131-26-000007-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-26-000019",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000019/R3.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 101985000.0,
+          "expected_value": 33273000.0,
+          "detail": "12M 101,985,000 (10-K 0000057131-26-000019) − 9M 68,712,000 (10-Q 0000057131-26-000007)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-10-26",
+        "end": "2026-01-24",
+        "ttm": "current",
+        "missing": false,
+        "value": 21650000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-02-17",
+        "accn": "0000057131-26-000007",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000007/0000057131-26-000007-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-02-17",
+            "accn": "0000057131-26-000007",
+            "start": "2025-10-26",
+            "end": "2026-01-24",
+            "value": 21650000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000007/0000057131-26-000007-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-26-000007",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000007/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 21650000.0,
+          "expected_value": 21650000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-07-27",
+        "end": "2025-10-25",
+        "ttm": "current",
+        "missing": false,
+        "value": 28858000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-18",
+        "accn": "0000057131-25-000097",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000097/0000057131-25-000097-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-18",
+            "accn": "0000057131-25-000097",
+            "start": "2025-07-27",
+            "end": "2025-10-25",
+            "value": 28858000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000097/0000057131-25-000097-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-25-000097",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000097/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 28858000.0,
+          "expected_value": 28858000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-04-27",
+        "end": "2025-07-26",
+        "ttm": "previous",
+        "missing": false,
+        "value": 18204000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-19",
+        "accn": "0000057131-25-000081",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000081/0000057131-25-000081-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-19",
+            "accn": "0000057131-25-000081",
+            "start": "2025-04-27",
+            "end": "2025-07-26",
+            "value": 18204000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000081/0000057131-25-000081-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-25-000081",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000081/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 18204000.0,
+          "expected_value": 18204000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-01-26",
+        "end": "2025-04-26",
+        "ttm": "previous",
+        "missing": false,
+        "value": 14931000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-06-17",
+        "accn": "0000057131-25-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000029/0000057131-25-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-06-17",
+            "accn": "0000057131-25-000029",
+            "start": "2024-04-28",
+            "end": "2025-04-26",
+            "value": 99556000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000029/0000057131-25-000029-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-02-18",
+            "accn": "0000057131-25-000017",
+            "start": "2024-04-28",
+            "end": "2025-01-25",
+            "value": 84625000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000017/0000057131-25-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-25-000029",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000029/R3.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 99556000.0,
+          "expected_value": 14931000.0,
+          "detail": "12M 99,556,000 (10-K 0000057131-25-000029) − 9M 84,625,000 (10-Q 0000057131-25-000017)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-10-27",
+        "end": "2025-01-25",
+        "ttm": "previous",
+        "missing": false,
+        "value": 28429000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-02-18",
+        "accn": "0000057131-25-000017",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000017/0000057131-25-000017-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-02-18",
+            "accn": "0000057131-25-000017",
+            "start": "2024-10-27",
+            "end": "2025-01-25",
+            "value": 28429000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000017/0000057131-25-000017-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-25-000017",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713125000017/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 28429000.0,
+          "expected_value": 28429000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-07-28",
+        "end": "2024-10-26",
+        "ttm": "previous",
+        "missing": false,
+        "value": 30037000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-19",
+        "accn": "0000057131-24-000111",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000111/0000057131-24-000111-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-19",
+            "accn": "0000057131-24-000111",
+            "start": "2024-07-28",
+            "end": "2024-10-26",
+            "value": 30037000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000111/0000057131-24-000111-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-24-000111",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000111/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 30037000.0,
+          "expected_value": 30037000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-04-28",
+        "end": "2024-07-27",
+        "ttm": null,
+        "missing": false,
+        "value": 26159000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-20",
+        "accn": "0000057131-24-000081",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000081/0000057131-24-000081-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-20",
+            "accn": "0000057131-24-000081",
+            "start": "2024-04-28",
+            "end": "2024-07-27",
+            "value": 26159000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000081/0000057131-24-000081-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-24-000081",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000081/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 26159000.0,
+          "expected_value": 26159000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-01-28",
+        "end": "2024-04-27",
+        "ttm": null,
+        "missing": false,
+        "value": 39308000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-06-17",
+        "accn": "0000057131-24-000028",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000028/0000057131-24-000028-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-06-17",
+            "accn": "0000057131-24-000028",
+            "start": "2023-04-30",
+            "end": "2024-04-27",
+            "value": 122626000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000028/0000057131-24-000028-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-02-20",
+            "accn": "0000057131-24-000013",
+            "start": "2023-04-30",
+            "end": "2024-01-27",
+            "value": 83318000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000013/0000057131-24-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-24-000028",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000028/R3.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 122626000.0,
+          "expected_value": 39308000.0,
+          "detail": "12M 122,626,000 (10-K 0000057131-24-000028) − 9M 83,318,000 (10-Q 0000057131-24-000013)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-10-29",
+        "end": "2024-01-27",
+        "ttm": null,
+        "missing": false,
+        "value": 28640000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-02-20",
+        "accn": "0000057131-24-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000013/0000057131-24-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-02-20",
+            "accn": "0000057131-24-000013",
+            "start": "2023-10-29",
+            "end": "2024-01-27",
+            "value": 28640000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000013/0000057131-24-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-24-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713124000013/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 28640000.0,
+          "expected_value": 28640000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2023-07-30",
+        "end": "2023-10-28",
+        "ttm": null,
+        "missing": false,
+        "value": 27199000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-29",
+        "accn": "0000057131-23-000152",
+        "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713123000152/0000057131-23-000152-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-29",
+            "accn": "0000057131-23-000152",
+            "start": "2023-07-30",
+            "end": "2023-10-28",
+            "value": 27199000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713123000152/0000057131-23-000152-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000057131-23-000152",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713123000152/R2.htm",
+          "statement_label": "Net income attributable to La-Z-Boy Incorporated",
+          "statement_value": 27199000.0,
+          "expected_value": 27199000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-25",

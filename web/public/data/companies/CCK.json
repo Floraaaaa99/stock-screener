@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-050949.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 245000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Crown Holdings"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001628280-26-050949",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026050949/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 245000000.0,
+      "statement_value": 245000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 245000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0001628280-26-050949",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026050949/0001628280-26-050949-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0001628280-26-050949",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 245000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026050949/0001628280-26-050949-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-050949",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026050949/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 245000000.0,
+          "expected_value": 245000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 175000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-01",
+        "accn": "0001628280-26-029288",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026029288/0001628280-26-029288-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-01",
+            "accn": "0001628280-26-029288",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 175000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026029288/0001628280-26-029288-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-029288",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026029288/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 175000000.0,
+          "expected_value": 175000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 150000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-27",
+        "accn": "0001628280-26-012904",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026012904/0001628280-26-012904-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-27",
+            "accn": "0001628280-26-012904",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 738000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026012904/0001628280-26-012904-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0001628280-25-047477",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 588000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828025047477/0001628280-25-047477-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-012904",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026012904/R3.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 738000000.0,
+          "expected_value": 150000000.0,
+          "detail": "12M 738,000,000 (10-K 0001628280-26-012904) − 9M 588,000,000 (10-Q 0001628280-25-047477)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 214000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0001628280-25-047477",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828025047477/0001628280-25-047477-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0001628280-25-047477",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 214000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828025047477/0001628280-25-047477-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-25-047477",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828025047477/R2.htm",
+          "statement_label": "Net income (loss) attributable to Crown Holdings",
+          "statement_value": 214000000.0,
+          "expected_value": 214000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 181000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-29",
+        "accn": "0001219601-25-000036",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000036/0001219601-25-000036-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-29",
+            "accn": "0001219601-25-000036",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 181000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000036/0001219601-25-000036-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-25-000036",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000036/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 181000000.0,
+          "expected_value": 181000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 193000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-02",
+        "accn": "0001219601-25-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000015/0001219601-25-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-02",
+            "accn": "0001219601-25-000015",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 193000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000015/0001219601-25-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-25-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000015/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 193000000.0,
+          "expected_value": 193000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 358000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-03",
+        "accn": "0001219601-25-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/0001219601-25-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-03",
+            "accn": "0001219601-25-000009",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 424000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/0001219601-25-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-01",
+            "accn": "0001219601-24-000038",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 66000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000038/0001219601-24-000038-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-25-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/R3.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 424000000.0,
+          "expected_value": 358000000.0,
+          "detail": "12M 424,000,000 (10-K 0001219601-25-000009) − 9M 66,000,000 (10-Q 0001219601-24-000038)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -175000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-01",
+        "accn": "0001219601-24-000038",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000038/0001219601-24-000038-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-01",
+            "accn": "0001219601-24-000038",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": -175000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000038/0001219601-24-000038-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-24-000038",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000038/R2.htm",
+          "statement_label": "Net income (loss) attributable to Crown Holdings",
+          "statement_value": -175000000.0,
+          "expected_value": -175000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 174000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-29",
+        "accn": "0001219601-24-000029",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000029/0001219601-24-000029-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-29",
+            "accn": "0001219601-24-000029",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 174000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000029/0001219601-24-000029-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-24-000029",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000029/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 174000000.0,
+          "expected_value": 174000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 67000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-06",
+        "accn": "0001219601-24-000015",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000015/0001219601-24-000015-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-06",
+            "accn": "0001219601-24-000015",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 67000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000015/0001219601-24-000015-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-24-000015",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000015/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 67000000.0,
+          "expected_value": 67000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 32000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-27",
+        "accn": "0001219601-24-000009",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000009/0001219601-24-000009-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-27",
+            "accn": "0001219601-24-000009",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 450000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000009/0001219601-24-000009-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0001219601-23-000032",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 418000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960123000032/0001219601-23-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-24-000009",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960124000009/R3.htm",
+          "statement_label": "Net income / (loss) attributable to Crown Holdings",
+          "statement_value": 450000000.0,
+          "expected_value": 32000000.0,
+          "detail": "12M 450,000,000 (10-K 0001219601-24-000009) − 9M 418,000,000 (10-Q 0001219601-23-000032)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 159000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-30",
+        "accn": "0001219601-23-000032",
+        "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960123000032/0001219601-23-000032-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-30",
+            "accn": "0001219601-23-000032",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 159000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960123000032/0001219601-23-000032-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001219601-23-000032",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960123000032/R2.htm",
+          "statement_label": "Net income attributable to Crown Holdings",
+          "statement_value": 159000000.0,
+          "expected_value": 159000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000014272-26-000020.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 3317000000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net earnings/(loss) attributable to BMS"
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,555 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 9,
-        "statementLabel": null
+        "statementLabel": "Net earnings/(loss)"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0000014272-26-000020",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000020/R2.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 3317000000.0,
+      "statement_value": 3317000000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 3317000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-07-30",
+        "accn": "0000014272-26-000020",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000020/0000014272-26-000020-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-07-30",
+            "accn": "0000014272-26-000020",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 3317000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000020/0000014272-26-000020-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-26-000020",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000020/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 3317000000.0,
+          "expected_value": 3317000000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 2677000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-04-30",
+        "accn": "0000014272-26-000010",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000010/0000014272-26-000010-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-04-30",
+            "accn": "0000014272-26-000010",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 2677000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000010/0000014272-26-000010-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-26-000010",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000010/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 2677000000.0,
+          "expected_value": 2677000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1087000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-11",
+        "accn": "0000014272-26-000004",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000004/0000014272-26-000004-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-11",
+            "accn": "0000014272-26-000004",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 7054000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000004/0000014272-26-000004-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000014272-25-000149",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 5967000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000149/0000014272-25-000149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-26-000004",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000004/R3.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 7054000000.0,
+          "expected_value": 1087000000.0,
+          "detail": "12M 7,054,000,000 (10-K 0000014272-26-000004) − 9M 5,967,000,000 (10-Q 0000014272-25-000149)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 2201000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-10-30",
+        "accn": "0000014272-25-000149",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000149/0000014272-25-000149-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-10-30",
+            "accn": "0000014272-25-000149",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 2201000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000149/0000014272-25-000149-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-25-000149",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000149/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 2201000000.0,
+          "expected_value": 2201000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1310000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-07-31",
+        "accn": "0000014272-25-000131",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000131/0000014272-25-000131-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-07-31",
+            "accn": "0000014272-25-000131",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1310000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000131/0000014272-25-000131-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-25-000131",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000131/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 1310000000.0,
+          "expected_value": 1310000000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2456000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-04-24",
+        "accn": "0000014272-25-000091",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000091/0000014272-25-000091-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-04-24",
+            "accn": "0000014272-25-000091",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 2456000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000091/0000014272-25-000091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-25-000091",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000091/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 2456000000.0,
+          "expected_value": 2456000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 72000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-12",
+        "accn": "0000014272-25-000039",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000039/0000014272-25-000039-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-12",
+            "accn": "0000014272-25-000039",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -8948000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000039/0000014272-25-000039-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0000014272-24-000147",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": -9020000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000147/0000014272-24-000147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-25-000039",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427225000039/R3.htm",
+          "statement_label": "Net (loss)/earnings attributable to BMS",
+          "statement_value": -8948000000.0,
+          "expected_value": 72000000.0,
+          "detail": "12M -8,948,000,000 (10-K 0000014272-25-000039) − 9M -9,020,000,000 (10-Q 0000014272-24-000147)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1211000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-10-31",
+        "accn": "0000014272-24-000147",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000147/0000014272-24-000147-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-10-31",
+            "accn": "0000014272-24-000147",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 1211000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000147/0000014272-24-000147-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-24-000147",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000147/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 1211000000.0,
+          "expected_value": 1211000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 1680000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-07-26",
+        "accn": "0000014272-24-000123",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000123/0000014272-24-000123-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-07-26",
+            "accn": "0000014272-24-000123",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 1680000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000123/0000014272-24-000123-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-24-000123",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000123/R2.htm",
+          "statement_label": "Net earnings/(loss) attributable to BMS",
+          "statement_value": 1680000000.0,
+          "expected_value": 1680000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -11911000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-04-25",
+        "accn": "0000014272-24-000096",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000096/0000014272-24-000096-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-04-25",
+            "accn": "0000014272-24-000096",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -11911000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000096/0000014272-24-000096-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-24-000096",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000096/R2.htm",
+          "statement_label": "Net (loss)/earnings attributable to BMS",
+          "statement_value": -11911000000.0,
+          "expected_value": -11911000000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 1762000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-02-13",
+        "accn": "0000014272-24-000044",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/0000014272-24-000044-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-13",
+            "accn": "0000014272-24-000044",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": 8025000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/0000014272-24-000044-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-26",
+            "accn": "0000014272-23-000181",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 6263000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427223000181/0000014272-23-000181-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-24-000044",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/R3.htm",
+          "statement_label": "Net Earnings Attributable to BMS",
+          "statement_value": 8025000000.0,
+          "expected_value": 1762000000.0,
+          "detail": "12M 8,025,000,000 (10-K 0000014272-24-000044) − 9M 6,263,000,000 (10-Q 0000014272-23-000181)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 1928000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-10-26",
+        "accn": "0000014272-23-000181",
+        "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427223000181/0000014272-23-000181-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-10-26",
+            "accn": "0000014272-23-000181",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 1928000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427223000181/0000014272-23-000181-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000014272-23-000181",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427223000181/R2.htm",
+          "statement_label": "Net earnings attributable to BMS",
+          "statement_value": 1928000000.0,
+          "expected_value": 1928000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

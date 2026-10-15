@@ -592,11 +592,11 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLossAvailableToCommonStockholdersBasic is the net income line presented on the income statement of filing 0001568100-26-000045.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
@@ -604,10 +604,10 @@
         "latestValue": 7785000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": null,
-        "overlaps": 0,
-        "disagreements": 0,
-        "statementLabel": null
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "overlaps": 13,
+        "disagreements": 13,
+        "statementLabel": "Net income attributable to PagerDuty, Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -615,28 +615,581 @@
         "latestValue": 7713000.0,
         "quartersInWindow": 13,
         "selected": false,
-        "comparedWith": "NetIncomeLoss",
+        "comparedWith": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
         "latestEnd": "2026-07-31",
         "latestValue": 4726000.0,
         "quartersInWindow": 13,
-        "selected": false,
-        "comparedWith": "NetIncomeLoss",
-        "overlaps": 13,
-        "disagreements": 13,
-        "statementLabel": null
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
+        "disagreements": 0,
+        "statementLabel": "Net income attributable to PagerDuty, Inc. common stockholders"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001568100-26-000045",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000045/R4.htm",
+      "period_end": "2026-07-31",
+      "months": 3,
+      "pipeline_value": 4726000.0,
+      "statement_value": 4726000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 2,
+        "start": "2026-05-01",
+        "end": "2026-07-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 4726000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-27",
+        "accn": "0001568100-26-000045",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000045/0001568100-26-000045-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-27",
+            "accn": "0001568100-26-000045",
+            "start": "2026-05-01",
+            "end": "2026-07-31",
+            "value": 4726000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000045/0001568100-26-000045-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-26-000045",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000045/R4.htm",
+          "statement_label": "Net income attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": 4726000.0,
+          "expected_value": 4726000.0
+        }
+      },
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-02-01",
+        "end": "2026-04-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 10246000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-28",
+        "accn": "0001568100-26-000031",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000031/0001568100-26-000031-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-28",
+            "accn": "0001568100-26-000031",
+            "start": "2026-02-01",
+            "end": "2026-04-30",
+            "value": 10246000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000031/0001568100-26-000031-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-26-000031",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000031/R4.htm",
+          "statement_label": "Net income (loss) attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": 10246000.0,
+          "expected_value": 10246000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "start": "2025-11-01",
+        "end": "2026-01-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 11019000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-12",
+        "accn": "0001568100-26-000012",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000012/0001568100-26-000012-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-12",
+            "accn": "0001568100-26-000012",
+            "start": "2025-02-01",
+            "end": "2026-01-31",
+            "value": 173854000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000012/0001568100-26-000012-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-26",
+            "accn": "0001568100-25-000107",
+            "start": "2025-02-01",
+            "end": "2025-10-31",
+            "value": 162835000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000107/0001568100-25-000107-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-26-000012",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810026000012/R5.htm",
+          "statement_label": "Net income (loss) attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": 173854000.0,
+          "expected_value": 11019000.0,
+          "detail": "12M 173,854,000 (10-K 0001568100-26-000012) − 9M 162,835,000 (10-Q 0001568100-25-000107)"
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2025-08-01",
+        "end": "2025-10-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 159555000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-26",
+        "accn": "0001568100-25-000107",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000107/0001568100-25-000107-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-26",
+            "accn": "0001568100-25-000107",
+            "start": "2025-08-01",
+            "end": "2025-10-31",
+            "value": 159555000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000107/0001568100-25-000107-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-25-000107",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000107/R4.htm",
+          "statement_label": "Net income (loss) attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": 159555000.0,
+          "expected_value": 159555000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2025-05-01",
+        "end": "2025-07-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 9777000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-09-04",
+        "accn": "0001568100-25-000099",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000099/0001568100-25-000099-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-09-04",
+            "accn": "0001568100-25-000099",
+            "start": "2025-05-01",
+            "end": "2025-07-31",
+            "value": 9777000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000099/0001568100-25-000099-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-25-000099",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000099/R4.htm",
+          "statement_label": "Net income (loss) attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": 9777000.0,
+          "expected_value": 9777000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2025-02-01",
+        "end": "2025-04-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6497000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-30",
+        "accn": "0001568100-25-000051",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000051/0001568100-25-000051-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-30",
+            "accn": "0001568100-25-000051",
+            "start": "2025-02-01",
+            "end": "2025-04-30",
+            "value": -6497000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000051/0001568100-25-000051-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-25-000051",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000051/R4.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -6497000.0,
+          "expected_value": -6497000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2024-11-01",
+        "end": "2025-01-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -10604000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-17",
+        "accn": "0001568100-25-000023",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000023/0001568100-25-000023-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-17",
+            "accn": "0001568100-25-000023",
+            "start": "2024-02-01",
+            "end": "2025-01-31",
+            "value": -54460000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000023/0001568100-25-000023-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-27",
+            "accn": "0001568100-24-000139",
+            "start": "2024-02-01",
+            "end": "2024-10-31",
+            "value": -43856000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000139/0001568100-24-000139-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-25-000023",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810025000023/R5.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -54460000.0,
+          "expected_value": -10604000.0,
+          "detail": "12M -54,460,000 (10-K 0001568100-25-000023) − 9M -43,856,000 (10-Q 0001568100-24-000139)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2024-08-01",
+        "end": "2024-10-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -6558000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-27",
+        "accn": "0001568100-24-000139",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000139/0001568100-24-000139-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-27",
+            "accn": "0001568100-24-000139",
+            "start": "2024-08-01",
+            "end": "2024-10-31",
+            "value": -6558000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000139/0001568100-24-000139-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-24-000139",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000139/R4.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -6558000.0,
+          "expected_value": -6558000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2024-05-01",
+        "end": "2024-07-31",
+        "ttm": null,
+        "missing": false,
+        "value": -13242000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-09-04",
+        "accn": "0001568100-24-000109",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000109/0001568100-24-000109-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-09-04",
+            "accn": "0001568100-24-000109",
+            "start": "2024-05-01",
+            "end": "2024-07-31",
+            "value": -13242000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000109/0001568100-24-000109-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-24-000109",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000109/R4.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -13242000.0,
+          "expected_value": -13242000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2024-02-01",
+        "end": "2024-04-30",
+        "ttm": null,
+        "missing": false,
+        "value": -24056000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-31",
+        "accn": "0001568100-24-000058",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000058/0001568100-24-000058-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-31",
+            "accn": "0001568100-24-000058",
+            "start": "2024-02-01",
+            "end": "2024-04-30",
+            "value": -24056000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000058/0001568100-24-000058-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-24-000058",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000058/R4.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -24056000.0,
+          "expected_value": -24056000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2023-11-01",
+        "end": "2024-01-31",
+        "ttm": null,
+        "missing": false,
+        "value": -30632000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-15",
+        "accn": "0001568100-24-000013",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000013/0001568100-24-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-15",
+            "accn": "0001568100-24-000013",
+            "start": "2023-02-01",
+            "end": "2024-01-31",
+            "value": -81757000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000013/0001568100-24-000013-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-12-01",
+            "accn": "0001628280-23-040445",
+            "start": "2023-02-01",
+            "end": "2023-10-31",
+            "value": -51125000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000162828023040445/0001628280-23-040445-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001568100-24-000013",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000156810024000013/R5.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -81757000.0,
+          "expected_value": -30632000.0,
+          "detail": "12M -81,757,000 (10-K 0001568100-24-000013) − 9M -51,125,000 (10-Q 0001628280-23-040445)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2023-08-01",
+        "end": "2023-10-31",
+        "ttm": null,
+        "missing": false,
+        "value": -15125000.0,
+        "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-12-01",
+        "accn": "0001628280-23-040445",
+        "url": "https://www.sec.gov/Archives/edgar/data/1568100/000162828023040445/0001628280-23-040445-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-12-01",
+            "accn": "0001628280-23-040445",
+            "start": "2023-08-01",
+            "end": "2023-10-31",
+            "value": -15125000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1568100/000162828023040445/0001628280-23-040445-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-23-040445",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1568100/000162828023040445/R4.htm",
+          "statement_label": "Net loss attributable to PagerDuty, Inc. common stockholders",
+          "statement_value": -15125000.0,
+          "expected_value": -15125000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-07-31",

@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001579877-26-000043.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 77500000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) attributable to OUTFRONT Media Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,7 +618,7 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 10,
-        "statementLabel": null
+        "statementLabel": "Net income (loss) before allocation to redeemable and non-redeemable noncontrolling interests"
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
@@ -633,10 +633,532 @@
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value",
+      "derivation_mismatch"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001579877-26-000043",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000043/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 77500000.0,
+      "statement_value": 77500000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 77500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-06",
+        "accn": "0001579877-26-000043",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000043/0001579877-26-000043-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-06",
+            "accn": "0001579877-26-000043",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 77500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000043/0001579877-26-000043-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-26-000043",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000043/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 77500000.0,
+          "expected_value": 77500000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 19100000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-08",
+        "accn": "0001579877-26-000021",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000021/0001579877-26-000021-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-08",
+            "accn": "0001579877-26-000021",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 19100000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000021/0001579877-26-000021-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-26-000021",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000021/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 19100000.0,
+          "expected_value": 19100000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 96800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-26",
+        "accn": "0001579877-26-000008",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000008/0001579877-26-000008-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-26",
+            "accn": "0001579877-26-000008",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 147000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000008/0001579877-26-000008-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0001579877-25-000121",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 50200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000121/0001579877-25-000121-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-26-000008",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987726000008/R5.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 147000000.0,
+          "expected_value": 96800000.0,
+          "detail": "12M 147,000,000 (10-K 0001579877-26-000008) − 9M 50,200,000 (10-Q 0001579877-25-000121)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 51300000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-07",
+        "accn": "0001579877-25-000121",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000121/0001579877-25-000121-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-07",
+            "accn": "0001579877-25-000121",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 51300000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000121/0001579877-25-000121-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-25-000121",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000121/R4.htm",
+          "statement_label": "Net income attributable to OUTFRONT Media Inc.",
+          "statement_value": 51300000.0,
+          "expected_value": 51300000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 19500000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-06",
+        "accn": "0001579877-25-000105",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000105/0001579877-25-000105-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-06",
+            "accn": "0001579877-25-000105",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 19500000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000105/0001579877-25-000105-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-25-000105",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000105/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 19500000.0,
+          "expected_value": 19500000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -20600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-09",
+        "accn": "0001579877-25-000059",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000059/0001579877-25-000059-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-09",
+            "accn": "0001579877-25-000059",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": -20600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000059/0001579877-25-000059-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-25-000059",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000059/R4.htm",
+          "statement_label": "Net loss attributable to OUTFRONT Media Inc.",
+          "statement_value": -20600000.0,
+          "expected_value": -20600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 74000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2025-02-28",
+        "accn": "0001579877-25-000034",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/0001579877-25-000034-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-28",
+            "accn": "0001579877-25-000034",
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "value": 74000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/0001579877-25-000034-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-25-000034",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/R5.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 74000000.0,
+          "expected_value": 74000000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 34600000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-12",
+        "accn": "0001579877-24-000091",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000091/0001579877-24-000091-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-12",
+            "accn": "0001579877-24-000091",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 34600000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000091/0001579877-24-000091-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-24-000091",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000091/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 34600000.0,
+          "expected_value": 34600000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 176800000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-07",
+        "accn": "0001579877-24-000086",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000086/0001579877-24-000086-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-07",
+            "accn": "0001579877-24-000086",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 176800000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000086/0001579877-24-000086-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-24-000086",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000086/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 176800000.0,
+          "expected_value": 176800000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": -27200000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-03",
+        "accn": "0001579877-24-000047",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000047/0001579877-24-000047-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-03",
+            "accn": "0001579877-24-000047",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": -27200000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000047/0001579877-24-000047-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-24-000047",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987724000047/R4.htm",
+          "statement_label": "Net loss attributable to OUTFRONT Media Inc.",
+          "statement_value": -27200000.0,
+          "expected_value": -27200000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 60400000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2025-02-28",
+        "accn": "0001579877-25-000034",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/0001579877-25-000034-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-28",
+            "accn": "0001579877-25-000034",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 60400000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/0001579877-25-000034-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-25-000034",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987725000034/R5.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 60400000.0,
+          "expected_value": 60400000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 17000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001579877-23-000092",
+        "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987723000092/0001579877-23-000092-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "derivation_mismatch"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001579877-23-000092",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 17000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987723000092/0001579877-23-000092-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001579877-23-000092",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1579877/000157987723000092/R4.htm",
+          "statement_label": "Net income (loss) attributable to OUTFRONT Media Inc.",
+          "statement_value": 17000000.0,
+          "expected_value": 17000000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

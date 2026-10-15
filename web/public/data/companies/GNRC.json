@@ -581,22 +581,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001437749-26-025669.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 143244000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Generac Holdings Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -607,14 +607,544 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 12,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001437749-26-025669",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926025669/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 143244000.0,
+      "statement_value": 143244000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 143244000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-04",
+        "accn": "0001437749-26-025669",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926025669/0001437749-26-025669-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-04",
+            "accn": "0001437749-26-025669",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 143244000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926025669/0001437749-26-025669-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-025669",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926025669/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 143244000.0,
+          "expected_value": 143244000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 73253000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-05",
+        "accn": "0001437749-26-014882",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926014882/0001437749-26-014882-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-05",
+            "accn": "0001437749-26-014882",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 73253000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926014882/0001437749-26-014882-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-014882",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926014882/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 73253000.0,
+          "expected_value": 73253000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": -24463000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-02-18",
+        "accn": "0001437749-26-004568",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926004568/0001437749-26-004568-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-02-18",
+            "accn": "0001437749-26-004568",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 159554000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926004568/0001437749-26-004568-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001437749-25-033048",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 184017000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925033048/0001437749-25-033048-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-004568",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926004568/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 159554000.0,
+          "expected_value": -24463000.0,
+          "detail": "12M 159,554,000 (10-K 0001437749-26-004568) − 9M 184,017,000 (10-Q 0001437749-25-033048)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 66161000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-04",
+        "accn": "0001437749-25-033048",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925033048/0001437749-25-033048-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-04",
+            "accn": "0001437749-25-033048",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 66161000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925033048/0001437749-25-033048-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-033048",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925033048/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 66161000.0,
+          "expected_value": 66161000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 74016000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-05",
+        "accn": "0001437749-25-024879",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925024879/0001437749-25-024879-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-05",
+            "accn": "0001437749-25-024879",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 74016000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925024879/0001437749-25-024879-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-024879",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925024879/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 74016000.0,
+          "expected_value": 74016000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 43840000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-06",
+        "accn": "0001437749-25-014767",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925014767/0001437749-25-014767-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-06",
+            "accn": "0001437749-25-014767",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 43840000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925014767/0001437749-25-014767-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-014767",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925014767/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 43840000.0,
+          "expected_value": 43840000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 117226000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-02-19",
+        "accn": "0001437749-25-004353",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925004353/0001437749-25-004353-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-02-19",
+            "accn": "0001437749-25-004353",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": 316315000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925004353/0001437749-25-004353-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001437749-24-033337",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 199089000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924033337/0001437749-24-033337-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-004353",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774925004353/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 316315000.0,
+          "expected_value": 117226000.0,
+          "detail": "12M 316,315,000 (10-K 0001437749-25-004353) − 9M 199,089,000 (10-Q 0001437749-24-033337)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 113742000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-05",
+        "accn": "0001437749-24-033337",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924033337/0001437749-24-033337-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-05",
+            "accn": "0001437749-24-033337",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 113742000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924033337/0001437749-24-033337-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-033337",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924033337/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 113742000.0,
+          "expected_value": 113742000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": 59115000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-06",
+        "accn": "0001437749-24-024883",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924024883/0001437749-24-024883-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-06",
+            "accn": "0001437749-24-024883",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": 59115000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924024883/0001437749-24-024883-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-024883",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924024883/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 59115000.0,
+          "expected_value": 59115000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 26232000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-07",
+        "accn": "0001437749-24-015075",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924015075/0001437749-24-015075-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-07",
+            "accn": "0001437749-24-015075",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 26232000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924015075/0001437749-24-015075-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-015075",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924015075/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 26232000.0,
+          "expected_value": 26232000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 96601000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-K",
+        "filed": "2024-02-21",
+        "accn": "0001437749-24-005040",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924005040/0001437749-24-005040-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-02-21",
+            "accn": "0001437749-24-005040",
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "value": 96601000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924005040/0001437749-24-005040-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-005040",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774924005040/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 214606000.0,
+          "expected_value": 96601000.0,
+          "detail": "The reported 3-month figure is not on the face of 10-K 0001437749-24-005040; verified as FY − 9M YTD: 12M 214,606,000 (10-K 0001437749-24-005040) − 9M 118,005,000 (10-Q 0001437749-23-030646)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": 60377000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-07",
+        "accn": "0001437749-23-030646",
+        "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774923030646/0001437749-23-030646-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-07",
+            "accn": "0001437749-23-030646",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": 60377000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774923030646/0001437749-23-030646-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-23-030646",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774923030646/R4.htm",
+          "statement_label": "Net income attributable to Generac Holdings Inc.",
+          "statement_value": 60377000.0,
+          "expected_value": 60377000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",

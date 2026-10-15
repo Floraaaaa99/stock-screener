@@ -592,22 +592,22 @@
   },
   "classificationIssues": [],
   "earnings": {
-    "status": "ambiguous",
+    "status": "ok",
     "currency": "USD",
-    "concept": null,
-    "conceptStatus": "ambiguous",
-    "conceptNote": "Concepts disagree (NetIncomeLoss, ProfitLoss) and the income statement does not resolve which is net income.",
+    "concept": "NetIncomeLoss",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001437749-26-025339.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-06-30",
         "latestValue": 3574000.0,
         "quartersInWindow": 13,
-        "selected": false,
+        "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net income attributable to Cohen & Company Inc."
       },
       {
         "concept": "ProfitLoss",
@@ -618,14 +618,559 @@
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
         "disagreements": 13,
-        "statementLabel": null
+        "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "ambiguous_concept"
+      "other_concept_disagrees",
+      "negative_value"
     ],
-    "statementCheck": null,
-    "quarters": [],
+    "statementCheck": {
+      "status": "verified",
+      "accn": "0001437749-26-025339",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926025339/R4.htm",
+      "period_end": "2026-06-30",
+      "months": 3,
+      "pipeline_value": 3574000.0,
+      "statement_value": 3574000.0
+    },
+    "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "start": "2026-04-01",
+        "end": "2026-06-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 3574000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-08-03",
+        "accn": "0001437749-26-025339",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926025339/0001437749-26-025339-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-08-03",
+            "accn": "0001437749-26-025339",
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "value": 3574000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926025339/0001437749-26-025339-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-025339",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926025339/R4.htm",
+          "statement_label": "Net income attributable to Cohen & Company Inc.",
+          "statement_value": 3574000.0,
+          "expected_value": 3574000.0
+        }
+      },
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "start": "2026-01-01",
+        "end": "2026-03-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 1492000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-05-04",
+        "accn": "0001437749-26-014604",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926014604/0001437749-26-014604-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-05-04",
+            "accn": "0001437749-26-014604",
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "value": 1492000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926014604/0001437749-26-014604-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-014604",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926014604/R4.htm",
+          "statement_label": "Net income attributable to Cohen & Company Inc.",
+          "statement_value": 1492000.0,
+          "expected_value": 1492000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "start": "2025-10-01",
+        "end": "2025-12-31",
+        "ttm": "current",
+        "missing": false,
+        "value": 8101000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2026-03-06",
+        "accn": "0001437749-26-007157",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926007157/0001437749-26-007157-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2026-03-06",
+            "accn": "0001437749-26-007157",
+            "start": "2025-01-01",
+            "end": "2025-12-31",
+            "value": 14431000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926007157/0001437749-26-007157-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001437749-25-033482",
+            "start": "2025-01-01",
+            "end": "2025-09-30",
+            "value": 6330000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925033482/0001437749-25-033482-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-26-007157",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774926007157/R4.htm",
+          "statement_label": "Net income (loss) attributable to Cohen & Company Inc.",
+          "statement_value": 14431000.0,
+          "expected_value": 8101000.0,
+          "detail": "12M 14,431,000 (10-K 0001437749-26-007157) − 9M 6,330,000 (10-Q 0001437749-25-033482)"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "start": "2025-07-01",
+        "end": "2025-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 4593000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-11-06",
+        "accn": "0001437749-25-033482",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925033482/0001437749-25-033482-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-11-06",
+            "accn": "0001437749-25-033482",
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "value": 4593000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925033482/0001437749-25-033482-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-033482",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925033482/R4.htm",
+          "statement_label": "Net income attributable to Cohen & Company Inc.",
+          "statement_value": 4593000.0,
+          "expected_value": 4593000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "start": "2025-04-01",
+        "end": "2025-06-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 1408000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-08-04",
+        "accn": "0001437749-25-024506",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925024506/0001437749-25-024506-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-08-04",
+            "accn": "0001437749-25-024506",
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "value": 1408000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925024506/0001437749-25-024506-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-024506",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925024506/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": 1408000.0,
+          "expected_value": 1408000.0
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "start": "2025-01-01",
+        "end": "2025-03-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": 329000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2025-05-02",
+        "accn": "0001437749-25-014235",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925014235/0001437749-25-014235-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2025-05-02",
+            "accn": "0001437749-25-014235",
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "value": 329000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925014235/0001437749-25-014235-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-014235",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925014235/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": 329000.0,
+          "expected_value": 329000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "ttm": "previous",
+        "missing": false,
+        "value": -1953000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2025-03-12",
+        "accn": "0001437749-25-007158",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925007158/0001437749-25-007158-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2025-03-12",
+            "accn": "0001437749-25-007158",
+            "start": "2024-01-01",
+            "end": "2024-12-31",
+            "value": -129000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925007158/0001437749-25-007158-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2024-11-04",
+            "accn": "0001437749-24-033077",
+            "start": "2024-01-01",
+            "end": "2024-09-30",
+            "value": 1824000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924033077/0001437749-24-033077-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-25-007158",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774925007158/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": -129000.0,
+          "expected_value": -1953000.0,
+          "detail": "12M -129,000 (10-K 0001437749-25-007158) − 9M 1,824,000 (10-Q 0001437749-24-033077)"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 3,
+        "start": "2024-07-01",
+        "end": "2024-09-30",
+        "ttm": "previous",
+        "missing": false,
+        "value": 2150000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-11-04",
+        "accn": "0001437749-24-033077",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924033077/0001437749-24-033077-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-11-04",
+            "accn": "0001437749-24-033077",
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "value": 2150000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924033077/0001437749-24-033077-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-033077",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924033077/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": 2150000.0,
+          "expected_value": 2150000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 2,
+        "start": "2024-04-01",
+        "end": "2024-06-30",
+        "ttm": null,
+        "missing": false,
+        "value": -2349000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-08-06",
+        "accn": "0001437749-24-024742",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924024742/0001437749-24-024742-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-08-06",
+            "accn": "0001437749-24-024742",
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "value": -2349000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924024742/0001437749-24-024742-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-024742",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924024742/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": -2349000.0,
+          "expected_value": -2349000.0
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "fiscalQuarter": 1,
+        "start": "2024-01-01",
+        "end": "2024-03-31",
+        "ttm": null,
+        "missing": false,
+        "value": 2023000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2024-05-06",
+        "accn": "0001437749-24-014741",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924014741/0001437749-24-014741-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2024-05-06",
+            "accn": "0001437749-24-014741",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "value": 2023000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924014741/0001437749-24-014741-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-014741",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924014741/R4.htm",
+          "statement_label": "Net income (loss) attributable to Cohen & Company Inc.",
+          "statement_value": 2023000.0,
+          "expected_value": 2023000.0
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 4,
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "ttm": null,
+        "missing": false,
+        "value": 4548000.0,
+        "concept": "NetIncomeLoss",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
+        "form": "10-K",
+        "filed": "2024-03-06",
+        "accn": "0001437749-24-006827",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924006827/0001437749-24-006827-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "ytd_total",
+            "sign": 1,
+            "form": "10-K",
+            "filed": "2024-03-06",
+            "accn": "0001437749-24-006827",
+            "start": "2023-01-01",
+            "end": "2023-12-31",
+            "value": -5113000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924006827/0001437749-24-006827-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001437749-23-030126",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": -9661000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774923030126/0001437749-23-030126-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-24-006827",
+          "form": "10-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774924006827/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": -5113000.0,
+          "expected_value": 4548000.0,
+          "detail": "12M -5,113,000 (10-K 0001437749-24-006827) − 9M -9,661,000 (10-Q 0001437749-23-030126)"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "fiscalQuarter": 3,
+        "start": "2023-07-01",
+        "end": "2023-09-30",
+        "ttm": null,
+        "missing": false,
+        "value": -423000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2023-11-03",
+        "accn": "0001437749-23-030126",
+        "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774923030126/0001437749-23-030126-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [
+          "negative_value"
+        ],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2023-11-03",
+            "accn": "0001437749-23-030126",
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "value": -423000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774923030126/0001437749-23-030126-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001437749-23-030126",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1270436/000143774923030126/R4.htm",
+          "statement_label": "Net income / (loss) attributable to Cohen & Company Inc.",
+          "statement_value": -423000.0,
+          "expected_value": -423000.0
+        }
+      }
+    ],
     "edgarSupplement": {
       "status": "current",
       "latestFactsEnd": "2026-06-30",
