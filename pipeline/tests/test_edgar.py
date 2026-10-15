@@ -83,8 +83,25 @@ def test_parse_submissions_keeps_latest_10q_per_period():
     got = parse_periodic_filings(payload)
     by_end = {f.report_date: f for f in got}
     assert set(by_end) == {date(2026, 6, 30), date(2025, 12, 31)}
-    assert by_end[date(2026, 6, 30)].accn == "amend"
-    assert by_end[date(2026, 6, 30)].filed == date(2026, 8, 2)
+    assert by_end[date(2026, 6, 30)].accn == "orig"
+    assert by_end[date(2026, 6, 30)].form == "10-Q"
+
+
+def test_same_day_10qa_does_not_hide_original_10q():
+    payload = {
+        "filings": {
+            "recent": {
+                "form": ["10-Q/A", "10-Q"],
+                "filingDate": ["2026-07-29", "2026-07-29"],
+                "reportDate": ["2026-06-30", "2026-06-30"],
+                "accessionNumber": ["0000354963-26-000214", "0000354963-26-000209"],
+            }
+        }
+    }
+    got = parse_periodic_filings(payload)
+    assert len(got) == 1
+    assert got[0].accn == "0000354963-26-000209"
+    assert got[0].form == "10-Q"
 
 
 def test_facts_may_lag_uses_next_quarter_window():

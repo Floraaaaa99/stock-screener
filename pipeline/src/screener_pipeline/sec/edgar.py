@@ -111,12 +111,26 @@ def parse_periodic_filings(payload: dict) -> list[PeriodicFiling]:
 
 
 def _dedupe_periodic(filings: list[PeriodicFiling]) -> list[PeriodicFiling]:
-    """One row per report date: the latest filed accession wins (covers 10-Q/A)."""
+    """One row per report date.
+
+    Prefer the original 10-Q/10-K over a later 10-Q/A or 10-K/A. Cover-only DEI
+    amendments (`isOnlyDei`) have no income statement; treating them as the latest
+    official filing hides the original 10-Q (SHEN FY2026 Q2).
+    """
     by_end: dict[date | str, PeriodicFiling] = {}
     for f in filings:
         key: date | str = f.report_date or f.accn
         cur = by_end.get(key)
-        if cur is None or f.filed > cur.filed or (f.filed == cur.filed and f.form.endswith("/A")):
+        if cur is None:
+            by_end[key] = f
+            continue
+        f_amend = f.form.endswith("/A")
+        cur_amend = cur.form.endswith("/A")
+        if f_amend != cur_amend:
+            if not f_amend:
+                by_end[key] = f
+            continue
+        if f.filed > cur.filed:
             by_end[key] = f
     return sorted(by_end.values(), key=lambda f: (f.report_date or date.min, f.filed))
 

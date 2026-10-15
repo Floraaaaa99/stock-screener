@@ -283,6 +283,28 @@ def classification_issues(listing: Listing, cik: str | None, sic: SicInfo | None
     return out
 
 
+def _is_current_edgar_unresolved(c: dict) -> bool:
+    """True when Company Facts look current but a newer official filing was not ingested.
+
+    Foreign filers, issuers with no revenue concept, and stale snapshots (latest facts
+    older than ~5 quarters) are not publication blockers. Those companies stay visible
+    with N/A. The gate is for the INCY/SHEN case: a recent quarter is on EDGAR and we
+    failed to read its income statement.
+    """
+    from datetime import date as date_cls
+
+    supp = (c.get("revenue") or {}).get("edgarSupplement") or {}
+    if supp.get("status") != "unresolved":
+        return False
+    if (c.get("ttm") or {}).get("reason") in {"foreign_filer", "no_revenue_concept"}:
+        return False
+    raw = supp.get("latestFactsEnd")
+    if not raw:
+        return False
+    latest = date_cls.fromisoformat(raw)
+    return (date.today() - latest).days <= 400
+
+
 def make_meta(dataset, companies, listings_all, exclusions, file_times, started, run=None, baseline=None) -> dict:
     def count(pred) -> int:
         return sum(1 for c in companies if pred(c))
@@ -368,9 +390,7 @@ def make_meta(dataset, companies, listings_all, exclusions, file_times, started,
             "edgarSupplemented": count(
                 lambda c: ((rev(c).get("edgarSupplement") or {}).get("status") == "applied")
             ),
-            "edgarUnresolved": count(
-                lambda c: ((rev(c).get("edgarSupplement") or {}).get("status") == "unresolved")
-            ),
+            "edgarUnresolved": count(_is_current_edgar_unresolved),
             "edgarLaggingBeforeSupplement": count(
                 lambda c: bool((rev(c).get("edgarSupplement") or {}).get("newerFilings"))
             ),
