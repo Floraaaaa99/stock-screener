@@ -6,7 +6,13 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date
 
-from .concepts import ConceptSeries, Selection, select_concept, verify_against_statement
+from .concepts import (
+    ConceptSeries,
+    Selection,
+    prefer_attributable_net_income,
+    select_concept,
+    verify_against_statement,
+)
 from .quarters import (
     MissingQuarter,
     Quarter,
@@ -40,6 +46,7 @@ class MetricSpec:
     line_name: str
     none_reason: str
     no_quarterly_reason: str
+    prefer_face: Callable | None = None
 
 
 REVENUE_SPEC = MetricSpec(
@@ -57,6 +64,7 @@ EARNINGS_SPEC = MetricSpec(
     "net income",
     "no_earnings_concept",
     "no_quarterly_earnings",
+    prefer_attributable_net_income,
 )
 
 STALE_AFTER_DAYS = 270
@@ -161,19 +169,32 @@ def _verify_sources(
     for s in q.sources:
         got = fetch(s.accn)
         if got is None:
-            return QuarterCheck("unavailable", s.accn, s.form, detail=f"Income statement of {s.form} {s.accn} "
-                                "could not be read.")
+            return QuarterCheck(
+                "unavailable", s.accn, s.form, detail=f"Income statement of {s.form} {s.accn} could not be read."
+            )
         st, url = got
         months = _months(s.start, s.end)
         row = _face_row(st, q.concept, months, s.end, s.val, is_face_line)
         face = st.value(row, months, s.end) if row else None
         if face is None:
-            return QuarterCheck("unavailable", s.accn, s.form, url,
-                                detail=f"No {months}-month {line_name} column ending {s.end} on {s.form} {s.accn}.")
+            return QuarterCheck(
+                "unavailable",
+                s.accn,
+                s.form,
+                url,
+                detail=f"No {months}-month {line_name} column ending {s.end} on {s.form} {s.accn}.",
+            )
         if not values_agree(face, s.val):
-            return QuarterCheck("mismatch", s.accn, s.form, url, row.label, face, s.val,
-                                detail=f"{months}-month value on {s.form} {s.accn} is {face:,.0f}; "
-                                f"Company Facts has {s.val:,.0f}.")
+            return QuarterCheck(
+                "mismatch",
+                s.accn,
+                s.form,
+                url,
+                row.label,
+                face,
+                s.val,
+                detail=f"{months}-month value on {s.form} {s.accn} is {face:,.0f}; Company Facts has {s.val:,.0f}.",
+            )
         if first_url is None:
             first_url, first_label = url, row.label
         face_values.append(s.sign * face)
@@ -213,8 +234,7 @@ def analyze_company(
     if not rf.by_concept:
         if rf.is_foreign_filer:
             return CompanyRevenue("foreign_filer", rf.currency, None, [], TTMResult(None, None, None, "foreign_filer"))
-        return CompanyRevenue("no_revenue_facts", rf.currency, None, [],
-                              TTMResult(None, None, None, spec.none_reason))
+        return CompanyRevenue("no_revenue_facts", rf.currency, None, [], TTMResult(None, None, None, spec.none_reason))
 
     series: dict[str, ConceptSeries] = {}
     for concept, facts in rf.by_concept.items():
@@ -231,20 +251,21 @@ def analyze_company(
         is_face_line=spec.is_face_line,
         concepts=spec.concepts,
         line_name=spec.line_name,
+        prefer_face=spec.prefer_face,
     )
     flags = list(sel.flags)
 
     if sel.status == "ambiguous":
-        return CompanyRevenue("ambiguous", rf.currency, sel, [], TTMResult(None, None, None, "ambiguous_concept"),
-                              flags=flags)
+        return CompanyRevenue(
+            "ambiguous", rf.currency, sel, [], TTMResult(None, None, None, "ambiguous_concept"), flags=flags
+        )
     if sel.concept is None:
-        return CompanyRevenue("no_revenue_facts", rf.currency, sel, [],
-                              TTMResult(None, None, None, spec.no_quarterly_reason), flags=flags)
+        return CompanyRevenue(
+            "no_revenue_facts", rf.currency, sel, [], TTMResult(None, None, None, spec.no_quarterly_reason), flags=flags
+        )
 
     slots = build_timeline(sel.quarters, sel.anchor_end)
-    check_status, ours, theirs = verify_against_statement(
-        sel, series, evidence, is_face_line=spec.is_face_line
-    )
+    check_status, ours, theirs = verify_against_statement(sel, series, evidence, is_face_line=spec.is_face_line)
     statement_check = {
         "status": check_status,
         "accn": evidence.accn if evidence else None,
@@ -258,7 +279,8 @@ def analyze_company(
 
     window_start = slots[-1].start if slots else None
     bad_years = [
-        d for d in annual_check(series[sel.concept].quarters, series[sel.concept].periods)
+        d
+        for d in annual_check(series[sel.concept].quarters, series[sel.concept].periods)
         if window_start and d >= window_start
     ]
     if bad_years:

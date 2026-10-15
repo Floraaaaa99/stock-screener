@@ -18,9 +18,10 @@ from datetime import date, timedelta
 
 from .quarters import CHAIN_TOLERANCE_DAYS, Period, Quarter, values_agree
 from .sec.facts import REVENUE_CONCEPTS
-from .sec.statement import StatementEvidence, is_total_revenue_label
+from .sec.statement import NI_SCOPE_RANK, StatementEvidence, is_total_revenue_label, net_income_scope
 
 FaceLine = Callable[[str], bool]
+FacePrefer = Callable[[list[tuple["ConceptSeries", tuple[str, str, float | None]]]], "ConceptSeries | None"]
 
 WINDOW_DAYS = 12 * 92
 
@@ -77,10 +78,34 @@ def _priority(concept: str, concepts: list[str]) -> int:
     return concepts.index(concept) if concept in concepts else len(concepts)
 
 
+def prefer_attributable_net_income(
+    pairs: list[tuple[ConceptSeries, tuple[str, str, float | None]]],
+) -> ConceptSeries | None:
+    """When consolidated NI and attributable-to-parent/common both appear, keep the more specific line.
+
+    Both amounts can be correctly reported. They are different scopes (NCI or preferred dividends),
+    not a data conflict. Prefer common > parent > consolidated. Still None if two concepts share
+    the best scope.
+    """
+    ranked: list[tuple[int, ConceptSeries]] = []
+    for series, row in pairs:
+        scope = net_income_scope(row[1], series.concept)
+        if scope in NI_SCOPE_RANK:
+            ranked.append((NI_SCOPE_RANK[scope], series))
+    if not ranked:
+        return None
+    best = min(rank for rank, _ in ranked)
+    winners = {s.concept: s for rank, s in ranked if rank == best}
+    if len(winners) == 1:
+        return next(iter(winners.values()))
+    return None
+
+
 def _resolve_by_statement(
     group: list[ConceptSeries],
     evidence: StatementEvidence | None,
     is_face_line: FaceLine,
+    prefer_face: FacePrefer | None = None,
 ) -> ConceptSeries | None:
     if evidence is None:
         return None
@@ -89,15 +114,18 @@ def _resolve_by_statement(
         return None
     if len(present) == 1:
         s, row = present[0]
-        other_totals = [
-            r for r in evidence.rows if is_face_line(r[1]) and r[0] != f"us-gaap:{s.concept}"
-        ]
+        other_totals = [r for r in evidence.rows if is_face_line(r[1]) and r[0] != f"us-gaap:{s.concept}"]
         if is_face_line(row[1]) or not other_totals:
             return s
         return None
-    totals = {s.concept: s for s, row in present if is_face_line(row[1])}
+    face_pairs = [(s, row) for s, row in present if is_face_line(row[1])]
+    totals = {s.concept: s for s, row in face_pairs}
     if len(totals) == 1:
         return next(iter(totals.values()))
+    if prefer_face:
+        picked = prefer_face(face_pairs or present)
+        if picked is not None:
+            return picked
     return None
 
 
@@ -109,6 +137,7 @@ def select_concept(
     is_face_line: FaceLine = is_total_revenue_label,
     concepts: list[str] | None = None,
     line_name: str = "total revenue",
+    prefer_face: FacePrefer | None = None,
 ) -> Selection:
     rank = concepts or REVENUE_CONCEPTS
     usable = [s for s in series if s.quarters]
@@ -132,17 +161,19 @@ def select_concept(
             if evidence is not None:
                 rows = evidence.concept_rows(s.concept)
                 on_statement = rows[0][1] if rows else None
-            out.append({
-                "concept": s.concept,
-                "latestEnd": s.latest_end.isoformat() if s.latest_end else None,
-                "latestValue": lq.val if lq else None,
-                "quartersInWindow": _coverage(s, window_start),
-                "selected": s is chosen,
-                "comparedWith": ref.concept if ref and s is not ref else None,
-                "overlaps": ov,
-                "disagreements": dis,
-                "statementLabel": on_statement,
-            })
+            out.append(
+                {
+                    "concept": s.concept,
+                    "latestEnd": s.latest_end.isoformat() if s.latest_end else None,
+                    "latestValue": lq.val if lq else None,
+                    "quartersInWindow": _coverage(s, window_start),
+                    "selected": s is chosen,
+                    "comparedWith": ref.concept if ref and s is not ref else None,
+                    "overlaps": ov,
+                    "disagreements": dis,
+                    "statementLabel": on_statement,
+                }
+            )
         return out
 
     chosen: ConceptSeries | None = None
@@ -162,7 +193,11 @@ def select_concept(
             status = "single" if len(relevant) == 1 else "equivalent"
         else:
             group = [primary] + [s for s in conflicts if s in current]
-            resolved = _resolve_by_statement(group, evidence, is_face_line)
+            resolved = _resolve_by_statement(group, evidence, is_face_line, prefer_face)
+            if resolved is None and prefer_face:
+                # The face line may be a third candidate (e.g. available-to-common) that was
+                # not in the pair that first disagreed.
+                resolved = _resolve_by_statement(relevant, evidence, is_face_line, prefer_face)
             if resolved is not None:
                 chosen, status = resolved, "statement_verified"
                 note = (
@@ -180,8 +215,7 @@ def select_concept(
                     latest,
                     flags=["ambiguous_concept"],
                     candidates=summary(None, primary),
-                    note=f"Concepts disagree ({names}) and the income statement does not resolve which "
-                    f"is {line_name}.",
+                    note=f"Concepts disagree ({names}) and the income statement does not resolve which is {line_name}.",
                 )
 
     merged: dict[date, Quarter] = dict(chosen.quarters)
@@ -227,7 +261,7 @@ def verify_against_statement(
         ours = q.val if q else None
     else:
         s = series.get(selection.concept)
-        for p in (s.periods.values() if s else []):
+        for p in s.periods.values() if s else []:
             if p.end == evidence.end and 350 <= p.days <= 380:
                 ours = p.val
     if ours is None:

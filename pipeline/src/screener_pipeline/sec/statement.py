@@ -34,7 +34,7 @@ def is_total_revenue_label(label: str) -> bool:
 _NET_INCOME_RX = re.compile(
     r"^\s*(net\s+(income|loss|earnings)(\s*\(\s*loss\s*\))?(\s*\(\s*income\s*\))?"
     r"|profit(\s*\(\s*loss\s*\))?(\s+or\s+loss)?)"
-    r"(\s+attributable\s+to(\s+the)?\s+.{0,80})?\s*$",
+    r"(\s+((attributable|available|applicable)\s+to(\s+the)?\s+.{0,80}|of\s+.{0,80}))?\s*$",
     re.I,
 )
 _NOT_NET_INCOME_RX = re.compile(
@@ -44,12 +44,56 @@ _NOT_NET_INCOME_RX = re.compile(
 )
 
 
+_NCI_RX = re.compile(r"noncontrolling", re.I)
+_COMMON_RX = re.compile(
+    r"(attributable|available|applicable)\s+to\s+(.{0,80}\s+)?"
+    r"common(\s+stock)?\s*(share)?holders",
+    re.I,
+)
+_PARENT_RX = re.compile(
+    r"attributable\s+to\s+(parent|the\s+company|stockholders|shareholders|members)\b"
+    r"|attributable\s+to\s+[A-Z][\w .,&'-]{1,80}"
+    r"|of\s+[A-Z][\w .,&'-]{1,80}",
+    re.I,
+)
+
+# Preferred GAAP scope for equity screening: common > parent > consolidated.
+# Consolidated ProfitLoss and attributable-to-common NetIncomeLoss are both valid; they are not
+# interchangeable when noncontrolling interest exists.
+NI_SCOPE_RANK = {"common": 0, "parent": 1, "consolidated": 2}
+
+
 def is_net_income_label(label: str) -> bool:
-    """Face-line net income / net loss, not EPS or operating income."""
+    """Face-line net income / net loss, not EPS, NCI, or operating income."""
     text = (label or "").replace("\n", " ").strip()
-    if _NOT_NET_INCOME_RX.search(text):
+    if _NCI_RX.search(text) or _NOT_NET_INCOME_RX.search(text):
         return False
     return bool(_NET_INCOME_RX.search(text))
+
+
+def net_income_scope(label: str, concept: str = "") -> str | None:
+    """Classify a net-income face line as common, parent, consolidated, or nci.
+
+    Returns None when the label is not a usable bottom-line NI line.
+    """
+    text = (label or "").replace("\n", " ").strip()
+    short = (concept or "").split(":")[-1]
+    if _NCI_RX.search(text) or short == "NetIncomeLossAttributableToNoncontrollingInterest":
+        return "nci"
+    if not is_net_income_label(text) and short not in {
+        "NetIncomeLoss",
+        "ProfitLoss",
+        "NetIncomeLossAvailableToCommonStockholdersBasic",
+        "NetIncomeLossAttributableToParent",
+    }:
+        return None
+    if _COMMON_RX.search(text) or short == "NetIncomeLossAvailableToCommonStockholdersBasic":
+        return "common"
+    if _PARENT_RX.search(text) or short in {"NetIncomeLoss", "NetIncomeLossAttributableToParent"}:
+        return "parent"
+    if is_net_income_label(text) or short == "ProfitLoss":
+        return "consolidated"
+    return None
 
 
 def income_statement_candidates(filing_summary_xml: str) -> list[tuple[str, str]]:
@@ -238,7 +282,7 @@ def parse_statement_html(html: str) -> Statement:
     # footnote cell before the first value.
     lead = head_rows[0][0]["colspan"] if head_rows else 1
     st = Statement(title=title, scale=scale, columns=columns)
-    for r in rows[len(head_rows):]:
+    for r in rows[len(head_rows) :]:
         if not r or r[0]["tag"] != "td" or not r[0].get("defref"):
             continue
         values: list[float | None] = []
@@ -246,7 +290,7 @@ def parse_statement_html(html: str) -> Statement:
             v = _parse_number(c["text"]) if c["tag"] == "td" and "fn" not in c["class"].split() else None
             values.append(v * scale if v is not None else None)
             values.extend([None] * (c["colspan"] - 1))
-        st.rows.append(StatementRow(concept=r[0]["defref"], label=r[0]["text"], values=values[lead - 1:]))
+        st.rows.append(StatementRow(concept=r[0]["defref"], label=r[0]["text"], values=values[lead - 1 :]))
     return st
 
 
@@ -335,12 +379,18 @@ def statement_from_compact(data: dict) -> tuple[Statement, str]:
     return st, data.get("url") or ""
 
 
-def evidence_from_statement(
-    st: Statement, accn: str, form: str, url: str, months: int, end: date
-) -> StatementEvidence:
+def _is_evidence_row(row: StatementRow) -> bool:
+    name = row.concept.split(":", 1)[-1]
+    if re.search(r"revenue|sales", name, re.I) or re.search(r"revenue|sales", row.label, re.I):
+        return True
+    if re.search(r"netincome|profitloss", name, re.I) or is_net_income_label(row.label):
+        return True
+    return False
+
+
+def evidence_from_statement(st: Statement, accn: str, form: str, url: str, months: int, end: date) -> StatementEvidence:
     rows: list[tuple[str, str, float | None]] = []
     for row in st.rows:
-        name = row.concept.split(":", 1)[-1]
-        if re.search(r"revenue|sales", name, re.I) or re.search(r"revenue|sales", row.label, re.I):
+        if _is_evidence_row(row):
             rows.append((row.concept, row.label, st.value(row, months, end)))
     return StatementEvidence(accn, form, url, st.title, months, end, rows)
