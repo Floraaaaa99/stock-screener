@@ -102,7 +102,7 @@ describe("filterLayer2", () => {
       row("BBB", { appliedCategories: ["latest_quarter_revenue_decline"] }),
       row("CCC", { sicMajorGroup: "Other", appliedCategories: ["qoq_volatility"] }),
     ];
-    const f = { sicMajorGroup: "Chemicals", sicIndustry: "", query: "", categories: ["qoq_volatility"] };
+    const f = { sicMajorGroup: "Chemicals", sicIndustries: [], query: "", categories: ["qoq_volatility"] };
     expect(filterLayer2(rows, "passed", f).map((r) => r.ticker)).toEqual(["AAA"]);
     expect(filterLayer2(rows, "passed", { ...f, categories: ["qoq_volatility", "latest_quarter_revenue_decline"] }).map((r) => r.ticker)).toEqual([
       "AAA",
@@ -116,7 +116,7 @@ describe("filterLayer2", () => {
       row("P2", { ni: { appliedProfitability: ["ni_one_loss"], appliedImprovement: ["ni_latest_turnaround"] } } as Partial<Layer2Row>),
       row("P3", { ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_latest_turnaround"] } } as Partial<Layer2Row>),
     ];
-    const base = { sicMajorGroup: "", sicIndustry: "", query: "", categories: [] };
+    const base = { sicMajorGroup: "", sicIndustries: [], query: "", categories: [] };
     expect(
       filterLayer2(rows, "passed", { ...base, niProfitability: ["ni_all_profitable"], niImprovement: ["ni_latest_turnaround"] }).map((r) => r.ticker),
     ).toEqual(["P3"]);
@@ -133,6 +133,25 @@ describe("filterLayer2", () => {
       filterLayer2([watch], "watchlist", { ...base, niProfitability: ["ni_one_loss"] }).map((r) => r.ticker),
     ).toEqual(["W1"]);
   });
+
+  it("ORs SIC industries and ANDs them with revenue-trend and NI filters", () => {
+    const rows = [
+      row("AAA", { sicIndustry: "2834 — Pharma", appliedCategories: ["qoq_volatility"], ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+      row("BBB", { sicIndustry: "3571 — Computers", appliedCategories: ["qoq_volatility"], ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+      row("CCC", { sicIndustry: "7372 — Software", appliedCategories: ["qoq_volatility"], ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+      row("DDD", { sicIndustry: "2834 — Pharma", appliedCategories: ["latest_quarter_revenue_decline"], ni: { appliedProfitability: ["ni_all_profitable"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+      row("EEE", { sicIndustry: "2834 — Pharma", appliedCategories: ["qoq_volatility"], ni: { appliedProfitability: ["ni_one_loss"], appliedImprovement: ["ni_four_yoy_improvements"] } } as Partial<Layer2Row>),
+    ];
+    const f = {
+      sicMajorGroup: "",
+      sicIndustries: ["2834 — Pharma", "3571 — Computers"],
+      query: "",
+      categories: ["qoq_volatility"],
+      niProfitability: ["ni_all_profitable"],
+      niImprovement: ["ni_four_yoy_improvements"],
+    };
+    expect(filterLayer2(rows, "passed", f).map((r) => r.ticker)).toEqual(["AAA", "BBB"]);
+  });
 });
 
 describe("Layer2View type", () => {
@@ -140,7 +159,7 @@ describe("Layer2View type", () => {
     const v: Layer2View = {
       tab: "passed",
       sicMajorGroup: "",
-      sicIndustry: "",
+      sicIndustries: [],
       query: "",
       categories: [],
       niProfitability: [],
@@ -158,7 +177,7 @@ describe("layer2 URL state", () => {
     const view: Layer2View = {
       tab: "watchlist",
       sicMajorGroup: "Chemicals",
-      sicIndustry: "2834 — Pharma",
+      sicIndustries: ["2834 — Pharma", "3571 — Computers"],
       query: "inc",
       categories: ["qoq_volatility", "latest_quarter_revenue_decline"],
       niProfitability: ["ni_all_profitable"],

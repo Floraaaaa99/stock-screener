@@ -78,11 +78,11 @@ export default function App() {
     () =>
       filterRows(rows, {
         sicMajorGroup: view.sicMajorGroup,
-        sicIndustry: view.sicIndustry,
+        sicIndustries: view.sicIndustries,
         currency: view.currency,
         query: view.query,
       }),
-    [rows, view.sicMajorGroup, view.sicIndustry, view.currency, view.query],
+    [rows, view.sicMajorGroup, view.sicIndustries, view.currency, view.query],
   );
   const sorted = useMemo(() => sortRows(filtered, view.sort, view.dir, view.query), [filtered, view.sort, view.dir, view.query]);
   const pages = pageCount(sorted.length);
@@ -118,7 +118,7 @@ export default function App() {
     setExpanded(null);
   };
 
-  const clearFilters = () => update({ sicMajorGroup: "", sicIndustry: "", currency: "", query: "" });
+  const clearFilters = () => update({ sicMajorGroup: "", sicIndustries: [], currency: "", query: "" });
 
   return (
     <div className="app">

@@ -1,6 +1,6 @@
 import type { Layer2Badge, Layer2Bucket, Layer2Row } from "../types";
 import { analyzeNetIncome, type NiAnalysis } from "./niAnalysis";
-import { normalize } from "./screener";
+import { matchesSicIndustries, normalize, uniqueSicIndustries } from "./screener";
 
 export const RULES_VERSION = 3;
 
@@ -42,7 +42,7 @@ export interface Layer2Thresholds {
 export interface Layer2View {
   tab: Layer2Bucket;
   sicMajorGroup: string;
-  sicIndustry: string;
+  sicIndustries: string[];
   query: string;
   categories: string[];
   niProfitability: string[];
@@ -55,7 +55,7 @@ export interface Layer2View {
 export const DEFAULT_LAYER2_VIEW: Layer2View = {
   tab: "passed",
   sicMajorGroup: "",
-  sicIndustry: "",
+  sicIndustries: [],
   query: "",
   categories: [],
   niProfitability: [],
@@ -194,7 +194,7 @@ export function filterLayer2<T extends Layer2Row>(
   tab: Layer2Bucket,
   f: {
     sicMajorGroup: string;
-    sicIndustry: string;
+    sicIndustries: string[];
     query: string;
     categories: string[];
     niProfitability?: string[];
@@ -207,7 +207,7 @@ export function filterLayer2<T extends Layer2Row>(
   return rows.filter((r) => {
     if (r.bucket !== tab) return false;
     if (f.sicMajorGroup && r.sicMajorGroup !== f.sicMajorGroup) return false;
-    if (f.sicIndustry && r.sicIndustry !== f.sicIndustry) return false;
+    if (!matchesSicIndustries(r.sicIndustry, uniqueSicIndustries(f.sicIndustries))) return false;
     if (f.categories.length && !f.categories.some((id) => r.appliedCategories.includes(id))) return false;
     if (tab === "passed" && niProf.length) {
       const have = "ni" in r && r.ni ? r.ni.appliedProfitability : [];
@@ -242,7 +242,7 @@ export function readLayer2View(search: string): { layer: 1 | 2; view: Layer2View
     view: {
       tab: TABS.some((t) => t.id === tab) ? (tab as Layer2Bucket) : "passed",
       sicMajorGroup: p.get("sicGroup") ?? "",
-      sicIndustry: p.get("sic") ?? "",
+      sicIndustries: uniqueSicIndustries(p.getAll("sic")),
       query: p.get("q") ?? "",
       categories: cats,
       niProfitability: (p.get("niProf") ?? "").split(",").filter(Boolean),
@@ -260,7 +260,7 @@ export function layer2ToSearch(layer: 1 | 2, v: Layer2View, layer1Search: string
   p.set("layer", "2");
   if (v.tab !== "passed") p.set("tab", v.tab);
   if (v.sicMajorGroup) p.set("sicGroup", v.sicMajorGroup);
-  if (v.sicIndustry) p.set("sic", v.sicIndustry);
+  for (const sic of uniqueSicIndustries(v.sicIndustries)) p.append("sic", sic);
   if (v.query) p.set("q", v.query);
   if (v.categories.length) p.set("cat", v.categories.join(","));
   if (v.niProfitability.length) p.set("niProf", v.niProfitability.join(","));

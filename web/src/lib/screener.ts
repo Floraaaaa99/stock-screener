@@ -10,7 +10,7 @@ export const AMOUNT_SORTS: SortKey[] = ["ttmCurrent", "ttmPrevious"];
 
 export interface Filters {
   sicMajorGroup: string;
-  sicIndustry: string;
+  sicIndustries: string[];
   currency: string;
   query: string;
 }
@@ -23,7 +23,7 @@ export interface ViewState extends Filters {
 
 export const DEFAULT_VIEW: ViewState = {
   sicMajorGroup: "",
-  sicIndustry: "",
+  sicIndustries: [],
   currency: "",
   query: "",
   sort: "ttmGrowth",
@@ -35,11 +35,45 @@ export function normalize(s: string): string {
   return s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").trim();
 }
 
+export function uniqueSicIndustries(selected: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of selected) {
+    if (!s || seen.has(s)) continue;
+    seen.add(s);
+    out.push(s);
+  }
+  return out;
+}
+
+/** Empty selection means all industries. Otherwise a row matches any selected industry (OR). */
+export function matchesSicIndustries(rowIndustry: string | null | undefined, selected: string[]): boolean {
+  if (!selected.length) return true;
+  return Boolean(rowIndustry && selected.includes(rowIndustry));
+}
+
+export function industryMatchesSearch(label: string, query: string): boolean {
+  const q = normalize(query);
+  if (!q) return true;
+  return normalize(label).includes(q) || normalize(formatSicIndustry(label)).includes(q);
+}
+
+export function sicSelectSummary(selected: string[], allLabel: string): string {
+  if (!selected.length) return allLabel;
+  if (selected.length === 1) return formatSicIndustry(selected[0]!);
+  return `${selected.length} industries`;
+}
+
+export function toggleSicIndustry(selected: string[], value: string): string[] {
+  return selected.includes(value) ? selected.filter((s) => s !== value) : [...selected, value];
+}
+
 export function filterRows(rows: ScreenerRow[], f: Filters): ScreenerRow[] {
   const q = normalize(f.query);
+  const industries = uniqueSicIndustries(f.sicIndustries);
   return rows.filter((r) => {
     if (f.sicMajorGroup && r.sicMajorGroup !== f.sicMajorGroup) return false;
-    if (f.sicIndustry && r.sicIndustry !== f.sicIndustry) return false;
+    if (!matchesSicIndustries(r.sicIndustry, industries)) return false;
     if (f.currency && r.revenueCurrency !== f.currency) return false;
     if (q) {
       const ticker = r.ticker.toLowerCase();
@@ -127,7 +161,7 @@ export function readViewFromSearch(search: string): ViewState {
   const page = Number(p.get("page"));
   return {
     sicMajorGroup: p.get("sicGroup") ?? "",
-    sicIndustry: p.get("sic") ?? "",
+    sicIndustries: uniqueSicIndustries(p.getAll("sic")),
     currency: p.get("ccy") ?? "",
     query: p.get("q") ?? "",
     sort: sort && SORT_KEYS.includes(sort) ? sort : DEFAULT_VIEW.sort,
@@ -139,7 +173,7 @@ export function readViewFromSearch(search: string): ViewState {
 export function viewToSearch(v: ViewState): string {
   const p = new URLSearchParams();
   if (v.sicMajorGroup) p.set("sicGroup", v.sicMajorGroup);
-  if (v.sicIndustry) p.set("sic", v.sicIndustry);
+  for (const sic of uniqueSicIndustries(v.sicIndustries)) p.append("sic", sic);
   if (v.currency) p.set("ccy", v.currency);
   if (v.query) p.set("q", v.query);
   if (v.sort !== DEFAULT_VIEW.sort || v.dir !== DEFAULT_VIEW.dir) {

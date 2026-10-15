@@ -44,7 +44,7 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
     () =>
       filterLayer2(rows, view.tab, {
         sicMajorGroup: view.sicMajorGroup,
-        sicIndustry: view.sicIndustry,
+        sicIndustries: view.sicIndustries,
         query: view.query,
         categories: view.categories,
         niProfitability: view.niProfitability,
@@ -63,7 +63,7 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
     (patch: Partial<ViewState>) => {
       const next: Partial<View> = {};
       if (patch.sicMajorGroup !== undefined) next.sicMajorGroup = patch.sicMajorGroup;
-      if (patch.sicIndustry !== undefined) next.sicIndustry = patch.sicIndustry;
+      if (patch.sicIndustries !== undefined) next.sicIndustries = patch.sicIndustries;
       if (patch.query !== undefined) next.query = patch.query;
       onChange(next);
     },
@@ -130,7 +130,7 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         currencies={[]}
         view={{
           sicMajorGroup: view.sicMajorGroup,
-          sicIndustry: view.sicIndustry,
+          sicIndustries: view.sicIndustries,
           currency: "",
           query: view.query,
           sort: "ttmGrowth",
@@ -141,10 +141,10 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         resultCount={filtered.length}
         totalCount={counts[view.tab]}
         onChange={onFilterChange}
-        onReset={() => onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [], niProfitability: [], niImprovement: [] })}
+        onReset={() => onChange({ sicMajorGroup: "", sicIndustries: [], query: "", categories: [], niProfitability: [], niImprovement: [] })}
       />
-      <div className="cat-filter" aria-label="QoQ category filter">
-        <span className="k">Category (match any)</span>
+      <div className="cat-filter" aria-label="Revenue trend filter">
+        <span className="k">Revenue Trend (match any)</span>
         {catOptions.map((id) => (
           <label key={id} className={`cat-opt ${catDisabled(id) ? "disabled" : ""}`}>
             <input
@@ -160,8 +160,8 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
       </div>
       {view.tab === "passed" && (
         <div className="ni-filters">
-          <div className="cat-filter" aria-label="Net income profitability filter">
-            <span className="k">NI profitability (match any)</span>
+          <div className="cat-filter" aria-label="NI profitability filter">
+            <span className="k">NI Profitability (match any)</span>
             {NI_PROFITABILITY_IDS.map((id) => (
               <label key={id} className="cat-opt">
                 <input
@@ -179,8 +179,8 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
               </label>
             ))}
           </div>
-          <div className="cat-filter" aria-label="Net income improvement filter">
-            <span className="k">NI improvement (match any; combined with profitability)</span>
+          <div className="cat-filter" aria-label="NI trend filter">
+            <span className="k">NI Trend (match any; combined with profitability)</span>
             {NI_IMPROVEMENT_IDS.map((id) => (
               <label key={id} className="cat-opt">
                 <input
@@ -223,7 +223,7 @@ export function Layer2View({ file, meta, view, expanded, loading = false, onChan
         onToggle={onToggle}
         showNi={view.tab === "passed"}
         onClearFilters={() =>
-          onChange({ sicMajorGroup: "", sicIndustry: "", query: "", categories: [], niProfitability: [], niImprovement: [] })
+          onChange({ sicMajorGroup: "", sicIndustries: [], query: "", categories: [], niProfitability: [], niImprovement: [] })
         }
       />
       {!loading && filtered.length > 0 && (
