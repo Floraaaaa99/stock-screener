@@ -114,7 +114,8 @@ FLOW_ALIGN_DAYS = 50
 FINANCIAL_SIC_PREFIXES = ("60", "61", "62", "63", "64", "67")
 
 LAYER3_EXTRACTION_VERSION = 3
-LAYER3_SCHEMA_VERSION = 1
+LAYER3_SCHEMA_VERSION = 2
+LAYER3_ISSUER_FILE_TEMPLATE = "layer3/cik/{cik}.json"
 
 
 def is_financial_sic(code: str | None) -> bool:

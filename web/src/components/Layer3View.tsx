@@ -1,22 +1,22 @@
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { loadLayer3Issuers } from "../api";
 import { naReason } from "../lib/explain";
 import { formatCompactMoney, formatDate } from "../lib/format";
 import {
+  ciksForEntries,
   displayStatus,
+  indexLayer3Rows,
   metricsForEntry,
   metricValue,
   statusLines,
   type Layer3Entry,
-  type Layer3Index,
 } from "../lib/layer3";
 import { formatSicIndustry } from "../lib/screener";
-import type { Layer3File, Layer3FlowMetric, Layer3StockMetric } from "../types";
+import type { Layer3FlowMetric, Layer3Row, Layer3StockMetric } from "../types";
 import { Layer3Detail } from "./Layer3Detail";
 
 interface Props {
   entries: Layer3Entry[];
-  catalog: Layer3File | null;
-  index: Layer3Index;
   storageNotice: string | null;
   onRemove: (issuerId: string) => void;
   onOpenScreener: () => void;
@@ -41,11 +41,11 @@ function MoneyCell({
   return <span className={value < 0 ? "neg" : value === 0 ? "zero" : ""}>{formatCompactMoney(value, currency)}</span>;
 }
 
-function StatusCell({ row, fileLoaded }: { row: import("../types").Layer3Row | null; fileLoaded: boolean }) {
+function StatusCell({ row, fileLoaded }: { row: Layer3Row | null; fileLoaded: boolean }) {
   return (
     <ul className="layer3-status-stack">
       {statusLines(row, fileLoaded).map((line) => (
-        <li key={line.kind} className={`layer3-status is-${line.kind}`}>
+        <li key={line.kind} className={`layer3-status is-${line.kind}`} title={line.title}>
           {line.label}
         </li>
       ))}
@@ -53,9 +53,11 @@ function StatusCell({ row, fileLoaded }: { row: import("../types").Layer3Row | n
   );
 }
 
-export function Layer3View({ entries, catalog, index, storageNotice, onRemove, onOpenScreener }: Props) {
+export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }: Props) {
   const [pendingRemove, setPendingRemove] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [issuerRows, setIssuerRows] = useState<Layer3Row[]>([]);
+  const [metricsState, setMetricsState] = useState<"idle" | "loading" | "ready">("idle");
   const sorted = useMemo(
     () =>
       [...entries].sort((a, b) => {
@@ -64,7 +66,28 @@ export function Layer3View({ entries, catalog, index, storageNotice, onRemove, o
       }),
     [entries],
   );
-  const fileLoaded = catalog != null;
+  const wantedCikList = useMemo(() => ciksForEntries(entries), [entries]);
+  const wantedCiks = wantedCikList.join(",");
+  useEffect(() => {
+    const ciks = wantedCiks ? wantedCiks.split(",") : [];
+    if (ciks.length === 0) {
+      setIssuerRows([]);
+      setMetricsState("ready");
+      return;
+    }
+    let cancelled = false;
+    setMetricsState("loading");
+    loadLayer3Issuers(ciks).then((rows) => {
+      if (cancelled) return;
+      setIssuerRows(rows);
+      setMetricsState("ready");
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [wantedCiks]);
+  const index = useMemo(() => indexLayer3Rows(issuerRows), [issuerRows]);
+  const fileLoaded = metricsState === "ready";
 
   return (
     <section className="layer3">
@@ -75,9 +98,19 @@ export function Layer3View({ entries, catalog, index, storageNotice, onRemove, o
           and <strong>Add to Layer 3</strong>. Nothing is enrolled from Layer 1 or Layer 2 automatically.
         </p>
         <p className="muted">
-          Phase 2 extracts SEC cash-flow and balance-sheet metrics for saved issuers only. Missing or
-          unverified amounts stay N/A. The 100-point score is not implemented yet. Growth Source: Not Yet
-          Verified.
+          Phase 2 extracts SEC cash-flow and balance-sheet metrics for saved issuers only. The browser
+          downloads one CIK file per company on this list — not the full universe. Missing amounts stay
+          N/A. The 100-point score is not implemented yet. Growth Source: Not Yet Verified.
+        </p>
+        <p className="muted">
+          Cash-flow and balance-sheet figures are independently recalculated from SEC Company Facts XBRL.
+          They are not statement-verified against the rendered 10-Q/10-K cash-flow or balance-sheet face.
+          Layer 1 revenue and net income that matched an income-statement line remain a separate concept.
+        </p>
+        <p className="muted">
+          <strong>Phase 2 core inputs present</strong> means TTM operating cash flow, TTM CapEx, and cash
+          were extracted. It does not mean every 100-point scoring input is complete, and it is not a
+          statement-verification result.
         </p>
         <p className="muted">
           The list is saved in this browser only. Clearing site data removes it. It is not synced across
@@ -102,6 +135,12 @@ export function Layer3View({ entries, catalog, index, storageNotice, onRemove, o
         </div>
       ) : (
         <section className="panel table-panel">
+          {metricsState === "loading" && (
+            <p className="detail-loading" role="status">
+              <span className="spinner" aria-hidden="true" /> Loading extracted metrics for {wantedCikList.length}{" "}
+              saved issuer{wantedCikList.length === 1 ? "" : "s"}…
+            </p>
+          )}
           <div className="table-scroll">
             <table className="screener layer3-table">
               <thead>

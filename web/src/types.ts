@@ -395,6 +395,7 @@ export interface Layer3Row {
   extractionVersion: number;
   growthSource: string;
   scoring: null;
+  issuerFile?: string | null;
   layer1: {
     revenueTtm: number | null;
     revenuePriorTtm: number | null;
@@ -412,6 +413,9 @@ export interface Layer3File {
   schemaVersion: number;
   extractionVersion: number;
   generatedAt: string;
+  /** Index payload omits quarter-level metrics; full rows live at issuerFileTemplate. */
+  payload?: "index" | "issuer";
+  issuerFileTemplate?: string;
   cutoffNote: string;
   verificationNote?: string;
   scoring: null;

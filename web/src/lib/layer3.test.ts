@@ -4,7 +4,11 @@ import {
   deselectFiltered,
   displayStatus,
   headerCheckState,
+  ciksForEntries,
   indexLayer3,
+  layer3IssuerFile,
+  LAYER3_INPUT_DETAIL,
+  LAYER3_INPUT_LABEL,
   issuerIdFor,
   issuerIdForTicker,
   isTickerSaved,
@@ -470,5 +474,38 @@ describe("Phase 2 metric catalog (saved issuers only)", () => {
     expect(metricValue({ value: null })).toBeNull();
     expect(metricValue({ ttm: 0 })).toBe(0);
     expect(metricValue({ value: 0 })).toBe(0);
+  });
+
+  it("addresses issuer metrics by CIK path and only lists saved CIKs", () => {
+    expect(layer3IssuerFile("46619")).toBe("layer3/cik/0000046619.json");
+    expect(ciksForEntries([
+      {
+        issuerId: "cik:0000046619",
+        cik: "0000046619",
+        tickers: ["HEI", "HEI-A"],
+        displayTicker: "HEI",
+        name: "HEICO",
+        exchange: "NYSE",
+        sicIndustry: null,
+        sicMajorGroup: null,
+        addedAt: "2026-10-16T00:00:00.000Z",
+        analysisStatus: "pending_implementation",
+      },
+      {
+        issuerId: "ticker:LOAR",
+        cik: null,
+        tickers: ["LOAR"],
+        displayTicker: "LOAR",
+        name: "Loar",
+        exchange: "NYSE",
+        sicIndustry: null,
+        sicMajorGroup: null,
+        addedAt: "2026-10-16T00:00:00.000Z",
+        analysisStatus: "pending_implementation",
+      },
+    ])).toEqual(["0000046619"]);
+    expect(LAYER3_INPUT_LABEL.ready).toMatch(/Phase 2 core inputs/);
+    expect(LAYER3_INPUT_DETAIL.ready).toMatch(/not a complete 100-point scoring/);
+    expect(LAYER3_INPUT_DETAIL.ready).toMatch(/not a statement-verification/);
   });
 });

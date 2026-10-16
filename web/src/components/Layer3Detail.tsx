@@ -144,7 +144,7 @@ export function Layer3Detail({ row, status }: { row: Layer3Row | null; status: L
     <div className="detail layer3-detail">
       <ul className="layer3-status-stack detail-status">
         {statusLines(row, true).map((line) => (
-          <li key={line.kind} className={`layer3-status is-${line.kind}`}>
+          <li key={line.kind} className={`layer3-status is-${line.kind}`} title={line.title}>
             {line.label}
           </li>
         ))}
@@ -152,7 +152,12 @@ export function Layer3Detail({ row, status }: { row: Layer3Row | null; status: L
       <p>
         <strong>{LAYER3_STATUS_LABEL[status]}.</strong> {LAYER3_STATUS_DETAIL[status]}
       </p>
-      <p className="muted">Growth Source: Not Yet Verified. Scoring is not implemented in Phase 2. No metric here is labeled statement-verified.</p>
+      <p className="muted">
+        Growth Source: Not Yet Verified. Scoring is not implemented in Phase 2. Cash-flow and
+        balance-sheet amounts are independently recalculated from Company Facts; they are not
+        statement-verified. Layer 1 income-statement matches are a separate concept. Phase 2 core
+        inputs (OCF, CapEx, cash) being present does not mean the 100-point score can be completed.
+      </p>
       {row?.layer1 && (
         <p className="muted">
           Layer 1 TTM revenue (copied, not recomputed): <Money value={row.layer1.revenueTtm} currency={row.layer1.revenueCurrency} />

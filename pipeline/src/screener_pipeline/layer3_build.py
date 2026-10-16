@@ -1,8 +1,11 @@
-"""Build static layer3.json from Layer 1 identity plus optional Company Facts.
+"""Build a slim Layer 3 index plus one CIK-keyed metrics file per issuer.
 
 GitHub Pages cannot call the SEC from the browser. Metrics are precomputed at build
-time for every issuer in issuers.json / screener.json. The website only *displays*
-metrics for companies the user added to the Layer 3 list.
+time for every issuer in issuers.json / screener.json. The website downloads
+``layer3/cik/{cik}.json`` only for issuers on the user's manually curated list.
+
+``layer3.json`` is an index: identity, the four status dimensions, and counts.
+It does not embed quarter-level cash-flow or balance-sheet series.
 
 This writer never recalculates Layer 1 TTM revenue or Layer 2 buckets. Those values
 are copied as references when present. The 100-point score is not computed.
@@ -18,7 +21,12 @@ from pathlib import Path
 
 from . import config
 from .cache import read_json, write_json_atomic
-from .layer3_concepts import LAYER3_EXTRACTION_VERSION, LAYER3_SCHEMA_VERSION, is_financial_sic
+from .layer3_concepts import (
+    LAYER3_EXTRACTION_VERSION,
+    LAYER3_ISSUER_FILE_TEMPLATE,
+    LAYER3_SCHEMA_VERSION,
+    is_financial_sic,
+)
 from .layer3_extract import analyze_layer3_facts
 
 
@@ -88,6 +96,31 @@ def public_metrics(metrics: dict | None) -> dict | None:
     if metrics is None:
         return None
     return _strip_sources(metrics)
+
+
+def issuer_file_relpath(cik: str) -> str:
+    return LAYER3_ISSUER_FILE_TEMPLATE.format(cik=str(cik).zfill(10))
+
+
+def issuer_dir_for(dest: Path) -> Path:
+    return Path(dest).parent / "layer3" / "cik"
+
+
+def reset_issuer_dir(directory: Path) -> Path:
+    directory = Path(directory)
+    if directory.exists():
+        for path in directory.glob("*.json"):
+            path.unlink()
+    directory.mkdir(parents=True, exist_ok=True)
+    return directory
+
+
+def index_row(payload: dict) -> dict:
+    """Universe index row: statuses and identity only. No quarter-level metrics."""
+    row = {k: v for k, v in payload.items() if k != "metrics"}
+    row["metrics"] = None
+    row["issuerFile"] = issuer_file_relpath(payload["cik"])
+    return row
 
 
 def load_companyfacts_file(path: Path) -> dict:
@@ -221,22 +254,31 @@ def write_layer3(
         if zf is not None:
             zf.close()
 
+    cik_dir = reset_issuer_dir(issuer_dir_for(dest))
+    index_rows = []
+    for payload in rows:
+        write_json_atomic(cik_dir / f"{payload['cik']}.json", payload, compact=True)
+        index_rows.append(index_row(payload))
+
     out = {
         "schemaVersion": LAYER3_SCHEMA_VERSION,
         "extractionVersion": LAYER3_EXTRACTION_VERSION,
         "generatedAt": _now_iso(),
+        "payload": "index",
+        "issuerFileTemplate": LAYER3_ISSUER_FILE_TEMPLATE,
         "cutoffNote": "Facts available in the dataset snapshot only; no look-ahead beyond that extract.",
         "verificationNote": (
-            "Cash-flow and balance-sheet figures are taken from SEC Company Facts. "
-            "The current statement cache is income-statement only, so those lines are "
-            "not face-checked against the rendered 10-Q/10-K in Phase 2."
+            "Cash-flow and balance-sheet figures are independently recalculated from "
+            "SEC Company Facts XBRL. They are not face-checked against the rendered "
+            "10-Q/10-K cash-flow or balance-sheet statement. Layer 1 income-statement "
+            "matches remain a separate, statement-verified concept."
         ),
         "scoring": None,
         "counts": counts,
-        "rows": rows,
+        "rows": [],
     }
     write_json_atomic(dest, out, compact=True)
-    return out
+    return {**out, "rows": rows, "indexRows": index_rows}
 
 
 def default_facts_zip() -> Path | None:

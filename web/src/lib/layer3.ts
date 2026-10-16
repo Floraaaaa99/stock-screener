@@ -278,10 +278,27 @@ export const LAYER3_MODEL_LABEL = {
 } as const;
 
 export const LAYER3_INPUT_LABEL = {
-  ready: "Cash-flow and cash inputs present",
+  ready: "Phase 2 core inputs present",
   pending_data_verification: "Pending Data Verification",
   pending_analysis: "Pending Analysis",
 } as const;
+
+export const LAYER3_INPUT_DETAIL = {
+  ready:
+    "TTM operating cash flow, TTM CapEx, and cash are present. This is not a complete 100-point scoring input set, and it is not a statement-verification result.",
+  pending_data_verification:
+    "A Phase 2 core extraction input (OCF, CapEx, or cash) is missing. Missing values stay N/A and are not replaced with zero.",
+  pending_analysis: "Layer 3 concepts were not in the facts snapshot for this issuer.",
+} as const;
+
+export const LAYER3_ISSUER_FILE_TEMPLATE = "layer3/cik/{cik}.json";
+
+/** Deterministic path for one issuer’s precomputed Phase 2 metrics. */
+export function layer3IssuerFile(cik: string): string {
+  const normalized = normalizeCik(cik);
+  if (!normalized) return LAYER3_ISSUER_FILE_TEMPLATE.replace("{cik}", "invalid");
+  return LAYER3_ISSUER_FILE_TEMPLATE.replace("{cik}", normalized);
+}
 
 export const LAYER3_STATUS_LABEL: Record<Layer3DisplayStatus, string> = {
   extracted: LAYER3_EXTRACTION_LABEL.extracted,
@@ -308,16 +325,33 @@ export interface Layer3Index {
   byTicker: Map<string, Layer3Row>;
 }
 
-export function indexLayer3(file: Layer3File | null | undefined): Layer3Index {
+export function indexLayer3Rows(rows: readonly Layer3Row[] | null | undefined): Layer3Index {
   const byCik = new Map<string, Layer3Row>();
   const byTicker = new Map<string, Layer3Row>();
-  if (!file) return { byCik, byTicker };
-  for (const row of file.rows) {
+  if (!rows) return { byCik, byTicker };
+  for (const row of rows) {
     const cik = normalizeCik(row.cik);
     if (cik) byCik.set(cik, row);
     for (const ticker of row.tickers) byTicker.set(normalizeTicker(ticker), row);
   }
   return { byCik, byTicker };
+}
+
+export function indexLayer3(file: Layer3File | null | undefined): Layer3Index {
+  return indexLayer3Rows(file?.rows);
+}
+
+/** CIKs to fetch for a curated list. Deduped; ticker-only entries have none. */
+export function ciksForEntries(entries: readonly Layer3Entry[]): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const entry of entries) {
+    const cik = normalizeCik(entry.cik);
+    if (!cik || seen.has(cik)) continue;
+    seen.add(cik);
+    out.push(cik);
+  }
+  return out;
 }
 
 /** Look up precomputed metrics for a saved issuer only. Never invents a row. */
@@ -343,7 +377,10 @@ export function displayStatus(entry: Layer3Entry, row: Layer3Row | null, fileLoa
   return entry.analysisStatus;
 }
 
-export function statusLines(row: Layer3Row | null, fileLoaded: boolean): { label: string; kind: string }[] {
+export function statusLines(
+  row: Layer3Row | null,
+  fileLoaded: boolean,
+): { label: string; kind: string; title?: string }[] {
   if (!row) {
     return [
       {
@@ -362,7 +399,11 @@ export function statusLines(row: Layer3Row | null, fileLoaded: boolean): { label
     { label: LAYER3_EXTRACTION_LABEL[extraction] ?? extraction, kind: extraction },
     { label: LAYER3_VERIFICATION_LABEL[verification] ?? verification, kind: verification },
     { label: LAYER3_MODEL_LABEL[model] ?? model, kind: model },
-    { label: LAYER3_INPUT_LABEL[inputs] ?? inputs, kind: inputs },
+    {
+      label: LAYER3_INPUT_LABEL[inputs] ?? inputs,
+      kind: inputs,
+      title: LAYER3_INPUT_DETAIL[inputs],
+    },
     { label: "Scoring not implemented", kind: "not_implemented" },
   ];
 }

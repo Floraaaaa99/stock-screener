@@ -90,6 +90,8 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     dest = tmp_path / "layer3.json"
     out = write_layer3(data, dest, companyfacts_by_cik=facts)
     assert out["scoring"] is None
+    assert out["payload"] == "index"
+    assert out["issuerFileTemplate"] == "layer3/cik/{cik}.json"
     by_cik = {r["cik"]: r for r in out["rows"]}
     hei = by_cik["0000046619"]
     assert set(hei["tickers"]) == {"HEI", "HEI-A"}
@@ -102,6 +104,13 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     assert hei["scoring"] is None
     assert hei["layer1"]["revenueTtm"] == 100
     assert hei["layer1"]["source"] == "layer1_copy"
+    written = json.loads(dest.read_text())
+    assert written["rows"] == []
+    assert written["counts"]["issuers"] == 2
+    issuer = json.loads((dest.parent / "layer3" / "cik" / "0000046619.json").read_text())
+    assert issuer["metrics"]["fcf"]["ttm"] == 32
+    assert issuer["extractionStatus"] == "extracted"
+    assert issuer["scoringStatus"] == "not_implemented"
     jpm = by_cik["0000019617"]
     assert jpm["extractionStatus"] == "pending_analysis"
     assert jpm["modelApplicability"] == "not_applicable"
@@ -139,9 +148,12 @@ def test_public_metrics_drop_source_legs(tmp_path: Path):
             cik=46619,
         )
     }
-    out = write_layer3(data, tmp_path / "layer3.json", companyfacts_by_cik=facts)
+    dest = tmp_path / "layer3.json"
+    out = write_layer3(data, dest, companyfacts_by_cik=facts)
     hei = next(r for r in out["rows"] if r["cik"] == "0000046619")
     q0 = hei["metrics"]["ocf"]["quarters"][0]
     assert "sources" not in q0
     assert q0["method"]
     assert q0["url"]
+    disk = json.loads((dest.parent / "layer3" / "cik" / "0000046619.json").read_text())
+    assert "sources" not in disk["metrics"]["ocf"]["quarters"][0]
