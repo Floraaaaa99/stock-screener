@@ -2,10 +2,14 @@ import { describe, expect, it } from "vitest";
 import {
   addSelectedToMembership,
   deselectFiltered,
+  displayStatus,
   headerCheckState,
+  indexLayer3,
   issuerIdFor,
   issuerIdForTicker,
   isTickerSaved,
+  metricsForEntry,
+  metricValue,
   normalizeCik,
   removeIssuer,
   restrictSelectionToCurrentList,
@@ -367,5 +371,97 @@ describe("Layer 1 / Layer 2 regressions", () => {
     expect(parsed.layer).toBe(2);
     expect(parsed.view.tab).toBe("watchlist");
     expect(parsed.view.sicIndustries).toEqual(["2834 — Pharma"]);
+  });
+});
+
+describe("Phase 2 metric catalog (saved issuers only)", () => {
+  const heiRow = {
+    cik: "0000046619",
+    tickers: ["HEI", "HEI-A"],
+    displayTicker: "HEI",
+    name: "HEICO Corporation",
+    exchange: "NYSE",
+    sicCode: "3724",
+    sicIndustry: "3724 — Aircraft Engines",
+    sicMajorGroup: "Transportation Equipment",
+    status: "extracted" as const,
+    currency: "USD",
+    flags: [],
+    extractionVersion: 1,
+    growthSource: "not_yet_verified",
+    scoring: null,
+    layer1: {
+      revenueTtm: 1,
+      revenuePriorTtm: 1,
+      revenueTtmGrowth: 0,
+      revenueReason: null,
+      revenueCurrency: "USD",
+      earningsConcept: null,
+      earningsStatus: null,
+      source: "layer1_copy",
+    },
+    metrics: {
+      ocf: { status: "extracted", reason: null, ttm: 100, previousTtm: 80, verification: "company_facts_only" },
+      capex: { status: "extracted", reason: null, ttm: 20, previousTtm: 10, verification: "company_facts_only" },
+      fcf: { status: "extracted", reason: null, ttm: 80, previousTtm: 70, verification: "derived" },
+      operatingIncome: { status: "extracted", reason: null, ttm: 50, verification: "company_facts_only" },
+      interestExpense: { status: "missing", reason: "no_concept", ttm: null, verification: "not_checked" },
+      ebitda: { status: "missing", reason: "missing_depreciation_amortization", ttm: null, verification: "not_checked" },
+      cash: { status: "extracted", reason: null, value: 25, verification: "company_facts_only" },
+      shortTermDebt: { status: "missing", reason: "no_concept", value: null, verification: "not_checked" },
+      longTermDebt: { status: "missing", reason: "no_concept", value: null, verification: "not_checked" },
+      totalDebt: { status: "missing", reason: "missing_short_term_debt", value: null, verification: "not_checked" },
+      netDebt: { status: "missing", reason: "missing_short_term_debt", value: null, verification: "not_checked" },
+      noInterestBurden: false,
+      growthSource: "not_yet_verified",
+    },
+  };
+
+  it("shares one extracted row across HEI / HEI-A and ignores unsaved tickers", () => {
+    const index = indexLayer3({
+      schemaVersion: 1,
+      extractionVersion: 1,
+      generatedAt: "2026-10-16T00:00:00Z",
+      cutoffNote: "test",
+      scoring: null,
+      counts: {
+        issuers: 1,
+        extracted: 1,
+        pendingDataVerification: 0,
+        pendingAnalysis: 0,
+        modelNotApplicable: 0,
+      },
+      rows: [heiRow],
+    });
+    const hei: Layer3Entry = {
+      issuerId: "cik:0000046619",
+      cik: "0000046619",
+      tickers: ["HEI", "HEI-A"],
+      displayTicker: "HEI",
+      name: "HEICO Corporation",
+      exchange: "NYSE",
+      sicIndustry: "3724 — Aircraft Engines",
+      sicMajorGroup: "Transportation Equipment",
+      addedAt: "2026-10-15T00:00:00.000Z",
+      analysisStatus: "pending_implementation",
+    };
+    const loar: Layer3Entry = {
+      ...hei,
+      issuerId: "ticker:LOAR",
+      cik: null,
+      tickers: ["LOAR"],
+      displayTicker: "LOAR",
+      name: "Loar",
+    };
+    expect(metricsForEntry(hei, index)?.cik).toBe("0000046619");
+    expect(metricsForEntry({ ...hei, tickers: ["HEI-A"], displayTicker: "HEI-A" }, index)?.metrics?.fcf.ttm).toBe(80);
+    expect(metricsForEntry(loar, index)).toBeNull();
+    expect(displayStatus(hei, metricsForEntry(hei, index), true)).toBe("extracted");
+    expect(displayStatus(loar, null, true)).toBe("pending_analysis");
+    expect(displayStatus(loar, null, false)).toBe("pending_implementation");
+    expect(metricValue({ ttm: null })).toBeNull();
+    expect(metricValue({ value: null })).toBeNull();
+    expect(metricValue({ ttm: 0 })).toBe(0);
+    expect(metricValue({ value: 0 })).toBe(0);
   });
 });

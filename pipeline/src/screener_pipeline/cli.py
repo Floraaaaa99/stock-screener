@@ -96,6 +96,25 @@ def main(argv: list[str] | None = None) -> int:
     )
     ae.add_argument("--no-verify", action="store_true", help="Skip per-quarter filing checks for net income")
 
+    l3 = sub.add_parser(
+        "layer3",
+        help="Build Layer 3 financial-metric JSON from an existing Layer 1 dataset (no scoring)",
+    )
+    l3.add_argument(
+        "--data-dir",
+        default=str(config.OUTPUT_DIR),
+        help="Directory with screener.json, issuers.json, and optional companies/",
+    )
+    l3.add_argument("--output", help="Destination layer3.json (default: <data-dir>/layer3.json)")
+    l3.add_argument("--facts-zip", help="SEC companyfacts.zip with full us-gaap concepts")
+    l3.add_argument("--facts-dir", help="Directory of raw Company Facts JSON (CIK##########.json)")
+    l3.add_argument(
+        "--use-cached-facts",
+        action="store_true",
+        help="Read pipeline/.cache/sec/bulk/companyfacts.zip when --facts-zip is omitted",
+    )
+    l3.add_argument("--limit", type=int, help="Process only the first N issuers (debug)")
+
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -189,6 +208,30 @@ def main(argv: list[str] | None = None) -> int:
                 verify_quarters=not args.no_verify,
             )
             print(json.dumps(report, indent=2))
+        elif args.cmd == "layer3":
+            from .layer3_build import default_facts_zip, write_layer3
+
+            data_dir = Path(args.data_dir)
+            dest = Path(args.output) if args.output else data_dir / "layer3.json"
+            facts_zip = Path(args.facts_zip) if args.facts_zip else None
+            if facts_zip is None and args.use_cached_facts:
+                facts_zip = default_facts_zip()
+            payload = write_layer3(
+                data_dir,
+                dest,
+                facts_dir=Path(args.facts_dir) if args.facts_dir else None,
+                facts_zip=facts_zip,
+                limit=args.limit,
+            )
+            print(json.dumps(
+                {
+                    "counts": payload["counts"],
+                    "extractionVersion": payload["extractionVersion"],
+                    "scoring": payload["scoring"],
+                    "output": str(dest),
+                },
+                indent=2,
+            ))
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

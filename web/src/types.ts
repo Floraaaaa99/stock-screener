@@ -291,3 +291,124 @@ export interface Layer2File {
   counts: { passed: number; watchlist: number; dataReview: number; ttmNonpositive: number; listings: number };
   rows: Layer2Row[];
 }
+
+export type Layer3RowStatus =
+  | "extracted"
+  | "pending_data_verification"
+  | "pending_analysis"
+  | "model_not_applicable"
+  | "insufficient_verified_data";
+
+export interface Layer3Quarter {
+  fiscalYear: number | null;
+  fiscalQuarter: number | null;
+  start: string | null;
+  end: string | null;
+  value: number | null;
+  rawValue?: number | null;
+  reason?: string | null;
+  method: string | null;
+  formula: string | null;
+  concept?: string | null;
+  restated?: boolean;
+  accn?: string | null;
+  form?: string | null;
+  filed?: string | null;
+  url?: string | null;
+}
+
+export interface Layer3FlowMetric {
+  status: string;
+  reason: string | null;
+  concept?: string | null;
+  unit?: string | null;
+  signPolicy?: string;
+  ttm: number | null;
+  previousTtm?: number | null;
+  formula?: string;
+  definition?: string;
+  quarters?: Layer3Quarter[];
+  verification: string;
+  verificationNote?: string;
+}
+
+export interface Layer3StockMetric {
+  status: string;
+  reason: string | null;
+  concept?: string | null;
+  value: number | null;
+  end?: string | null;
+  accn?: string | null;
+  form?: string | null;
+  filed?: string | null;
+  url?: string | null;
+  unit?: string | null;
+  aggregation?: string;
+  formula?: string;
+  verification: string;
+  components?: Layer3StockMetric[];
+}
+
+export interface Layer3Metrics {
+  ocf: Layer3FlowMetric;
+  capex: Layer3FlowMetric;
+  fcf: Layer3FlowMetric;
+  operatingIncome: Layer3FlowMetric;
+  interestExpense: Layer3FlowMetric;
+  depreciationAmortization?: Layer3FlowMetric;
+  ebitda: Layer3FlowMetric;
+  cash: Layer3StockMetric;
+  shortTermDebt: Layer3StockMetric;
+  longTermDebt: Layer3StockMetric;
+  totalDebt: Layer3StockMetric;
+  netDebt: Layer3StockMetric;
+  noInterestBurden: boolean;
+  growthSource: string;
+}
+
+export interface Layer3Row {
+  cik: string;
+  tickers: string[];
+  displayTicker: string;
+  name: string;
+  exchange: string | null;
+  sicCode: string | null;
+  sicIndustry: string | null;
+  sicMajorGroup: string | null;
+  status: Layer3RowStatus;
+  reason?: string | null;
+  currency?: string | null;
+  flags?: string[];
+  extractionVersion: number;
+  growthSource: string;
+  scoring: null;
+  layer1: {
+    revenueTtm: number | null;
+    revenuePriorTtm: number | null;
+    revenueTtmGrowth: number | null;
+    revenueReason: string | null;
+    revenueCurrency: string | null;
+    earningsConcept: string | null;
+    earningsStatus: string | null;
+    source: string;
+  };
+  metrics: Layer3Metrics | null;
+}
+
+export interface Layer3File {
+  schemaVersion: number;
+  extractionVersion: number;
+  generatedAt: string;
+  cutoffNote: string;
+  verificationNote?: string;
+  scoring: null;
+  counts: {
+    issuers: number;
+    extracted: number;
+    pendingDataVerification: number;
+    pendingAnalysis: number;
+    modelNotApplicable: number;
+    insufficientVerifiedData?: number;
+  };
+  rows: Layer3Row[];
+}

@@ -1,4 +1,4 @@
-import type { CompanyDetail, IssuersFile, Layer2File, Meta, ScreenerFile } from "./types";
+import type { CompanyDetail, IssuersFile, Layer2File, Layer3File, Meta, ScreenerFile } from "./types";
 
 const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 
@@ -18,6 +18,10 @@ export function loadScreener(): Promise<ScreenerFile> {
 
 export function loadLayer2(): Promise<Layer2File> {
   return getJson<Layer2File>("layer2.json");
+}
+
+export function loadLayer3(): Promise<Layer3File> {
+  return getJson<Layer3File>("layer3.json");
 }
 
 export async function loadIssuers(): Promise<Record<string, string | null>> {

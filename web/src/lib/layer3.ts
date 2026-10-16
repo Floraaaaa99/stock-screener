@@ -1,4 +1,6 @@
-/** Layer 3 Phase 1: manual selection and saved issuer membership. No scores. */
+/** Layer 3: manual selection (Phase 1) plus extracted SEC metrics (Phase 2). No scores. */
+
+import type { Layer3File, Layer3Row, Layer3RowStatus } from "../types";
 
 export const LAYER3_ANALYSIS_STATUS = "pending_implementation" as const;
 export type Layer3AnalysisStatus = typeof LAYER3_ANALYSIS_STATUS;
@@ -255,4 +257,68 @@ export function selectedAlreadySavedCount(
     if (saved.has(id)) n += 1;
   }
   return n;
+}
+
+export type Layer3DisplayStatus = Layer3RowStatus | typeof LAYER3_ANALYSIS_STATUS;
+
+export const LAYER3_STATUS_LABEL: Record<Layer3DisplayStatus, string> = {
+  extracted: "Extracted",
+  pending_data_verification: "Pending Data Verification",
+  pending_analysis: "Pending Analysis",
+  model_not_applicable: "Model Not Applicable / Review Required",
+  insufficient_verified_data: "Insufficient Verified Data",
+  pending_implementation: "Analysis Not Yet Available",
+};
+
+export const LAYER3_STATUS_DETAIL: Record<Layer3DisplayStatus, string> = {
+  extracted: "Company Facts values were derived. Cash-flow and balance-sheet lines are not face-checked against the rendered 10-Q/10-K in Phase 2.",
+  pending_data_verification: "Some required cash-flow or balance-sheet inputs are missing or unverified. Missing values stay N/A — they are not replaced with zero.",
+  pending_analysis: "Layer 3 concepts were not in the compact revenue/earnings store for this issuer.",
+  model_not_applicable: "Financial-institution SIC codes are not forced through corporate FCF / net-debt definitions.",
+  insufficient_verified_data: "Domestic quarterly facts are not available; foreign 20-F quarters are not fabricated.",
+  pending_implementation: "Financial-quality scoring is not implemented. Metric extraction is Phase 2.",
+};
+
+export interface Layer3Index {
+  byCik: Map<string, Layer3Row>;
+  byTicker: Map<string, Layer3Row>;
+}
+
+export function indexLayer3(file: Layer3File | null | undefined): Layer3Index {
+  const byCik = new Map<string, Layer3Row>();
+  const byTicker = new Map<string, Layer3Row>();
+  if (!file) return { byCik, byTicker };
+  for (const row of file.rows) {
+    const cik = normalizeCik(row.cik);
+    if (cik) byCik.set(cik, row);
+    for (const ticker of row.tickers) byTicker.set(normalizeTicker(ticker), row);
+  }
+  return { byCik, byTicker };
+}
+
+/** Look up precomputed metrics for a saved issuer only. Never invents a row. */
+export function metricsForEntry(entry: Layer3Entry, index: Layer3Index): Layer3Row | null {
+  const cik = normalizeCik(entry.cik);
+  if (cik) {
+    const row = index.byCik.get(cik);
+    if (row) return row;
+  }
+  for (const ticker of entry.tickers) {
+    const row = index.byTicker.get(normalizeTicker(ticker));
+    if (row) return row;
+  }
+  return null;
+}
+
+export function displayStatus(entry: Layer3Entry, row: Layer3Row | null, fileLoaded: boolean): Layer3DisplayStatus {
+  if (row) return row.status;
+  if (fileLoaded) return "pending_analysis";
+  return entry.analysisStatus;
+}
+
+export function metricValue(metric: { ttm?: number | null; value?: number | null } | null | undefined): number | null {
+  if (!metric) return null;
+  if (metric.ttm !== undefined && metric.ttm !== null) return metric.ttm;
+  if (metric.value !== undefined && metric.value !== null) return metric.value;
+  return null;
 }

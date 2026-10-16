@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { loadIssuers, loadLayer2, loadMeta, loadScreener } from "./api";
+import { loadIssuers, loadLayer2, loadLayer3, loadMeta, loadScreener } from "./api";
 import { CoveragePanel } from "./components/CoveragePanel";
 import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
@@ -13,6 +13,7 @@ import { type Layer2View as Layer2ViewState, type LayerId, layer2ToSearch, readL
 import {
   addSelectedToMembership,
   headerCheckState,
+  indexLayer3,
   isTickerSaved,
   removeIssuer,
   sameTickerSet,
@@ -38,12 +39,12 @@ import {
   type ViewState,
   viewToSearch,
 } from "./lib/screener";
-import type { Layer2File, Meta, ScreenerRow } from "./types";
+import type { Layer2File, Layer3File, Meta, ScreenerRow } from "./types";
 
 type LoadState =
   | { status: "loading" }
   | { status: "error"; message: string }
-  | { status: "ready"; meta: Meta; rows: ScreenerRow[]; layer2: Layer2File | null };
+  | { status: "ready"; meta: Meta; rows: ScreenerRow[]; layer2: Layer2File | null; layer3: Layer3File | null };
 
 const layer3Store = new Layer3Store(browserKvStore());
 
@@ -83,10 +84,16 @@ export default function App() {
 
   const fetchData = useCallback(() => {
     setLoad({ status: "loading" });
-    Promise.all([loadMeta(), loadScreener(), loadLayer2().catch(() => null), loadIssuers()])
-      .then(([meta, screener, layer2, issuers]) => {
+    Promise.all([
+      loadMeta(),
+      loadScreener(),
+      loadLayer2().catch(() => null),
+      loadLayer3().catch(() => null),
+      loadIssuers(),
+    ])
+      .then(([meta, screener, layer2, layer3, issuers]) => {
         setCikByTicker(issuers);
-        setLoad({ status: "ready", meta, rows: screener.rows, layer2 });
+        setLoad({ status: "ready", meta, rows: screener.rows, layer2, layer3 });
       })
       .catch((err: unknown) => setLoad({ status: "error", message: err instanceof Error ? err.message : String(err) }));
   }, []);
@@ -158,6 +165,8 @@ export default function App() {
     () => selectedAlreadySavedCount([...selected], membership, cikByTicker),
     [selected, membership, cikByTicker],
   );
+  const layer3File = load.status === "ready" ? load.layer3 : null;
+  const layer3Index = useMemo(() => indexLayer3(layer3File), [layer3File]);
   const notice = storageBanner(storageStatus);
 
   const persistSelection = (next: Set<string>) => {
@@ -265,6 +274,8 @@ export default function App() {
         {load.status !== "error" && layer === 3 && (
           <Layer3View
             entries={membership}
+            catalog={layer3File}
+            index={layer3Index}
             storageNotice={notice}
             onRemove={(issuerId) => persistMembership(removeIssuer(membership, issuerId))}
             onOpenScreener={() => onLayer(1)}
