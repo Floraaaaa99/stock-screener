@@ -265,4 +265,55 @@ def earnings_facts_from_compact(data: dict) -> RevenueFacts | None:
 
 
 def filing_url(cik: str, accn: str) -> str:
-    return f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accn.replace('-', '')}/{accn}-index.htm"
+    digits = "".join(ch for ch in str(cik) if ch.isdigit())
+    if not digits or not accn:
+        return ""
+    return f"https://www.sec.gov/Archives/edgar/data/{int(digits)}/{accn.replace('-', '')}/{accn}-index.htm"
+
+
+@dataclass(frozen=True)
+class InstantFact:
+    end: date
+    val: float
+    accn: str
+    fy: int | None
+    fp: str | None
+    form: str
+    filed: date
+
+
+def parse_instant_fact(raw: dict) -> InstantFact | None:
+    """Balance-sheet (instant) facts have an end date and no start."""
+    if raw.get("end") is None or raw.get("val") is None or raw.get("start"):
+        return None
+    return InstantFact(
+        end=_d(raw["end"]),
+        val=float(raw["val"]),
+        accn=raw["accn"],
+        fy=raw.get("fy"),
+        fp=raw.get("fp"),
+        form=raw.get("form", ""),
+        filed=_d(raw["filed"]),
+    )
+
+
+def extract_instant_facts(companyfacts: dict, concepts: list[str]) -> dict[str, list[InstantFact]]:
+    """Instant us-gaap facts from 10-Q/10-K filings, grouped by concept."""
+    gaap = companyfacts.get("facts", {}).get("us-gaap", {})
+    currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
+    currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
+    out: dict[str, list[InstantFact]] = {}
+    if not currency:
+        return out
+    for concept in concepts:
+        raw_list = gaap.get(concept, {}).get("units", {}).get(currency, [])
+        facts = [f for f in (parse_instant_fact(r) for r in raw_list) if f is not None and f.form in DOMESTIC_FORMS]
+        if facts:
+            out[concept] = facts
+    return out
+
+
+def extract_named_duration_facts(companyfacts: dict, concepts: list[str]) -> RevenueFacts:
+    """Duration facts for an explicit concept list. Does not change revenue/earnings extractors."""
+    return extract_duration_facts(companyfacts, concepts)
+

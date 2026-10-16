@@ -1,4 +1,6 @@
-/** Layer 3 Phase 1: manual selection and saved issuer membership. No scores. */
+/** Layer 3: manual selection (Phase 1) plus extracted SEC metrics (Phase 2). No scores. */
+
+import type { Layer3File, Layer3Row, Layer3RowStatus } from "../types";
 
 export const LAYER3_ANALYSIS_STATUS = "pending_implementation" as const;
 export type Layer3AnalysisStatus = typeof LAYER3_ANALYSIS_STATUS;
@@ -255,4 +257,160 @@ export function selectedAlreadySavedCount(
     if (saved.has(id)) n += 1;
   }
   return n;
+}
+
+export type Layer3DisplayStatus = Layer3RowStatus | typeof LAYER3_ANALYSIS_STATUS;
+
+export const LAYER3_EXTRACTION_LABEL = {
+  extracted: "Extracted from Company Facts",
+  pending_analysis: "Pending Analysis",
+  insufficient_facts: "Insufficient Facts",
+} as const;
+
+export const LAYER3_VERIFICATION_LABEL = {
+  company_facts_only: "Company Facts only — not statement-checked",
+  not_checked: "Not statement-checked",
+} as const;
+
+export const LAYER3_MODEL_LABEL = {
+  applicable: "Model applicable",
+  not_applicable: "Model Not Applicable / Review Required",
+} as const;
+
+export const LAYER3_INPUT_LABEL = {
+  ready: "Phase 2 core inputs present",
+  pending_data_verification: "Pending Data Verification",
+  pending_analysis: "Pending Analysis",
+} as const;
+
+export const LAYER3_INPUT_DETAIL = {
+  ready:
+    "TTM operating cash flow, TTM CapEx, and cash are present. This is not a complete 100-point scoring input set, and it is not a statement-verification result.",
+  pending_data_verification:
+    "A Phase 2 core extraction input (OCF, CapEx, or cash) is missing. Missing values stay N/A and are not replaced with zero.",
+  pending_analysis: "Layer 3 concepts were not in the facts snapshot for this issuer.",
+} as const;
+
+export const LAYER3_ISSUER_FILE_TEMPLATE = "layer3/cik/{cik}.json";
+
+/** Deterministic path for one issuer’s precomputed Phase 2 metrics. */
+export function layer3IssuerFile(cik: string): string {
+  const normalized = normalizeCik(cik);
+  if (!normalized) return LAYER3_ISSUER_FILE_TEMPLATE.replace("{cik}", "invalid");
+  return LAYER3_ISSUER_FILE_TEMPLATE.replace("{cik}", normalized);
+}
+
+export const LAYER3_STATUS_LABEL: Record<Layer3DisplayStatus, string> = {
+  extracted: LAYER3_EXTRACTION_LABEL.extracted,
+  pending_data_verification: LAYER3_INPUT_LABEL.pending_data_verification,
+  pending_analysis: LAYER3_EXTRACTION_LABEL.pending_analysis,
+  model_not_applicable: LAYER3_MODEL_LABEL.not_applicable,
+  insufficient_verified_data: LAYER3_EXTRACTION_LABEL.insufficient_facts,
+  pending_implementation: "Analysis Not Yet Available",
+};
+
+export const LAYER3_STATUS_DETAIL: Record<Layer3DisplayStatus, string> = {
+  extracted:
+    "Values come from SEC Company Facts XBRL. They are not labeled statement-verified because cash-flow and balance-sheet faces are not in the current statement cache.",
+  pending_data_verification:
+    "Some required cash-flow or balance-sheet inputs are missing. Missing values stay N/A — they are not replaced with zero. This is input completeness, not a statement-verification result.",
+  pending_analysis: "Layer 3 concepts were not in the compact revenue/earnings store for this issuer.",
+  model_not_applicable: "Financial-institution SIC codes are not forced through corporate FCF / net-debt definitions.",
+  insufficient_verified_data: "Domestic quarterly facts are not available; foreign 20-F quarters are not fabricated.",
+  pending_implementation: "Financial-quality scoring is not implemented. Metric extraction is Phase 2.",
+};
+
+export interface Layer3Index {
+  byCik: Map<string, Layer3Row>;
+  byTicker: Map<string, Layer3Row>;
+}
+
+export function indexLayer3Rows(rows: readonly Layer3Row[] | null | undefined): Layer3Index {
+  const byCik = new Map<string, Layer3Row>();
+  const byTicker = new Map<string, Layer3Row>();
+  if (!rows) return { byCik, byTicker };
+  for (const row of rows) {
+    const cik = normalizeCik(row.cik);
+    if (cik) byCik.set(cik, row);
+    for (const ticker of row.tickers) byTicker.set(normalizeTicker(ticker), row);
+  }
+  return { byCik, byTicker };
+}
+
+export function indexLayer3(file: Layer3File | null | undefined): Layer3Index {
+  return indexLayer3Rows(file?.rows);
+}
+
+/** CIKs to fetch for a curated list. Deduped; ticker-only entries have none. */
+export function ciksForEntries(entries: readonly Layer3Entry[]): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const entry of entries) {
+    const cik = normalizeCik(entry.cik);
+    if (!cik || seen.has(cik)) continue;
+    seen.add(cik);
+    out.push(cik);
+  }
+  return out;
+}
+
+/** Look up precomputed metrics for a saved issuer only. Never invents a row. */
+export function metricsForEntry(entry: Layer3Entry, index: Layer3Index): Layer3Row | null {
+  const cik = normalizeCik(entry.cik);
+  if (cik) {
+    const row = index.byCik.get(cik);
+    if (row) return row;
+  }
+  for (const ticker of entry.tickers) {
+    const row = index.byTicker.get(normalizeTicker(ticker));
+    if (row) return row;
+  }
+  return null;
+}
+
+export function displayStatus(entry: Layer3Entry, row: Layer3Row | null, fileLoaded: boolean): Layer3DisplayStatus {
+  if (row?.extractionStatus === "extracted") return "extracted";
+  if (row?.extractionStatus === "insufficient_facts") return "insufficient_verified_data";
+  if (row?.extractionStatus === "pending_analysis") return "pending_analysis";
+  if (row?.status) return row.status;
+  if (fileLoaded) return "pending_analysis";
+  return entry.analysisStatus;
+}
+
+export function statusLines(
+  row: Layer3Row | null,
+  fileLoaded: boolean,
+): { label: string; kind: string; title?: string }[] {
+  if (!row) {
+    return [
+      {
+        label: fileLoaded ? LAYER3_EXTRACTION_LABEL.pending_analysis : "Analysis Not Yet Available",
+        kind: "pending_analysis",
+      },
+      { label: LAYER3_VERIFICATION_LABEL.not_checked, kind: "not_checked" },
+      { label: "Scoring not implemented", kind: "not_implemented" },
+    ];
+  }
+  const extraction = row.extractionStatus ?? (row.status === "extracted" ? "extracted" : "pending_analysis");
+  const verification = row.verificationStatus ?? "not_checked";
+  const model = row.modelApplicability ?? "applicable";
+  const inputs = row.inputCompleteness ?? "pending_analysis";
+  return [
+    { label: LAYER3_EXTRACTION_LABEL[extraction] ?? extraction, kind: extraction },
+    { label: LAYER3_VERIFICATION_LABEL[verification] ?? verification, kind: verification },
+    { label: LAYER3_MODEL_LABEL[model] ?? model, kind: model },
+    {
+      label: LAYER3_INPUT_LABEL[inputs] ?? inputs,
+      kind: inputs,
+      title: LAYER3_INPUT_DETAIL[inputs],
+    },
+    { label: "Scoring not implemented", kind: "not_implemented" },
+  ];
+}
+
+export function metricValue(metric: { ttm?: number | null; value?: number | null } | null | undefined): number | null {
+  if (!metric) return null;
+  if (metric.ttm !== undefined && metric.ttm !== null) return metric.ttm;
+  if (metric.value !== undefined && metric.value !== null) return metric.value;
+  return null;
 }

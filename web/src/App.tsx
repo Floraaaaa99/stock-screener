@@ -83,7 +83,12 @@ export default function App() {
 
   const fetchData = useCallback(() => {
     setLoad({ status: "loading" });
-    Promise.all([loadMeta(), loadScreener(), loadLayer2().catch(() => null), loadIssuers()])
+    Promise.all([
+      loadMeta(),
+      loadScreener(),
+      loadLayer2().catch(() => null),
+      loadIssuers(),
+    ])
       .then(([meta, screener, layer2, issuers]) => {
         setCikByTicker(issuers);
         setLoad({ status: "ready", meta, rows: screener.rows, layer2 });
