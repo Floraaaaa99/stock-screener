@@ -1,6 +1,11 @@
 import { naReason } from "../lib/explain";
 import { fiscalLabel, formatDate, formatMillions } from "../lib/format";
-import { LAYER3_STATUS_DETAIL, LAYER3_STATUS_LABEL, type Layer3DisplayStatus } from "../lib/layer3";
+import {
+  LAYER3_STATUS_DETAIL,
+  LAYER3_STATUS_LABEL,
+  statusLines,
+  type Layer3DisplayStatus,
+} from "../lib/layer3";
 import type { Layer3FlowMetric, Layer3Quarter, Layer3Row, Layer3StockMetric } from "../types";
 
 function Money({ value, currency }: { value: number | null | undefined; currency: string | null | undefined }) {
@@ -47,7 +52,13 @@ function FlowBlock({ title, metric, currency }: { title: string; metric: Layer3F
         </div>
         <div>
           <dt>Verification</dt>
-          <dd>{metric.verification.replace(/_/g, " ")}</dd>
+          <dd>
+            {metric.verification === "company_facts_only"
+              ? "Company Facts only — not statement-checked"
+              : metric.verification === "derived"
+                ? "Derived — not statement-checked"
+                : "Not statement-checked"}
+          </dd>
         </div>
         {metric.formula && (
           <div>
@@ -131,10 +142,17 @@ export function Layer3Detail({ row, status }: { row: Layer3Row | null; status: L
   const m = row?.metrics;
   return (
     <div className="detail layer3-detail">
+      <ul className="layer3-status-stack detail-status">
+        {statusLines(row, true).map((line) => (
+          <li key={line.kind} className={`layer3-status is-${line.kind}`}>
+            {line.label}
+          </li>
+        ))}
+      </ul>
       <p>
         <strong>{LAYER3_STATUS_LABEL[status]}.</strong> {LAYER3_STATUS_DETAIL[status]}
       </p>
-      <p className="muted">Growth Source: Not Yet Verified. Scoring is not implemented in Phase 2.</p>
+      <p className="muted">Growth Source: Not Yet Verified. Scoring is not implemented in Phase 2. No metric here is labeled statement-verified.</p>
       {row?.layer1 && (
         <p className="muted">
           Layer 1 TTM revenue (copied, not recomputed): <Money value={row.layer1.revenueTtm} currency={row.layer1.revenueCurrency} />

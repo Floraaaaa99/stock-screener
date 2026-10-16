@@ -11,18 +11,26 @@ from dataclasses import dataclass, field
 from datetime import date
 
 from .layer3_concepts import (
+    AMORTIZATION_ADDON_CONCEPTS,
     CAPEX_CONCEPTS,
+    CAPEX_MAY_BE_NET,
     CASH_CONCEPTS,
     DA_CONCEPTS,
+    DEPRECIATION_ONLY_CONCEPTS,
+    FLOW_ALIGN_DAYS,
     FLOW_CONCEPTS,
     INTEREST_CONCEPTS,
     LAYER3_EXTRACTION_VERSION,
     LT_DEBT_CONCEPTS,
+    LT_DEBT_INCLUDES_LEASES,
     OCF_CONCEPTS,
     OPERATING_INCOME_CONCEPTS,
     ST_DEBT_PART_CONCEPTS,
     ST_DEBT_TOTAL_CONCEPTS,
+    STOCK_ALIGN_DAYS,
     STOCK_CONCEPTS,
+    TOTAL_DEBT_FALLBACK_CONCEPTS,
+    TOTAL_DEBT_INCLUDES_LEASES,
     is_financial_sic,
 )
 from .quarters import MissingQuarter, Quarter, Slot, build_timeline, dedupe_periods, derive_quarters, label_quarters
@@ -53,11 +61,31 @@ def compute_flow_ttm(slots: list[Slot]) -> TTMResult:
     return TTMResult(current, previous, None, None)
 
 
-def _pick_flow_concept(rf: RevenueFacts, candidates: list[str]) -> str | None:
-    for concept in candidates:
-        if rf.by_concept.get(concept):
-            return concept
+def _newest_quarter_end(slots: list[Slot]) -> date | None:
+    for s in slots:
+        if isinstance(s, Quarter):
+            return s.end
     return None
+
+
+def _aligned(end: date | None, as_of: date | None, days: int) -> bool:
+    if end is None or as_of is None:
+        return as_of is None
+    return abs((end - as_of).days) <= days
+
+
+def _pick_flow_concept(rf: RevenueFacts, candidates: list[str], as_of: date | None = None) -> str | None:
+    """Prefer a concept whose newest standalone quarter sits on the OCF window."""
+    best: tuple[tuple, str] | None = None
+    for idx, concept in enumerate(candidates):
+        if not rf.by_concept.get(concept):
+            continue
+        newest = _newest_quarter_end(_slots_for_concept(rf, concept))
+        aligned = _aligned(newest, as_of, FLOW_ALIGN_DAYS) if as_of else True
+        score = (aligned, newest or date.min, -idx)
+        if best is None or score > best[0]:
+            best = (score, concept)
+    return best[1] if best else None
 
 
 def _slots_for_concept(rf: RevenueFacts, concept: str) -> list[Slot]:
@@ -124,8 +152,22 @@ def _quarter_payloads(slots: list[Slot], *, magnitude: bool = False, cik: str = 
     return out
 
 
-def _flow_metric(rf: RevenueFacts, candidates: list[str], *, capex: bool = False, cik: str = "") -> dict:
-    concept = _pick_flow_concept(rf, candidates)
+COMPANY_FACTS_ONLY_NOTE = (
+    "Taken from SEC Company Facts XBRL. Not checked against the rendered 10-Q/10-K "
+    "cash-flow or balance-sheet statement."
+)
+
+
+def _flow_metric(
+    rf: RevenueFacts,
+    candidates: list[str],
+    *,
+    capex: bool = False,
+    cik: str = "",
+    as_of: date | None = None,
+    require_align: bool = False,
+) -> dict:
+    concept = _pick_flow_concept(rf, candidates, as_of if require_align else None)
     if concept is None:
         return {
             "status": "missing",
@@ -137,6 +179,20 @@ def _flow_metric(rf: RevenueFacts, candidates: list[str], *, capex: bool = False
             "verification": "not_checked",
         }
     slots = _slots_for_concept(rf, concept)
+    newest = _newest_quarter_end(slots)
+    if require_align and as_of is not None and not _aligned(newest, as_of, FLOW_ALIGN_DAYS):
+        return {
+            "status": "missing",
+            "reason": "ttm_window_not_aligned",
+            "concept": concept,
+            "ttm": None,
+            "previousTtm": None,
+            "quarters": _quarter_payloads(slots, cik=cik),
+            "verification": "not_checked",
+            "verificationNote": COMPANY_FACTS_ONLY_NOTE,
+            "newestEnd": newest.isoformat() if newest else None,
+            "alignedTo": as_of.isoformat(),
+        }
     if capex:
         mag_slots: list[Slot] = []
         for s in slots:
@@ -161,7 +217,7 @@ def _flow_metric(rf: RevenueFacts, candidates: list[str], *, capex: bool = False
                 mag_slots.append(s)
         ttm = compute_flow_ttm(mag_slots)
         quarters = _quarter_payloads(slots, magnitude=True, cik=cik)
-        return {
+        payload = {
             "status": "extracted" if ttm.current is not None else "missing",
             "reason": ttm.reason,
             "concept": concept,
@@ -171,8 +227,14 @@ def _flow_metric(rf: RevenueFacts, candidates: list[str], *, capex: bool = False
             "previousTtm": ttm.previous,
             "quarters": quarters,
             "verification": "company_facts_only",
-            "verificationNote": "Cash-flow face statements are not in the current income-statement cache.",
+            "verificationNote": COMPANY_FACTS_ONLY_NOTE,
         }
+        if concept in CAPEX_MAY_BE_NET:
+            payload["scopeNote"] = (
+                "Last-resort tag; US-GAAP name is net of asset-sale proceeds. "
+                "Used only when no gross PPE CapEx tag is aligned."
+            )
+        return payload
     ttm = compute_flow_ttm(slots)
     quarters = _quarter_payloads(slots, cik=cik)
     return {
@@ -184,12 +246,13 @@ def _flow_metric(rf: RevenueFacts, candidates: list[str], *, capex: bool = False
         "previousTtm": ttm.previous,
         "quarters": quarters,
         "verification": "company_facts_only",
-        "verificationNote": "Cash-flow / income-statement face check for this metric is not cached in Phase 2.",
+        "verificationNote": COMPANY_FACTS_ONLY_NOTE,
     }
 
 
 def _latest_instant(facts: list[InstantFact], as_of: date | None) -> InstantFact | None:
-    usable = [f for f in facts if as_of is None or f.end <= as_of]
+    """Latest instant on the analysis date. Stale prior-year balances are not used."""
+    usable = [f for f in facts if as_of is None or _aligned(f.end, as_of, STOCK_ALIGN_DAYS)]
     if not usable:
         return None
     usable.sort(key=lambda f: (f.end, f.filed, f.accn))
@@ -219,6 +282,7 @@ def _stock_from_concept(
         "unit": currency,
         "aggregation": "latest_quarter_end",
         "verification": "company_facts_only",
+        "verificationNote": COMPANY_FACTS_ONLY_NOTE,
     }
 
 
@@ -233,24 +297,35 @@ def _missing_stock(reason: str) -> dict:
     }
 
 
-def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, cik: str, currency: str | None) -> dict:
-    cash = None
-    for concept in CASH_CONCEPTS:
-        cash = _stock_from_concept(instants, concept, as_of, cik, currency)
-        if cash:
-            break
-    if cash is None:
-        cash = _missing_stock("no_concept")
+def _has_any(instants: dict[str, list[InstantFact]], concepts: list[str]) -> bool:
+    return any(instants.get(c) for c in concepts)
 
-    st = None
-    st_parts_used: list[str] = []
-    for concept in ST_DEBT_TOTAL_CONCEPTS:
-        st = _stock_from_concept(instants, concept, as_of, cik, currency)
-        if st:
-            st["aggregation"] = "single_current_debt_total"
-            break
-    if st is None:
+
+def _first_aligned_stock(
+    instants: dict[str, list[InstantFact]],
+    concepts: list[str],
+    as_of: date | None,
+    cik: str,
+    currency: str | None,
+) -> dict:
+    for concept in concepts:
+        found = _stock_from_concept(instants, concept, as_of, cik, currency)
+        if found:
+            return found
+    return _missing_stock("stock_not_as_of_latest_quarter" if _has_any(instants, concepts) else "no_concept")
+
+
+def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, cik: str, currency: str | None) -> dict:
+    cash = _first_aligned_stock(instants, CASH_CONCEPTS, as_of, cik, currency)
+    if cash["status"] == "extracted":
+        cash["aggregation"] = "latest_quarter_end"
+
+    st = _first_aligned_stock(instants, ST_DEBT_TOTAL_CONCEPTS, as_of, cik, currency)
+    if st["status"] == "extracted":
+        st["aggregation"] = "single_current_debt_total"
+    else:
         parts = []
+        st_parts_used: list[str] = []
         for concept in ST_DEBT_PART_CONCEPTS:
             part = _stock_from_concept(instants, concept, as_of, cik, currency)
             if part:
@@ -278,30 +353,51 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
                     "aggregation": "sum_disjoint_current_components",
                     "unit": currency,
                     "verification": "company_facts_only",
+                    "verificationNote": COMPANY_FACTS_ONLY_NOTE,
                     "url": parts[0].get("url"),
                 }
-        else:
-            st = _missing_stock("no_concept")
+        elif st["reason"] != "stock_not_as_of_latest_quarter":
+            reason = "stock_not_as_of_latest_quarter" if _has_any(instants, ST_DEBT_PART_CONCEPTS) else "no_concept"
+            st = _missing_stock(reason)
 
-    lt = None
-    for concept in LT_DEBT_CONCEPTS:
-        lt = _stock_from_concept(instants, concept, as_of, cik, currency)
-        if lt:
-            lt["aggregation"] = "single_long_term_debt_concept"
-            break
-    if lt is None:
-        lt = _missing_stock("no_concept")
+    lt = _first_aligned_stock(instants, LT_DEBT_CONCEPTS, as_of, cik, currency)
+    if lt["status"] == "extracted":
+        lt["aggregation"] = "single_long_term_debt_concept"
+        if lt.get("concept") in LT_DEBT_INCLUDES_LEASES:
+            lt["includesLeaseObligations"] = True
+            lt["scopeNote"] = "This tag includes capital / finance lease obligations with borrowings."
 
     total_debt = None
     total_reason = None
-    if st["value"] is None and lt["value"] is None:
-        total_reason = "no_concept"
-    elif st["value"] is None:
-        total_reason = "missing_short_term_debt"
-    elif lt["value"] is None:
-        total_reason = "missing_long_term_debt"
+    total_formula = "short_term_debt + long_term_debt"
+    total_concept = None
+    total_end = st.get("end") or lt.get("end")
+    if st["value"] is not None and lt["value"] is not None:
+        if st.get("end") != lt.get("end"):
+            total_reason = "debt_period_mismatch"
+        else:
+            total_debt = st["value"] + lt["value"]
     else:
-        total_debt = st["value"] + lt["value"]
+        fallback = _first_aligned_stock(instants, TOTAL_DEBT_FALLBACK_CONCEPTS, as_of, cik, currency)
+        known_part = st["value"] if st["value"] is not None else lt["value"]
+        fallback_is_total = (
+            fallback["status"] == "extracted"
+            and (known_part is None or fallback["value"] + 1 >= known_part)
+        )
+        if fallback_is_total:
+            # Fallback tags are totals. Never add them on top of the current portion.
+            total_debt = fallback["value"]
+            total_concept = fallback["concept"]
+            total_end = fallback.get("end")
+            total_formula = "single_total_debt_concept"
+            if total_concept in TOTAL_DEBT_INCLUDES_LEASES:
+                fallback["includesLeaseObligations"] = True
+        elif st["value"] is None and lt["value"] is None:
+            total_reason = fallback["reason"]
+        elif st["value"] is None:
+            total_reason = "missing_short_term_debt"
+        else:
+            total_reason = "missing_long_term_debt"
 
     net_debt = None
     net_reason = None
@@ -312,24 +408,29 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
     else:
         net_debt = total_debt - cash["value"]
 
+    total_payload = {
+        "status": "extracted" if total_debt is not None else "missing",
+        "reason": total_reason,
+        "value": total_debt,
+        "formula": total_formula,
+        "concept": total_concept,
+        "end": total_end,
+        "verification": "derived" if total_debt is not None else "not_checked",
+    }
+    if total_concept in TOTAL_DEBT_INCLUDES_LEASES:
+        total_payload["includesLeaseObligations"] = True
+
     return {
         "cash": cash,
         "shortTermDebt": st,
         "longTermDebt": lt,
-        "totalDebt": {
-            "status": "extracted" if total_debt is not None else "missing",
-            "reason": total_reason,
-            "value": total_debt,
-            "formula": "short_term_debt + long_term_debt",
-            "end": st.get("end") or lt.get("end"),
-            "verification": "derived" if total_debt is not None else "not_checked",
-        },
+        "totalDebt": total_payload,
         "netDebt": {
             "status": "extracted" if net_debt is not None else "missing",
             "reason": net_reason,
             "value": net_debt,
             "formula": "total_debt − cash",
-            "end": cash.get("end") or st.get("end"),
+            "end": cash.get("end") or total_end,
             "verification": "derived" if net_debt is not None else "not_checked",
         },
     }
@@ -338,7 +439,11 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
 @dataclass
 class Layer3Analysis:
     cik: str
-    status: str
+    extraction_status: str
+    verification_status: str
+    model_applicability: str
+    scoring_status: str
+    input_completeness: str
     currency: str | None
     metrics: dict
     flags: list[str] = field(default_factory=list)
@@ -347,11 +452,16 @@ class Layer3Analysis:
     def to_dict(self) -> dict:
         return {
             "cik": self.cik,
-            "status": self.status,
+            "extractionStatus": self.extraction_status,
+            "verificationStatus": self.verification_status,
+            "modelApplicability": self.model_applicability,
+            "scoringStatus": self.scoring_status,
+            "inputCompleteness": self.input_completeness,
             "currency": self.currency,
             "extractionVersion": self.extraction_version,
             "flags": self.flags,
             "metrics": self.metrics,
+            "scoring": None,
         }
 
 
@@ -372,10 +482,33 @@ def analyze_layer3_facts(
         flags.append("financial_institution")
 
     ocf = _flow_metric(flows, OCF_CONCEPTS, cik=cik)
-    capex = _flow_metric(flows, CAPEX_CONCEPTS, capex=True, cik=cik)
-    opinc = _flow_metric(flows, OPERATING_INCOME_CONCEPTS, cik=cik)
-    interest = _flow_metric(flows, INTEREST_CONCEPTS, cik=cik)
-    da = _flow_metric(flows, DA_CONCEPTS, cik=cik)
+    as_of = None
+    for q in ocf.get("quarters") or []:
+        if q.get("end") and q.get("value") is not None:
+            as_of = date.fromisoformat(q["end"])
+            break
+    capex = _flow_metric(flows, CAPEX_CONCEPTS, capex=True, cik=cik, as_of=as_of, require_align=True)
+    opinc = _flow_metric(flows, OPERATING_INCOME_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+    interest = _flow_metric(flows, INTEREST_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+    da = _flow_metric(flows, DA_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+    da_incomplete = False
+    if da.get("concept") in DEPRECIATION_ONLY_CONCEPTS:
+        amort = _flow_metric(flows, AMORTIZATION_ADDON_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+        if amort.get("ttm") is not None and da.get("ttm") is not None:
+            prior = None
+            if da.get("previousTtm") is not None and amort.get("previousTtm") is not None:
+                prior = da["previousTtm"] + amort["previousTtm"]
+            da = {
+                **da,
+                "ttm": da["ttm"] + amort["ttm"],
+                "previousTtm": prior,
+                "concept": f"{da['concept']}+{amort['concept']}",
+                "aggregation": "sum_depreciation_and_amortization",
+                "reason": None if prior is not None else da.get("reason") or amort.get("reason"),
+            }
+        elif amort.get("reason") != "no_concept":
+            # Amortization exists but is unaligned or gapped. Do not treat it as zero.
+            da_incomplete = True
 
     fcf_ttm = fcf_prior = None
     fcf_reason = None
@@ -394,16 +527,13 @@ def analyze_layer3_facts(
     ebitda_reason = None
     if opinc.get("ttm") is None:
         ebitda_reason = "missing_operating_income"
-    elif da.get("ttm") is None:
-        ebitda_reason = "missing_depreciation_amortization"
+    elif da.get("ttm") is None or da_incomplete:
+        ebitda_reason = (
+            "depreciation_excludes_amortization" if da_incomplete else "missing_depreciation_amortization"
+        )
     else:
         ebitda = opinc["ttm"] + da["ttm"]
 
-    as_of = None
-    for q in ocf.get("quarters") or []:
-        if q.get("end") and q.get("value") is not None:
-            as_of = date.fromisoformat(q["end"])
-            break
     stocks = _stock_metrics(instants, as_of, cik, flows.currency)
 
     no_interest_burden = (
@@ -423,6 +553,7 @@ def analyze_layer3_facts(
             "previousTtm": fcf_prior,
             "formula": "OCF − CapEx (CapEx as positive cash outflow)",
             "verification": "derived" if fcf_ttm is not None else "not_checked",
+            "verificationNote": "Derived from Company Facts OCF and CapEx. Not statement-checked.",
         },
         "operatingIncome": opinc,
         "interestExpense": interest,
@@ -434,6 +565,7 @@ def analyze_layer3_facts(
             "formula": "operating_income + depreciation_and_amortization",
             "definition": "Operating income used as an EBIT proxy only when that concept is selected.",
             "verification": "derived" if ebitda is not None else "not_checked",
+            "verificationNote": "Derived from Company Facts operating income and D&A. Not statement-checked.",
         },
         **stocks,
         "noInterestBurden": no_interest_burden,
@@ -444,16 +576,29 @@ def analyze_layer3_facts(
         metrics[k].get("status") == "extracted" or metrics[k].get("ttm") is not None
         for k in ("ocf", "capex", "operatingIncome", "cash")
     )
-    if "financial_institution" in flags:
-        status = "model_not_applicable"
-    elif "foreign_filer" in flags and not extracted_any:
-        status = "insufficient_verified_data"
+    if "foreign_filer" in flags and not extracted_any:
         flags.append("no_fabricated_foreign_quarters")
-    elif extracted_any and (ocf.get("ttm") is None or capex.get("ttm") is None or stocks["cash"]["value"] is None):
-        status = "pending_data_verification"
+        extraction_status = "insufficient_facts"
     elif extracted_any:
-        status = "extracted"
+        extraction_status = "extracted"
     else:
-        status = "pending_data_verification"
+        extraction_status = "insufficient_facts"
 
-    return Layer3Analysis(cik=cik, status=status, currency=flows.currency, metrics=metrics, flags=flags)
+    verification_status = "company_facts_only" if extracted_any else "not_checked"
+    model_applicability = "not_applicable" if "financial_institution" in flags else "applicable"
+    if ocf.get("ttm") is not None and capex.get("ttm") is not None and stocks["cash"]["value"] is not None:
+        input_completeness = "ready"
+    else:
+        input_completeness = "pending_data_verification"
+
+    return Layer3Analysis(
+        cik=cik,
+        extraction_status=extraction_status,
+        verification_status=verification_status,
+        model_applicability=model_applicability,
+        scoring_status="not_implemented",
+        input_completeness=input_completeness,
+        currency=flows.currency,
+        metrics=metrics,
+        flags=flags,
+    )

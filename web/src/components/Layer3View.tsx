@@ -2,10 +2,10 @@ import { Fragment, useMemo, useState } from "react";
 import { naReason } from "../lib/explain";
 import { formatCompactMoney, formatDate } from "../lib/format";
 import {
-  LAYER3_STATUS_LABEL,
   displayStatus,
   metricsForEntry,
   metricValue,
+  statusLines,
   type Layer3Entry,
   type Layer3Index,
 } from "../lib/layer3";
@@ -41,11 +41,15 @@ function MoneyCell({
   return <span className={value < 0 ? "neg" : value === 0 ? "zero" : ""}>{formatCompactMoney(value, currency)}</span>;
 }
 
-function StatusCell({ status }: { status: keyof typeof LAYER3_STATUS_LABEL }) {
+function StatusCell({ row, fileLoaded }: { row: import("../types").Layer3Row | null; fileLoaded: boolean }) {
   return (
-    <span className={`layer3-status is-${status}`} title={LAYER3_STATUS_LABEL[status]}>
-      {LAYER3_STATUS_LABEL[status]}
-    </span>
+    <ul className="layer3-status-stack">
+      {statusLines(row, fileLoaded).map((line) => (
+        <li key={line.kind} className={`layer3-status is-${line.kind}`}>
+          {line.label}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -163,7 +167,7 @@ export function Layer3View({ entries, catalog, index, storageNotice, onRemove, o
                         </td>
                         <td className="sic">{e.sicIndustry ? formatSicIndustry(e.sicIndustry) : "N/A"}</td>
                         <td>
-                          <StatusCell status={status} />
+                          <StatusCell row={row} fileLoaded={fileLoaded} />
                         </td>
                         <td className="num">
                           <MoneyCell metric={m?.ocf} currency={currency} />

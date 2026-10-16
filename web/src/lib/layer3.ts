@@ -261,18 +261,42 @@ export function selectedAlreadySavedCount(
 
 export type Layer3DisplayStatus = Layer3RowStatus | typeof LAYER3_ANALYSIS_STATUS;
 
-export const LAYER3_STATUS_LABEL: Record<Layer3DisplayStatus, string> = {
-  extracted: "Extracted",
+export const LAYER3_EXTRACTION_LABEL = {
+  extracted: "Extracted from Company Facts",
+  pending_analysis: "Pending Analysis",
+  insufficient_facts: "Insufficient Facts",
+} as const;
+
+export const LAYER3_VERIFICATION_LABEL = {
+  company_facts_only: "Company Facts only — not statement-checked",
+  not_checked: "Not statement-checked",
+} as const;
+
+export const LAYER3_MODEL_LABEL = {
+  applicable: "Model applicable",
+  not_applicable: "Model Not Applicable / Review Required",
+} as const;
+
+export const LAYER3_INPUT_LABEL = {
+  ready: "Cash-flow and cash inputs present",
   pending_data_verification: "Pending Data Verification",
   pending_analysis: "Pending Analysis",
-  model_not_applicable: "Model Not Applicable / Review Required",
-  insufficient_verified_data: "Insufficient Verified Data",
+} as const;
+
+export const LAYER3_STATUS_LABEL: Record<Layer3DisplayStatus, string> = {
+  extracted: LAYER3_EXTRACTION_LABEL.extracted,
+  pending_data_verification: LAYER3_INPUT_LABEL.pending_data_verification,
+  pending_analysis: LAYER3_EXTRACTION_LABEL.pending_analysis,
+  model_not_applicable: LAYER3_MODEL_LABEL.not_applicable,
+  insufficient_verified_data: LAYER3_EXTRACTION_LABEL.insufficient_facts,
   pending_implementation: "Analysis Not Yet Available",
 };
 
 export const LAYER3_STATUS_DETAIL: Record<Layer3DisplayStatus, string> = {
-  extracted: "Company Facts values were derived. Cash-flow and balance-sheet lines are not face-checked against the rendered 10-Q/10-K in Phase 2.",
-  pending_data_verification: "Some required cash-flow or balance-sheet inputs are missing or unverified. Missing values stay N/A — they are not replaced with zero.",
+  extracted:
+    "Values come from SEC Company Facts XBRL. They are not labeled statement-verified because cash-flow and balance-sheet faces are not in the current statement cache.",
+  pending_data_verification:
+    "Some required cash-flow or balance-sheet inputs are missing. Missing values stay N/A — they are not replaced with zero. This is input completeness, not a statement-verification result.",
   pending_analysis: "Layer 3 concepts were not in the compact revenue/earnings store for this issuer.",
   model_not_applicable: "Financial-institution SIC codes are not forced through corporate FCF / net-debt definitions.",
   insufficient_verified_data: "Domestic quarterly facts are not available; foreign 20-F quarters are not fabricated.",
@@ -311,9 +335,36 @@ export function metricsForEntry(entry: Layer3Entry, index: Layer3Index): Layer3R
 }
 
 export function displayStatus(entry: Layer3Entry, row: Layer3Row | null, fileLoaded: boolean): Layer3DisplayStatus {
-  if (row) return row.status;
+  if (row?.extractionStatus === "extracted") return "extracted";
+  if (row?.extractionStatus === "insufficient_facts") return "insufficient_verified_data";
+  if (row?.extractionStatus === "pending_analysis") return "pending_analysis";
+  if (row?.status) return row.status;
   if (fileLoaded) return "pending_analysis";
   return entry.analysisStatus;
+}
+
+export function statusLines(row: Layer3Row | null, fileLoaded: boolean): { label: string; kind: string }[] {
+  if (!row) {
+    return [
+      {
+        label: fileLoaded ? LAYER3_EXTRACTION_LABEL.pending_analysis : "Analysis Not Yet Available",
+        kind: "pending_analysis",
+      },
+      { label: LAYER3_VERIFICATION_LABEL.not_checked, kind: "not_checked" },
+      { label: "Scoring not implemented", kind: "not_implemented" },
+    ];
+  }
+  const extraction = row.extractionStatus ?? (row.status === "extracted" ? "extracted" : "pending_analysis");
+  const verification = row.verificationStatus ?? "not_checked";
+  const model = row.modelApplicability ?? "applicable";
+  const inputs = row.inputCompleteness ?? "pending_analysis";
+  return [
+    { label: LAYER3_EXTRACTION_LABEL[extraction] ?? extraction, kind: extraction },
+    { label: LAYER3_VERIFICATION_LABEL[verification] ?? verification, kind: verification },
+    { label: LAYER3_MODEL_LABEL[model] ?? model, kind: model },
+    { label: LAYER3_INPUT_LABEL[inputs] ?? inputs, kind: inputs },
+    { label: "Scoring not implemented", kind: "not_implemented" },
+  ];
 }
 
 export function metricValue(metric: { ttm?: number | null; value?: number | null } | null | undefined): number | null {

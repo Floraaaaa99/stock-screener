@@ -21,13 +21,38 @@ from .cache import read_json, write_json_atomic
 from .layer3_concepts import LAYER3_EXTRACTION_VERSION, LAYER3_SCHEMA_VERSION, is_financial_sic
 from .layer3_extract import analyze_layer3_facts
 
-STATUS_COUNT_KEY = {
-    "extracted": "extracted",
-    "pending_data_verification": "pendingDataVerification",
-    "pending_analysis": "pendingAnalysis",
-    "model_not_applicable": "modelNotApplicable",
-    "insufficient_verified_data": "insufficientVerifiedData",
-}
+
+def _empty_counts() -> dict:
+    return {
+        "issuers": 0,
+        "extraction": {"extracted": 0, "pendingAnalysis": 0, "insufficientFacts": 0},
+        "verification": {"companyFactsOnly": 0, "notChecked": 0},
+        "model": {"applicable": 0, "notApplicable": 0},
+        "scoring": {"notImplemented": 0},
+        "inputs": {"ready": 0, "pendingDataVerification": 0, "pendingAnalysis": 0},
+    }
+
+
+def _count_row(counts: dict, payload: dict) -> None:
+    counts["issuers"] += 1
+    ext_map = {
+        "extracted": "extracted",
+        "pending_analysis": "pendingAnalysis",
+        "insufficient_facts": "insufficientFacts",
+    }
+    inp_map = {
+        "ready": "ready",
+        "pending_data_verification": "pendingDataVerification",
+        "pending_analysis": "pendingAnalysis",
+    }
+    ext = payload.get("extractionStatus") or "pending_analysis"
+    counts["extraction"][ext_map.get(ext, "pendingAnalysis")] += 1
+    ver = payload.get("verificationStatus") or "not_checked"
+    counts["verification"]["companyFactsOnly" if ver == "company_facts_only" else "notChecked"] += 1
+    counts["model"]["notApplicable" if payload.get("modelApplicability") == "not_applicable" else "applicable"] += 1
+    counts["scoring"]["notImplemented"] += 1
+    inp = payload.get("inputCompleteness") or "pending_analysis"
+    counts["inputs"][inp_map.get(inp, "pendingAnalysis")] += 1
 
 
 def _now_iso() -> str:
@@ -131,14 +156,7 @@ def write_layer3(
                 by_cik[str(cik).zfill(10)].append(ticker)
 
     rows = []
-    counts = {
-        "issuers": 0,
-        "extracted": 0,
-        "pendingDataVerification": 0,
-        "pendingAnalysis": 0,
-        "modelNotApplicable": 0,
-        "insufficientVerifiedData": 0,
-    }
+    counts = _empty_counts()
     inline = companyfacts_by_cik or {}
     zf = CompanyFactsZip(facts_zip) if facts_zip else None
     try:
@@ -184,19 +202,20 @@ def write_layer3(
                 payload["displayTicker"] = primary
                 payload["name"] = (row or company or {}).get("name") or payload.get("name") or analysis.cik
                 payload["scoring"] = None
-            elif is_financial_sic(sic_code):
-                payload["status"] = "model_not_applicable"
-                payload["flags"] = ["financial_institution"]
-                payload["metrics"] = None
-                payload["reason"] = "financial_institution_review_required"
             else:
-                payload["status"] = "pending_analysis"
-                payload["flags"] = []
+                payload["extractionStatus"] = "pending_analysis"
+                payload["verificationStatus"] = "not_checked"
+                payload["modelApplicability"] = "not_applicable" if is_financial_sic(sic_code) else "applicable"
+                payload["scoringStatus"] = "not_implemented"
+                payload["inputCompleteness"] = "pending_analysis"
+                payload["flags"] = ["financial_institution"] if is_financial_sic(sic_code) else []
                 payload["metrics"] = None
-                payload["reason"] = "layer3_concepts_not_in_compact_facts"
-            counts["issuers"] += 1
-            key = STATUS_COUNT_KEY.get(payload["status"], "pendingAnalysis")
-            counts[key] = counts.get(key, 0) + 1
+                payload["reason"] = (
+                    "financial_institution_review_required"
+                    if is_financial_sic(sic_code)
+                    else "layer3_concepts_not_in_compact_facts"
+                )
+            _count_row(counts, payload)
             rows.append(payload)
     finally:
         if zf is not None:

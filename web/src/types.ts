@@ -292,6 +292,13 @@ export interface Layer2File {
   rows: Layer2Row[];
 }
 
+export type Layer3ExtractionStatus = "extracted" | "pending_analysis" | "insufficient_facts";
+export type Layer3VerificationStatus = "company_facts_only" | "not_checked";
+export type Layer3ModelApplicability = "applicable" | "not_applicable";
+export type Layer3ScoringStatus = "not_implemented";
+export type Layer3InputCompleteness = "ready" | "pending_data_verification" | "pending_analysis";
+
+/** @deprecated Split into extraction/verification/model/scoring/input fields. */
 export type Layer3RowStatus =
   | "extracted"
   | "pending_data_verification"
@@ -375,7 +382,13 @@ export interface Layer3Row {
   sicCode: string | null;
   sicIndustry: string | null;
   sicMajorGroup: string | null;
-  status: Layer3RowStatus;
+  extractionStatus?: Layer3ExtractionStatus;
+  verificationStatus?: Layer3VerificationStatus;
+  modelApplicability?: Layer3ModelApplicability;
+  scoringStatus?: Layer3ScoringStatus;
+  inputCompleteness?: Layer3InputCompleteness;
+  /** @deprecated Prefer the four separate status fields. */
+  status?: Layer3RowStatus;
   reason?: string | null;
   currency?: string | null;
   flags?: string[];
@@ -404,10 +417,15 @@ export interface Layer3File {
   scoring: null;
   counts: {
     issuers: number;
-    extracted: number;
-    pendingDataVerification: number;
-    pendingAnalysis: number;
-    modelNotApplicable: number;
+    extraction?: { extracted: number; pendingAnalysis: number; insufficientFacts: number };
+    verification?: { companyFactsOnly: number; notChecked: number };
+    model?: { applicable: number; notApplicable: number };
+    scoring?: { notImplemented: number };
+    inputs?: { ready: number; pendingDataVerification: number; pendingAnalysis: number };
+    extracted?: number;
+    pendingDataVerification?: number;
+    pendingAnalysis?: number;
+    modelNotApplicable?: number;
     insufficientVerifiedData?: number;
   };
   rows: Layer3Row[];

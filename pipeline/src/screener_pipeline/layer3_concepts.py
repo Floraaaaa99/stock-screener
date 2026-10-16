@@ -14,11 +14,14 @@ OCF_CONCEPTS = [
 ]
 
 # CapEx as cash paid for PPE / productive assets. Not acquisitions, not all investing outflows.
+# The net productive-assets tag is last-resort only (some issuers tag face CapEx this way).
 CAPEX_CONCEPTS = [
     "PaymentsToAcquirePropertyPlantAndEquipment",
     "PaymentsToAcquireProductiveAssets",
     "PaymentsForCapitalImprovements",
+    "PaymentsForProceedsFromProductiveAssets",
 ]
+CAPEX_MAY_BE_NET = {"PaymentsForProceedsFromProductiveAssets"}
 
 OPERATING_INCOME_CONCEPTS = [
     "OperatingIncomeLoss",
@@ -36,6 +39,13 @@ DA_CONCEPTS = [
     "DepreciationAndAmortization",
     "Depreciation",
 ]
+# Used only when the selected D&A concept is depreciation-only. Financing-cost
+# amortization stays out of EBITDA.
+DEPRECIATION_ONLY_CONCEPTS = {"Depreciation"}
+AMORTIZATION_ADDON_CONCEPTS = [
+    "AmortizationOfIntangibleAssets",
+    "AmortizationOfIntangibles",
+]
 
 CASH_CONCEPTS = [
     "CashAndCashEquivalentsAtCarryingValue",
@@ -44,22 +54,42 @@ CASH_CONCEPTS = [
 ]
 
 # Prefer a single current-debt total. Component tags are summed only when no total exists.
+# LongTermDebt (unqualified) is a common *total* tag and is not added here — see TOTAL_DEBT_FALLBACK.
 ST_DEBT_TOTAL_CONCEPTS = ["DebtCurrent"]
 ST_DEBT_PART_CONCEPTS = [
     "LongTermDebtCurrent",
+    "LongTermDebtAndCapitalLeaseObligationsCurrent",
     "ShortTermBorrowings",
     "CommercialPaper",
     "CurrentPortionOfLongTermDebt",
     "ShortTermBankLoansAndNotesPayable",
 ]
 
-# Prefer noncurrent carrying value. Do not add LongTermDebt + LongTermDebtNoncurrent.
+# Noncurrent carrying value only. Do not add LongTermDebt + LongTermDebtNoncurrent.
+# Lease-inclusive tags are last-resort fallbacks and are flagged.
 LT_DEBT_CONCEPTS = [
     "LongTermDebtNoncurrent",
-    "LongTermDebt",
     "LongTermBorrowings",
     "LongTermNotesAndLoans",
+    "LongTermDebtAndCapitalLeaseObligationsNoncurrent",
+    "LongTermDebtAndCapitalLeaseObligations",
 ]
+LT_DEBT_INCLUDES_LEASES = {
+    "LongTermDebtAndCapitalLeaseObligationsNoncurrent",
+    "LongTermDebtAndCapitalLeaseObligations",
+}
+
+# Used only when short-term and long-term parts cannot both be aligned to the same date.
+TOTAL_DEBT_FALLBACK_CONCEPTS = [
+    "DebtAndCapitalLeaseObligations",
+    "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+    "LongTermDebt",
+    "NotesPayable",
+]
+TOTAL_DEBT_INCLUDES_LEASES = {
+    "DebtAndCapitalLeaseObligations",
+    "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+}
 
 FLOW_CONCEPTS = (
     OCF_CONCEPTS
@@ -67,13 +97,23 @@ FLOW_CONCEPTS = (
     + OPERATING_INCOME_CONCEPTS
     + INTEREST_CONCEPTS
     + DA_CONCEPTS
+    + AMORTIZATION_ADDON_CONCEPTS
 )
-STOCK_CONCEPTS = CASH_CONCEPTS + ST_DEBT_TOTAL_CONCEPTS + ST_DEBT_PART_CONCEPTS + LT_DEBT_CONCEPTS
+STOCK_CONCEPTS = (
+    CASH_CONCEPTS
+    + ST_DEBT_TOTAL_CONCEPTS
+    + ST_DEBT_PART_CONCEPTS
+    + LT_DEBT_CONCEPTS
+    + TOTAL_DEBT_FALLBACK_CONCEPTS
+)
+
+STOCK_ALIGN_DAYS = 10
+FLOW_ALIGN_DAYS = 50
 
 # SIC major groups that should not be forced through corporate FCF / net-debt definitions.
 FINANCIAL_SIC_PREFIXES = ("60", "61", "62", "63", "64", "67")
 
-LAYER3_EXTRACTION_VERSION = 1
+LAYER3_EXTRACTION_VERSION = 3
 LAYER3_SCHEMA_VERSION = 1
 
 

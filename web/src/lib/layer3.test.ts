@@ -384,6 +384,11 @@ describe("Phase 2 metric catalog (saved issuers only)", () => {
     sicCode: "3724",
     sicIndustry: "3724 — Aircraft Engines",
     sicMajorGroup: "Transportation Equipment",
+    extractionStatus: "extracted" as const,
+    verificationStatus: "company_facts_only" as const,
+    modelApplicability: "applicable" as const,
+    scoringStatus: "not_implemented" as const,
+    inputCompleteness: "ready" as const,
     status: "extracted" as const,
     currency: "USD",
     flags: [],
@@ -457,6 +462,8 @@ describe("Phase 2 metric catalog (saved issuers only)", () => {
     expect(metricsForEntry({ ...hei, tickers: ["HEI-A"], displayTicker: "HEI-A" }, index)?.metrics?.fcf.ttm).toBe(80);
     expect(metricsForEntry(loar, index)).toBeNull();
     expect(displayStatus(hei, metricsForEntry(hei, index), true)).toBe("extracted");
+    expect(metricsForEntry(hei, index)?.verificationStatus).toBe("company_facts_only");
+    expect(metricsForEntry(hei, index)?.scoringStatus).toBe("not_implemented");
     expect(displayStatus(loar, null, true)).toBe("pending_analysis");
     expect(displayStatus(loar, null, false)).toBe("pending_implementation");
     expect(metricValue({ ttm: null })).toBeNull();

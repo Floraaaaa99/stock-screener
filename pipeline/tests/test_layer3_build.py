@@ -93,13 +93,19 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     by_cik = {r["cik"]: r for r in out["rows"]}
     hei = by_cik["0000046619"]
     assert set(hei["tickers"]) == {"HEI", "HEI-A"}
-    assert hei["status"] == "extracted"
+    assert hei["extractionStatus"] == "extracted"
+    assert hei["verificationStatus"] == "company_facts_only"
+    assert hei["modelApplicability"] == "applicable"
+    assert hei["scoringStatus"] == "not_implemented"
+    assert hei["inputCompleteness"] == "ready"
     assert hei["metrics"]["fcf"]["ttm"] == 32
     assert hei["scoring"] is None
     assert hei["layer1"]["revenueTtm"] == 100
     assert hei["layer1"]["source"] == "layer1_copy"
     jpm = by_cik["0000019617"]
-    assert jpm["status"] == "model_not_applicable"
+    assert jpm["extractionStatus"] == "pending_analysis"
+    assert jpm["modelApplicability"] == "not_applicable"
+    assert jpm["scoringStatus"] == "not_implemented"
     assert jpm["metrics"] is None
     # Layer 1 / Layer 2 artifacts are untouched.
     layer2 = json.loads((data / "layer2.json").read_text())
@@ -112,7 +118,9 @@ def test_write_layer3_without_facts_is_pending_analysis(tmp_path: Path):
     data = _dataset(tmp_path)
     out = write_layer3(data, tmp_path / "layer3.json")
     hei = next(r for r in out["rows"] if r["cik"] == "0000046619")
-    assert hei["status"] == "pending_analysis"
+    assert hei["extractionStatus"] == "pending_analysis"
+    assert hei["verificationStatus"] == "not_checked"
+    assert hei["scoringStatus"] == "not_implemented"
     assert hei["metrics"] is None
     assert hei["reason"] == "layer3_concepts_not_in_compact_facts"
 

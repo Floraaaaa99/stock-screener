@@ -34,6 +34,8 @@ export const NA_REASONS: Record<string, string> = {
   missing_capex: "Capital expenditure could not be derived, so free cash flow stays N/A.",
   missing_operating_income: "Operating income is missing, so EBITDA is not calculated.",
   missing_depreciation_amortization: "Depreciation and amortization is missing, so EBITDA is not calculated.",
+  depreciation_excludes_amortization:
+    "Only a depreciation tag is aligned; amortization exists in Company Facts but not in the same TTM window, so EBITDA is left N/A rather than treating amortization as zero.",
   missing_short_term_debt: "Short-term debt is missing, so total and net debt stay N/A.",
   missing_long_term_debt: "Long-term debt is missing, so total and net debt stay N/A.",
   missing_cash: "Cash and cash equivalents are missing, so net debt stays N/A.",
@@ -42,6 +44,10 @@ export const NA_REASONS: Record<string, string> = {
     "Cash-flow and balance-sheet concepts are not stored in the compact revenue/earnings facts cache.",
   financial_institution_review_required:
     "This SIC industry is a financial institution; corporate FCF and net-debt definitions are not applied.",
+  ttm_window_not_aligned:
+    "This concept’s latest standalone quarter is not in the same fiscal window as operating cash flow, so its TTM is left N/A.",
+  stock_not_as_of_latest_quarter:
+    "No balance-sheet instant for this concept falls on the latest cash-flow quarter-end. Older amounts are not carried forward.",
   official_filing_unparsed:
     "A newer official 10-Q/10-K is on EDGAR, but its income statement could not be read, so this window is stale.",
   official_filing_no_applicable_revenue:
