@@ -579,42 +579,51 @@ def _candidate_flows(rf: RevenueFacts, concepts: list[str], cik: str, as_of: dat
     return out
 
 
+def _usable_aligned_ttm(metric: dict | None) -> bool:
+    """True when the series has a current TTM on the analysis window.
+
+    A tag that only has older quarters (HEI GrossProfit through FY2020) is not
+    current and must not block Revenue − COGS / Revenue − GP derivation.
+    """
+    if not metric:
+        return False
+    return metric.get("status") == "extracted" and metric.get("ttm") is not None
+
+
+def _stale_window_note(metric: dict) -> str:
+    newest = metric.get("newestEnd")
+    aligned = metric.get("alignedTo")
+    if newest and aligned:
+        return f" (newestEnd {newest}, alignedTo {aligned})"
+    if newest:
+        return f" (newestEnd {newest})"
+    return ""
+
+
 def _select_gross_and_cogs(
     rf: RevenueFacts,
     revenue: dict,
     cik: str,
     as_of: date | None,
 ) -> tuple[dict, dict]:
-    """Pick GP and COGS that share revenue's scope. Never take the first non-empty tag."""
+    """Pick GP and COGS that share revenue's scope. Never take the first non-empty tag.
+
+    Only aligned TTM series count as reported-current. A stale tag does not
+    override a same-period derivation, and two aligned series that do not foot
+    are both kept (never overwritten).
+    """
     gps = _candidate_flows(rf, GROSS_PROFIT_CONCEPTS, cik, as_of)
     costs = _candidate_flows(rf, COST_OF_REVENUE_CONCEPTS, cik, as_of)
+    aligned_gps = [m for m in gps if _usable_aligned_ttm(m)]
+    aligned_costs = [m for m in costs if _usable_aligned_ttm(m)]
     rev_ttm = revenue.get("ttm")
 
-    for gp in gps:
-        for cogs in costs:
+    for gp in aligned_gps:
+        for cogs in aligned_costs:
             if identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm):
                 gp = {**gp, "identity": "gross_plus_cogs_equals_revenue"}
                 cogs = {**cogs, "identity": "gross_plus_cogs_equals_revenue"}
                 return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
-
-    if rev_ttm is not None and gps and not costs:
-        gp = gps[0]
-        implied = subtract_flows(
-            revenue, gp, "Revenue − Gross Profit",
-            missing_left="missing_revenue", missing_right="missing_gross_profit",
-        )
-        implied["concept"] = None
-        implied["derivedFrom"] = "revenue_minus_gross_profit"
-        return apply_ttm_yoy(gp), implied
-    if rev_ttm is not None and costs and not gps:
-        cogs = costs[0]
-        implied = subtract_flows(
-            revenue, cogs, "Revenue − Cost of Revenue",
-            missing_left="missing_revenue", missing_right="missing_cost_of_revenue",
-        )
-        implied["concept"] = None
-        implied["derivedFrom"] = "revenue_minus_cost_of_revenue"
-        return implied, apply_ttm_yoy(cogs)
 
     empty = apply_ttm_yoy({
         "status": "missing",
@@ -626,9 +635,41 @@ def _select_gross_and_cogs(
         "calculationMethod": "extracted",
         "verification": "not_checked",
     })
-    if gps and costs:
+
+    if rev_ttm is not None and aligned_gps and not aligned_costs:
+        gp = aligned_gps[0]
+        implied = subtract_flows(
+            revenue, gp, "Revenue − Gross Profit",
+            missing_left="missing_revenue", missing_right="missing_gross_profit",
+        )
+        implied["concept"] = None
+        implied["derivedFrom"] = "revenue_minus_gross_profit"
+        if costs:
+            implied["scopeNote"] = (
+                "Reported Cost of Revenue is not aligned to the current TTM window"
+                f"{_stale_window_note(costs[0])}. Derived as Revenue − Gross Profit "
+                "from the aligned pair. The unaligned tagged series was not used."
+            )
+        return apply_ttm_yoy(gp), implied
+    if rev_ttm is not None and aligned_costs and not aligned_gps:
+        cogs = aligned_costs[0]
+        implied = subtract_flows(
+            revenue, cogs, "Revenue − Cost of Revenue",
+            missing_left="missing_revenue", missing_right="missing_cost_of_revenue",
+        )
+        implied["concept"] = None
+        implied["derivedFrom"] = "revenue_minus_cost_of_revenue"
+        if gps:
+            implied["scopeNote"] = (
+                "Reported Gross Profit is not aligned to the current TTM window"
+                f"{_stale_window_note(gps[0])}. Derived as Revenue − Cost of Revenue "
+                "from the aligned pair. The unaligned tagged series was not used as current GP."
+            )
+        return implied, apply_ttm_yoy(cogs)
+
+    if aligned_gps and aligned_costs:
         gp = apply_ttm_yoy({
-            **gps[0],
+            **aligned_gps[0],
             "identity": "concept_scope_mismatch" if rev_ttm is not None else "unverified_without_revenue",
             "scopeNote": (
                 "Reported Gross Profit and Cost of Revenue do not foot to selected "
@@ -637,7 +678,7 @@ def _select_gross_and_cogs(
             ),
         })
         cogs = apply_ttm_yoy({
-            **costs[0],
+            **aligned_costs[0],
             "identity": "concept_scope_mismatch" if rev_ttm is not None else "unverified_without_revenue",
             "scopeNote": (
                 "Reported Cost of Revenue conflicts with Gross Profit + Revenue. "

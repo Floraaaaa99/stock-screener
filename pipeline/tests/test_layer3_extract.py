@@ -514,8 +514,67 @@ def test_missing_gross_profit_is_derived_from_revenue_minus_cogs():
     gp = analysis.metrics["grossProfit"]
     assert gp["calculationMethod"] == "derived"
     assert gp["ttm"] == 460 - 276
+    assert gp["derivedFrom"] == "revenue_minus_cost_of_revenue"
     assert gp["verification"] != "statement_verified"
     assert any(q.get("value") == 40 for q in gp["quarters"])
+
+
+def test_stale_gross_profit_is_derived_from_aligned_revenue_minus_cogs():
+    """HEI-like: GrossProfit last tagged years ago; current Revenue and COGS remain."""
+    concepts = _two_year_income()
+    concepts["GrossProfit"] = (
+        _ytd_year(2020, 40, 44, 48, 52, prefix="G") + _ytd_year(2019, 30, 32, 34, 36, prefix="H")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    rev = analysis.metrics["revenue"]
+    assert cogs["calculationMethod"] == "extracted"
+    assert cogs["ttm"] == 276
+    assert gp["calculationMethod"] == "derived"
+    assert gp["derivedFrom"] == "revenue_minus_cost_of_revenue"
+    assert gp["ttm"] == rev["ttm"] - cogs["ttm"]
+    assert gp["ttm"] == 184
+    assert gp["concept"] is None
+    assert gp["verification"] != "statement_verified"
+    assert "not aligned" in (gp.get("scopeNote") or "")
+    assert gp.get("newestEnd") != "2025-12-31"
+    assert analysis.metrics["grossMargin"]["ttm"] == 184 / 460
+    assert any(q.get("end") == "2025-12-31" and q.get("value") == 52 for q in gp["quarters"])
+
+
+def test_stale_cogs_is_derived_from_aligned_revenue_minus_gp():
+    concepts = _two_year_income()
+    concepts["CostOfRevenue"] = (
+        _ytd_year(2020, 60, 66, 72, 78, prefix="K") + _ytd_year(2019, 50, 53, 56, 59, prefix="L")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cogs = analysis.metrics["costOfRevenue"]
+    gp = analysis.metrics["grossProfit"]
+    assert gp["calculationMethod"] == "extracted"
+    assert gp["ttm"] == 184
+    assert cogs["calculationMethod"] == "derived"
+    assert cogs["derivedFrom"] == "revenue_minus_gross_profit"
+    assert cogs["ttm"] == 460 - 184
+    assert cogs["concept"] is None
+    assert "not aligned" in (cogs.get("scopeNote") or "")
+
+
+def test_stale_gp_and_stale_cogs_are_not_derived_across_periods():
+    concepts = _two_year_income()
+    concepts["GrossProfit"] = _ytd_year(2020, 40, 44, 48, 52, prefix="G")
+    concepts["CostOfRevenue"] = _ytd_year(2018, 10, 10, 10, 10, prefix="K")
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    assert gp["ttm"] is None
+    assert cogs["ttm"] is None
+    assert gp["calculationMethod"] != "derived"
+    assert cogs["calculationMethod"] != "derived"
+    assert analysis.metrics["grossMargin"]["ttm"] is None
 
 
 def test_fcf_and_ebitda_have_eight_derived_quarters():

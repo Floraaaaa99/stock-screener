@@ -65,6 +65,9 @@ python pipeline/scripts/layer3_sidecar_sample.py --output /tmp/layer3-sidecar --
 | Missing inventory / AP / CA | `test_working_capital_ratios_do_not_treat_missing_as_zero` |
 | Concept conflict | Wrong `CostOfGoodsAndServicesSold` is ignored; `CostOfRevenue` kept |
 | Conflicting reported GP + COGS | Both tagged series kept; COGS is **not** replaced with Revenue − GP |
+| Stale GP, aligned Revenue + COGS | GP derived as Revenue − COGS (`calculationMethod=derived`); unaligned tag unused |
+| Stale COGS, aligned Revenue + GP | COGS derived as Revenue − GP; unaligned tag unused |
+| Both GP and COGS stale | No cross-period derivation; TTM stays null |
 | 52/53-week BS dates | `history_on_end` matches instants within ±10 days (NVDA 07-26 vs 07-31) |
 | Incremental / `--ciks` | Other extracted issuer files are not deleted |
 | Missing source | `Layer3BuildError`; existing JSON preserved |
