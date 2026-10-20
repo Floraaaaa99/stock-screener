@@ -309,7 +309,12 @@ def main(argv: list[str] | None = None) -> int:
             alignment_mismatch_count += 1
             if len(alignment_mismatch) < 8:
                 alignment_mismatch.append(
-                    {"cik": cik, "ticker": payload.get("displayTicker"), "dataAsOf": payload.get("dataAsOf"), "ocfEnd": ocf_end}
+                    {
+                        "cik": cik,
+                        "ticker": payload.get("displayTicker"),
+                        "dataAsOf": payload.get("dataAsOf"),
+                        "ocfEnd": ocf_end,
+                    }
                 )
 
         cash_end = (metrics.get("cash") or {}).get("end")
@@ -358,7 +363,9 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             derived_missing_provenance_count += 1
             if len(derived_missing_provenance) < 10:
-                derived_missing_provenance.append({"cik": cik, "ticker": payload.get("displayTicker"), "metric": key})
+                derived_missing_provenance.append(
+                    {"cik": cik, "ticker": payload.get("displayTicker"), "metric": key}
+                )
 
         if live and live.get("metrics"):
             lm = live["metrics"]
@@ -366,20 +373,35 @@ def main(argv: list[str] | None = None) -> int:
             for key in OVERLAP_FLOW:
                 a, b = _num(lm.get(key), "ttm"), _num(metrics.get(key), "ttm")
                 if not _close(a, b):
-                    kind = "changed" if a is not None and b is not None else ("gained" if a is None else "lost")
+                    kind = (
+                        "changed"
+                        if a is not None and b is not None
+                        else ("gained" if a is None else "lost")
+                    )
                     overlap_kind[f"{key}:{kind}"] += 1
                     overlap_metric[key] += 1
-                    diffs[key] = {"v3": a, "v4": b, "kind": kind, "rel": _rel_delta(a, b) if a is not None and b is not None else None}
+                    rel = _rel_delta(a, b) if a is not None and b is not None else None
+                    diffs[key] = {"v3": a, "v4": b, "kind": kind, "rel": rel}
             for key in OVERLAP_STOCK:
                 a, b = _num(lm.get(key), "value"), _num(metrics.get(key), "value")
                 if not _close(a, b):
-                    kind = "changed" if a is not None and b is not None else ("gained" if a is None else "lost")
+                    kind = (
+                        "changed"
+                        if a is not None and b is not None
+                        else ("gained" if a is None else "lost")
+                    )
                     overlap_kind[f"{key}:{kind}"] += 1
                     overlap_metric[key] += 1
-                    diffs[key] = {"v3": a, "v4": b, "kind": kind, "rel": _rel_delta(a, b) if a is not None and b is not None else None}
+                    rel = _rel_delta(a, b) if a is not None and b is not None else None
+                    diffs[key] = {"v3": a, "v4": b, "kind": kind, "rel": rel}
             if diffs:
                 overlap_changed.append(
-                    {"cik": cik, "ticker": payload.get("displayTicker"), "name": payload.get("name"), "diffs": diffs}
+                    {
+                        "cik": cik,
+                        "ticker": payload.get("displayTicker"),
+                        "name": payload.get("name"),
+                        "diffs": diffs,
+                    }
                 )
 
         for key, (lo, hi) in RATIO_LIMITS.items():
