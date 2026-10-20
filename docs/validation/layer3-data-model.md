@@ -79,7 +79,7 @@ Pipeline tests cover the v4 extract plus rebuild-safety cases. Web tests are unc
 
 Full-universe percents need `screener layer3 --use-cached-facts` after `companyfacts.zip` is present. The index then includes `counts.metrics.<name>.{extracted,missing,notApplicable}`.
 
-This environment has no zip and no `SEC_USER_AGENT`, so the committed 5,542 v3 issuer files were **not** regenerated. A live HEI/MSFT/NVDA v3-vs-v4 sidecar extract is **blocked** until those sources are available.
+The committed 5,542 v3 issuer files were **not** regenerated. A sidecar extract of HEI / MSFT / NVDA from live Company Facts is in `docs/validation/layer3-sidecar-hei-msft-nvda.md`.
 
 Synthetic complete manufacturer (unit-test fixture): revenue, GP, COGS, NI, OCF, CapEx, FCF, EBITDA, cash, AR, inventory, AP, CA, CL, current ratio, OWC, DSO/DIO/DPO/CCC all `extracted`.
 
