@@ -1,8 +1,8 @@
 # Layer 3 UI v1 — architecture and metric mapping
 
-Planning document only. No UI code in this commit. Source of truth is the deployed Layer 3 v4 issuer JSON (schema 3 / extraction 4) on `main`.
+Implemented on Draft PR #20 against the deployed Layer 3 v4 issuer JSON (schema 3 / extraction 4) on `main`.
 
-Do not implement until this mapping is approved. Do not change Layer 1, Layer 2, the extraction pipeline, published issuer JSON, Add/Remove membership, issuer identity, or `refresh.yml`.
+Do not change Layer 1, Layer 2, the extraction pipeline, published issuer JSON, Add/Remove membership, issuer identity, or `refresh.yml`. Do not merge or deploy without approval.
 
 ## 1. What exists today
 
@@ -328,7 +328,20 @@ Extreme-ratio bands (inspect-only, already applied in JSON; UI does not re-thres
 4. Scores, rankings, research notes, valuation, share price, multi-company comparison, AI.
 5. New pipeline metrics or changes to published JSON.
 
-## 9. Implementation order (after approval)
+## 9. Implementation notes
+
+Shipped on this branch:
+
+- Research route `?layer=3&cik=` with the saved list unchanged
+- Overview cards + sticky Growth / Health / Working Capital nav
+- One primary chart per subsection, alternate views, expandable exact-value tables, provenance `<details>`
+- UI-only quarterly YoY/QoQ pairing (`web/src/lib/layer3Research.ts`)
+- Latest-only DSO/DIO/DPO/CCC/OWC/current ratio/stock YoY cards
+- Representative tests for HEI, MSFT, NVDA, ZSTK, JHI, VSXY, JPM
+
+G2 amount view is split into Revenue & GP vs operating results so dollars of different scale do not share a misleading axis.
+
+## 10. Implementation order (after approval)
 
 1. Routing (`cik` query) + research page shell + header + empty-section states. List click navigates.
 2. Shared `MetricCard`, `MetricProvenance`, `QualityStatus`, format helpers (ratio vs percent; null ≠ 0).

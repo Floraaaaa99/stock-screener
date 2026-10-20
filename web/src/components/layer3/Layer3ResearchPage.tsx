@@ -144,10 +144,14 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
           <div>
             <dt>Industry / SIC</dt>
             <dd>
-              {row?.sicIndustry || entry?.sicIndustry
-                ? formatSicIndustry(row?.sicIndustry ?? entry?.sicIndustry)
-                : "N/A"}
-              {row?.sicCode ? ` · ${row.sicCode}` : ""}
+              {(() => {
+                const industry = row?.sicIndustry || entry?.sicIndustry;
+                const formatted = industry ? formatSicIndustry(industry) : "";
+                if (formatted && row?.sicCode && row.sicCode !== "0000" && !formatted.includes(row.sicCode)) {
+                  return `${formatted} · ${row.sicCode}`;
+                }
+                return formatted || (row?.sicCode && row.sicCode !== "0000" ? row.sicCode : "N/A");
+              })()}
             </dd>
           </div>
           <div>
@@ -191,6 +195,7 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
         )}
         {(row?.flags ?? [])
           .filter((f) => f !== "concept_scope_mismatch")
+          .filter((f) => !(f === "financial_institution" && row?.modelApplicability === "not_applicable"))
           .map((f) => (
             <p key={f} className="l3-banner" role="status">
               {flagText(f)}

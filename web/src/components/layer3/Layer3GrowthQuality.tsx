@@ -15,7 +15,7 @@ import { SeriesView } from "./SeriesView";
 export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currency: string | null }) {
   const m = row.metrics;
   const [g1, setG1] = useState<"amount" | "yoy" | "qoq">("amount");
-  const [g2, setG2] = useState<"amount" | "margin">("amount");
+  const [g2, setG2] = useState<"revenue" | "income" | "margin">("revenue");
   const [g3, setG3] = useState<"ttm" | "yoy">("ttm");
   const revenue = m?.revenue;
   const yoy = useMemo(() => pairQuarterGrowth(revenue?.quarters, "yoy", currency), [revenue, currency]);
@@ -35,18 +35,21 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
         ];
 
   const g2Series =
-    g2 === "amount"
+    g2 === "revenue"
       ? [
           { id: "revenue", label: "Revenue", points: flowAmountPoints(m?.revenue) },
           { id: "gp", label: "Gross profit", points: flowAmountPoints(m?.grossProfit) },
-          { id: "oi", label: "Operating income", points: flowAmountPoints(m?.operatingIncome) },
-          { id: "ni", label: "Net income", points: flowAmountPoints(m?.netIncome) },
         ]
-      : [
-          { id: "gm", label: "Gross margin", points: flowAmountPoints(m?.grossMargin) },
-          { id: "om", label: "Operating margin", points: flowAmountPoints(m?.operatingMargin) },
-          { id: "nm", label: "Net margin", points: flowAmountPoints(m?.netMargin) },
-        ];
+      : g2 === "income"
+        ? [
+            { id: "oi", label: "Operating income", points: flowAmountPoints(m?.operatingIncome) },
+            { id: "ni", label: "Net income", points: flowAmountPoints(m?.netIncome) },
+          ]
+        : [
+            { id: "gm", label: "Gross margin", points: flowAmountPoints(m?.grossMargin) },
+            { id: "om", label: "Operating margin", points: flowAmountPoints(m?.operatingMargin) },
+            { id: "nm", label: "Net margin", points: flowAmountPoints(m?.netMargin) },
+          ];
 
   const g3Metrics = [
     { id: "revenue", label: "Revenue", metric: m?.revenue },
@@ -115,7 +118,8 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
             value={g2}
             onChange={setG2}
             options={[
-              { id: "amount", label: "Amount" },
+              { id: "revenue", label: "Revenue & GP" },
+              { id: "income", label: "Operating results" },
               { id: "margin", label: "Margin" },
             ]}
           />
@@ -123,9 +127,13 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
         <SeriesView
           series={g2Series}
           kind="line"
-          unit={g2 === "amount" ? "money" : "ratio"}
+          unit={g2 === "margin" ? "ratio" : "money"}
           currency={currency}
-          caption={g2 === "margin" ? "Derived margins (ratio × 100 for the axis). Suppressed ratios stay unavailable." : undefined}
+          caption={
+            g2 === "margin"
+              ? "Derived margins (ratio × 100 for the axis). Suppressed ratios stay unavailable."
+              : "Related amounts share one axis. Operating income and net income are a separate view so the scale stays readable."
+          }
         />
       </article>
 

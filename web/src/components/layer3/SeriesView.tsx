@@ -75,7 +75,7 @@ export function SeriesView({
   const padL = 64;
   const padR = 12;
   const padT = 12;
-  const padB = 44;
+  const padB = 56;
   const innerW = width - padL - padR;
   const innerH = height - padT - padB;
   const yFor = (v: number) => padT + innerH - ((v - lo) / span) * innerH;
