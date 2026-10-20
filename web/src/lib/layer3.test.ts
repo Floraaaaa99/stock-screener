@@ -425,6 +425,7 @@ describe("Layer 1 / Layer 2 regressions", () => {
     const parsed = readLayer2View("?layer=3");
     expect(parsed.layer).toBe(3);
     expect(layer2ToSearch(3, parsed.view, "?q=abc")).toBe("?layer=3");
+    expect(layer2ToSearch(3, parsed.view, "?q=abc")).not.toContain("cik=");
   });
 
   it("still round-trips Layer 2 URLs", () => {

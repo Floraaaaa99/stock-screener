@@ -84,7 +84,8 @@ export const NA_REASONS: Record<string, string> = {
 export const FLAG_TEXT: Record<string, string> = {
   negative_value: "A quarter has negative revenue (for example a reversal of previously recognized revenue).",
   derivation_mismatch: "A reported quarter differs from the value implied by year-to-date totals.",
-  financial_institution: "Financial-institution SIC: metrics may be shown, but the corporate scoring model does not apply.",
+  financial_institution:
+    "Financial-institution SIC: metrics may be shown, but the corporate FCF and net-debt model does not apply.",
   no_fabricated_foreign_quarters: "Foreign 20-F/6-K reports are not turned into 10-Q quarters.",
   concept_merged: "Two XBRL revenue concepts with identical values were combined to cover the window.",
   concept_change_unverified:
@@ -100,8 +101,6 @@ export const FLAG_TEXT: Record<string, string> = {
   incompatible_inputs: NA_REASONS.incompatible_inputs!,
   extreme_ratio:
     "This ratio is outside the usual inspect-only range. The computed value is preserved and is not an investment rating.",
-  financial_institution:
-    "Financial-institution SIC: metrics may be shown, but the corporate FCF and net-debt model does not apply.",
 };
 
 export const CONCEPT_STATUS: Record<string, string> = {

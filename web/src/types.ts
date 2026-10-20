@@ -391,6 +391,7 @@ export interface Layer3DerivedMetric {
   ttm?: number | null;
   previousTtm?: number | null;
   ttmYoy?: number | null;
+  ttmYoyReason?: string | null;
   formula?: string;
   unit?: string;
   end?: string | null;

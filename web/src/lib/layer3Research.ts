@@ -287,16 +287,17 @@ export function ttmChange(metric: Layer3FlowMetric | Layer3DerivedMetric | null 
   if (!metric) return { rate: null, absoluteChange: null, reason: "insufficient_ttm" };
   const current = isFiniteNumber(metric.ttm) ? metric.ttm : null;
   const previous = isFiniteNumber(metric.previousTtm) ? metric.previousTtm : null;
+  const yoyReason = "ttmYoyReason" in metric ? metric.ttmYoyReason : null;
   if (current == null || previous == null) {
-    return { rate: null, absoluteChange: null, reason: metric.ttmYoyReason ?? "insufficient_ttm" };
+    return { rate: null, absoluteChange: null, reason: yoyReason ?? "insufficient_ttm" };
   }
   const absoluteChange = current - previous;
   if (isFiniteNumber(metric.ttmYoy)) {
     return { rate: metric.ttmYoy, absoluteChange, reason: null };
   }
-  if (previous === 0) return { rate: null, absoluteChange, reason: metric.ttmYoyReason ?? "previous_ttm_zero" };
-  if (previous < 0) return { rate: null, absoluteChange, reason: metric.ttmYoyReason ?? "previous_ttm_not_positive" };
-  return { rate: null, absoluteChange, reason: metric.ttmYoyReason ?? "insufficient_ttm" };
+  if (previous === 0) return { rate: null, absoluteChange, reason: yoyReason ?? "previous_ttm_zero" };
+  if (previous < 0) return { rate: null, absoluteChange, reason: yoyReason ?? "previous_ttm_not_positive" };
+  return { rate: null, absoluteChange, reason: yoyReason ?? "insufficient_ttm" };
 }
 
 export function issuerCurrency(row: Layer3Row | null | undefined): string | null {
