@@ -52,6 +52,36 @@ export function formatPercent(value: number | null | undefined): string {
   return `${sign}${Math.abs(value).toFixed(1)}%`;
 }
 
+/** Ratios stored as 0.40 → 40.0%. Missing stays N/A. */
+export function formatRatioPercent(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return NA;
+  return formatPercent(value * 100);
+}
+
+/** Exact unrounded money for research tables. Missing stays N/A, never 0. */
+export function formatExactMoney(value: number | null | undefined, currency?: string | null): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return NA;
+  const { prefix, suffix } = symbolFor(currency);
+  const sign = value < 0 ? "−" : "";
+  const abs = Math.abs(value);
+  const digits = Number.isInteger(abs) ? 0 : Math.min(6, (abs.toString().split(".")[1] ?? "").length);
+  return `${sign}${prefix}${abs.toLocaleString("en-US", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  })}${suffix}`;
+}
+
+export function formatDays(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return NA;
+  const sign = value < 0 ? "−" : "";
+  return `${sign}${Math.abs(value).toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} days`;
+}
+
+export function formatRatio(value: number | null | undefined): string {
+  if (value === null || value === undefined || !Number.isFinite(value)) return NA;
+  return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 export function formatDate(iso: string | null | undefined): string {
   if (!iso) return NA;
   const d = new Date(iso.length === 10 ? `${iso}T00:00:00Z` : iso);

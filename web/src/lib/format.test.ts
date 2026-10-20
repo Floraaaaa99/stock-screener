@@ -3,10 +3,14 @@ import {
   fiscalLabel,
   formatCompactMoney,
   formatDate,
+  formatDays,
+  formatExactMoney,
   formatMillions,
   formatNasdaqFileTime,
   formatPercent,
   formatPrice,
+  formatRatio,
+  formatRatioPercent,
 } from "./format";
 
 describe("missing values render as N/A, never zero", () => {
@@ -15,6 +19,10 @@ describe("missing values render as N/A, never zero", () => {
     expect(formatMillions(v)).toBe("N/A");
     expect(formatPrice(v)).toBe("N/A");
     expect(formatPercent(v)).toBe("N/A");
+    expect(formatRatioPercent(v)).toBe("N/A");
+    expect(formatExactMoney(v)).toBe("N/A");
+    expect(formatDays(v)).toBe("N/A");
+    expect(formatRatio(v)).toBe("N/A");
   });
   it("dates and fiscal labels", () => {
     expect(formatDate(null)).toBe("N/A");
@@ -51,6 +59,10 @@ describe("other formats", () => {
     expect(formatPercent(10.2345)).toBe("+10.2%");
     expect(formatPercent(-4.04)).toBe("−4.0%");
     expect(formatPercent(0)).toBe("0.0%");
+    expect(formatRatioPercent(0.40398)).toBe("+40.4%");
+    expect(formatExactMoney(1_111_232_000, "USD")).toBe("$1,111,232,000 USD");
+    expect(formatDays(47.02697)).toBe("47.0 days");
+    expect(formatRatio(2.71712)).toBe("2.72");
     expect(formatDate("2025-06-30")).toBe("Jun 30, 2025");
     expect(fiscalLabel(2026, 1)).toBe("FY2026 Q1");
   });
