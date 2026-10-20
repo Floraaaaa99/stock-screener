@@ -32,7 +32,28 @@ Existing `metrics.ocf` / `capex` / `fcf` / `cash` / … keys are unchanged. New 
 
 ## Compact facts store
 
-Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw `companyfacts.zip` or a CIK facts directory. Do not rebuild `web/public/data/layer3/cik` without that zip — `write_layer3` wipes the issuer directory.
+Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw `companyfacts.zip` or a CIK facts directory. A missing source now **fails closed**: `write_layer3` raises `Layer3BuildError` and does not touch existing issuer JSON.
+
+## Safe rebuild
+
+`screener layer3` defaults to `--mode incremental`.
+
+| Flag | Behavior |
+|---|---|
+| `--ciks` / `--limit` | Update only those issuers. Other `layer3/cik/*.json` files stay on disk. |
+| Missing facts for one CIK | Keep the existing extracted file. Never replace it with `pending_analysis`. |
+| No zip / facts dir / inline payload | Error. No writes. |
+| `--mode full` | Write the complete tree into `--staging-dir` (or `<output>.staging`). Live dest is untouched until `--publish`. |
+| `--publish` | Allowed only with `--mode full`. Validates that no live extracted issuer becomes `pending_analysis` or goes missing, copies live → `layer3.rollback-*`, then publishes. A failed publish restores the rollback. |
+| `--write-live` | Required before incremental writes or publishes can target `web/public/data/layer3.json`. Refused by default. |
+
+`reset_issuer_dir` refuses the live issuer directory. Production 5,542 v3 files are not rebuilt by this PR.
+
+Sidecar sample (does not publish):
+
+```bash
+python pipeline/scripts/layer3_sidecar_sample.py --output /tmp/layer3-sidecar --report /tmp/layer3-sidecar-report.json
+```
 
 ## Representative tests (no live SEC)
 
@@ -43,17 +64,22 @@ Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw
 | Non-December FY | October year-end; Q4 = FY−9M; cash aligned to 10-31 |
 | Missing inventory / AP / CA | `test_working_capital_ratios_do_not_treat_missing_as_zero` |
 | Concept conflict | Wrong `CostOfGoodsAndServicesSold` is ignored; `CostOfRevenue` kept |
+| Conflicting reported GP + COGS | Both tagged series kept; COGS is **not** replaced with Revenue − GP |
+| 52/53-week BS dates | `history_on_end` matches instants within ±10 days (NVDA 07-26 vs 07-31) |
+| Incremental / `--ciks` | Other extracted issuer files are not deleted |
+| Missing source | `Layer3BuildError`; existing JSON preserved |
+| Full publish | Staging + validate + rollback; extracted → `pending_analysis` blocked |
 | Share classes | Build test: HEI + HEI-A → one CIK file |
 | Financial SIC | JPM / 6021 still `not_applicable`; metrics still extracted |
 | Restatement / YTD | Existing YTD derivation + restatement rules reused |
 
-Pipeline: 171 passed. Web: 94 passed. Typecheck + production build clean.
+Pipeline tests cover the v4 extract plus rebuild-safety cases. Web tests are unchanged.
 
 ## Coverage
 
 Full-universe percents need `screener layer3 --use-cached-facts` after `companyfacts.zip` is present. The index then includes `counts.metrics.<name>.{extracted,missing,notApplicable}`.
 
-This environment has no zip, so the committed 5,542 v3 issuer files were **not** regenerated.
+This environment has no zip and no `SEC_USER_AGENT`, so the committed 5,542 v3 issuer files were **not** regenerated. A live HEI/MSFT/NVDA v3-vs-v4 sidecar extract is **blocked** until those sources are available.
 
 Synthetic complete manufacturer (unit-test fixture): revenue, GP, COGS, NI, OCF, CapEx, FCF, EBITDA, cash, AR, inventory, AP, CA, CL, current ratio, OWC, DSO/DIO/DPO/CCC all `extracted`.
 
@@ -85,3 +111,32 @@ GitHub Pages still does not fetch the universe. A typical curated list stays sma
 - Readers that only use `metrics.ocf.ttm`, `metrics.fcf.ttm`, `metrics.cash.value` need no change.
 - `verification: derived` is still emitted on FCF/EBITDA/totalDebt/netDebt so the current detail pane copy stays correct. New code also sets `calculationMethod: derived`.
 - `schemaVersion` 2 files are readable as a subset of schema 3.
+
+## Proposed `refresh.yml` Layer 3 step (not enabled)
+
+`refresh.yml` already downloads `companyfacts.zip` into `pipeline/.cache/sec/bulk` and builds Layer 1 compact facts. It does **not** run `screener layer3`. Do not turn this on until a full-universe rebuild is approved.
+
+Recommended add-on after the existing Build step, still without Pages publish:
+
+```yaml
+- name: Layer 3 staging refresh (does not publish)
+  if: steps.build.outputs.exit_code == '0'
+  env:
+    SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+  run: |
+    screener layer3 \
+      --data-dir "$SCREENER_OUTPUT_DIR" \
+      --output "$SCREENER_OUTPUT_DIR/layer3.json" \
+      --use-cached-facts \
+      --mode full \
+      --staging-dir "$SCREENER_OUTPUT_DIR/layer3.staging"
+    echo "Layer 3 staging written. Live web/public/data/layer3 was not updated."
+```
+
+Notes:
+
+- Reuse the zip the Build step already downloaded (`--use-cached-facts`). Do not download it again.
+- Default dest under `$SCREENER_OUTPUT_DIR` is the workflow cache, not `web/public/data`. That is a sidecar as long as `--write-live` is omitted.
+- Incremental quarterly updates later: `screener layer3 --use-cached-facts --mode incremental --write-live` only after review, and only for CIKs whose new 10-Q/10-K is in the zip.
+- A production cut-over is a separate `--mode full --publish --write-live` against `web/public/data/layer3.json` after staging validation. That step is **not** in the workflow yet.
+- Layer 1 / Layer 2 commands stay unchanged.

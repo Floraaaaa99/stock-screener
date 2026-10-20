@@ -597,28 +597,24 @@ def _select_gross_and_cogs(
                 cogs = {**cogs, "identity": "gross_plus_cogs_equals_revenue"}
                 return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
 
-    if rev_ttm is not None:
-        for gp in gps:
-            if gp.get("ttm") is None:
-                continue
-            implied = subtract_flows(
-                revenue, gp, "Revenue − Gross Profit",
-                missing_left="missing_revenue", missing_right="missing_gross_profit",
-            )
-            implied["concept"] = None
-            for cogs in costs:
-                if identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm):
-                    return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
-            return apply_ttm_yoy(gp), implied
-        for cogs in costs:
-            if cogs.get("ttm") is None:
-                continue
-            implied = subtract_flows(
-                revenue, cogs, "Revenue − Cost of Revenue",
-                missing_left="missing_revenue", missing_right="missing_cost_of_revenue",
-            )
-            implied["concept"] = None
-            return implied, apply_ttm_yoy(cogs)
+    if rev_ttm is not None and gps and not costs:
+        gp = gps[0]
+        implied = subtract_flows(
+            revenue, gp, "Revenue − Gross Profit",
+            missing_left="missing_revenue", missing_right="missing_gross_profit",
+        )
+        implied["concept"] = None
+        implied["derivedFrom"] = "revenue_minus_gross_profit"
+        return apply_ttm_yoy(gp), implied
+    if rev_ttm is not None and costs and not gps:
+        cogs = costs[0]
+        implied = subtract_flows(
+            revenue, cogs, "Revenue − Cost of Revenue",
+            missing_left="missing_revenue", missing_right="missing_cost_of_revenue",
+        )
+        implied["concept"] = None
+        implied["derivedFrom"] = "revenue_minus_cost_of_revenue"
+        return implied, apply_ttm_yoy(cogs)
 
     empty = apply_ttm_yoy({
         "status": "missing",
@@ -630,23 +626,26 @@ def _select_gross_and_cogs(
         "calculationMethod": "extracted",
         "verification": "not_checked",
     })
-    gp = gps[0] if gps else empty
-    cogs = costs[0] if costs else empty
-    if (
-        gp.get("ttm") is not None
-        and cogs.get("ttm") is not None
-        and rev_ttm is not None
-        and not identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm)
-    ):
-        cogs = apply_ttm_yoy({
-            **cogs,
-            "status": "missing",
-            "reason": "concept_scope_mismatch",
-            "ttm": None,
-            "previousTtm": None,
-            "ttmYoy": None,
+    if gps and costs:
+        gp = apply_ttm_yoy({
+            **gps[0],
+            "identity": "concept_scope_mismatch" if rev_ttm is not None else "unverified_without_revenue",
+            "scopeNote": (
+                "Reported Gross Profit and Cost of Revenue do not foot to selected "
+                "Revenue. Both Company Facts series are kept. COGS was not replaced "
+                "with Revenue − Gross Profit."
+            ),
         })
-    return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
+        cogs = apply_ttm_yoy({
+            **costs[0],
+            "identity": "concept_scope_mismatch" if rev_ttm is not None else "unverified_without_revenue",
+            "scopeNote": (
+                "Reported Cost of Revenue conflicts with Gross Profit + Revenue. "
+                "The tagged series is preserved; it is not overwritten with a derived value."
+            ),
+        })
+        return gp, cogs
+    return apply_ttm_yoy(gps[0] if gps else empty), apply_ttm_yoy(costs[0] if costs else empty)
 
 
 @dataclass

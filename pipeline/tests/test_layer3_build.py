@@ -3,11 +3,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from helpers import companyfacts
 from test_layer3_extract import _instant, _ytd_year
 
+from screener_pipeline import config
 from screener_pipeline.cache import write_json_atomic
-from screener_pipeline.layer3_build import write_layer3
+from screener_pipeline.cli import main
+from screener_pipeline.layer3_build import Layer3BuildError, publish_layer3, write_layer3
 
 
 def _dataset(tmp_path: Path) -> Path:
@@ -127,15 +130,22 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     assert screener["rows"][0]["ttmGrowth"] == 25
 
 
-def test_write_layer3_without_facts_is_pending_analysis(tmp_path: Path):
+def test_write_layer3_without_facts_fails_and_preserves_existing(tmp_path: Path):
     data = _dataset(tmp_path)
-    out = write_layer3(data, tmp_path / "layer3.json")
-    hei = next(r for r in out["rows"] if r["cik"] == "0000046619")
-    assert hei["extractionStatus"] == "pending_analysis"
-    assert hei["verificationStatus"] == "not_checked"
-    assert hei["scoringStatus"] == "not_implemented"
-    assert hei["metrics"] is None
-    assert hei["reason"] == "layer3_concepts_not_in_compact_facts"
+    dest = tmp_path / "layer3.json"
+    cik_dir = dest.parent / "layer3" / "cik"
+    cik_dir.mkdir(parents=True)
+    keep = {
+        "cik": "0000046619",
+        "extractionStatus": "extracted",
+        "verificationStatus": "company_facts_only",
+        "metrics": {"ocf": {"ttm": 99}},
+    }
+    (cik_dir / "0000046619.json").write_text(json.dumps(keep))
+    with pytest.raises(Layer3BuildError, match="No Company Facts source"):
+        write_layer3(data, dest)
+    assert json.loads((cik_dir / "0000046619.json").read_text())["metrics"]["ocf"]["ttm"] == 99
+    assert not dest.exists()
 
 
 def test_public_metrics_drop_source_legs(tmp_path: Path):
@@ -161,3 +171,209 @@ def test_public_metrics_drop_source_legs(tmp_path: Path):
     assert q0["url"]
     disk = json.loads((dest.parent / "layer3" / "cik" / "0000046619.json").read_text())
     assert "sources" not in disk["metrics"]["ocf"]["quarters"][0]
+
+
+def _hei_facts() -> dict:
+    return companyfacts(
+        {
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 9, 9, 9, 9, prefix="P")
+            ),
+            "PaymentsToAcquirePropertyPlantAndEquipment": (
+                _ytd_year(2025, 2, 2, 2, 2, prefix="C") + _ytd_year(2024, 1, 1, 1, 1, prefix="D")
+            ),
+            "CashAndCashEquivalentsAtCarryingValue": [
+                _instant("2025-12-31", 50, "a", 2025, "FY", form="10-K")
+            ],
+        },
+        cik=46619,
+        name="HEICO CORPORATION",
+    )
+
+
+def _extracted_stub(cik: str, marker: int) -> dict:
+    return {
+        "cik": cik,
+        "extractionStatus": "extracted",
+        "verificationStatus": "company_facts_only",
+        "modelApplicability": "applicable",
+        "scoringStatus": "not_implemented",
+        "inputCompleteness": "ready",
+        "metrics": {"ocf": {"ttm": marker, "status": "extracted"}},
+        "scoring": None,
+    }
+
+
+def test_limit_and_ciks_do_not_wipe_other_extracted_files(tmp_path: Path):
+    data = _dataset(tmp_path)
+    dest = tmp_path / "layer3.json"
+    cik_dir = dest.parent / "layer3" / "cik"
+    cik_dir.mkdir(parents=True)
+    (cik_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 1)))
+    (cik_dir / "0000019617.json").write_text(json.dumps(_extracted_stub("0000019617", 2)))
+    out = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik={"0000046619": _hei_facts()},
+        ciks=["0000046619"],
+    )
+    assert out["mode"] == "incremental"
+    assert out["updated"] == ["0000046619"]
+    hei = json.loads((cik_dir / "0000046619.json").read_text())
+    jpm = json.loads((cik_dir / "0000019617.json").read_text())
+    assert hei["extractionStatus"] == "extracted"
+    assert hei["metrics"]["fcf"]["ttm"] == 32
+    assert jpm["metrics"]["ocf"]["ttm"] == 2
+    assert jpm["extractionStatus"] == "extracted"
+    assert {p.name for p in cik_dir.glob("*.json")} == {"0000046619.json", "0000019617.json"}
+
+    limited = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik={"0000046619": _hei_facts()},
+        limit=1,
+    )
+    # Sorted CIKs start with JPM; limit=1 must not delete HEI.
+    assert "0000046619.json" in {p.name for p in cik_dir.glob("*.json")}
+    assert json.loads((cik_dir / "0000046619.json").read_text())["extractionStatus"] == "extracted"
+    assert limited["mode"] == "incremental"
+
+
+def test_incremental_keeps_extracted_when_new_payload_would_be_pending(tmp_path: Path):
+    data = _dataset(tmp_path)
+    dest = tmp_path / "layer3.json"
+    cik_dir = dest.parent / "layer3" / "cik"
+    cik_dir.mkdir(parents=True)
+    (cik_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 7)))
+    out = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik={"0000019617": companyfacts({}, cik=19617)},
+        ciks=["0000046619"],
+    )
+    assert "0000046619" in out["preserved"]
+    kept = json.loads((cik_dir / "0000046619.json").read_text())
+    assert kept["metrics"]["ocf"]["ttm"] == 7
+    assert kept["extractionStatus"] == "extracted"
+
+
+def test_full_rebuild_stays_in_staging_until_publish(tmp_path: Path):
+    data = _dataset(tmp_path)
+    dest = tmp_path / "layer3.json"
+    live_dir = dest.parent / "layer3" / "cik"
+    live_dir.mkdir(parents=True)
+    (live_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 3)))
+    dest.write_text(json.dumps({"payload": "index", "rows": []}))
+    staging = tmp_path / "stage"
+    out = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik={"0000046619": _hei_facts()},
+        mode="full",
+        staging_dir=staging,
+        publish=False,
+    )
+    assert out["published"] is False
+    assert json.loads(dest.read_text())["payload"] == "index"
+    assert json.loads((live_dir / "0000046619.json").read_text())["metrics"]["ocf"]["ttm"] == 3
+    staged = json.loads((staging / "layer3" / "cik" / "0000046619.json").read_text())
+    assert staged["metrics"]["fcf"]["ttm"] == 32
+
+    published = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik={"0000046619": _hei_facts()},
+        mode="full",
+        staging_dir=staging,
+        publish=True,
+    )
+    assert published["published"] is True
+    live = json.loads((live_dir / "0000046619.json").read_text())
+    assert live["metrics"]["fcf"]["ttm"] == 32
+    assert (tmp_path / published["publish"]["rollbackDir"]).exists()
+
+
+def test_publish_blocks_extracted_replaced_by_pending_and_rolls_back(tmp_path: Path):
+    live_dest = tmp_path / "layer3.json"
+    live_dir = tmp_path / "layer3" / "cik"
+    live_dir.mkdir(parents=True)
+    live_dest.write_text(json.dumps({"payload": "index"}))
+    (live_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 4)))
+    (live_dir / "keep-me.json").write_text(json.dumps(_extracted_stub("0000999999", 8)))
+
+    staging_dest = tmp_path / "stage" / "layer3.json"
+    staging_dir = tmp_path / "stage" / "layer3" / "cik"
+    staging_dir.mkdir(parents=True)
+    staging_dest.write_text(json.dumps({"payload": "index", "rows": []}))
+    (staging_dir / "0000046619.json").write_text(
+        json.dumps(
+            {
+                "cik": "0000046619",
+                "extractionStatus": "pending_analysis",
+                "metrics": None,
+            }
+        )
+    )
+    with pytest.raises(Layer3BuildError, match="pending_analysis"):
+        publish_layer3(live_dest, staging_dest)
+    assert json.loads((live_dir / "0000046619.json").read_text())["metrics"]["ocf"]["ttm"] == 4
+
+    # Valid staging, then fail while writing the live index and restore rollback.
+    (staging_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 5)))
+    (staging_dir / "0000999999.json").write_text(json.dumps(_extracted_stub("0000999999", 8)))
+    from screener_pipeline import layer3_build as build_mod
+
+    real = build_mod.write_json_atomic
+    writes = {"live_index": 0}
+
+    def boom(path, payload, **kwargs):
+        if Path(path) == live_dest:
+            writes["live_index"] += 1
+            if writes["live_index"] == 1:
+                raise OSError("disk full")
+        return real(path, payload, **kwargs)
+
+    build_mod.write_json_atomic = boom
+    try:
+        with pytest.raises(OSError, match="disk full"):
+            publish_layer3(live_dest, staging_dest, rollback_dir=tmp_path / "rb")
+    finally:
+        build_mod.write_json_atomic = real
+    assert json.loads((live_dir / "0000046619.json").read_text())["metrics"]["ocf"]["ttm"] == 4
+    assert json.loads(live_dest.read_text())["payload"] == "index"
+
+
+def test_write_layer3_refuses_live_dest_without_write_live(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    data = _dataset(tmp_path)
+    dest = tmp_path / "layer3.json"
+    monkeypatch.setattr("screener_pipeline.layer3_build.live_layer3_dest", lambda: dest)
+    with pytest.raises(Layer3BuildError, match="write_live"):
+        write_layer3(data, dest, companyfacts_by_cik={"0000046619": _hei_facts()})
+    assert not dest.exists()
+
+
+def test_cli_layer3_ciks_writes_sidecar_not_production(tmp_path: Path):
+    data = _dataset(tmp_path)
+    facts_dir = tmp_path / "facts"
+    facts_dir.mkdir()
+    (facts_dir / "0000046619.json").write_text(json.dumps(_hei_facts()))
+    dest = tmp_path / "sidecar" / "layer3.json"
+    code = main(
+        [
+            "layer3",
+            "--data-dir",
+            str(data),
+            "--output",
+            str(dest),
+            "--facts-dir",
+            str(facts_dir),
+            "--ciks",
+            "0000046619",
+            "--mode",
+            "incremental",
+        ]
+    )
+    assert code == 0
+    assert (dest.parent / "layer3" / "cik" / "0000046619.json").exists()
+    live = config.REPO_ROOT / "web" / "public" / "data" / "layer3" / "cik" / "0000046619.json"
+    assert json.loads(live.read_text())["extractionVersion"] == 3

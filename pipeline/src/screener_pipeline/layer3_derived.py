@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from .layer3_concepts import STOCK_ALIGN_DAYS
 from .quarters import values_agree
 
 DERIVED_NOTE = (
@@ -189,13 +190,37 @@ def cash_conversion_metric(ocf: dict, ni: dict) -> dict:
     return margin_metric(ocf, ni, "OCF / Net Income")
 
 
-def history_on_end(history: list[dict] | None, end: str | None) -> dict | None:
+def history_on_end(
+    history: list[dict] | None,
+    end: str | None,
+    *,
+    align_days: int = STOCK_ALIGN_DAYS,
+) -> dict | None:
+    """Nearest snapshot within ``align_days`` of the fiscal-slot end.
+
+    Instant dates on 52/53-week calendars (e.g. NVDA 2026-07-26 vs a 07-31 slot)
+    must still match. Exact string equality is not required.
+    """
     if not end:
         return None
+    try:
+        target = date.fromisoformat(end)
+    except ValueError:
+        return None
+    best: dict | None = None
+    best_delta: int | None = None
     for row in history or []:
-        if row.get("end") == end and row.get("value") is not None:
-            return row
-    return None
+        if row.get("value") is None or not row.get("end"):
+            continue
+        try:
+            actual = date.fromisoformat(row["end"])
+        except ValueError:
+            continue
+        delta = abs((actual - target).days)
+        if delta <= align_days and (best_delta is None or delta < best_delta):
+            best = row
+            best_delta = delta
+    return best
 
 
 def stock_yoy(history: list[dict] | None) -> dict:

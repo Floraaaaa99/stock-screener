@@ -472,6 +472,40 @@ def test_mismatched_cogs_tag_is_not_first_nonempty():
     assert analysis.metrics["costOfRevenue"]["ttm"] == 276
 
 
+def test_conflicting_reported_cogs_is_not_replaced_with_revenue_minus_gp():
+    """When both GP and COGS are tagged but do not foot, keep both series."""
+    concepts = _two_year_income()
+    concepts["CostOfRevenue"] = (
+        _ytd_year(2025, 5000, 5000, 5000, 5000, prefix="K") + _ytd_year(2024, 4000, 4000, 4000, 4000, prefix="L")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    rev = analysis.metrics["revenue"]
+    assert gp["ttm"] == 184
+    assert cogs["ttm"] == 20000
+    assert cogs["ttm"] != rev["ttm"] - gp["ttm"]
+    assert cogs["calculationMethod"] == "extracted"
+    assert cogs["concept"] == "CostOfRevenue"
+    assert cogs["identity"] == "concept_scope_mismatch"
+    assert "not overwritten" in (cogs.get("scopeNote") or "")
+    assert gp["identity"] == "concept_scope_mismatch"
+    assert gp["concept"] == "GrossProfit"
+
+
+def test_missing_cogs_is_derived_from_revenue_minus_gp():
+    concepts = _two_year_income()
+    del concepts["CostOfRevenue"]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cogs = analysis.metrics["costOfRevenue"]
+    assert cogs["calculationMethod"] == "derived"
+    assert cogs["ttm"] == 460 - 184
+    assert cogs["derivedFrom"] == "revenue_minus_gross_profit"
+    assert cogs["verification"] != "statement_verified"
+
+
 def test_missing_gross_profit_is_derived_from_revenue_minus_cogs():
     concepts = _two_year_income()
     del concepts["GrossProfit"]
@@ -594,6 +628,42 @@ def test_non_december_fiscal_year_spine_is_preserved():
     assert analysis.metrics["cash"]["end"] == "2025-10-31"
     assert analysis.metrics["cash"]["value"] == 11
     assert analysis.data_as_of == "2025-10-31"
+
+
+def test_fifty_two_week_balance_sheet_matches_calendar_slot():
+    """NVDA-like 52/53-week instants (07-26) must align to a 07-31 fiscal slot."""
+    concepts = _two_year_income()
+    cash_ends = [
+        ("2024-03-26", 2024, "Q1", "10-Q"),
+        ("2024-06-25", 2024, "Q2", "10-Q"),
+        ("2024-09-24", 2024, "Q3", "10-Q"),
+        ("2024-12-26", 2024, "FY", "10-K"),
+        ("2025-03-25", 2025, "Q1", "10-Q"),
+        ("2025-06-24", 2025, "Q2", "10-Q"),
+        ("2025-09-25", 2025, "Q3", "10-Q"),
+        ("2025-12-26", 2025, "FY", "10-K"),
+    ]
+    ar_vals = [30, 31, 32, 33, 34, 35, 36, 40]
+    concepts["CashAndCashEquivalentsAtCarryingValue"] = [
+        _instant(end, val, f"cash-{end}", fy, fp, form=form)
+        for (end, fy, fp, form), val in zip(cash_ends, [10, 11, 12, 13, 14, 15, 16, 20], strict=True)
+    ]
+    concepts["AccountsReceivableNetCurrent"] = [
+        _instant(end, val, f"ar-{end}", fy, fp, form=form)
+        for (end, fy, fp, form), val in zip(cash_ends, ar_vals, strict=True)
+    ]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cash = analysis.metrics["cash"]
+    assert cash["value"] == 20
+    assert cash["end"] == "2025-12-26"
+    assert [h["value"] for h in cash["history"]] == [20, 16, 15, 14, 13, 12, 11, 10]
+    assert cash["history"][0]["end"] == "2025-12-26"
+    dso = analysis.metrics["dso"]
+    assert dso["status"] == "extracted"
+    assert dso["value"] is not None
+    assert dso["inputs"]["begin"] == 33
+    assert dso["inputs"]["close"] == 40
 
 
 def test_derived_never_labeled_statement_verified():
