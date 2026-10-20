@@ -123,6 +123,6 @@ Stock concepts used: `AccountsReceivableNetCurrent`, `InventoryNet`, `AccountsPa
 ## Not done
 
 - No production issuer file was replaced.
-- No full-universe rebuild.
+- Full-universe v4 rebuild exists only under `/tmp/layer3-full-v4/staging` — see `docs/validation/layer3-full-staging.md`. It was not published.
 - `refresh.yml` was not enabled.
 - PR #19 was not merged.
