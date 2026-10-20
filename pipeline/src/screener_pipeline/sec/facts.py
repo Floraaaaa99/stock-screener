@@ -106,15 +106,21 @@ def _pick_unit(units: dict[str, list]) -> str | None:
     return monetary[0] if len(monetary) == 1 else None
 
 
-def extract_duration_facts(companyfacts: dict, concepts: list[str]) -> RevenueFacts:
+def extract_duration_facts(
+    companyfacts: dict,
+    concepts: list[str],
+    *,
+    currency: str | None = None,
+) -> RevenueFacts:
     """Duration facts from 10-Q/10-K filings for the given us-gaap concepts."""
     cik = str(companyfacts.get("cik", "")).zfill(10)
     root = companyfacts.get("facts", {})
     gaap = root.get("us-gaap", {})
     forms_seen = _forms_in(root)
 
-    currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
-    currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
+    if currency is None:
+        currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
+        currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
 
     by_concept: dict[str, list[Fact]] = {}
     filings: dict[str, FilingInfo] = {}
@@ -297,11 +303,17 @@ def parse_instant_fact(raw: dict) -> InstantFact | None:
     )
 
 
-def extract_instant_facts(companyfacts: dict, concepts: list[str]) -> dict[str, list[InstantFact]]:
+def extract_instant_facts(
+    companyfacts: dict,
+    concepts: list[str],
+    *,
+    currency: str | None = None,
+) -> dict[str, list[InstantFact]]:
     """Instant us-gaap facts from 10-Q/10-K filings, grouped by concept."""
     gaap = companyfacts.get("facts", {}).get("us-gaap", {})
-    currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
-    currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
+    if currency is None:
+        currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
+        currency = "USD" if "USD" in currencies else (next(iter(currencies)) if len(currencies) == 1 else None)
     out: dict[str, list[InstantFact]] = {}
     if not currency:
         return out
@@ -313,7 +325,12 @@ def extract_instant_facts(companyfacts: dict, concepts: list[str]) -> dict[str, 
     return out
 
 
-def extract_named_duration_facts(companyfacts: dict, concepts: list[str]) -> RevenueFacts:
+def extract_named_duration_facts(
+    companyfacts: dict,
+    concepts: list[str],
+    *,
+    currency: str | None = None,
+) -> RevenueFacts:
     """Duration facts for an explicit concept list. Does not change revenue/earnings extractors."""
-    return extract_duration_facts(companyfacts, concepts)
+    return extract_duration_facts(companyfacts, concepts, currency=currency)
 

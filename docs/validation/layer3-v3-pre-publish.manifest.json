@@ -1,0 +1,45 @@
+{
+  "role": "Recoverable Layer 3 v3 production snapshot taken immediately before v4 publish on PR #19",
+  "branch": "cursor/layer3-data-model-be5a",
+  "source": "web/public/data/layer3",
+  "archive": "docs/validation/layer3-v3-pre-publish.tar.gz",
+  "archiveSha256": "b5d1775c65c03cfd7559ec067c3b51fed83a0ded5b39ef3842247b6a94df7c1a",
+  "archiveBytes": 4930142,
+  "issuerFiles": 5542,
+  "includesIndex": true,
+  "nameSizeFingerprint": "8d77cb1275f942b4",
+  "zeroFilePresent": true,
+  "canonicalZstkPresent": false,
+  "jhiPresent": false,
+  "sidecarSamples": {
+    "HEI": {
+      "cik": "0000046619",
+      "extractionVersion": 3,
+      "extractionStatus": "extracted",
+      "ocfTtm": 1111232000.0,
+      "cash": 240959000.0,
+      "bytes": 20964,
+      "sha256": "bbc5b0387f2e778f51342ca192498c7ab2584a5c767c0093016b75472f0b6141"
+    },
+    "MSFT": {
+      "cik": "0000789019",
+      "extractionVersion": 3,
+      "extractionStatus": "extracted",
+      "ocfTtm": 182935000000.0,
+      "cash": 20935000000.0,
+      "bytes": 21358,
+      "sha256": "73965d43fa3c35c78533f3eadbfa811f9a48afabb3dd159de32010fe64f6d4ac"
+    },
+    "NVDA": {
+      "cik": "0001045810",
+      "extractionVersion": 3,
+      "extractionStatus": "extracted",
+      "ocfTtm": 134360000000.0,
+      "cash": 22443000000.0,
+      "bytes": 20994,
+      "sha256": "ee7997f28b740338ce4bc08e06765a4b9a44905b3973599602aad359f4854b7a"
+    }
+  },
+  "restore": "python pipeline/scripts/restore_layer3_v3.py --data-dir web/public/data",
+  "restoreNote": "Must delete current layer3/cik/*.json first. A plain tar overlay leaves v4-only 0001790169.json and 0000759828.json."
+}

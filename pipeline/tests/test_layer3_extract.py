@@ -401,3 +401,395 @@ def test_depreciation_only_does_not_treat_unaligned_amortization_as_zero():
     assert summed.metrics["depreciationAmortization"]["ttm"] == 8 + 12
     assert summed.metrics["depreciationAmortization"]["aggregation"] == "sum_depreciation_and_amortization"
     assert summed.metrics["ebitda"]["ttm"] == 32 + 20
+
+
+def _two_year_income() -> dict[str, list[dict]]:
+    return {
+        "Revenues": _ytd_year(2025, 100, 110, 120, 130, prefix="R") + _ytd_year(2024, 80, 85, 90, 95, prefix="S"),
+        "GrossProfit": _ytd_year(2025, 40, 44, 48, 52, prefix="G") + _ytd_year(2024, 30, 32, 34, 36, prefix="H"),
+        "CostOfRevenue": _ytd_year(2025, 60, 66, 72, 78, prefix="K") + _ytd_year(2024, 50, 53, 56, 59, prefix="L"),
+        "NetIncomeLoss": _ytd_year(2025, 12, 13, 14, 15, prefix="N") + _ytd_year(2024, 8, 9, 10, 11, prefix="M"),
+        "NetCashProvidedByUsedInOperatingActivities": (
+            _ytd_year(2025, 20, 22, 24, 26, prefix="O") + _ytd_year(2024, 16, 17, 18, 19, prefix="P")
+        ),
+        "PaymentsToAcquirePropertyPlantAndEquipment": (
+            _ytd_year(2025, 2, 2, 2, 2, prefix="C") + _ytd_year(2024, 1, 1, 1, 1, prefix="D")
+        ),
+        "OperatingIncomeLoss": (
+            _ytd_year(2025, 18, 19, 20, 21, prefix="I") + _ytd_year(2024, 14, 15, 16, 17, prefix="J")
+        ),
+        "DepreciationAndAmortization": (
+            _ytd_year(2025, 3, 3, 3, 3, prefix="A") + _ytd_year(2024, 2, 2, 2, 2, prefix="B")
+        ),
+    }
+
+
+def _eight_instants(tag: str, values: list[float]) -> list[dict]:
+    """Eight quarter-ends matching calendar-year _ytd_year slots, newest last in list."""
+    ends = [
+        ("2024-03-31", 2024, "Q1", "10-Q"),
+        ("2024-06-30", 2024, "Q2", "10-Q"),
+        ("2024-09-30", 2024, "Q3", "10-Q"),
+        ("2024-12-31", 2024, "FY", "10-K"),
+        ("2025-03-31", 2025, "Q1", "10-Q"),
+        ("2025-06-30", 2025, "Q2", "10-Q"),
+        ("2025-09-30", 2025, "Q3", "10-Q"),
+        ("2025-12-31", 2025, "FY", "10-K"),
+    ]
+    return [
+        _instant(end, val, f"{tag}-{end}", fy, fp, form=form)
+        for (end, fy, fp, form), val in zip(ends, values, strict=True)
+    ]
+
+
+def test_gross_profit_and_cogs_keep_revenue_identity():
+    facts = companyfacts(_two_year_income())
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    rev = analysis.metrics["revenue"]
+    assert rev["ttm"] == 460
+    assert gp["ttm"] == 184
+    assert cogs["ttm"] == 276
+    assert gp["ttm"] + cogs["ttm"] == rev["ttm"]
+    assert gp["verification"] == "company_facts_only"
+    assert gp["verification"] != "statement_verified"
+    assert analysis.metrics["grossMargin"]["ttm"] == 184 / 460
+    assert analysis.schema_version == 3
+    assert analysis.extraction_version == 4
+    assert analysis.data_as_of == "2025-12-31"
+
+
+def test_mismatched_cogs_tag_is_not_first_nonempty():
+    concepts = _two_year_income()
+    # A broader/wrong cost tag that does not foot to revenue.
+    concepts["CostOfGoodsAndServicesSold"] = (
+        _ytd_year(2025, 90, 90, 90, 90, prefix="X") + _ytd_year(2024, 90, 90, 90, 90, prefix="Y")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    assert analysis.metrics["costOfRevenue"]["concept"] == "CostOfRevenue"
+    assert analysis.metrics["costOfRevenue"]["ttm"] == 276
+
+
+def test_conflicting_reported_cogs_is_not_replaced_with_revenue_minus_gp():
+    """When both GP and COGS are tagged but do not foot, keep both series."""
+    concepts = _two_year_income()
+    concepts["CostOfRevenue"] = (
+        _ytd_year(2025, 5000, 5000, 5000, 5000, prefix="K") + _ytd_year(2024, 4000, 4000, 4000, 4000, prefix="L")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    rev = analysis.metrics["revenue"]
+    assert gp["ttm"] == 184
+    assert cogs["ttm"] == 20000
+    assert cogs["ttm"] != rev["ttm"] - gp["ttm"]
+    assert cogs["calculationMethod"] == "extracted"
+    assert cogs["concept"] == "CostOfRevenue"
+    assert cogs["identity"] == "concept_scope_mismatch"
+    assert "not overwritten" in (cogs.get("scopeNote") or "")
+    assert gp["identity"] == "concept_scope_mismatch"
+    assert gp["concept"] == "GrossProfit"
+    assert "concept_scope_mismatch" in analysis.flags
+    gm = analysis.metrics["grossMargin"]
+    assert gm["status"] == "missing"
+    assert gm["reason"] == "concept_scope_mismatch"
+    assert gm["ttm"] is None
+    assert gm.get("unreliableTtm") == 184 / 460
+    assert "incompatible_inputs" in (gm.get("qualityFlags") or [])
+    assert analysis.metrics["dpo"]["status"] == "missing"
+    assert analysis.metrics["dpo"]["reason"] == "concept_scope_mismatch"
+    assert analysis.metrics["dpo"]["value"] is None
+
+
+def test_missing_cogs_is_derived_from_revenue_minus_gp():
+    concepts = _two_year_income()
+    del concepts["CostOfRevenue"]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cogs = analysis.metrics["costOfRevenue"]
+    assert cogs["calculationMethod"] == "derived"
+    assert cogs["ttm"] == 460 - 184
+    assert cogs["derivedFrom"] == "revenue_minus_gross_profit"
+    assert cogs["verification"] != "statement_verified"
+
+
+def test_missing_gross_profit_is_derived_from_revenue_minus_cogs():
+    concepts = _two_year_income()
+    del concepts["GrossProfit"]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    assert gp["calculationMethod"] == "derived"
+    assert gp["ttm"] == 460 - 276
+    assert gp["derivedFrom"] == "revenue_minus_cost_of_revenue"
+    assert gp["verification"] != "statement_verified"
+    assert any(q.get("value") == 40 for q in gp["quarters"])
+
+
+def test_stale_gross_profit_is_derived_from_aligned_revenue_minus_cogs():
+    """HEI-like: GrossProfit last tagged years ago; current Revenue and COGS remain."""
+    concepts = _two_year_income()
+    concepts["GrossProfit"] = (
+        _ytd_year(2020, 40, 44, 48, 52, prefix="G") + _ytd_year(2019, 30, 32, 34, 36, prefix="H")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    rev = analysis.metrics["revenue"]
+    assert cogs["calculationMethod"] == "extracted"
+    assert cogs["ttm"] == 276
+    assert gp["calculationMethod"] == "derived"
+    assert gp["derivedFrom"] == "revenue_minus_cost_of_revenue"
+    assert gp["ttm"] == rev["ttm"] - cogs["ttm"]
+    assert gp["ttm"] == 184
+    assert gp["concept"] is None
+    assert gp["verification"] != "statement_verified"
+    assert "not aligned" in (gp.get("scopeNote") or "")
+    assert gp.get("newestEnd") != "2025-12-31"
+    assert analysis.metrics["grossMargin"]["ttm"] == 184 / 460
+    assert any(q.get("end") == "2025-12-31" and q.get("value") == 52 for q in gp["quarters"])
+
+
+def test_stale_cogs_is_derived_from_aligned_revenue_minus_gp():
+    concepts = _two_year_income()
+    concepts["CostOfRevenue"] = (
+        _ytd_year(2020, 60, 66, 72, 78, prefix="K") + _ytd_year(2019, 50, 53, 56, 59, prefix="L")
+    )
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cogs = analysis.metrics["costOfRevenue"]
+    gp = analysis.metrics["grossProfit"]
+    assert gp["calculationMethod"] == "extracted"
+    assert gp["ttm"] == 184
+    assert cogs["calculationMethod"] == "derived"
+    assert cogs["derivedFrom"] == "revenue_minus_gross_profit"
+    assert cogs["ttm"] == 460 - 184
+    assert cogs["concept"] is None
+    assert "not aligned" in (cogs.get("scopeNote") or "")
+
+
+def test_stale_gp_and_stale_cogs_are_not_derived_across_periods():
+    concepts = _two_year_income()
+    concepts["GrossProfit"] = _ytd_year(2020, 40, 44, 48, 52, prefix="G")
+    concepts["CostOfRevenue"] = _ytd_year(2018, 10, 10, 10, 10, prefix="K")
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    gp = analysis.metrics["grossProfit"]
+    cogs = analysis.metrics["costOfRevenue"]
+    assert gp["ttm"] is None
+    assert cogs["ttm"] is None
+    assert gp["calculationMethod"] != "derived"
+    assert cogs["calculationMethod"] != "derived"
+    assert analysis.metrics["grossMargin"]["ttm"] is None
+
+
+def test_fcf_and_ebitda_have_eight_derived_quarters():
+    facts = companyfacts(_two_year_income())
+    analysis = analyze_layer3_facts(facts)
+    fcf = analysis.metrics["fcf"]
+    ebitda = analysis.metrics["ebitda"]
+    assert fcf["ttm"] == 92 - 8
+    assert len(fcf["quarters"]) == 8
+    assert fcf["quarters"][0]["value"] == 26 - 2
+    assert fcf["calculationMethod"] == "derived"
+    assert ebitda["ttm"] == 78 + 12
+    assert len(ebitda["quarters"]) == 8
+    assert ebitda["quarters"][0]["method"] == "derived"
+    assert analysis.metrics["ocf"]["ttmYoy"] == (92 / 70 - 1) * 100
+
+
+def test_balance_sheet_history_aligns_and_does_not_fill_stale_gaps():
+    concepts = _two_year_income()
+    concepts["CashAndCashEquivalentsAtCarryingValue"] = _eight_instants("cash", [10, 11, 12, 13, 14, 15, 16, 20])
+    concepts["AccountsReceivableNetCurrent"] = _eight_instants("ar", [30, 31, 32, 33, 34, 35, 36, 40])
+    concepts["InventoryNet"] = _eight_instants("inv", [8, 8, 8, 9, 9, 9, 9, 10])
+    concepts["AccountsPayableCurrent"] = _eight_instants("ap", [6, 6, 7, 7, 7, 8, 8, 9])
+    concepts["AssetsCurrent"] = _eight_instants("ca", [50, 52, 54, 56, 58, 60, 62, 70])
+    concepts["LiabilitiesCurrent"] = _eight_instants("cl", [20, 20, 21, 21, 22, 22, 23, 25])
+    concepts["DebtCurrent"] = [_instant("2025-12-31", 4, "st", 2025, "FY", form="10-K")]
+    concepts["LongTermDebtNoncurrent"] = [
+        _instant("2025-12-31", 12, "lt", 2025, "FY", form="10-K"),
+        _instant("2011-04-30", 999, "old", 2011, "Q2"),
+    ]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cash = analysis.metrics["cash"]
+    assert cash["value"] == 20
+    assert len(cash["history"]) == 8
+    assert [h["value"] for h in cash["history"]] == [20, 16, 15, 14, 13, 12, 11, 10]
+    assert cash["history"][0]["end"] == "2025-12-31"
+    assert analysis.metrics["longTermDebt"]["value"] == 12
+    stale_slots = [h for h in analysis.metrics["longTermDebt"]["history"] if h["end"] != "2025-12-31"]
+    assert all(h["value"] is None for h in stale_slots)
+    assert analysis.metrics["currentRatio"]["value"] == 70 / 25
+    owc = analysis.metrics["operatingWorkingCapital"]
+    assert owc["value"] == 40 + 10 - 9
+    assert owc["formula"] == "AR + Inventory − AP"
+    assert analysis.metrics["arYoy"]["value"] == (40 / 33 - 1) * 100
+    assert analysis.metrics["dso"]["status"] == "extracted"
+    assert analysis.metrics["dso"]["value"] == ((33 + 40) / 2) / 460 * analysis.metrics["dso"]["daysInWindow"]
+    assert analysis.metrics["cashConversionCycle"]["status"] == "extracted"
+    assert analysis.metrics["cash"]["verification"] == "company_facts_only"
+
+
+def test_software_without_inventory_is_not_applicable_not_zero():
+    concepts = _two_year_income()
+    concepts["CashAndCashEquivalentsAtCarryingValue"] = [_instant("2025-12-31", 50, "c", 2025, "FY", form="10-K")]
+    concepts["AccountsReceivableNetCurrent"] = _eight_instants("ar", [10, 11, 12, 13, 14, 15, 16, 20])
+    concepts["AccountsPayableCurrent"] = _eight_instants("ap", [4, 4, 4, 5, 5, 5, 5, 6])
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    assert analysis.metrics["inventory"]["status"] == "not_applicable"
+    assert analysis.metrics["inventory"]["value"] is None
+    assert analysis.metrics["dio"]["status"] == "not_applicable"
+    assert analysis.metrics["inventoryYoy"]["status"] == "not_applicable"
+    owc = analysis.metrics["operatingWorkingCapital"]
+    assert owc["value"] == 20 - 6
+    assert "inventory not applicable" in owc["formula"]
+    ccc = analysis.metrics["cashConversionCycle"]
+    assert ccc["status"] == "extracted"
+    assert "DIO not applicable" in ccc["formula"]
+
+
+def test_working_capital_ratios_do_not_treat_missing_as_zero():
+    concepts = _two_year_income()
+    concepts["AccountsReceivableNetCurrent"] = [_instant("2025-12-31", 40, "ar", 2025, "FY", form="10-K")]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    assert analysis.metrics["dso"]["ttm"] is None if False else analysis.metrics["dso"]["value"] is None
+    assert analysis.metrics["dso"]["reason"] == "insufficient_stock_history"
+    assert analysis.metrics["operatingWorkingCapital"]["value"] is None
+    assert analysis.metrics["operatingWorkingCapital"]["reason"] == "missing_accounts_payable"
+    assert analysis.metrics["currentRatio"]["value"] is None
+    assert analysis.metrics["cashConversionCycle"]["value"] is None
+
+
+def test_non_december_fiscal_year_spine_is_preserved():
+    """HEI-like October year-end: Q4 = FY − 9M still holds."""
+    def _oct_ytd(fy: int, q1: float, q2: float, q3: float, q4: float, prefix: str) -> list[dict]:
+        y0 = fy - 1
+        return [
+            raw(f"{y0}-11-01", f"{fy}-01-31", q1, f"{prefix}{fy}-1", fy, "Q1", filed=f"{fy}-03-01"),
+            raw(f"{y0}-11-01", f"{fy}-04-30", q1 + q2, f"{prefix}{fy}-2", fy, "Q2", filed=f"{fy}-06-01"),
+            raw(f"{y0}-11-01", f"{fy}-07-31", q1 + q2 + q3, f"{prefix}{fy}-3", fy, "Q3", filed=f"{fy}-09-01"),
+            raw(f"{y0}-11-01", f"{fy}-10-31", q1 + q2 + q3 + q4, f"{prefix}{fy}-K", fy, "FY",
+                form="10-K", filed=f"{fy}-12-15"),
+        ]
+
+    facts = companyfacts(
+        {
+            "NetCashProvidedByUsedInOperatingActivities": _oct_ytd(2025, 10, 20, 30, 40, "O")
+            + _oct_ytd(2024, 5, 6, 7, 8, "P"),
+            "CashAndCashEquivalentsAtCarryingValue": [
+                _instant("2025-07-31", 9, "q3", 2025, "Q3"),
+                _instant("2025-10-31", 11, "fy", 2025, "FY", form="10-K", filed="2025-12-15"),
+            ],
+        }
+    )
+    analysis = analyze_layer3_facts(facts)
+    by_end = {q["end"]: q for q in analysis.metrics["ocf"]["quarters"]}
+    assert by_end["2025-10-31"]["value"] == 40
+    assert by_end["2025-10-31"]["formula"] == "FY − 9M YTD"
+    assert analysis.metrics["cash"]["end"] == "2025-10-31"
+    assert analysis.metrics["cash"]["value"] == 11
+    assert analysis.data_as_of == "2025-10-31"
+
+
+def test_fifty_two_week_balance_sheet_matches_calendar_slot():
+    """NVDA-like 52/53-week instants (07-26) must align to a 07-31 fiscal slot."""
+    concepts = _two_year_income()
+    cash_ends = [
+        ("2024-03-26", 2024, "Q1", "10-Q"),
+        ("2024-06-25", 2024, "Q2", "10-Q"),
+        ("2024-09-24", 2024, "Q3", "10-Q"),
+        ("2024-12-26", 2024, "FY", "10-K"),
+        ("2025-03-25", 2025, "Q1", "10-Q"),
+        ("2025-06-24", 2025, "Q2", "10-Q"),
+        ("2025-09-25", 2025, "Q3", "10-Q"),
+        ("2025-12-26", 2025, "FY", "10-K"),
+    ]
+    ar_vals = [30, 31, 32, 33, 34, 35, 36, 40]
+    concepts["CashAndCashEquivalentsAtCarryingValue"] = [
+        _instant(end, val, f"cash-{end}", fy, fp, form=form)
+        for (end, fy, fp, form), val in zip(cash_ends, [10, 11, 12, 13, 14, 15, 16, 20], strict=True)
+    ]
+    concepts["AccountsReceivableNetCurrent"] = [
+        _instant(end, val, f"ar-{end}", fy, fp, form=form)
+        for (end, fy, fp, form), val in zip(cash_ends, ar_vals, strict=True)
+    ]
+    facts = companyfacts(concepts)
+    analysis = analyze_layer3_facts(facts)
+    cash = analysis.metrics["cash"]
+    assert cash["value"] == 20
+    assert cash["end"] == "2025-12-26"
+    assert [h["value"] for h in cash["history"]] == [20, 16, 15, 14, 13, 12, 11, 10]
+    assert cash["history"][0]["end"] == "2025-12-26"
+    dso = analysis.metrics["dso"]
+    assert dso["status"] == "extracted"
+    assert dso["value"] is not None
+    assert dso["inputs"]["begin"] == 33
+    assert dso["inputs"]["close"] == 40
+
+
+def test_derived_never_labeled_statement_verified():
+    facts = companyfacts(_two_year_income())
+    analysis = analyze_layer3_facts(facts)
+    dumped = analysis.to_dict()
+    assert dumped["scoring"] is None
+    blob = str(dumped)
+    assert "statement_verified" not in blob
+    assert analysis.metrics["fcf"]["calculationMethod"] == "derived"
+    assert analysis.metrics["grossMargin"]["verification"] == "not_checked"
+
+
+def test_canonical_cik_wins_over_zero_facts_cik():
+    facts = companyfacts(_two_year_income(), cik=0, name="ZeroStack Corp.")
+    analysis = analyze_layer3_facts(facts, canonical_cik="0001790169")
+    assert analysis.cik == "0001790169"
+    assert "company_facts_cik_unusable" in analysis.flags
+
+
+def test_cad_ocf_is_not_dropped_when_net_income_also_has_usd():
+    """v4 FLOW_CONCEPTS includes NI. A USD+CAD NI tag must not lock the issuer to USD."""
+    ocf = _ytd_year(2025, -10, -10, -10, -10, prefix="O") + _ytd_year(2024, -8, -8, -8, -8, prefix="P")
+    facts = {
+        "cik": 1737927,
+        "entityName": "Canopy",
+        "facts": {
+            "us-gaap": {
+                "NetCashProvidedByUsedInOperatingActivities": {"units": {"CAD": ocf}},
+                "NetIncomeLoss": {
+                    "units": {
+                        "CAD": ocf,
+                        "USD": _ytd_year(2025, 1, 1, 1, 1, prefix="U")
+                        + _ytd_year(2024, 1, 1, 1, 1, prefix="V"),
+                    }
+                },
+                "CashAndCashEquivalentsAtCarryingValue": {
+                    "units": {"CAD": [_instant("2025-12-31", 50, "c", 2025, "FY", form="10-K")]}
+                },
+            }
+        },
+    }
+    analysis = analyze_layer3_facts(facts, canonical_cik="0001737927")
+    assert analysis.currency == "CAD"
+    assert analysis.metrics["ocf"]["ttm"] == -40
+    assert analysis.metrics["cash"]["value"] == 50
+
+
+def test_extreme_dso_is_flagged_not_clamped():
+    concepts = _two_year_income()
+    concepts["AccountsReceivableNetCurrent"] = _eight_instants(
+        "ar", [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000]
+    )
+    analysis = analyze_layer3_facts(companyfacts(concepts))
+    dso = analysis.metrics["dso"]
+    assert dso["status"] == "extracted"
+    assert dso["value"] is not None
+    assert dso["value"] > 400
+    assert "extreme_ratio" in (dso.get("qualityFlags") or [])
+    assert "not clamped" in (dso.get("qualityNote") or "")

@@ -14,6 +14,8 @@ import {
   isTickerSaved,
   metricsForEntry,
   metricValue,
+  migrateLegacyIssuerEntry,
+  migrateLegacyMembership,
   normalizeCik,
   removeIssuer,
   restrictSelectionToCurrentList,
@@ -101,6 +103,44 @@ describe("issuer identity", () => {
     expect(normalizeCik("CIK 0000046619")).toBe("0000046619");
     expect(normalizeCik(null)).toBeNull();
     expect(normalizeCik("")).toBeNull();
+    expect(normalizeCik("0000000000")).toBeNull();
+    expect(normalizeCik("0")).toBeNull();
+  });
+
+  it("does not treat the invalid zero CIK as an issuer id", () => {
+    expect(issuerIdFor("ZSTK", "0000000000")).toBe("ticker:ZSTK");
+    expect(layer3IssuerFile("0000000000")).toBe("layer3/cik/invalid.json");
+  });
+
+  it("rewrites a saved ZSTK zero-CIK membership entry to 0001790169", () => {
+    const legacy: Layer3Entry = {
+      issuerId: "cik:0000000000",
+      cik: "0000000000",
+      tickers: ["ZSTK"],
+      displayTicker: "ZSTK",
+      name: "ZeroStack Corp.",
+      exchange: "NASDAQ",
+      sicIndustry: "6199 — Finance Services",
+      sicMajorGroup: "Non-depository Credit Institutions",
+      addedAt: "2026-10-16T00:00:00.000Z",
+      analysisStatus: "pending_implementation",
+    };
+    expect(migrateLegacyIssuerEntry(legacy)).toEqual({
+      ...legacy,
+      issuerId: "cik:0001790169",
+      cik: "0001790169",
+    });
+    const other: Layer3Entry = { ...legacy, tickers: ["JHI"], displayTicker: "JHI", name: "JHI" };
+    expect(migrateLegacyIssuerEntry(other)).toEqual(other);
+    const merged = migrateLegacyMembership([
+      legacy,
+      { ...legacy, issuerId: "cik:0001790169", cik: "0001790169" },
+    ]);
+    expect(merged.migrated).toBe(true);
+    expect(merged.entries).toHaveLength(1);
+    expect(merged.entries[0]?.issuerId).toBe("cik:0001790169");
+    expect(isTickerSaved("ZSTK", merged.entries, { ZSTK: "0001790169" })).toBe(true);
+    expect(ciksForEntries(merged.entries)).toEqual(["0001790169"]);
   });
 
   it("uses CIK as issuer id and falls back to ticker", () => {
@@ -287,6 +327,39 @@ describe("versioned localStorage", () => {
     const store = new Layer3Store(kv);
     expect(store.loadSelection()).toEqual({ tickers: [], status: "recovered" });
     expect(store.loadMembership()).toEqual({ entries: [], status: "recovered" });
+  });
+
+  it("migrates a saved ZSTK zero-CIK membership entry and persists it", () => {
+    const kv = createMemoryStore({
+      [LAYER3_MEMBERSHIP_KEY]: JSON.stringify({
+        version: 1,
+        data: {
+          entries: [
+            {
+              issuerId: "cik:0000000000",
+              cik: "0000000000",
+              tickers: ["ZSTK"],
+              displayTicker: "ZSTK",
+              name: "ZeroStack Corp.",
+              exchange: "NASDAQ",
+              sicIndustry: null,
+              sicMajorGroup: null,
+              addedAt: "2026-10-16T00:00:00.000Z",
+              analysisStatus: "pending_implementation",
+            },
+          ],
+        },
+      }),
+    });
+    const store = new Layer3Store(kv);
+    const loaded = store.loadMembership();
+    expect(loaded.status).toBe("migrated");
+    expect(loaded.entries).toEqual([
+      expect.objectContaining({ issuerId: "cik:0001790169", cik: "0001790169", displayTicker: "ZSTK" }),
+    ]);
+    const persisted = JSON.parse(kv.getItem(LAYER3_MEMBERSHIP_KEY) ?? "{}");
+    expect(persisted.data.entries[0].issuerId).toBe("cik:0001790169");
+    expect(store.loadMembership()).toEqual({ entries: loaded.entries, status: "ok" });
   });
 
   it("migrates a bare ticker array from an older payload", () => {

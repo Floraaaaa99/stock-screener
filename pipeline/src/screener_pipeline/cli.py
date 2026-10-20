@@ -113,7 +113,33 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Read pipeline/.cache/sec/bulk/companyfacts.zip when --facts-zip is omitted",
     )
-    l3.add_argument("--limit", type=int, help="Process only the first N issuers (debug)")
+    l3.add_argument("--limit", type=int, help="Update only the first N issuers (never wipes others)")
+    l3.add_argument(
+        "--ciks",
+        help="Comma-separated CIKs to update. Other issuer files are left in place.",
+    )
+    l3.add_argument(
+        "--mode",
+        choices=("incremental", "full"),
+        default="incremental",
+        help="incremental updates selected CIKs in place; full writes a staging tree first",
+    )
+    l3.add_argument("--staging-dir", help="Directory for a full rebuild (default: <output>.staging)")
+    l3.add_argument(
+        "--publish",
+        action="store_true",
+        help="After a validated full rebuild, copy staging over dest (requires --mode full)",
+    )
+    l3.add_argument(
+        "--publish-dry-run",
+        action="store_true",
+        help="Print the publish plan (adds/replaces/removes/migrations) without writing files",
+    )
+    l3.add_argument(
+        "--write-live",
+        action="store_true",
+        help="Allow writing dest=web/public/data/layer3.json (refused by default)",
+    )
 
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING,
@@ -209,25 +235,62 @@ def main(argv: list[str] | None = None) -> int:
             )
             print(json.dumps(report, indent=2))
         elif args.cmd == "layer3":
-            from .layer3_build import default_facts_zip, write_layer3
+            from .layer3_build import (
+                Layer3BuildError,
+                default_facts_zip,
+                issuer_dir_for,
+                plan_layer3_publish,
+                resolve_layer3_staging_dest,
+                write_layer3,
+            )
 
             data_dir = Path(args.data_dir)
             dest = Path(args.output) if args.output else data_dir / "layer3.json"
+            if args.publish_dry_run:
+                if args.publish:
+                    print("error: --publish-dry-run does not publish; omit --publish", file=sys.stderr)
+                    return 2
+                staging_dest = resolve_layer3_staging_dest(
+                    dest, Path(args.staging_dir) if args.staging_dir else None
+                )
+                plan = plan_layer3_publish(issuer_dir_for(dest), issuer_dir_for(staging_dest))
+                plan["liveDest"] = str(dest)
+                plan["stagingDest"] = str(staging_dest)
+                plan["published"] = False
+                print(json.dumps(plan, indent=2))
+                return 0 if plan["ok"] else 2
             facts_zip = Path(args.facts_zip) if args.facts_zip else None
             if facts_zip is None and args.use_cached_facts:
                 facts_zip = default_facts_zip()
-            payload = write_layer3(
-                data_dir,
-                dest,
-                facts_dir=Path(args.facts_dir) if args.facts_dir else None,
-                facts_zip=facts_zip,
-                limit=args.limit,
-            )
+            ciks = None
+            if args.ciks:
+                ciks = [part.strip() for part in args.ciks.replace(" ", ",").split(",") if part.strip()]
+            try:
+                payload = write_layer3(
+                    data_dir,
+                    dest,
+                    facts_dir=Path(args.facts_dir) if args.facts_dir else None,
+                    facts_zip=facts_zip,
+                    limit=args.limit,
+                    ciks=ciks,
+                    mode=args.mode,
+                    staging_dir=Path(args.staging_dir) if args.staging_dir else None,
+                    publish=args.publish,
+                    write_live=args.write_live,
+                )
+            except Layer3BuildError as exc:
+                print(f"error: {exc}", file=sys.stderr)
+                return 2
             print(json.dumps(
                 {
                     "counts": payload["counts"],
                     "extractionVersion": payload["extractionVersion"],
                     "scoring": payload["scoring"],
+                    "mode": payload.get("mode"),
+                    "updated": payload.get("updated"),
+                    "preserved": payload.get("preserved"),
+                    "published": payload.get("published"),
+                    "stagingDest": payload.get("stagingDest"),
                     "output": str(dest),
                 },
                 indent=2,

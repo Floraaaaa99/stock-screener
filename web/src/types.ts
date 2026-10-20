@@ -322,6 +322,24 @@ export interface Layer3Quarter {
   form?: string | null;
   filed?: string | null;
   url?: string | null;
+  calculationMethod?: string | null;
+  verification?: string | null;
+}
+
+export interface Layer3StockHistoryPoint {
+  fiscalYear?: number | null;
+  fiscalQuarter?: number | null;
+  end: string | null;
+  value: number | null;
+  status?: string | null;
+  reason?: string | null;
+  concept?: string | null;
+  accn?: string | null;
+  form?: string | null;
+  filed?: string | null;
+  url?: string | null;
+  calculationMethod?: string | null;
+  verification?: string | null;
 }
 
 export interface Layer3FlowMetric {
@@ -332,11 +350,18 @@ export interface Layer3FlowMetric {
   signPolicy?: string;
   ttm: number | null;
   previousTtm?: number | null;
+  ttmYoy?: number | null;
+  ttmYoyReason?: string | null;
   formula?: string;
   definition?: string;
   quarters?: Layer3Quarter[];
+  calculationMethod?: string;
   verification: string;
   verificationNote?: string;
+  identity?: string | null;
+  qualityFlags?: string[];
+  qualityNote?: string | null;
+  unreliableTtm?: number | null;
 }
 
 export interface Layer3StockMetric {
@@ -352,8 +377,31 @@ export interface Layer3StockMetric {
   unit?: string | null;
   aggregation?: string;
   formula?: string;
+  calculationMethod?: string;
   verification: string;
   components?: Layer3StockMetric[];
+  /** Up to 8 aligned quarter-end snapshots. Stocks are never summed into a TTM. */
+  history?: Layer3StockHistoryPoint[];
+}
+
+export interface Layer3DerivedMetric {
+  status: string;
+  reason: string | null;
+  value?: number | null;
+  ttm?: number | null;
+  previousTtm?: number | null;
+  ttmYoy?: number | null;
+  formula?: string;
+  unit?: string;
+  end?: string | null;
+  calculationMethod?: string;
+  verification?: string;
+  verificationNote?: string;
+  quarters?: Layer3Quarter[];
+  qualityFlags?: string[];
+  qualityNote?: string | null;
+  unreliableTtm?: number | null;
+  unreliableValue?: number | null;
 }
 
 export interface Layer3Metrics {
@@ -369,6 +417,29 @@ export interface Layer3Metrics {
   longTermDebt: Layer3StockMetric;
   totalDebt: Layer3StockMetric;
   netDebt: Layer3StockMetric;
+  revenue?: Layer3FlowMetric;
+  netIncome?: Layer3FlowMetric;
+  grossProfit?: Layer3FlowMetric;
+  costOfRevenue?: Layer3FlowMetric;
+  grossMargin?: Layer3DerivedMetric;
+  operatingMargin?: Layer3DerivedMetric;
+  netMargin?: Layer3DerivedMetric;
+  fcfMargin?: Layer3DerivedMetric;
+  cashConversion?: Layer3DerivedMetric;
+  accountsReceivable?: Layer3StockMetric;
+  inventory?: Layer3StockMetric;
+  accountsPayable?: Layer3StockMetric;
+  currentAssets?: Layer3StockMetric;
+  currentLiabilities?: Layer3StockMetric;
+  currentRatio?: Layer3DerivedMetric;
+  operatingWorkingCapital?: Layer3DerivedMetric;
+  arYoy?: Layer3DerivedMetric;
+  inventoryYoy?: Layer3DerivedMetric;
+  apYoy?: Layer3DerivedMetric;
+  dso?: Layer3DerivedMetric;
+  dio?: Layer3DerivedMetric;
+  dpo?: Layer3DerivedMetric;
+  cashConversionCycle?: Layer3DerivedMetric;
   noInterestBurden: boolean;
   growthSource: string;
 }
@@ -392,7 +463,10 @@ export interface Layer3Row {
   reason?: string | null;
   currency?: string | null;
   flags?: string[];
+  companyFactsCik?: string | null;
+  schemaVersion?: number;
   extractionVersion: number;
+  dataAsOf?: string | null;
   growthSource: string;
   scoring: null;
   issuerFile?: string | null;
@@ -426,6 +500,7 @@ export interface Layer3File {
     model?: { applicable: number; notApplicable: number };
     scoring?: { notImplemented: number };
     inputs?: { ready: number; pendingDataVerification: number; pendingAnalysis: number };
+    metrics?: Record<string, { extracted: number; missing: number; notApplicable: number }>;
     extracted?: number;
     pendingDataVerification?: number;
     pendingAnalysis?: number;

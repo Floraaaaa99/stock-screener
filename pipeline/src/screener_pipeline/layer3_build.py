@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import zipfile
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -25,9 +26,46 @@ from .layer3_concepts import (
     LAYER3_EXTRACTION_VERSION,
     LAYER3_ISSUER_FILE_TEMPLATE,
     LAYER3_SCHEMA_VERSION,
+    ZERO_CIK,
     is_financial_sic,
+    normalize_cik,
 )
 from .layer3_extract import analyze_layer3_facts
+
+COVERAGE_KEYS = (
+    "revenue",
+    "netIncome",
+    "grossProfit",
+    "costOfRevenue",
+    "operatingIncome",
+    "ocf",
+    "capex",
+    "fcf",
+    "interestExpense",
+    "depreciationAmortization",
+    "ebitda",
+    "grossMargin",
+    "operatingMargin",
+    "netMargin",
+    "fcfMargin",
+    "cashConversion",
+    "cash",
+    "shortTermDebt",
+    "longTermDebt",
+    "totalDebt",
+    "netDebt",
+    "accountsReceivable",
+    "inventory",
+    "accountsPayable",
+    "currentAssets",
+    "currentLiabilities",
+    "currentRatio",
+    "operatingWorkingCapital",
+    "dso",
+    "dio",
+    "dpo",
+    "cashConversionCycle",
+)
 
 
 def _empty_counts() -> dict:
@@ -38,6 +76,10 @@ def _empty_counts() -> dict:
         "model": {"applicable": 0, "notApplicable": 0},
         "scoring": {"notImplemented": 0},
         "inputs": {"ready": 0, "pendingDataVerification": 0, "pendingAnalysis": 0},
+        "metrics": {
+            key: {"extracted": 0, "missing": 0, "notApplicable": 0}
+            for key in COVERAGE_KEYS
+        },
     }
 
 
@@ -61,6 +103,20 @@ def _count_row(counts: dict, payload: dict) -> None:
     counts["scoring"]["notImplemented"] += 1
     inp = payload.get("inputCompleteness") or "pending_analysis"
     counts["inputs"][inp_map.get(inp, "pendingAnalysis")] += 1
+    metrics = payload.get("metrics") or {}
+    for key in COVERAGE_KEYS:
+        item = metrics.get(key) if isinstance(metrics, dict) else None
+        if not isinstance(item, dict):
+            counts["metrics"][key]["missing"] += 1
+            continue
+        status = item.get("status")
+        has_value = item.get("ttm") is not None or item.get("value") is not None
+        if status == "not_applicable":
+            counts["metrics"][key]["notApplicable"] += 1
+        elif status == "extracted" or has_value:
+            counts["metrics"][key]["extracted"] += 1
+        else:
+            counts["metrics"][key]["missing"] += 1
 
 
 def _now_iso() -> str:
@@ -106,13 +162,341 @@ def issuer_dir_for(dest: Path) -> Path:
     return Path(dest).parent / "layer3" / "cik"
 
 
+def resolve_layer3_staging_dest(dest: Path, staging_dir: Path | None = None) -> Path:
+    """Index path for a full rebuild: ``<staging-dir>/layer3.json`` or ``<dest>.staging``."""
+    dest = Path(dest)
+    staging_root = Path(staging_dir) if staging_dir else dest.parent / (dest.name + ".staging")
+    staging_dest = staging_root / "layer3.json" if staging_root.suffix != ".json" else staging_root
+    if staging_dest.suffix != ".json":
+        staging_dest = staging_root / "layer3.json"
+    return staging_dest
+
+
+@dataclass(frozen=True)
+class ApprovedCikMigration:
+    """One reviewed remap. No wildcards — add a new row to approve another file."""
+
+    legacy_file: str
+    legacy_cik: str
+    ticker: str
+    canonical_file: str
+    canonical_cik: str
+
+
+# Confirmed 2026-10-20: production 0000000000.json is ZSTK only; issuers.json CIK is 0001790169.
+APPROVED_CIK_MIGRATIONS: tuple[ApprovedCikMigration, ...] = (
+    ApprovedCikMigration(
+        legacy_file="0000000000.json",
+        legacy_cik=ZERO_CIK,
+        ticker="ZSTK",
+        canonical_file="0001790169.json",
+        canonical_cik="0001790169",
+    ),
+)
+
+
+class Layer3BuildError(RuntimeError):
+    """Safe-build failure. Existing live issuer files must be left untouched."""
+
+
+def live_layer3_dest() -> Path:
+    return config.REPO_ROOT / "web" / "public" / "data" / "layer3.json"
+
+
+def is_live_layer3_dest(dest: Path) -> bool:
+    return Path(dest).resolve() == live_layer3_dest().resolve()
+
+
 def reset_issuer_dir(directory: Path) -> Path:
+    """Clear a directory of issuer JSON. Only for empty staging trees, never live data."""
     directory = Path(directory)
+    if directory.resolve() == issuer_dir_for(live_layer3_dest()).resolve():
+        raise Layer3BuildError("refusing to reset the live Layer 3 issuer directory")
     if directory.exists():
         for path in directory.glob("*.json"):
             path.unlink()
     directory.mkdir(parents=True, exist_ok=True)
     return directory
+
+
+def _is_keepable_extract(payload: dict | None) -> bool:
+    if not payload:
+        return False
+    if payload.get("extractionStatus") != "extracted":
+        return False
+    return payload.get("metrics") is not None
+
+
+def _load_issuer(directory: Path, cik: str) -> dict | None:
+    path = Path(directory) / f"{str(cik).zfill(10)}.json"
+    return read_json(path) if path.exists() else None
+
+
+def _scan_issuer_dir(directory: Path) -> dict[str, dict]:
+    """Index issuer files by filename stem (canonical CIK), not payload.cik."""
+    out: dict[str, dict] = {}
+    directory = Path(directory)
+    if not directory.exists():
+        return out
+    for path in directory.glob("*.json"):
+        payload = read_json(path) or {}
+        out[path.stem.zfill(10) if path.stem.isdigit() else path.stem] = payload
+    return out
+
+
+def _issuer_identity_errors(directory: Path) -> list[str]:
+    """Filename, payload CIK, duplicates, and zero-CIK checks for one tree."""
+    errors: list[str] = []
+    seen: dict[str, str] = {}
+    directory = Path(directory)
+    if not directory.exists():
+        return ["issuer directory does not exist"]
+    for path in sorted(directory.glob("*.json")):
+        payload = read_json(path) or {}
+        raw = payload.get("cik")
+        cik = normalize_cik(raw)
+        if cik is None:
+            errors.append(f"{path.name} has zero or invalid cik {raw!r}")
+            continue
+        if path.stem != cik:
+            errors.append(f"{path.name} payload cik {cik} does not match filename")
+        if cik in seen:
+            errors.append(f"duplicate payload cik {cik} in {seen[cik]} and {path.name}")
+        else:
+            seen[cik] = path.name
+    return errors
+
+
+def _normalize_ciks(ciks: list[str] | None) -> set[str] | None:
+    if ciks is None:
+        return None
+    return {str(c).zfill(10) for c in ciks if str(c).strip()}
+
+
+def _has_facts_source(
+    companyfacts_by_cik: dict[str, dict] | None,
+    facts_dir: Path | None,
+    facts_zip: Path | None,
+) -> bool:
+    if companyfacts_by_cik:
+        return True
+    if facts_dir is not None and Path(facts_dir).exists():
+        return True
+    return facts_zip is not None and Path(facts_zip).exists()
+
+
+def _payload_tickers(payload: dict) -> set[str]:
+    tickers = {str(t).strip().upper() for t in (payload.get("tickers") or []) if t}
+    display = payload.get("displayTicker")
+    if display:
+        tickers.add(str(display).strip().upper())
+    return tickers
+
+
+def _is_explicit_zero_cik(raw: object) -> bool:
+    if raw is None:
+        return False
+    digits = "".join(ch for ch in str(raw).strip() if ch.isdigit())
+    if not digits:
+        return False
+    return str(int(digits)).zfill(10) == ZERO_CIK
+
+
+def match_approved_cik_migration(
+    live_name: str,
+    live_payload: dict,
+    staged: dict[str, dict],
+) -> ApprovedCikMigration | None:
+    """Return the allowlisted remap only when live and staging both match exactly."""
+    for mig in APPROVED_CIK_MIGRATIONS:
+        if live_name != mig.legacy_file:
+            continue
+        if _payload_tickers(live_payload) != {mig.ticker}:
+            continue
+        if not _is_explicit_zero_cik(live_payload.get("cik")):
+            continue
+        staged_payload = staged.get(mig.canonical_file)
+        if not staged_payload:
+            continue
+        if normalize_cik(staged_payload.get("cik")) != mig.canonical_cik:
+            continue
+        if _payload_tickers(staged_payload) != {mig.ticker}:
+            continue
+        return mig
+    return None
+
+
+def plan_layer3_publish(live_dir: Path, staging_dir: Path) -> dict:
+    """Classify adds/replaces/removes. Approved remaps are listed, not treated as errors.
+
+    General identity, extracted→pending, and unexpected-deletion checks stay on.
+    """
+    errors: list[str] = []
+    live_dir = Path(live_dir)
+    staging_dir = Path(staging_dir)
+    staged_files = list(staging_dir.glob("*.json")) if staging_dir.exists() else []
+    if not staged_files:
+        return {
+            "ok": False,
+            "errors": ["staging issuer directory is empty"],
+            "migrations": [],
+            "added": [],
+            "removed": [],
+            "replaced": [],
+            "counts": {
+                "live": 0,
+                "staging": 0,
+                "added": 0,
+                "removed": 0,
+                "replaced": 0,
+                "migrations": 0,
+                "errors": 1,
+            },
+        }
+
+    live = {p.name: read_json(p) or {} for p in live_dir.glob("*.json")} if live_dir.exists() else {}
+    staged = {p.name: read_json(p) or {} for p in staged_files}
+
+    migrations: list[dict] = []
+    approved_live_files: set[str] = set()
+    for name, payload in live.items():
+        if name in staged:
+            continue
+        mig = match_approved_cik_migration(name, payload, staged)
+        if mig is None:
+            continue
+        approved_live_files.add(name)
+        migrations.append(
+            {
+                "legacyFile": mig.legacy_file,
+                "legacyCik": mig.legacy_cik,
+                "canonicalFile": mig.canonical_file,
+                "canonicalCik": mig.canonical_cik,
+                "ticker": mig.ticker,
+                "action": "remap_delete",
+            }
+        )
+
+    errors.extend(_issuer_identity_errors(staging_dir))
+    for err in _issuer_identity_errors(live_dir):
+        if any(err.startswith(f"{name} ") or err.startswith(name) for name in approved_live_files):
+            continue
+        errors.append(err)
+
+    staged_by_ticker: dict[str, list[str]] = defaultdict(list)
+    for name, payload in staged.items():
+        ticker = payload.get("displayTicker")
+        if ticker:
+            staged_by_ticker[str(ticker)].append(name)
+
+    for name, payload in sorted(live.items()):
+        next_payload = staged.get(name)
+        if next_payload is None:
+            if name in approved_live_files:
+                continue
+            ticker = payload.get("displayTicker")
+            remap = staged_by_ticker.get(str(ticker) or "")
+            if remap:
+                errors.append(
+                    f"{name} would be deleted; ticker {ticker} remapped to {', '.join(remap)}"
+                )
+            elif _is_keepable_extract(payload):
+                errors.append(f"{name} extracted on live is missing from staging")
+            else:
+                errors.append(f"{name} would be deleted from live")
+        elif (
+            _is_keepable_extract(payload)
+            and next_payload.get("extractionStatus") == "pending_analysis"
+        ):
+            errors.append(f"{name} would replace extracted with pending_analysis")
+
+    added = sorted(set(staged) - set(live))
+    removed = sorted(set(live) - set(staged))
+    replaced = sorted(set(live) & set(staged))
+    return {
+        "ok": not errors,
+        "errors": errors,
+        "migrations": migrations,
+        "added": added,
+        "removed": removed,
+        "replaced": replaced,
+        "counts": {
+            "live": len(live),
+            "staging": len(staged),
+            "added": len(added),
+            "removed": len(removed),
+            "replaced": len(replaced),
+            "migrations": len(migrations),
+            "errors": len(errors),
+        },
+    }
+
+
+def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
+    """Reject an unsafe publish: identity errors, extracted→pending, unexpected deletes."""
+    return list(plan_layer3_publish(live_dir, staging_dir)["errors"])
+
+
+def _copy_json_tree(src: Path, dest: Path) -> None:
+    dest.mkdir(parents=True, exist_ok=True)
+    for path in Path(src).glob("*.json"):
+        write_json_atomic(dest / path.name, read_json(path) or {}, compact=True)
+
+
+def _sync_json_tree(src: Path, dest: Path) -> None:
+    """Copy src over dest, then remove dest files that are not in src."""
+    _copy_json_tree(src, dest)
+    keep = {path.name for path in Path(src).glob("*.json")}
+    for path in dest.glob("*.json"):
+        if path.name not in keep:
+            path.unlink()
+
+
+def publish_layer3(
+    live_dest: Path,
+    staging_dest: Path,
+    *,
+    rollback_dir: Path | None = None,
+    write_live: bool = True,
+) -> dict:
+    """Swap a validated staging tree into live dest. Restore rollback on failure."""
+    live_dest = Path(live_dest)
+    staging_dest = Path(staging_dest)
+    if is_live_layer3_dest(live_dest) and not write_live:
+        raise Layer3BuildError("refusing to publish over live Layer 3 without write_live=True")
+    live_cik = issuer_dir_for(live_dest)
+    staging_cik = issuer_dir_for(staging_dest)
+    errors = validate_layer3_publish(live_cik, staging_cik)
+    if errors:
+        raise Layer3BuildError("publish blocked: " + "; ".join(errors[:8]))
+
+    stamp = _now_iso().replace(":", "")
+    rollback_dir = Path(rollback_dir) if rollback_dir else live_dest.parent / f"layer3.rollback-{stamp}"
+    rollback_index = rollback_dir / "layer3.json"
+    rollback_cik = rollback_dir / "cik"
+    rollback_dir.mkdir(parents=True, exist_ok=True)
+    published = False
+    try:
+        if live_dest.exists():
+            write_json_atomic(rollback_index, read_json(live_dest) or {})
+        if live_cik.exists():
+            _copy_json_tree(live_cik, rollback_cik)
+        _sync_json_tree(staging_cik, live_cik)
+        staging_index = read_json(staging_dest) or {}
+        write_json_atomic(live_dest, staging_index, compact=True)
+        published = True
+    except Exception:
+        if rollback_cik.exists():
+            _sync_json_tree(rollback_cik, live_cik)
+        if rollback_index.exists():
+            write_json_atomic(live_dest, read_json(rollback_index) or {}, compact=True)
+        raise
+    return {
+        "published": published,
+        "rollbackDir": str(rollback_dir),
+        "liveDest": str(live_dest),
+        "stagingDest": str(staging_dest),
+    }
 
 
 def index_row(payload: dict) -> dict:
@@ -158,6 +542,83 @@ class CompanyFactsZip:
         self.close()
 
 
+def _pending_payload(base: dict, sic_code: str | None) -> dict:
+    return {
+        **base,
+        "extractionStatus": "pending_analysis",
+        "verificationStatus": "not_checked",
+        "modelApplicability": "not_applicable" if is_financial_sic(sic_code) else "applicable",
+        "scoringStatus": "not_implemented",
+        "inputCompleteness": "pending_analysis",
+        "flags": ["financial_institution"] if is_financial_sic(sic_code) else [],
+        "metrics": None,
+        "scoring": None,
+        "reason": (
+            "financial_institution_review_required"
+            if is_financial_sic(sic_code)
+            else "layer3_concepts_not_in_compact_facts"
+        ),
+    }
+
+
+def _analyze_payload(
+    base: dict,
+    facts: dict,
+    *,
+    sic_code: str | None,
+    reused: dict,
+    tickers: list[str],
+    primary: str,
+    row: dict | None,
+    company: dict | None,
+) -> dict:
+    canonical = str(base["cik"]).zfill(10)
+    analysis = analyze_layer3_facts(
+        facts,
+        sic_code=sic_code,
+        preferred_earnings_concept=reused.get("earningsConcept"),
+        canonical_cik=canonical,
+    )
+    payload = {**base, **analysis.to_dict()}
+    payload["cik"] = canonical
+    payload["metrics"] = public_metrics(payload.get("metrics"))
+    payload["tickers"] = tickers
+    payload["displayTicker"] = primary
+    payload["name"] = (row or company or {}).get("name") or payload.get("name") or canonical
+    payload["scoring"] = None
+    facts_cik = normalize_cik((facts or {}).get("cik"))
+    raw_facts_cik = (facts or {}).get("cik")
+    if facts_cik and facts_cik != canonical:
+        payload["companyFactsCik"] = facts_cik
+    elif facts_cik is None and raw_facts_cik not in (None, ""):
+        payload["companyFactsCik"] = ZERO_CIK
+    return payload
+
+
+def _write_index(dest: Path, counts: dict) -> dict:
+    out = {
+        "schemaVersion": LAYER3_SCHEMA_VERSION,
+        "extractionVersion": LAYER3_EXTRACTION_VERSION,
+        "generatedAt": _now_iso(),
+        "payload": "index",
+        "issuerFileTemplate": LAYER3_ISSUER_FILE_TEMPLATE,
+        "cutoffNote": "Facts available in the dataset snapshot only; no look-ahead beyond that extract.",
+        "verificationNote": (
+            "Cash-flow, balance-sheet, and newly added income-statement research "
+            "figures are independently recalculated from SEC Company Facts XBRL. "
+            "They are not face-checked against rendered 10-Q/10-K cash-flow or "
+            "balance-sheet statements. Layer 1 income-statement matches remain a "
+            "separate, statement-verified concept. calculationMethod=derived is a "
+            "formula, not a statement verification."
+        ),
+        "scoring": None,
+        "counts": counts,
+        "rows": [],
+    }
+    write_json_atomic(dest, out, compact=True)
+    return out
+
+
 def write_layer3(
     data_dir: Path,
     dest: Path | None = None,
@@ -166,10 +627,43 @@ def write_layer3(
     facts_dir: Path | None = None,
     facts_zip: Path | None = None,
     limit: int | None = None,
+    ciks: list[str] | None = None,
     read_company_json: bool = False,
+    mode: str = "incremental",
+    staging_dir: Path | None = None,
+    publish: bool = False,
+    write_live: bool = False,
 ) -> dict:
+    """Extract Layer 3 issuer files.
+
+    ``incremental`` (default): update only selected CIKs in place. Never deletes
+    the issuer directory. Never overwrites an extracted file with pending_analysis.
+
+    ``full``: write a complete tree into ``staging_dir`` (or ``<dest>.staging``).
+    Publish to ``dest`` only when ``publish=True`` and validation passes.
+    """
+    if mode not in {"incremental", "full"}:
+        raise Layer3BuildError(f"unknown layer3 mode {mode!r}")
+    if publish and mode != "full":
+        raise Layer3BuildError("publish=True requires mode='full'")
     data_dir = Path(data_dir)
     dest = Path(dest) if dest else data_dir / "layer3.json"
+    live_cik_dir = issuer_dir_for(dest)
+    wanted = _normalize_ciks(ciks)
+    facts_zip = Path(facts_zip) if facts_zip else None
+    facts_dir = Path(facts_dir) if facts_dir else None
+    if not _has_facts_source(companyfacts_by_cik, facts_dir, facts_zip):
+        raise Layer3BuildError(
+            "No Company Facts source (zip, facts dir, or inline payload). "
+            "Existing issuer JSON was not modified."
+        )
+    if is_live_layer3_dest(dest) and not write_live:
+        if mode == "incremental" or publish:
+            raise Layer3BuildError(
+                "Refusing to write over live web/public/data/layer3.json without "
+                "write_live=True / --write-live. Use a sidecar --output or staging."
+            )
+
     screener = read_json(data_dir / "screener.json")
     issuers = read_json(data_dir / "issuers.json", default={"byTicker": {}}) or {"byTicker": {}}
     companies_dir = data_dir / "companies"
@@ -188,15 +682,36 @@ def write_layer3(
             if cik:
                 by_cik[str(cik).zfill(10)].append(ticker)
 
+    selected = sorted(by_cik)
+    if wanted is not None:
+        missing = wanted - set(by_cik)
+        selected = [c for c in selected if c in wanted]
+        if missing:
+            raise Layer3BuildError(
+                "Unknown CIKs (not in issuers.json / screener): " + ", ".join(sorted(missing)[:12])
+            )
+    if limit is not None:
+        selected = selected[:limit]
+
+    write_dir = live_cik_dir
+    write_dest = dest
+    staging_dest = None
+    if mode == "full":
+        staging_dest = resolve_layer3_staging_dest(dest, staging_dir)
+        write_dest = staging_dest
+        write_dir = issuer_dir_for(write_dest)
+        reset_issuer_dir(write_dir)
+    else:
+        write_dir.mkdir(parents=True, exist_ok=True)
+
     rows = []
-    counts = _empty_counts()
+    preserved: list[str] = []
+    updated: list[str] = []
     inline = companyfacts_by_cik or {}
     zf = CompanyFactsZip(facts_zip) if facts_zip else None
     try:
-        for cik, tickers in sorted(by_cik.items()):
-            if limit is not None and counts["issuers"] >= limit:
-                break
-            tickers = sorted(set(tickers))
+        for cik in selected:
+            tickers = sorted(set(by_cik[cik]))
             primary = next((t for t in tickers if t in by_ticker), tickers[0])
             row = by_ticker.get(primary)
             company = None
@@ -205,7 +720,7 @@ def write_layer3(
             sic = ((company or {}).get("sic") or {})
             sic_code = sic.get("code") or (row or {}).get("sicCode")
             reused = _reused_layer1(row, company)
-            payload = {
+            base = {
                 "cik": cik,
                 "tickers": tickers,
                 "displayTicker": primary,
@@ -216,7 +731,9 @@ def write_layer3(
                 "sicMajorGroup": sic.get("majorGroup") or (row or {}).get("sicMajorGroup"),
                 "layer1": reused,
                 "growthSource": "not_yet_verified",
+                "schemaVersion": LAYER3_SCHEMA_VERSION,
                 "extractionVersion": LAYER3_EXTRACTION_VERSION,
+                "dataAsOf": None,
                 "scoring": None,
             }
             facts = None
@@ -227,60 +744,193 @@ def write_layer3(
             elif zf is not None:
                 facts = zf.get(cik)
 
+            existing_live = _load_issuer(live_cik_dir, cik)
             if facts is not None:
-                analysis = analyze_layer3_facts(facts, sic_code=sic_code)
-                payload.update(analysis.to_dict())
-                payload["metrics"] = public_metrics(payload.get("metrics"))
-                payload["tickers"] = tickers
-                payload["displayTicker"] = primary
-                payload["name"] = (row or company or {}).get("name") or payload.get("name") or analysis.cik
-                payload["scoring"] = None
-            else:
-                payload["extractionStatus"] = "pending_analysis"
-                payload["verificationStatus"] = "not_checked"
-                payload["modelApplicability"] = "not_applicable" if is_financial_sic(sic_code) else "applicable"
-                payload["scoringStatus"] = "not_implemented"
-                payload["inputCompleteness"] = "pending_analysis"
-                payload["flags"] = ["financial_institution"] if is_financial_sic(sic_code) else []
-                payload["metrics"] = None
-                payload["reason"] = (
-                    "financial_institution_review_required"
-                    if is_financial_sic(sic_code)
-                    else "layer3_concepts_not_in_compact_facts"
+                payload = _analyze_payload(
+                    base, facts, sic_code=sic_code, reused=reused,
+                    tickers=tickers, primary=primary, row=row, company=company,
                 )
-            _count_row(counts, payload)
+            else:
+                payload = _pending_payload(base, sic_code)
+                if mode == "incremental" and _is_keepable_extract(existing_live):
+                    payload = existing_live
+                    preserved.append(cik)
+                    rows.append(payload)
+                    continue
+            if (
+                mode == "incremental"
+                and _is_keepable_extract(existing_live)
+                and payload.get("extractionStatus") == "pending_analysis"
+            ):
+                preserved.append(cik)
+                rows.append(existing_live)
+                continue
+            write_json_atomic(write_dir / f"{cik}.json", payload, compact=True)
+            updated.append(cik)
             rows.append(payload)
     finally:
         if zf is not None:
             zf.close()
 
-    cik_dir = reset_issuer_dir(issuer_dir_for(dest))
-    index_rows = []
-    for payload in rows:
-        write_json_atomic(cik_dir / f"{payload['cik']}.json", payload, compact=True)
-        index_rows.append(index_row(payload))
+    if mode == "full":
+        on_disk = _scan_issuer_dir(write_dir)
+        counts = _empty_counts()
+        index_rows = []
+        for _cik, payload in sorted(on_disk.items()):
+            _count_row(counts, payload)
+            index_rows.append(index_row(payload))
+        out = _write_index(write_dest, counts)
+        publish_info = None
+        if publish:
+            publish_info = publish_layer3(dest, write_dest, write_live=write_live)
+        return {
+            **out,
+            "rows": rows,
+            "indexRows": index_rows,
+            "mode": "full",
+            "updated": updated,
+            "preserved": preserved,
+            "stagingDest": str(write_dest),
+            "published": bool(publish_info),
+            "publish": publish_info,
+        }
 
-    out = {
-        "schemaVersion": LAYER3_SCHEMA_VERSION,
-        "extractionVersion": LAYER3_EXTRACTION_VERSION,
-        "generatedAt": _now_iso(),
-        "payload": "index",
-        "issuerFileTemplate": LAYER3_ISSUER_FILE_TEMPLATE,
-        "cutoffNote": "Facts available in the dataset snapshot only; no look-ahead beyond that extract.",
-        "verificationNote": (
-            "Cash-flow and balance-sheet figures are independently recalculated from "
-            "SEC Company Facts XBRL. They are not face-checked against the rendered "
-            "10-Q/10-K cash-flow or balance-sheet statement. Layer 1 income-statement "
-            "matches remain a separate, statement-verified concept."
-        ),
-        "scoring": None,
-        "counts": counts,
-        "rows": [],
+    # Incremental: merge updated rows with untouched files so the index stays complete.
+    on_disk = _scan_issuer_dir(write_dir)
+    for payload in rows:
+        on_disk[str(payload["cik"]).zfill(10)] = payload
+    counts = _empty_counts()
+    index_rows = []
+    merged_rows = []
+    for _cik, payload in sorted(on_disk.items()):
+        _count_row(counts, payload)
+        index_rows.append(index_row(payload))
+        merged_rows.append(payload)
+    out = _write_index(dest, counts)
+    return {
+        **out,
+        "rows": merged_rows,
+        "indexRows": index_rows,
+        "mode": "incremental",
+        "updated": updated,
+        "preserved": preserved,
+        "published": False,
     }
-    write_json_atomic(dest, out, compact=True)
-    return {**out, "rows": rows, "indexRows": index_rows}
 
 
 def default_facts_zip() -> Path | None:
     path = config.CACHE_DIR / "sec" / "bulk" / "companyfacts.zip"
     return path if path.exists() else None
+
+
+COMPARE_FLOW_KEYS = (
+    "ocf",
+    "capex",
+    "fcf",
+    "operatingIncome",
+    "interestExpense",
+    "depreciationAmortization",
+    "ebitda",
+    "revenue",
+    "netIncome",
+    "grossProfit",
+    "costOfRevenue",
+)
+COMPARE_STOCK_KEYS = (
+    "cash",
+    "shortTermDebt",
+    "longTermDebt",
+    "totalDebt",
+    "netDebt",
+    "accountsReceivable",
+    "inventory",
+    "accountsPayable",
+    "currentAssets",
+    "currentLiabilities",
+)
+COMPARE_NEW_KEYS = (
+    "grossMargin",
+    "operatingMargin",
+    "netMargin",
+    "fcfMargin",
+    "cashConversion",
+    "currentRatio",
+    "operatingWorkingCapital",
+    "dso",
+    "dio",
+    "dpo",
+    "cashConversionCycle",
+    "arYoy",
+    "inventoryYoy",
+    "apYoy",
+)
+
+
+def compare_layer3_issuers(previous: dict, current: dict) -> dict:
+    """Diff two issuer payloads (v3 vs v4). Does not write files."""
+    prev_m = previous.get("metrics") or {}
+    cur_m = current.get("metrics") or {}
+
+    def _metric_view(metrics: dict, key: str) -> dict:
+        item = metrics.get(key) if isinstance(metrics, dict) else None
+        if not isinstance(item, dict):
+            return {"present": False}
+        hist = item.get("history") or []
+        qs = item.get("quarters") or []
+        return {
+            "present": True,
+            "status": item.get("status"),
+            "ttm": item.get("ttm"),
+            "previousTtm": item.get("previousTtm"),
+            "ttmYoy": item.get("ttmYoy"),
+            "value": item.get("value"),
+            "end": item.get("end"),
+            "concept": item.get("concept"),
+            "calculationMethod": item.get("calculationMethod"),
+            "verification": item.get("verification"),
+            "reason": item.get("reason"),
+            "identity": item.get("identity"),
+            "quarterCount": len(qs),
+            "historyCount": len(hist),
+            "historyValues": sum(1 for row in hist if row.get("value") is not None),
+        }
+
+    flows = {}
+    for key in COMPARE_FLOW_KEYS:
+        before, after = _metric_view(prev_m, key), _metric_view(cur_m, key)
+        flows[key] = {
+            "previous": before,
+            "current": after,
+            "ttmUnchanged": before.get("ttm") == after.get("ttm") if before.get("present") else None,
+        }
+    stocks = {}
+    for key in COMPARE_STOCK_KEYS:
+        before, after = _metric_view(prev_m, key), _metric_view(cur_m, key)
+        stocks[key] = {
+            "previous": before,
+            "current": after,
+            "valueUnchanged": before.get("value") == after.get("value") if before.get("present") else None,
+        }
+    added = {key: _metric_view(cur_m, key) for key in COMPARE_NEW_KEYS}
+    return {
+        "cik": current.get("cik") or previous.get("cik"),
+        "previousExtractionVersion": previous.get("extractionVersion"),
+        "currentExtractionVersion": current.get("extractionVersion"),
+        "previousSchemaVersion": previous.get("schemaVersion"),
+        "currentSchemaVersion": current.get("schemaVersion"),
+        "extractionStatus": {
+            "previous": previous.get("extractionStatus"),
+            "current": current.get("extractionStatus"),
+        },
+        "verificationStatus": {
+            "previous": previous.get("verificationStatus"),
+            "current": current.get("verificationStatus"),
+        },
+        "flows": flows,
+        "stocks": stocks,
+        "added": added,
+        "replacedExtractedWithPending": (
+            previous.get("extractionStatus") == "extracted"
+            and current.get("extractionStatus") == "pending_analysis"
+        ),
+    }

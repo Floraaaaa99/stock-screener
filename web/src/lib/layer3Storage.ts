@@ -1,4 +1,4 @@
-import { LAYER3_ANALYSIS_STATUS, uniqueTickers, type Layer3Entry } from "./layer3";
+import { LAYER3_ANALYSIS_STATUS, migrateLegacyMembership, uniqueTickers, type Layer3Entry } from "./layer3";
 
 export const LAYER3_SCHEMA_VERSION = 1;
 export const LAYER3_SELECTION_KEY = "stock-screener.layer3.selection.v1";
@@ -149,7 +149,13 @@ export class Layer3Store {
     const parsedEntries = sanitizeEntries(rec?.entries ?? envelope.data);
     if (!parsedEntries) return { entries: [], status: "recovered" };
     if (parsedEntries.recovered) return { entries: [], status: "recovered" };
-    return { entries: parsedEntries.entries, status: envelope.migrated ? "migrated" : "ok" };
+    const rewritten = migrateLegacyMembership(parsedEntries.entries);
+    if (rewritten.migrated) {
+      const written = this.write(LAYER3_MEMBERSHIP_KEY, { entries: rewritten.entries });
+      if (written === "unavailable") return { entries: rewritten.entries, status: "unavailable" };
+      return { entries: rewritten.entries, status: "migrated" };
+    }
+    return { entries: rewritten.entries, status: envelope.migrated ? "migrated" : "ok" };
   }
 
   saveMembership(entries: readonly Layer3Entry[]): StorageStatus {
