@@ -29,6 +29,41 @@ from .layer3_concepts import (
 )
 from .layer3_extract import analyze_layer3_facts
 
+COVERAGE_KEYS = (
+    "revenue",
+    "netIncome",
+    "grossProfit",
+    "costOfRevenue",
+    "operatingIncome",
+    "ocf",
+    "capex",
+    "fcf",
+    "interestExpense",
+    "depreciationAmortization",
+    "ebitda",
+    "grossMargin",
+    "operatingMargin",
+    "netMargin",
+    "fcfMargin",
+    "cashConversion",
+    "cash",
+    "shortTermDebt",
+    "longTermDebt",
+    "totalDebt",
+    "netDebt",
+    "accountsReceivable",
+    "inventory",
+    "accountsPayable",
+    "currentAssets",
+    "currentLiabilities",
+    "currentRatio",
+    "operatingWorkingCapital",
+    "dso",
+    "dio",
+    "dpo",
+    "cashConversionCycle",
+)
+
 
 def _empty_counts() -> dict:
     return {
@@ -38,6 +73,10 @@ def _empty_counts() -> dict:
         "model": {"applicable": 0, "notApplicable": 0},
         "scoring": {"notImplemented": 0},
         "inputs": {"ready": 0, "pendingDataVerification": 0, "pendingAnalysis": 0},
+        "metrics": {
+            key: {"extracted": 0, "missing": 0, "notApplicable": 0}
+            for key in COVERAGE_KEYS
+        },
     }
 
 
@@ -61,6 +100,20 @@ def _count_row(counts: dict, payload: dict) -> None:
     counts["scoring"]["notImplemented"] += 1
     inp = payload.get("inputCompleteness") or "pending_analysis"
     counts["inputs"][inp_map.get(inp, "pendingAnalysis")] += 1
+    metrics = payload.get("metrics") or {}
+    for key in COVERAGE_KEYS:
+        item = metrics.get(key) if isinstance(metrics, dict) else None
+        if not isinstance(item, dict):
+            counts["metrics"][key]["missing"] += 1
+            continue
+        status = item.get("status")
+        has_value = item.get("ttm") is not None or item.get("value") is not None
+        if status == "not_applicable":
+            counts["metrics"][key]["notApplicable"] += 1
+        elif status == "extracted" or has_value:
+            counts["metrics"][key]["extracted"] += 1
+        else:
+            counts["metrics"][key]["missing"] += 1
 
 
 def _now_iso() -> str:
@@ -216,7 +269,9 @@ def write_layer3(
                 "sicMajorGroup": sic.get("majorGroup") or (row or {}).get("sicMajorGroup"),
                 "layer1": reused,
                 "growthSource": "not_yet_verified",
+                "schemaVersion": LAYER3_SCHEMA_VERSION,
                 "extractionVersion": LAYER3_EXTRACTION_VERSION,
+                "dataAsOf": None,
                 "scoring": None,
             }
             facts = None
@@ -228,7 +283,11 @@ def write_layer3(
                 facts = zf.get(cik)
 
             if facts is not None:
-                analysis = analyze_layer3_facts(facts, sic_code=sic_code)
+                analysis = analyze_layer3_facts(
+                    facts,
+                    sic_code=sic_code,
+                    preferred_earnings_concept=reused.get("earningsConcept"),
+                )
                 payload.update(analysis.to_dict())
                 payload["metrics"] = public_metrics(payload.get("metrics"))
                 payload["tickers"] = tickers
@@ -268,10 +327,12 @@ def write_layer3(
         "issuerFileTemplate": LAYER3_ISSUER_FILE_TEMPLATE,
         "cutoffNote": "Facts available in the dataset snapshot only; no look-ahead beyond that extract.",
         "verificationNote": (
-            "Cash-flow and balance-sheet figures are independently recalculated from "
-            "SEC Company Facts XBRL. They are not face-checked against the rendered "
-            "10-Q/10-K cash-flow or balance-sheet statement. Layer 1 income-statement "
-            "matches remain a separate, statement-verified concept."
+            "Cash-flow, balance-sheet, and newly added income-statement research "
+            "figures are independently recalculated from SEC Company Facts XBRL. "
+            "They are not face-checked against rendered 10-Q/10-K cash-flow or "
+            "balance-sheet statements. Layer 1 income-statement matches remain a "
+            "separate, statement-verified concept. calculationMethod=derived is a "
+            "formula, not a statement verification."
         ),
         "scoring": None,
         "counts": counts,

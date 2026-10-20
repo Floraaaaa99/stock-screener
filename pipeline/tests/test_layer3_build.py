@@ -101,7 +101,11 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     assert hei["scoringStatus"] == "not_implemented"
     assert hei["inputCompleteness"] == "ready"
     assert hei["metrics"]["fcf"]["ttm"] == 32
+    assert len(hei["metrics"]["fcf"]["quarters"]) == 8
+    assert hei["metrics"]["inventory"]["status"] == "not_applicable"
+    assert hei["schemaVersion"] == 3
     assert hei["scoring"] is None
+    assert out["counts"]["metrics"]["ocf"]["extracted"] == 1
     assert hei["layer1"]["revenueTtm"] == 100
     assert hei["layer1"]["source"] == "layer1_copy"
     written = json.loads(dest.read_text())

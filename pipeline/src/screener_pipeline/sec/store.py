@@ -1,4 +1,9 @@
-"""On-disk caches for compact revenue facts and parsed income statements."""
+"""On-disk caches for compact revenue facts and parsed income statements.
+
+Layer 3 cash-flow, balance-sheet, gross-profit and working-capital tags are not
+stored here. Compact facts remain Layer 1/2 (revenue + earnings) only. A Layer 3
+rebuild still reads raw Company Facts or companyfacts.zip.
+"""
 
 from __future__ import annotations
 

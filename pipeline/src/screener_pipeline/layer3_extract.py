@@ -12,15 +12,25 @@ from datetime import date
 
 from .layer3_concepts import (
     AMORTIZATION_ADDON_CONCEPTS,
+    AP_CONCEPTS,
+    AR_CONCEPTS,
     CAPEX_CONCEPTS,
     CAPEX_MAY_BE_NET,
     CASH_CONCEPTS,
+    COST_OF_REVENUE_CONCEPTS,
+    CURRENT_ASSET_CONCEPTS,
+    CURRENT_LIABILITY_CONCEPTS,
     DA_CONCEPTS,
     DEPRECIATION_ONLY_CONCEPTS,
     FLOW_ALIGN_DAYS,
     FLOW_CONCEPTS,
+    GROSS_PROFIT_CONCEPTS,
+    HISTORY_SLOTS,
     INTEREST_CONCEPTS,
+    INVENTORY_CONCEPTS,
+    INVENTORY_NARROW_SCOPE,
     LAYER3_EXTRACTION_VERSION,
+    LAYER3_SCHEMA_VERSION,
     LT_DEBT_CONCEPTS,
     LT_DEBT_INCLUDES_LEASES,
     OCF_CONCEPTS,
@@ -31,10 +41,28 @@ from .layer3_concepts import (
     STOCK_CONCEPTS,
     TOTAL_DEBT_FALLBACK_CONCEPTS,
     TOTAL_DEBT_INCLUDES_LEASES,
+    gaap_concepts_present,
     is_financial_sic,
+)
+from .layer3_derived import (
+    add_flows,
+    apply_ttm_yoy,
+    average_balance,
+    cash_conversion_cycle,
+    cash_conversion_metric,
+    current_ratio_metric,
+    days_outstanding,
+    identity_holds,
+    margin_metric,
+    operating_working_capital,
+    stock_yoy,
+    subtract_flows,
+    ttm_window,
 )
 from .quarters import MissingQuarter, Quarter, Slot, build_timeline, dedupe_periods, derive_quarters, label_quarters
 from .sec.facts import (
+    EARNINGS_CONCEPTS,
+    REVENUE_CONCEPTS,
     InstantFact,
     RevenueFacts,
     extract_instant_facts,
@@ -100,7 +128,7 @@ def _slots_for_concept(rf: RevenueFacts, concept: str) -> list[Slot]:
 
 def _quarter_payloads(slots: list[Slot], *, magnitude: bool = False, cik: str = "") -> list[dict]:
     out: list[dict] = []
-    for s in slots[:8]:
+    for s in slots[:HISTORY_SLOTS]:
         if isinstance(s, MissingQuarter):
             out.append(
                 {
@@ -169,30 +197,32 @@ def _flow_metric(
 ) -> dict:
     concept = _pick_flow_concept(rf, candidates, as_of if require_align else None)
     if concept is None:
-        return {
+        return apply_ttm_yoy({
             "status": "missing",
             "reason": "no_concept",
             "concept": None,
             "ttm": None,
             "previousTtm": None,
             "quarters": [],
+            "calculationMethod": "extracted",
             "verification": "not_checked",
-        }
+        })
     slots = _slots_for_concept(rf, concept)
     newest = _newest_quarter_end(slots)
     if require_align and as_of is not None and not _aligned(newest, as_of, FLOW_ALIGN_DAYS):
-        return {
+        return apply_ttm_yoy({
             "status": "missing",
             "reason": "ttm_window_not_aligned",
             "concept": concept,
             "ttm": None,
             "previousTtm": None,
             "quarters": _quarter_payloads(slots, cik=cik),
+            "calculationMethod": "extracted",
             "verification": "not_checked",
             "verificationNote": COMPANY_FACTS_ONLY_NOTE,
             "newestEnd": newest.isoformat() if newest else None,
             "alignedTo": as_of.isoformat(),
-        }
+        })
     if capex:
         mag_slots: list[Slot] = []
         for s in slots:
@@ -217,7 +247,7 @@ def _flow_metric(
                 mag_slots.append(s)
         ttm = compute_flow_ttm(mag_slots)
         quarters = _quarter_payloads(slots, magnitude=True, cik=cik)
-        payload = {
+        payload = apply_ttm_yoy({
             "status": "extracted" if ttm.current is not None else "missing",
             "reason": ttm.reason,
             "concept": concept,
@@ -226,9 +256,10 @@ def _flow_metric(
             "ttm": ttm.current,
             "previousTtm": ttm.previous,
             "quarters": quarters,
+            "calculationMethod": "extracted",
             "verification": "company_facts_only",
             "verificationNote": COMPANY_FACTS_ONLY_NOTE,
-        }
+        })
         if concept in CAPEX_MAY_BE_NET:
             payload["scopeNote"] = (
                 "Last-resort tag; US-GAAP name is net of asset-sale proceeds. "
@@ -237,7 +268,7 @@ def _flow_metric(
         return payload
     ttm = compute_flow_ttm(slots)
     quarters = _quarter_payloads(slots, cik=cik)
-    return {
+    return apply_ttm_yoy({
         "status": "extracted" if ttm.current is not None else "missing",
         "reason": ttm.reason,
         "concept": concept,
@@ -245,9 +276,10 @@ def _flow_metric(
         "ttm": ttm.current,
         "previousTtm": ttm.previous,
         "quarters": quarters,
+        "calculationMethod": "extracted",
         "verification": "company_facts_only",
         "verificationNote": COMPANY_FACTS_ONLY_NOTE,
-    }
+    })
 
 
 def _latest_instant(facts: list[InstantFact], as_of: date | None) -> InstantFact | None:
@@ -281,6 +313,7 @@ def _stock_from_concept(
         "url": filing_url(cik, latest.accn),
         "unit": currency,
         "aggregation": "latest_quarter_end",
+        "calculationMethod": "extracted",
         "verification": "company_facts_only",
         "verificationNote": COMPANY_FACTS_ONLY_NOTE,
     }
@@ -293,7 +326,22 @@ def _missing_stock(reason: str) -> dict:
         "concept": None,
         "value": None,
         "end": None,
+        "calculationMethod": "extracted",
         "verification": "not_checked",
+        "history": [],
+    }
+
+
+def _not_applicable_stock(reason: str) -> dict:
+    return {
+        "status": "not_applicable",
+        "reason": reason,
+        "concept": None,
+        "value": None,
+        "end": None,
+        "calculationMethod": "extracted",
+        "verification": "not_checked",
+        "history": [],
     }
 
 
@@ -352,6 +400,7 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
                     "components": parts,
                     "aggregation": "sum_disjoint_current_components",
                     "unit": currency,
+                    "calculationMethod": "extracted",
                     "verification": "company_facts_only",
                     "verificationNote": COMPANY_FACTS_ONLY_NOTE,
                     "url": parts[0].get("url"),
@@ -415,6 +464,7 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
         "formula": total_formula,
         "concept": total_concept,
         "end": total_end,
+        "calculationMethod": "derived" if total_debt is not None else "extracted",
         "verification": "derived" if total_debt is not None else "not_checked",
     }
     if total_concept in TOTAL_DEBT_INCLUDES_LEASES:
@@ -431,9 +481,172 @@ def _stock_metrics(instants: dict[str, list[InstantFact]], as_of: date | None, c
             "value": net_debt,
             "formula": "total_debt − cash",
             "end": cash.get("end") or total_end,
+            "calculationMethod": "derived" if net_debt is not None else "extracted",
             "verification": "derived" if net_debt is not None else "not_checked",
         },
     }
+
+
+def _fiscal_spine(flow: dict) -> list[dict]:
+    """Eight fiscal slots from a duration metric. Missing values still keep the period."""
+    out = []
+    for q in (flow.get("quarters") or [])[:HISTORY_SLOTS]:
+        if q.get("end"):
+            out.append({
+                "fiscalYear": q.get("fiscalYear"),
+                "fiscalQuarter": q.get("fiscalQuarter"),
+                "start": q.get("start"),
+                "end": q.get("end"),
+            })
+    return out
+
+
+def _history_row(slot: dict, found: dict) -> dict:
+    return {
+        "fiscalYear": slot.get("fiscalYear"),
+        "fiscalQuarter": slot.get("fiscalQuarter"),
+        "end": found.get("end") or slot.get("end"),
+        "value": found.get("value"),
+        "status": found.get("status"),
+        "reason": found.get("reason"),
+        "concept": found.get("concept"),
+        "accn": found.get("accn"),
+        "form": found.get("form"),
+        "filed": found.get("filed"),
+        "url": found.get("url"),
+        "calculationMethod": found.get("calculationMethod"),
+        "verification": found.get("verification"),
+    }
+
+
+def _simple_stock_with_history(
+    instants: dict[str, list[InstantFact]],
+    concepts: list[str],
+    spine: list[dict],
+    as_of: date | None,
+    cik: str,
+    currency: str | None,
+    *,
+    present: bool = True,
+    na_reason: str = "not_applicable",
+    scope_note_for: set[str] | None = None,
+) -> dict:
+    if not present:
+        payload = _not_applicable_stock(na_reason)
+        payload["history"] = [
+            {**slot, "value": None, "status": "not_applicable", "reason": na_reason, "verification": "not_checked"}
+            for slot in spine
+        ]
+        return payload
+    latest = _first_aligned_stock(instants, concepts, as_of, cik, currency)
+    if latest.get("concept") and scope_note_for and latest["concept"] in scope_note_for:
+        latest["scopeNote"] = "Narrower inventory tag; not a total inventory line."
+    latest["history"] = [
+        _history_row(
+            slot,
+            _first_aligned_stock(
+                instants, concepts, date.fromisoformat(slot["end"]), cik, currency
+            ),
+        )
+        for slot in spine
+    ]
+    return latest
+
+
+def _debt_history(
+    instants: dict[str, list[InstantFact]],
+    spine: list[dict],
+    cik: str,
+    currency: str | None,
+) -> dict[str, list]:
+    hist: dict[str, list] = {k: [] for k in ("cash", "shortTermDebt", "longTermDebt", "totalDebt", "netDebt")}
+    for slot in spine:
+        as_of = date.fromisoformat(slot["end"])
+        snap = _stock_metrics(instants, as_of, cik, currency)
+        for key in hist:
+            hist[key].append(_history_row(slot, snap[key]))
+    return hist
+
+
+def _candidate_flows(rf: RevenueFacts, concepts: list[str], cik: str, as_of: date | None) -> list[dict]:
+    out = []
+    for concept in concepts:
+        if not rf.by_concept.get(concept):
+            continue
+        metric = _flow_metric(rf, [concept], cik=cik, as_of=as_of, require_align=bool(as_of))
+        if metric.get("status") == "extracted" or any(q.get("value") is not None for q in metric.get("quarters") or []):
+            out.append(metric)
+    return out
+
+
+def _select_gross_and_cogs(
+    rf: RevenueFacts,
+    revenue: dict,
+    cik: str,
+    as_of: date | None,
+) -> tuple[dict, dict]:
+    """Pick GP and COGS that share revenue's scope. Never take the first non-empty tag."""
+    gps = _candidate_flows(rf, GROSS_PROFIT_CONCEPTS, cik, as_of)
+    costs = _candidate_flows(rf, COST_OF_REVENUE_CONCEPTS, cik, as_of)
+    rev_ttm = revenue.get("ttm")
+
+    for gp in gps:
+        for cogs in costs:
+            if identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm):
+                gp = {**gp, "identity": "gross_plus_cogs_equals_revenue"}
+                cogs = {**cogs, "identity": "gross_plus_cogs_equals_revenue"}
+                return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
+
+    if rev_ttm is not None:
+        for gp in gps:
+            if gp.get("ttm") is None:
+                continue
+            implied = subtract_flows(
+                revenue, gp, "Revenue − Gross Profit",
+                missing_left="missing_revenue", missing_right="missing_gross_profit",
+            )
+            implied["concept"] = None
+            for cogs in costs:
+                if identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm):
+                    return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
+            return apply_ttm_yoy(gp), implied
+        for cogs in costs:
+            if cogs.get("ttm") is None:
+                continue
+            implied = subtract_flows(
+                revenue, cogs, "Revenue − Cost of Revenue",
+                missing_left="missing_revenue", missing_right="missing_cost_of_revenue",
+            )
+            implied["concept"] = None
+            return implied, apply_ttm_yoy(cogs)
+
+    empty = apply_ttm_yoy({
+        "status": "missing",
+        "reason": "no_concept",
+        "concept": None,
+        "ttm": None,
+        "previousTtm": None,
+        "quarters": [],
+        "calculationMethod": "extracted",
+        "verification": "not_checked",
+    })
+    gp = gps[0] if gps else empty
+    cogs = costs[0] if costs else empty
+    if (
+        gp.get("ttm") is not None
+        and cogs.get("ttm") is not None
+        and rev_ttm is not None
+        and not identity_holds(gp.get("ttm"), cogs.get("ttm"), rev_ttm)
+    ):
+        cogs = apply_ttm_yoy({
+            **cogs,
+            "status": "missing",
+            "reason": "concept_scope_mismatch",
+            "ttm": None,
+            "previousTtm": None,
+            "ttmYoy": None,
+        })
+    return apply_ttm_yoy(gp), apply_ttm_yoy(cogs)
 
 
 @dataclass
@@ -448,17 +661,21 @@ class Layer3Analysis:
     metrics: dict
     flags: list[str] = field(default_factory=list)
     extraction_version: int = LAYER3_EXTRACTION_VERSION
+    schema_version: int = LAYER3_SCHEMA_VERSION
+    data_as_of: str | None = None
 
     def to_dict(self) -> dict:
         return {
             "cik": self.cik,
+            "schemaVersion": self.schema_version,
+            "extractionVersion": self.extraction_version,
+            "dataAsOf": self.data_as_of,
             "extractionStatus": self.extraction_status,
             "verificationStatus": self.verification_status,
             "modelApplicability": self.model_applicability,
             "scoringStatus": self.scoring_status,
             "inputCompleteness": self.input_completeness,
             "currency": self.currency,
-            "extractionVersion": self.extraction_version,
             "flags": self.flags,
             "metrics": self.metrics,
             "scoring": None,
@@ -470,6 +687,8 @@ def analyze_layer3_facts(
     *,
     sic_code: str | None = None,
     foreign: bool | None = None,
+    preferred_revenue_concept: str | None = None,
+    preferred_earnings_concept: str | None = None,
 ) -> Layer3Analysis:
     """Analyze one issuer's Company Facts payload. Does not score."""
     flows = extract_named_duration_facts(companyfacts, FLOW_CONCEPTS)
@@ -487,54 +706,127 @@ def analyze_layer3_facts(
         if q.get("end") and q.get("value") is not None:
             as_of = date.fromisoformat(q["end"])
             break
-    capex = _flow_metric(flows, CAPEX_CONCEPTS, capex=True, cik=cik, as_of=as_of, require_align=True)
-    opinc = _flow_metric(flows, OPERATING_INCOME_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
-    interest = _flow_metric(flows, INTEREST_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
-    da = _flow_metric(flows, DA_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+    align = bool(as_of)
+    capex = _flow_metric(flows, CAPEX_CONCEPTS, capex=True, cik=cik, as_of=as_of, require_align=align)
+    opinc = _flow_metric(flows, OPERATING_INCOME_CONCEPTS, cik=cik, as_of=as_of, require_align=align)
+    interest = _flow_metric(flows, INTEREST_CONCEPTS, cik=cik, as_of=as_of, require_align=align)
+    da = _flow_metric(flows, DA_CONCEPTS, cik=cik, as_of=as_of, require_align=align)
     da_incomplete = False
     if da.get("concept") in DEPRECIATION_ONLY_CONCEPTS:
-        amort = _flow_metric(flows, AMORTIZATION_ADDON_CONCEPTS, cik=cik, as_of=as_of, require_align=True)
+        amort = _flow_metric(flows, AMORTIZATION_ADDON_CONCEPTS, cik=cik, as_of=as_of, require_align=align)
         if amort.get("ttm") is not None and da.get("ttm") is not None:
             prior = None
             if da.get("previousTtm") is not None and amort.get("previousTtm") is not None:
                 prior = da["previousTtm"] + amort["previousTtm"]
-            da = {
+            da = apply_ttm_yoy({
                 **da,
                 "ttm": da["ttm"] + amort["ttm"],
                 "previousTtm": prior,
                 "concept": f"{da['concept']}+{amort['concept']}",
                 "aggregation": "sum_depreciation_and_amortization",
                 "reason": None if prior is not None else da.get("reason") or amort.get("reason"),
-            }
+            })
         elif amort.get("reason") != "no_concept":
             # Amortization exists but is unaligned or gapped. Do not treat it as zero.
             da_incomplete = True
 
-    fcf_ttm = fcf_prior = None
-    fcf_reason = None
-    if ocf.get("ttm") is None:
-        fcf_reason = "missing_ocf"
-    elif capex.get("ttm") is None:
-        fcf_reason = "missing_capex"
-    else:
-        fcf_ttm = ocf["ttm"] - capex["ttm"]
-        if ocf.get("previousTtm") is not None and capex.get("previousTtm") is not None:
-            fcf_prior = ocf["previousTtm"] - capex["previousTtm"]
-        else:
-            fcf_reason = ocf.get("reason") or capex.get("reason") or "insufficient_quarters"
+    rev_concepts = list(REVENUE_CONCEPTS)
+    if preferred_revenue_concept:
+        rev_concepts = [preferred_revenue_concept] + [c for c in rev_concepts if c != preferred_revenue_concept]
+    earn_concepts = list(EARNINGS_CONCEPTS)
+    if preferred_earnings_concept:
+        earn_concepts = [preferred_earnings_concept] + [c for c in earn_concepts if c != preferred_earnings_concept]
+    revenue = _flow_metric(flows, rev_concepts, cik=cik, as_of=as_of, require_align=align)
+    net_income = _flow_metric(flows, earn_concepts, cik=cik, as_of=as_of, require_align=align)
+    gross_profit, cost_of_revenue = _select_gross_and_cogs(flows, revenue, cik, as_of)
 
-    ebitda = None
-    ebitda_reason = None
-    if opinc.get("ttm") is None:
-        ebitda_reason = "missing_operating_income"
-    elif da.get("ttm") is None or da_incomplete:
-        ebitda_reason = (
-            "depreciation_excludes_amortization" if da_incomplete else "missing_depreciation_amortization"
-        )
+    fcf = subtract_flows(
+        ocf, capex, "OCF − CapEx (CapEx as positive cash outflow)",
+        missing_left="missing_ocf", missing_right="missing_capex",
+    )
+    if da_incomplete:
+        ebitda = {
+            "status": "missing",
+            "reason": "depreciation_excludes_amortization",
+            "ttm": None,
+            "previousTtm": None,
+            "quarters": [],
+            "formula": "operating_income + depreciation_and_amortization",
+            "definition": "Operating income used as an EBIT proxy only when that concept is selected.",
+            "calculationMethod": "derived",
+            "verification": "not_checked",
+            "verificationNote": "Derived from Company Facts operating income and D&A. Not statement-checked.",
+        }
     else:
-        ebitda = opinc["ttm"] + da["ttm"]
+        ebitda = add_flows(
+            opinc, da, "operating_income + depreciation_and_amortization",
+            missing_left="missing_operating_income",
+            missing_right="missing_depreciation_amortization",
+        )
+        ebitda["definition"] = "Operating income used as an EBIT proxy only when that concept is selected."
+    # Keep the previous verification token so existing UI copy still reads "Derived".
+    if fcf.get("ttm") is not None:
+        fcf["verification"] = "derived"
+    if ebitda.get("ttm") is not None:
+        ebitda["verification"] = "derived"
 
     stocks = _stock_metrics(instants, as_of, cik, flows.currency)
+    spine = _fiscal_spine(ocf) or _fiscal_spine(revenue)
+    debt_hist = _debt_history(instants, spine, cik, flows.currency) if spine else {}
+    for key, rows in debt_hist.items():
+        stocks[key]["history"] = rows
+
+    inv_present = bool(gaap_concepts_present(companyfacts, INVENTORY_CONCEPTS))
+    ar = _simple_stock_with_history(instants, AR_CONCEPTS, spine, as_of, cik, flows.currency)
+    inventory = _simple_stock_with_history(
+        instants, INVENTORY_CONCEPTS, spine, as_of, cik, flows.currency,
+        present=inv_present, na_reason="no_inventory_concept",
+        scope_note_for=INVENTORY_NARROW_SCOPE,
+    )
+    ap = _simple_stock_with_history(instants, AP_CONCEPTS, spine, as_of, cik, flows.currency)
+    current_assets = _simple_stock_with_history(
+        instants, CURRENT_ASSET_CONCEPTS, spine, as_of, cik, flows.currency
+    )
+    current_liabilities = _simple_stock_with_history(
+        instants, CURRENT_LIABILITY_CONCEPTS, spine, as_of, cik, flows.currency
+    )
+
+    _ttm_start, ttm_end, ttm_days = ttm_window(revenue if revenue.get("ttm") is not None else ocf)
+    begin_end = None
+    if spine and len(spine) >= 5:
+        begin_end = spine[4].get("end")
+    close_end = spine[0].get("end") if spine else (ttm_end.isoformat() if ttm_end else None)
+    avg_ar, ar_reason, ar_inputs = average_balance(ar.get("history"), begin_end, close_end)
+    avg_inv, inv_reason, inv_inputs = average_balance(inventory.get("history"), begin_end, close_end)
+    avg_ap, ap_reason, ap_inputs = average_balance(ap.get("history"), begin_end, close_end)
+    dso = days_outstanding(
+        average=avg_ar, flow_ttm=revenue.get("ttm"), days=ttm_days,
+        formula="Average AR / TTM Revenue × days_in_window",
+        avg_reason=ar_reason, flow_reason="missing_revenue",
+    )
+    dso["inputs"] = ar_inputs
+    if inventory.get("status") == "not_applicable":
+        dio = {
+            "status": "not_applicable",
+            "reason": "no_inventory_concept",
+            "value": None,
+            "formula": "Average Inventory / TTM Cost of Revenue × days_in_window",
+            "calculationMethod": "derived",
+            "verification": "not_checked",
+        }
+    else:
+        dio = days_outstanding(
+            average=avg_inv, flow_ttm=cost_of_revenue.get("ttm"), days=ttm_days,
+            formula="Average Inventory / TTM Cost of Revenue × days_in_window",
+            avg_reason=inv_reason, flow_reason="missing_cost_of_revenue",
+        )
+        dio["inputs"] = inv_inputs
+    dpo = days_outstanding(
+        average=avg_ap, flow_ttm=cost_of_revenue.get("ttm"), days=ttm_days,
+        formula="Average AP / TTM Cost of Revenue × days_in_window",
+        avg_reason=ap_reason, flow_reason="missing_cost_of_revenue",
+    )
+    dpo["inputs"] = ap_inputs
 
     no_interest_burden = (
         interest.get("ttm") == 0
@@ -544,37 +836,51 @@ def analyze_layer3_facts(
     )
 
     metrics = {
+        "revenue": revenue,
+        "netIncome": net_income,
+        "grossProfit": gross_profit,
+        "costOfRevenue": cost_of_revenue,
+        "operatingIncome": opinc,
         "ocf": ocf,
         "capex": capex,
-        "fcf": {
-            "status": "extracted" if fcf_ttm is not None else "missing",
-            "reason": None if fcf_ttm is not None else fcf_reason,
-            "ttm": fcf_ttm,
-            "previousTtm": fcf_prior,
-            "formula": "OCF − CapEx (CapEx as positive cash outflow)",
-            "verification": "derived" if fcf_ttm is not None else "not_checked",
-            "verificationNote": "Derived from Company Facts OCF and CapEx. Not statement-checked.",
-        },
-        "operatingIncome": opinc,
         "interestExpense": interest,
         "depreciationAmortization": da,
-        "ebitda": {
-            "status": "extracted" if ebitda is not None else "missing",
-            "reason": None if ebitda is not None else ebitda_reason,
-            "ttm": ebitda,
-            "formula": "operating_income + depreciation_and_amortization",
-            "definition": "Operating income used as an EBIT proxy only when that concept is selected.",
-            "verification": "derived" if ebitda is not None else "not_checked",
-            "verificationNote": "Derived from Company Facts operating income and D&A. Not statement-checked.",
-        },
+        "fcf": fcf,
+        "ebitda": ebitda,
+        "grossMargin": margin_metric(gross_profit, revenue, "Gross Profit / Revenue"),
+        "operatingMargin": margin_metric(opinc, revenue, "Operating Income / Revenue"),
+        "netMargin": margin_metric(net_income, revenue, "Net Income / Revenue"),
+        "fcfMargin": margin_metric(fcf, revenue, "FCF / Revenue"),
+        "cashConversion": cash_conversion_metric(ocf, net_income),
         **stocks,
+        "accountsReceivable": ar,
+        "inventory": inventory,
+        "accountsPayable": ap,
+        "currentAssets": current_assets,
+        "currentLiabilities": current_liabilities,
+        "currentRatio": current_ratio_metric(current_assets, current_liabilities),
+        "operatingWorkingCapital": operating_working_capital(ar, inventory, ap),
+        "arYoy": stock_yoy(ar.get("history")),
+        "inventoryYoy": (
+            {"status": "not_applicable", "reason": "no_inventory_concept", "value": None,
+             "calculationMethod": "derived", "verification": "not_checked"}
+            if inventory.get("status") == "not_applicable"
+            else stock_yoy(inventory.get("history"))
+        ),
+        "apYoy": stock_yoy(ap.get("history")),
+        "dso": dso,
+        "dio": dio,
+        "dpo": dpo,
+        "cashConversionCycle": cash_conversion_cycle(dso, dio, dpo),
         "noInterestBurden": no_interest_burden,
         "growthSource": "not_yet_verified",
     }
 
     extracted_any = any(
-        metrics[k].get("status") == "extracted" or metrics[k].get("ttm") is not None
-        for k in ("ocf", "capex", "operatingIncome", "cash")
+        (isinstance(metrics[k], dict) and (
+            metrics[k].get("status") == "extracted" or metrics[k].get("ttm") is not None
+        ))
+        for k in ("ocf", "capex", "operatingIncome", "cash", "revenue")
     )
     if "foreign_filer" in flags and not extracted_any:
         flags.append("no_fabricated_foreign_quarters")
@@ -591,6 +897,12 @@ def analyze_layer3_facts(
     else:
         input_completeness = "pending_data_verification"
 
+    data_as_of = None
+    for q in (ocf.get("quarters") or revenue.get("quarters") or []):
+        if q.get("end") and q.get("value") is not None:
+            data_as_of = q["end"]
+            break
+
     return Layer3Analysis(
         cik=cik,
         extraction_status=extraction_status,
@@ -601,4 +913,5 @@ def analyze_layer3_facts(
         currency=flows.currency,
         metrics=metrics,
         flags=flags,
+        data_as_of=data_as_of,
     )
