@@ -1,6 +1,8 @@
 # Layer 3 v4 full-universe staging report
 
-Staging-only rebuild of every issuer in `issuers.json`. Production `web/public/data/layer3/cik/*.json` was not written, deleted, or published.
+Historical staging-only rebuild notes. The validated tree was later published on PR #19 only; see `docs/validation/layer3-cik-migration.md`. Do not merge or deploy until approved.
+
+Staging-only rebuild of every issuer in `issuers.json`. At the time of this report, production `web/public/data/layer3/cik/*.json` had not been written, deleted, or published.
 
 | | |
 |---|---|
@@ -23,7 +25,7 @@ Follow-up (CIK identity, 23 overlap diffs, ratio flags): `docs/validation/layer3
 
 The rebuild completed safely. All 5,543 `issuers.json` CIKs were written to a sidecar. No previously extracted issuer became `pending_analysis`. Overlapping v3 TTM / cash / debt values match on 4,293 of 4,316 compared issuers (23 numerical differences, mostly a newer Company Facts snapshot). HEI / MSFT / NVDA continuity from the sidecar sample still holds on this full run.
 
-Do **not** publish yet. Two files write the `issuers.json` CIK as the filename but overwrite `payload.cik` from Company Facts (`0000000000`). Publishing would delete production `0000000000.json` (ZSTK) and add `0001790169.json` / `0000759828.json`. `validate_layer3_publish` keys by payload CIK and therefore returned no errors — that check is not sufficient for this remap.
+Two files write the `issuers.json` CIK as the filename but overwrite `payload.cik` from Company Facts (`0000000000`). Publishing would delete production `0000000000.json` (ZSTK) and add `0001790169.json` / `0000759828.json`. `validate_layer3_publish` keys by payload CIK and therefore returned no errors — that check is not sufficient for this remap.
 
 ## Coverage
 

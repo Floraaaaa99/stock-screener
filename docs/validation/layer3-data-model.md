@@ -48,7 +48,7 @@ Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw
 | `--publish-dry-run` | Read-only publish plan (adds / replaces / removes / approved remaps). Does not write live files. Incompatible with `--publish`. |
 | `--write-live` | Required before incremental writes or publishes can target `web/public/data/layer3.json`. Refused by default. |
 
-`reset_issuer_dir` refuses the live issuer directory. Production 5,542 v3 files are not rebuilt by this PR.
+`reset_issuer_dir` refuses the live issuer directory. On this PR branch, production `web/public/data/layer3` is the validated v4 publish (5,543 files). A recoverable v3 snapshot is `docs/validation/layer3-v3-pre-publish.tar.gz`. Do not merge or deploy until approved.
 
 Sidecar sample (does not publish):
 
@@ -83,7 +83,7 @@ Pipeline tests cover the v4 extract plus rebuild-safety cases. Web tests are unc
 
 Full-universe percents need `screener layer3 --use-cached-facts` after `companyfacts.zip` is present. The index then includes `counts.metrics.<name>.{extracted,missing,notApplicable}`.
 
-The committed 5,542 v3 issuer files were **not** regenerated. A sidecar extract of HEI / MSFT / NVDA is in `docs/validation/layer3-sidecar-hei-msft-nvda.md`. Full-universe staging (not published): `docs/validation/layer3-full-staging.md`. Identity / regression / ratio follow-up: `docs/validation/layer3-identity-and-regressions.md`.
+The PR-branch production tree is now the validated v4 publish (5,543 files). A sidecar extract of HEI / MSFT / NVDA is in `docs/validation/layer3-sidecar-hei-msft-nvda.md`. Staging notes: `docs/validation/layer3-full-staging.md`. Identity / publish: `docs/validation/layer3-cik-migration.md`.
 
 Synthetic complete manufacturer (unit-test fixture): revenue, GP, COGS, NI, OCF, CapEx, FCF, EBITDA, cash, AR, inventory, AP, CA, CL, current ratio, OWC, DSO/DIO/DPO/CCC all `extracted`.
 

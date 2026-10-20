@@ -364,6 +364,8 @@ def test_cli_layer3_ciks_writes_sidecar_not_production(tmp_path: Path):
     facts_dir.mkdir()
     (facts_dir / "0000046619.json").write_text(json.dumps(_hei_facts()))
     dest = tmp_path / "sidecar" / "layer3.json"
+    live = config.REPO_ROOT / "web" / "public" / "data" / "layer3" / "cik" / "0000046619.json"
+    before = live.read_bytes()
     code = main(
         [
             "layer3",
@@ -381,8 +383,7 @@ def test_cli_layer3_ciks_writes_sidecar_not_production(tmp_path: Path):
     )
     assert code == 0
     assert (dest.parent / "layer3" / "cik" / "0000046619.json").exists()
-    live = config.REPO_ROOT / "web" / "public" / "data" / "layer3" / "cik" / "0000046619.json"
-    assert json.loads(live.read_text())["extractionVersion"] == 3
+    assert live.read_bytes() == before
 
 
 def test_write_layer3_keeps_canonical_cik_when_facts_cik_is_zero(tmp_path: Path):

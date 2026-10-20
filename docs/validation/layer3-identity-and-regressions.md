@@ -7,8 +7,8 @@ Follow-up on the full-universe staging report. Production JSON was not published
 | Date | 2026-10-20 |
 | Staging | `/tmp/layer3-full-v4/staging` regenerated after the fixes (199 s, exit 0) |
 | Unique issuers | **5,543 files = 5,543 payload CIKs = 5,543 index rows** |
-| Production | **5,542 files, git-clean** |
-| Publish | Dry-run now **passes** with the explicit ZSTK remap. Production was **not** published. Do not merge. |
+| Production | **5,543 v4 files on this PR branch** after the approved publish |
+| Publish | Completed on `cursor/layer3-data-model-be5a` only. Do not merge or deploy. |
 
 ## 1. CIK identity
 
@@ -111,4 +111,4 @@ Gross margin extracted is now **1,930** (the 39 conflicts no longer count as cle
 - Local pipeline: **194 passed**.
 - New cases: canonical CIK wins over facts CIK 0; approved ZSTK remap is classified; unapproved remaps and a non-ZSTK zero-CIK file still block; `--publish-dry-run` writes nothing; conflict suppresses derived margins; extreme DSO flagged not clamped; CAD OCF survives a USD+CAD NI tag.
 
-CIK migration dry-run is in `docs/validation/layer3-cik-migration.md`. Production was not published. Still waiting for approval before publish or merge.
+Publish of the validated staging tree is recorded in `docs/validation/layer3-cik-migration.md`. Still waiting for approval before merge or deploy.

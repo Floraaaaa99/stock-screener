@@ -103,10 +103,33 @@ Live 5,542 − 1 + 2 = staging 5,543.
 
 The full 5,541 replacement names are in `/tmp/layer3-publish-plan.json` (not committed). Rollback bytes match production (`8d77cb1275f942b4`).
 
-## 6. Is production publishing safe?
+## 6. Publish on PR #19 (2026-10-20)
 
-The **publish gate would now allow** this staging tree. Identity and deletion checks pass because the one remap is the reviewed ZSTK allowlist row.
+Approved and executed on `cursor/layer3-data-model-be5a` only. `publish_layer3(..., write_live=True)` with the ZSTK allowlist. Staging and production fingerprints still matched the dry-run immediately before the write.
 
-That is not the same as approval to publish. Publishing would still replace 5,541 v3 files with v4 and add JHI. This run did **not** publish, did **not** modify production JSON, did **not** merge PR #19, and did **not** enable `refresh.yml`.
+| Check | Result |
+|---|---|
+| Issuer files | **5,543** |
+| Unique payload CIKs / filename matches | **5,543 / 0 mismatches** |
+| Index | schema **3**, extract **4**, `counts.issuers` **5543**, rows **0** |
+| Extraction | extracted 4,318 · insufficient_facts 1,173 · pending_analysis 52 |
+| `0000000000.json` | **removed** |
+| ZSTK | `0001790169.json` extracted; OCF TTM −5,601,000 |
+| JHI | `0000759828.json` insufficient_facts |
+| HEI / MSFT / NVDA | extracted v4; OCF and cash unchanged vs v3; HEI GP derived $2,091,317,000 |
 
-Waiting for a final publish decision.
+Published tree size: **320.15 MB** issuer files + **3,114 B** index.
+
+Recoverable v3 backup (committed, not `/tmp` only):
+
+- Archive: `docs/validation/layer3-v3-pre-publish.tar.gz` (4.93 MB, sha256 `b5d1775c65c03cfd7559ec067c3b51fed83a0ded5b39ef3842247b6a94df7c1a`)
+- Manifest: `docs/validation/layer3-v3-pre-publish.manifest.json`
+- Local exploded copy (gitignored): `/workspace/backups/layer3-v3-pre-publish` (5,542 files)
+
+Restore:
+
+```bash
+tar -C web/public/data -xzf docs/validation/layer3-v3-pre-publish.tar.gz
+```
+
+This branch was **not** merged to `main`, `refresh.yml` was **not** enabled, and GitHub Pages was **not** deployed.
