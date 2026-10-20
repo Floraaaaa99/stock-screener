@@ -102,7 +102,7 @@ Stock concepts used: `AccountsReceivableNetCurrent`, `InventoryNet`, `AccountsPa
 - MSFT spine is the June fiscal year (`dataAsOf` 2026-06-30).
 - NVDA spine is the 52/53-week calendar (`dataAsOf` 2026-07-26). Cash and AR history ends are 2026-07-26, 2026-04-26, 2026-01-25, 2025-10-26, 2025-07-27, 2025-04-27, 2025-01-26, 2024-10-27. DSO used begin 2025-07-27 / close 2026-07-26 (364-day window). The ±10-day matcher is what allows those slots to pair.
 - Every extracted flow/stock is `verification: company_facts_only`. FCF and EBITDA TTM keep `verification: derived`. Margins / WC ratios are `not_checked`. `statement_verified` does not appear.
-- `calculationMethod` is `extracted` on tagged series and `derived` on FCF, EBITDA, margins, and WC.
+- `calculationMethod` is `extracted` on tagged series and `derived` on FCF, EBITDA, HEI GP, margins, and WC.
 - HEI FCF quarters equal OCF − CapEx on all eight slots.
 - Sidecar issuer files are ~88 KB each (v3 was ~21 KB).
 
