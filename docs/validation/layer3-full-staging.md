@@ -17,6 +17,8 @@ Staging-only rebuild of every issuer in `issuers.json`. Production `web/public/d
 
 **Not done (waiting for approval):** publish staging over production · merge PR #19 · enable `refresh.yml`.
 
+Follow-up (CIK identity, 23 overlap diffs, ratio flags): `docs/validation/layer3-identity-and-regressions.md`. Staging was regenerated after those fixes. Index and files are now 5,543 unique CIKs. Publish remains blocked on the production `0000000000.json` → ZSTK `0001790169.json` remap.
+
 ## Headline
 
 The rebuild completed safely. All 5,543 `issuers.json` CIKs were written to a sidecar. No previously extracted issuer became `pending_analysis`. Overlapping v3 TTM / cash / debt values match on 4,293 of 4,316 compared issuers (23 numerical differences, mostly a newer Company Facts snapshot). HEI / MSFT / NVDA continuity from the sidecar sample still holds on this full run.

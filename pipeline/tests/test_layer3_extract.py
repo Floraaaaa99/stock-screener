@@ -492,6 +492,16 @@ def test_conflicting_reported_cogs_is_not_replaced_with_revenue_minus_gp():
     assert "not overwritten" in (cogs.get("scopeNote") or "")
     assert gp["identity"] == "concept_scope_mismatch"
     assert gp["concept"] == "GrossProfit"
+    assert "concept_scope_mismatch" in analysis.flags
+    gm = analysis.metrics["grossMargin"]
+    assert gm["status"] == "missing"
+    assert gm["reason"] == "concept_scope_mismatch"
+    assert gm["ttm"] is None
+    assert gm.get("unreliableTtm") == 184 / 460
+    assert "incompatible_inputs" in (gm.get("qualityFlags") or [])
+    assert analysis.metrics["dpo"]["status"] == "missing"
+    assert analysis.metrics["dpo"]["reason"] == "concept_scope_mismatch"
+    assert analysis.metrics["dpo"]["value"] is None
 
 
 def test_missing_cogs_is_derived_from_revenue_minus_gp():
@@ -734,3 +744,52 @@ def test_derived_never_labeled_statement_verified():
     assert "statement_verified" not in blob
     assert analysis.metrics["fcf"]["calculationMethod"] == "derived"
     assert analysis.metrics["grossMargin"]["verification"] == "not_checked"
+
+
+def test_canonical_cik_wins_over_zero_facts_cik():
+    facts = companyfacts(_two_year_income(), cik=0, name="ZeroStack Corp.")
+    analysis = analyze_layer3_facts(facts, canonical_cik="0001790169")
+    assert analysis.cik == "0001790169"
+    assert "company_facts_cik_unusable" in analysis.flags
+
+
+def test_cad_ocf_is_not_dropped_when_net_income_also_has_usd():
+    """v4 FLOW_CONCEPTS includes NI. A USD+CAD NI tag must not lock the issuer to USD."""
+    ocf = _ytd_year(2025, -10, -10, -10, -10, prefix="O") + _ytd_year(2024, -8, -8, -8, -8, prefix="P")
+    facts = {
+        "cik": 1737927,
+        "entityName": "Canopy",
+        "facts": {
+            "us-gaap": {
+                "NetCashProvidedByUsedInOperatingActivities": {"units": {"CAD": ocf}},
+                "NetIncomeLoss": {
+                    "units": {
+                        "CAD": ocf,
+                        "USD": _ytd_year(2025, 1, 1, 1, 1, prefix="U")
+                        + _ytd_year(2024, 1, 1, 1, 1, prefix="V"),
+                    }
+                },
+                "CashAndCashEquivalentsAtCarryingValue": {
+                    "units": {"CAD": [_instant("2025-12-31", 50, "c", 2025, "FY", form="10-K")]}
+                },
+            }
+        },
+    }
+    analysis = analyze_layer3_facts(facts, canonical_cik="0001737927")
+    assert analysis.currency == "CAD"
+    assert analysis.metrics["ocf"]["ttm"] == -40
+    assert analysis.metrics["cash"]["value"] == 50
+
+
+def test_extreme_dso_is_flagged_not_clamped():
+    concepts = _two_year_income()
+    concepts["AccountsReceivableNetCurrent"] = _eight_instants(
+        "ar", [20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000]
+    )
+    analysis = analyze_layer3_facts(companyfacts(concepts))
+    dso = analysis.metrics["dso"]
+    assert dso["status"] == "extracted"
+    assert dso["value"] is not None
+    assert dso["value"] > 400
+    assert "extreme_ratio" in (dso.get("qualityFlags") or [])
+    assert "not clamped" in (dso.get("qualityNote") or "")

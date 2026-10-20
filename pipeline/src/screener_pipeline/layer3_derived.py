@@ -16,6 +16,73 @@ DERIVED_NOTE = (
     "and the inputs were not statement-checked."
 )
 
+# Inspect-only bands. Values outside the range keep their raw number and get a flag.
+RATIO_QUALITY_BANDS = {
+    "dso": (0.0, 400.0),
+    "dio": (0.0, 500.0),
+    "dpo": (0.0, 400.0),
+    "cashConversionCycle": (-400.0, 700.0),
+    "currentRatio": (0.0, 80.0),
+}
+
+
+def suppress_incompatible_derived(
+    metric: dict,
+    *,
+    reason: str = "concept_scope_mismatch",
+) -> dict:
+    """Hide a derived ratio built from incompatible GP/COGS/Revenue. Keep the math."""
+    if not isinstance(metric, dict):
+        return metric
+    if metric.get("status") == "not_applicable":
+        return metric
+    out = dict(metric)
+    if out.get("ttm") is not None:
+        out["unreliableTtm"] = out["ttm"]
+        out["ttm"] = None
+    if out.get("value") is not None:
+        out["unreliableValue"] = out["value"]
+        out["value"] = None
+    if out.get("previousTtm") is not None:
+        out["unreliablePreviousTtm"] = out["previousTtm"]
+        out["previousTtm"] = None
+    out["status"] = "missing"
+    out["reason"] = reason
+    flags = list(out.get("qualityFlags") or [])
+    if "incompatible_inputs" not in flags:
+        flags.append("incompatible_inputs")
+    out["qualityFlags"] = flags
+    out["qualityNote"] = (
+        "Derived ratio suppressed because Gross Profit, Cost of Revenue, and "
+        "Revenue do not share a compatible concept scope. Raw GP/COGS/Revenue "
+        "series are unchanged."
+    )
+    return out
+
+
+def flag_extreme_ratio(metric: dict, key: str) -> dict:
+    """Mark an unusually large ratio. Never clamp or replace the computed value."""
+    bounds = RATIO_QUALITY_BANDS.get(key)
+    if not bounds or not isinstance(metric, dict):
+        return metric
+    val = metric.get("value")
+    if val is None:
+        val = metric.get("ttm")
+    if not isinstance(val, (int, float)):
+        return metric
+    lo, hi = bounds
+    if lo <= val <= hi:
+        return metric
+    flags = list(metric.get("qualityFlags") or [])
+    if "extreme_ratio" not in flags:
+        flags.append("extreme_ratio")
+    metric["qualityFlags"] = flags
+    metric["qualityNote"] = (
+        f"{key} {val} is outside the usual range [{lo}, {hi}]. "
+        "The computed value is preserved; it is not clamped."
+    )
+    return metric
+
 
 def ttm_yoy(current: float | None, previous: float | None) -> tuple[float | None, str | None]:
     """Percent change vs the prior non-overlapping TTM. Prior ≤ 0 is not a ratio."""

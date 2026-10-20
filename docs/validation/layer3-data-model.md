@@ -82,7 +82,7 @@ Pipeline tests cover the v4 extract plus rebuild-safety cases. Web tests are unc
 
 Full-universe percents need `screener layer3 --use-cached-facts` after `companyfacts.zip` is present. The index then includes `counts.metrics.<name>.{extracted,missing,notApplicable}`.
 
-The committed 5,542 v3 issuer files were **not** regenerated. A sidecar extract of HEI / MSFT / NVDA is in `docs/validation/layer3-sidecar-hei-msft-nvda.md`. A full-universe v4 rebuild into `/tmp/layer3-full-v4/staging` (not published) is in `docs/validation/layer3-full-staging.md`.
+The committed 5,542 v3 issuer files were **not** regenerated. A sidecar extract of HEI / MSFT / NVDA is in `docs/validation/layer3-sidecar-hei-msft-nvda.md`. Full-universe staging (not published): `docs/validation/layer3-full-staging.md`. Identity / regression / ratio follow-up: `docs/validation/layer3-identity-and-regressions.md`.
 
 Synthetic complete manufacturer (unit-test fixture): revenue, GP, COGS, NI, OCF, CapEx, FCF, EBITDA, cash, AR, inventory, AP, CA, CL, current ratio, OWC, DSO/DIO/DPO/CCC all `extracted`.
 

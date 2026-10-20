@@ -358,6 +358,10 @@ export interface Layer3FlowMetric {
   calculationMethod?: string;
   verification: string;
   verificationNote?: string;
+  identity?: string | null;
+  qualityFlags?: string[];
+  qualityNote?: string | null;
+  unreliableTtm?: number | null;
 }
 
 export interface Layer3StockMetric {
@@ -394,6 +398,10 @@ export interface Layer3DerivedMetric {
   verification?: string;
   verificationNote?: string;
   quarters?: Layer3Quarter[];
+  qualityFlags?: string[];
+  qualityNote?: string | null;
+  unreliableTtm?: number | null;
+  unreliableValue?: number | null;
 }
 
 export interface Layer3Metrics {
@@ -455,6 +463,7 @@ export interface Layer3Row {
   reason?: string | null;
   currency?: string | null;
   flags?: string[];
+  companyFactsCik?: string | null;
   schemaVersion?: number;
   extractionVersion: number;
   dataAsOf?: string | null;

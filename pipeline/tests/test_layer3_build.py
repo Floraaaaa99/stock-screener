@@ -10,7 +10,12 @@ from test_layer3_extract import _instant, _ytd_year
 from screener_pipeline import config
 from screener_pipeline.cache import write_json_atomic
 from screener_pipeline.cli import main
-from screener_pipeline.layer3_build import Layer3BuildError, publish_layer3, write_layer3
+from screener_pipeline.layer3_build import (
+    Layer3BuildError,
+    publish_layer3,
+    validate_layer3_publish,
+    write_layer3,
+)
 
 
 def _dataset(tmp_path: Path) -> Path:
@@ -299,7 +304,7 @@ def test_publish_blocks_extracted_replaced_by_pending_and_rolls_back(tmp_path: P
     live_dir.mkdir(parents=True)
     live_dest.write_text(json.dumps({"payload": "index"}))
     (live_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 4)))
-    (live_dir / "keep-me.json").write_text(json.dumps(_extracted_stub("0000999999", 8)))
+    (live_dir / "0000999999.json").write_text(json.dumps(_extracted_stub("0000999999", 8)))
 
     staging_dest = tmp_path / "stage" / "layer3.json"
     staging_dir = tmp_path / "stage" / "layer3" / "cik"
@@ -377,3 +382,79 @@ def test_cli_layer3_ciks_writes_sidecar_not_production(tmp_path: Path):
     assert (dest.parent / "layer3" / "cik" / "0000046619.json").exists()
     live = config.REPO_ROOT / "web" / "public" / "data" / "layer3" / "cik" / "0000046619.json"
     assert json.loads(live.read_text())["extractionVersion"] == 3
+
+
+def test_write_layer3_keeps_canonical_cik_when_facts_cik_is_zero(tmp_path: Path):
+    data = tmp_path / "data"
+    (data / "companies").mkdir(parents=True)
+    write_json_atomic(
+        data / "screener.json",
+        {"rows": [{"ticker": "ZSTK", "name": "ZeroStack Corp.", "sicCode": "7372"}]},
+    )
+    write_json_atomic(data / "issuers.json", {"schemaVersion": 1, "byTicker": {"ZSTK": "0001790169"}})
+    dest = tmp_path / "layer3.json"
+    facts = companyfacts(
+        {
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 1, 1, 1, 1, prefix="O") + _ytd_year(2024, 1, 1, 1, 1, prefix="P")
+            ),
+            "CashAndCashEquivalentsAtCarryingValue": [
+                _instant("2025-12-31", 10, "a", 2025, "FY", form="10-K")
+            ],
+        },
+        cik=0,
+        name="ZeroStack Corp.",
+    )
+    out = write_layer3(data, dest, companyfacts_by_cik={"0001790169": facts})
+    path = dest.parent / "layer3" / "cik" / "0001790169.json"
+    assert path.exists()
+    payload = json.loads(path.read_text())
+    assert payload["cik"] == "0001790169"
+    assert payload["displayTicker"] == "ZSTK"
+    assert payload["companyFactsCik"] == "0000000000"
+    assert "company_facts_cik_unusable" in (payload.get("flags") or [])
+    assert {r["cik"] for r in out["rows"]} == {"0001790169"}
+    assert not (dest.parent / "layer3" / "cik" / "0000000000.json").exists()
+
+
+def test_publish_blocks_identity_errors_and_unexpected_deletes(tmp_path: Path):
+    live_dest = tmp_path / "layer3.json"
+    live_dir = tmp_path / "layer3" / "cik"
+    live_dir.mkdir(parents=True)
+    live_dest.write_text(json.dumps({"payload": "index"}))
+    (live_dir / "0000000000.json").write_text(
+        json.dumps({**_extracted_stub("0000000000", 1), "displayTicker": "ZSTK"})
+    )
+    (live_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 2)))
+
+    staging_dest = tmp_path / "stage" / "layer3.json"
+    staging_dir = tmp_path / "stage" / "layer3" / "cik"
+    staging_dir.mkdir(parents=True)
+    staging_dest.write_text(json.dumps({"payload": "index"}))
+    (staging_dir / "0001790169.json").write_text(
+        json.dumps({**_extracted_stub("0001790169", 3), "displayTicker": "ZSTK"})
+    )
+    (staging_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 2)))
+    (staging_dir / "0000759828.json").write_text(
+        json.dumps({**_extracted_stub("0000000000", 4), "displayTicker": "JHI"})
+    )
+
+    errors = validate_layer3_publish(live_dir, staging_dir)
+    joined = " ".join(errors)
+    assert "0000000000.json has zero or invalid cik" in joined
+    assert "0000759828.json has zero or invalid cik" in joined
+    assert "0000000000.json would be deleted; ticker ZSTK remapped to 0001790169.json" in joined
+    with pytest.raises(Layer3BuildError, match="publish blocked"):
+        publish_layer3(live_dest, staging_dest)
+    assert json.loads((live_dir / "0000000000.json").read_text())["metrics"]["ocf"]["ttm"] == 1
+
+
+def test_publish_blocks_duplicate_payload_ciks(tmp_path: Path):
+    live_dir = tmp_path / "live"
+    live_dir.mkdir()
+    staging_dir = tmp_path / "stage"
+    staging_dir.mkdir()
+    (staging_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 1)))
+    (staging_dir / "0000789019.json").write_text(json.dumps(_extracted_stub("0000046619", 2)))
+    errors = validate_layer3_publish(live_dir, staging_dir)
+    assert any("duplicate payload cik 0000046619" in e for e in errors)

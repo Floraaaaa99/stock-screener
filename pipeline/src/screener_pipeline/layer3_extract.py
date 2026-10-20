@@ -43,6 +43,7 @@ from .layer3_concepts import (
     TOTAL_DEBT_INCLUDES_LEASES,
     gaap_concepts_present,
     is_financial_sic,
+    normalize_cik,
 )
 from .layer3_derived import (
     add_flows,
@@ -52,11 +53,13 @@ from .layer3_derived import (
     cash_conversion_metric,
     current_ratio_metric,
     days_outstanding,
+    flag_extreme_ratio,
     identity_holds,
     margin_metric,
     operating_working_capital,
     stock_yoy,
     subtract_flows,
+    suppress_incompatible_derived,
     ttm_window,
 )
 from .quarters import MissingQuarter, Quarter, Slot, build_timeline, dedupe_periods, derive_quarters, label_quarters
@@ -72,6 +75,25 @@ from .sec.facts import (
 from .ttm import TTMResult
 
 NULL = None
+
+
+def _layer3_currency(companyfacts: dict) -> str | None:
+    """Issuer research currency from OCF / revenue / cash, not the full concept bag.
+
+    A secondary tag that happens to include USD (e.g. NetIncomeLoss CAD+USD) must
+    not drop CAD-only operating and cash-flow series.
+    """
+    gaap = (companyfacts.get("facts") or {}).get("us-gaap") or {}
+    for concept in (*OCF_CONCEPTS, *REVENUE_CONCEPTS, *CASH_CONCEPTS):
+        units = (gaap.get(concept) or {}).get("units") or {}
+        if not units:
+            continue
+        if "USD" in units:
+            return "USD"
+        monetary = [u for u in units if "/" not in u and u.isalpha() and len(u) == 3]
+        if len(monetary) == 1:
+            return monetary[0]
+    return None
 
 
 def compute_flow_ttm(slots: list[Slot]) -> TTMResult:
@@ -729,12 +751,24 @@ def analyze_layer3_facts(
     foreign: bool | None = None,
     preferred_revenue_concept: str | None = None,
     preferred_earnings_concept: str | None = None,
+    canonical_cik: str | None = None,
 ) -> Layer3Analysis:
-    """Analyze one issuer's Company Facts payload. Does not score."""
-    flows = extract_named_duration_facts(companyfacts, FLOW_CONCEPTS)
-    instants = extract_instant_facts(companyfacts, STOCK_CONCEPTS)
-    cik = flows.cik or str(companyfacts.get("cik", "")).zfill(10)
+    """Analyze one issuer's Company Facts payload. Does not score.
+
+    Issuer identity is ``canonical_cik`` when provided (the issuers.json /
+    filename CIK). A missing or zero Company Facts CIK is never used as identity.
+    """
+    currency = _layer3_currency(companyfacts)
+    flows = extract_named_duration_facts(companyfacts, FLOW_CONCEPTS, currency=currency)
+    instants = extract_instant_facts(companyfacts, STOCK_CONCEPTS, currency=currency)
+    facts_cik = normalize_cik(flows.cik) or normalize_cik(companyfacts.get("cik"))
+    canonical = normalize_cik(canonical_cik)
+    cik = canonical or facts_cik or str(canonical_cik or "").zfill(10)
     flags: list[str] = []
+    if canonical and facts_cik and facts_cik != canonical:
+        flags.append("company_facts_cik_mismatch")
+    elif canonical and facts_cik is None and companyfacts.get("cik") not in (None, ""):
+        flags.append("company_facts_cik_unusable")
     if foreign or flows.is_foreign_filer:
         flags.append("foreign_filer")
     if is_financial_sic(sic_code):
@@ -898,7 +932,9 @@ def analyze_layer3_facts(
         "accountsPayable": ap,
         "currentAssets": current_assets,
         "currentLiabilities": current_liabilities,
-        "currentRatio": current_ratio_metric(current_assets, current_liabilities),
+        "currentRatio": flag_extreme_ratio(
+            current_ratio_metric(current_assets, current_liabilities), "currentRatio"
+        ),
         "operatingWorkingCapital": operating_working_capital(ar, inventory, ap),
         "arYoy": stock_yoy(ar.get("history")),
         "inventoryYoy": (
@@ -908,13 +944,28 @@ def analyze_layer3_facts(
             else stock_yoy(inventory.get("history"))
         ),
         "apYoy": stock_yoy(ap.get("history")),
-        "dso": dso,
-        "dio": dio,
-        "dpo": dpo,
-        "cashConversionCycle": cash_conversion_cycle(dso, dio, dpo),
+        "dso": flag_extreme_ratio(dso, "dso"),
+        "dio": flag_extreme_ratio(dio, "dio"),
+        "dpo": flag_extreme_ratio(dpo, "dpo"),
+        "cashConversionCycle": flag_extreme_ratio(
+            cash_conversion_cycle(dso, dio, dpo), "cashConversionCycle"
+        ),
         "noInterestBurden": no_interest_burden,
         "growthSource": "not_yet_verified",
     }
+
+    if (
+        gross_profit.get("identity") == "concept_scope_mismatch"
+        or cost_of_revenue.get("identity") == "concept_scope_mismatch"
+    ):
+        flags.append("concept_scope_mismatch")
+        metrics["grossMargin"] = suppress_incompatible_derived(metrics["grossMargin"])
+        if metrics["dio"].get("status") != "not_applicable":
+            metrics["dio"] = suppress_incompatible_derived(metrics["dio"])
+        metrics["dpo"] = suppress_incompatible_derived(metrics["dpo"])
+        metrics["cashConversionCycle"] = suppress_incompatible_derived(
+            metrics["cashConversionCycle"]
+        )
 
     extracted_any = any(
         (isinstance(metrics[k], dict) and (

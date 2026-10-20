@@ -25,7 +25,9 @@ from .layer3_concepts import (
     LAYER3_EXTRACTION_VERSION,
     LAYER3_ISSUER_FILE_TEMPLATE,
     LAYER3_SCHEMA_VERSION,
+    ZERO_CIK,
     is_financial_sic,
+    normalize_cik,
 )
 from .layer3_extract import analyze_layer3_facts
 
@@ -197,15 +199,38 @@ def _load_issuer(directory: Path, cik: str) -> dict | None:
 
 
 def _scan_issuer_dir(directory: Path) -> dict[str, dict]:
+    """Index issuer files by filename stem (canonical CIK), not payload.cik."""
     out: dict[str, dict] = {}
     directory = Path(directory)
     if not directory.exists():
         return out
     for path in directory.glob("*.json"):
-        payload = read_json(path)
-        if payload and payload.get("cik"):
-            out[str(payload["cik"]).zfill(10)] = payload
+        payload = read_json(path) or {}
+        out[path.stem.zfill(10) if path.stem.isdigit() else path.stem] = payload
     return out
+
+
+def _issuer_identity_errors(directory: Path) -> list[str]:
+    """Filename, payload CIK, duplicates, and zero-CIK checks for one tree."""
+    errors: list[str] = []
+    seen: dict[str, str] = {}
+    directory = Path(directory)
+    if not directory.exists():
+        return ["issuer directory does not exist"]
+    for path in sorted(directory.glob("*.json")):
+        payload = read_json(path) or {}
+        raw = payload.get("cik")
+        cik = normalize_cik(raw)
+        if cik is None:
+            errors.append(f"{path.name} has zero or invalid cik {raw!r}")
+            continue
+        if path.stem != cik:
+            errors.append(f"{path.name} payload cik {cik} does not match filename")
+        if cik in seen:
+            errors.append(f"duplicate payload cik {cik} in {seen[cik]} and {path.name}")
+        else:
+            seen[cik] = path.name
+    return errors
 
 
 def _normalize_ciks(ciks: list[str] | None) -> set[str] | None:
@@ -227,20 +252,42 @@ def _has_facts_source(
 
 
 def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
-    """Reject a publish that would turn a live extracted issuer into pending_analysis."""
+    """Reject an unsafe publish: identity errors, extracted→pending, unexpected deletes."""
     errors: list[str] = []
-    live = _scan_issuer_dir(live_dir)
-    staged = _scan_issuer_dir(staging_dir)
-    if not staged:
+    live_dir = Path(live_dir)
+    staging_dir = Path(staging_dir)
+    staged_files = list(staging_dir.glob("*.json")) if staging_dir.exists() else []
+    if not staged_files:
         return ["staging issuer directory is empty"]
-    for cik, payload in live.items():
-        if not _is_keepable_extract(payload):
-            continue
-        next_payload = staged.get(cik)
+    errors.extend(_issuer_identity_errors(staging_dir))
+    errors.extend(_issuer_identity_errors(live_dir))
+
+    live = {p.name: read_json(p) or {} for p in live_dir.glob("*.json")} if live_dir.exists() else {}
+    staged = {p.name: read_json(p) or {} for p in staged_files}
+    staged_by_ticker: dict[str, list[str]] = defaultdict(list)
+    for name, payload in staged.items():
+        ticker = payload.get("displayTicker")
+        if ticker:
+            staged_by_ticker[str(ticker)].append(name)
+
+    for name, payload in sorted(live.items()):
+        next_payload = staged.get(name)
         if next_payload is None:
-            errors.append(f"{cik} extracted on live is missing from staging")
-        elif next_payload.get("extractionStatus") == "pending_analysis":
-            errors.append(f"{cik} would replace extracted with pending_analysis")
+            ticker = payload.get("displayTicker")
+            remap = staged_by_ticker.get(str(ticker) or "")
+            if remap:
+                errors.append(
+                    f"{name} would be deleted; ticker {ticker} remapped to {', '.join(remap)}"
+                )
+            elif _is_keepable_extract(payload):
+                errors.append(f"{name} extracted on live is missing from staging")
+            else:
+                errors.append(f"{name} would be deleted from live")
+        elif (
+            _is_keepable_extract(payload)
+            and next_payload.get("extractionStatus") == "pending_analysis"
+        ):
+            errors.append(f"{name} would replace extracted with pending_analysis")
     return errors
 
 
@@ -379,17 +426,26 @@ def _analyze_payload(
     row: dict | None,
     company: dict | None,
 ) -> dict:
+    canonical = str(base["cik"]).zfill(10)
     analysis = analyze_layer3_facts(
         facts,
         sic_code=sic_code,
         preferred_earnings_concept=reused.get("earningsConcept"),
+        canonical_cik=canonical,
     )
     payload = {**base, **analysis.to_dict()}
+    payload["cik"] = canonical
     payload["metrics"] = public_metrics(payload.get("metrics"))
     payload["tickers"] = tickers
     payload["displayTicker"] = primary
-    payload["name"] = (row or company or {}).get("name") or payload.get("name") or analysis.cik
+    payload["name"] = (row or company or {}).get("name") or payload.get("name") or canonical
     payload["scoring"] = None
+    facts_cik = normalize_cik((facts or {}).get("cik"))
+    raw_facts_cik = (facts or {}).get("cik")
+    if facts_cik and facts_cik != canonical:
+        payload["companyFactsCik"] = facts_cik
+    elif facts_cik is None and raw_facts_cik not in (None, ""):
+        payload["companyFactsCik"] = ZERO_CIK
     return payload
 
 

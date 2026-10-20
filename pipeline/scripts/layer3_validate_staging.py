@@ -158,6 +158,7 @@ def main(argv: list[str] | None = None) -> int:
     ttm_inconsistent_count = 0
     statement_verified = 0
     filename_cik_mismatch = []
+    quality_flags = Counter()
     derived_missing_provenance = []
     derived_missing_provenance_count = 0
     fiscal_gaps = []
@@ -178,16 +179,22 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(metrics, dict):
             metrics = {}
 
-        if payload_cik != cik:
+        if payload_cik != cik or payload_cik == "0000000000":
             filename_cik_mismatch.append(
                 {
                     "file": cik,
-                    "payloadCik": payload_cik,
+                    "payloadCik": payload.get("cik"),
                     "ticker": payload.get("displayTicker"),
                     "name": payload.get("name"),
                     "extractionStatus": payload.get("extractionStatus"),
                 }
             )
+        for flag in payload.get("flags") or []:
+            quality_flags[f"issuer:{flag}"] += 1
+        for key, item in metrics.items():
+            if isinstance(item, dict):
+                for flag in item.get("qualityFlags") or []:
+                    quality_flags[f"{key}:{flag}"] += 1
 
         if payload.get("verificationStatus") == "statement_verified":
             statement_verified += 1
@@ -448,6 +455,7 @@ def main(argv: list[str] | None = None) -> int:
         "stagedOnly": staged_only[:20],
         "stagedOnlyCount": len(staged_only),
         "filenamePayloadCikMismatch": filename_cik_mismatch,
+        "qualityFlags": dict(quality_flags),
         "versions": dict(versions),
         "extraction": dict(extraction),
         "verification": dict(verification),
