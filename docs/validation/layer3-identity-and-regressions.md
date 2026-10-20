@@ -108,7 +108,7 @@ Gross margin extracted is now **1,930** (the 39 conflicts no longer count as cle
 
 ## 5. Tests and CI
 
-- Local pipeline: **191 passed**.
-- New cases: canonical CIK wins over facts CIK 0; publish blocks zero CIK / duplicate / remap-delete; conflict suppresses derived margins; extreme DSO flagged not clamped; CAD OCF survives a USD+CAD NI tag.
+- Local pipeline: **194 passed**.
+- New cases: canonical CIK wins over facts CIK 0; approved ZSTK remap is classified; unapproved remaps and a non-ZSTK zero-CIK file still block; `--publish-dry-run` writes nothing; conflict suppresses derived margins; extreme DSO flagged not clamped; CAD OCF survives a USD+CAD NI tag.
 
 CIK migration dry-run is in `docs/validation/layer3-cik-migration.md`. Production was not published. Still waiting for approval before publish or merge.
