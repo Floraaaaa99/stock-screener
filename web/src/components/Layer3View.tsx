@@ -4,7 +4,6 @@ import { naReason } from "../lib/explain";
 import { formatCompactMoney, formatDate } from "../lib/format";
 import {
   ciksForEntries,
-  displayStatus,
   indexLayer3Rows,
   metricsForEntry,
   metricValue,
@@ -13,13 +12,13 @@ import {
 } from "../lib/layer3";
 import { formatSicIndustry } from "../lib/screener";
 import type { Layer3FlowMetric, Layer3Row, Layer3StockMetric } from "../types";
-import { Layer3Detail } from "./Layer3Detail";
 
 interface Props {
   entries: Layer3Entry[];
   storageNotice: string | null;
   onRemove: (issuerId: string) => void;
   onOpenScreener: () => void;
+  onOpenResearch: (cik: string) => void;
 }
 
 function MoneyCell({
@@ -53,9 +52,8 @@ function StatusCell({ row, fileLoaded }: { row: Layer3Row | null; fileLoaded: bo
   );
 }
 
-export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }: Props) {
+export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener, onOpenResearch }: Props) {
   const [pendingRemove, setPendingRemove] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string | null>(null);
   const [issuerRows, setIssuerRows] = useState<Layer3Row[]>([]);
   const [metricsState, setMetricsState] = useState<"idle" | "loading" | "ready">("idle");
   const sorted = useMemo(
@@ -98,9 +96,9 @@ export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }:
           and <strong>Add to Layer 3</strong>. Nothing is enrolled from Layer 1 or Layer 2 automatically.
         </p>
         <p className="muted">
-          Phase 2 extracts SEC cash-flow and balance-sheet metrics for saved issuers only. The browser
-          downloads one CIK file per company on this list — not the full universe. Missing amounts stay
-          N/A. The 100-point score is not implemented yet. Growth Source: Not Yet Verified.
+          Open a company to examine its financial research page. The browser downloads one CIK file per
+          company on this list — not the full universe. Missing amounts stay N/A. There is no score,
+          ranking, or investment recommendation.
         </p>
         <p className="muted">
           Cash-flow and balance-sheet figures are independently recalculated from SEC Company Facts XBRL.
@@ -183,15 +181,15 @@ export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }:
                 {sorted.map((e) => {
                   const extras = e.tickers.filter((t) => t !== e.displayTicker);
                   const row = metricsForEntry(e, index);
-                  const status = displayStatus(e, row, fileLoaded);
                   const currency = row?.currency ?? row?.layer1.revenueCurrency ?? null;
                   const m = row?.metrics;
-                  const open = expanded === e.issuerId;
                   return (
                     <Fragment key={e.issuerId}>
                       <tr
-                        className={`layer3-row row ${open ? "open" : ""}`}
-                        onClick={() => setExpanded(open ? null : e.issuerId)}
+                        className="layer3-row row"
+                        onClick={() => {
+                          if (e.cik) onOpenResearch(e.cik);
+                        }}
                       >
                         <td className="ticker">
                           {e.displayTicker}
@@ -243,7 +241,6 @@ export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }:
                                 onClick={() => {
                                   onRemove(e.issuerId);
                                   setPendingRemove(null);
-                                  if (expanded === e.issuerId) setExpanded(null);
                                 }}
                               >
                                 Confirm remove
@@ -259,13 +256,6 @@ export function Layer3View({ entries, storageNotice, onRemove, onOpenScreener }:
                           )}
                         </td>
                       </tr>
-                      {open && (
-                        <tr className="detail-row">
-                          <td colSpan={14}>
-                            <Layer3Detail row={row} status={status} />
-                          </td>
-                        </tr>
-                      )}
                     </Fragment>
                   );
                 })}
