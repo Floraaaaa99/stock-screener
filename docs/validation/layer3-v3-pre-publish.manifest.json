@@ -40,5 +40,6 @@
       "sha256": "ee7997f28b740338ce4bc08e06765a4b9a44905b3973599602aad359f4854b7a"
     }
   },
-  "restore": "tar -C web/public/data -xzf docs/validation/layer3-v3-pre-publish.tar.gz"
+  "restore": "python pipeline/scripts/restore_layer3_v3.py --data-dir web/public/data",
+  "restoreNote": "Must delete current layer3/cik/*.json first. A plain tar overlay leaves v4-only 0001790169.json and 0000759828.json."
 }

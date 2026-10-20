@@ -1,14 +1,12 @@
-# Layer 3 CIK identity migration (dry-run)
+# Layer 3 CIK identity migration
 
-Prepared on PR #19. Production JSON was **not** published. PR #19 stays a draft. `refresh.yml` stays dispatch-only.
+Prepared and then published on PR #19 only. `refresh.yml` stays dispatch-only. Not merged, not deployed.
 
 | | |
 |---|---|
 | Date | 2026-10-20 |
-| Live | `web/public/data/layer3` — **5,542** v3 files, git-clean after the dry-run |
-| Staging | `/tmp/layer3-full-v4/staging` — **5,543** v4 files |
-| Rollback copy | `/tmp/layer3-rollback-v3-pre-cik-migration` (5,542 files; name+size fingerprint `8d77cb1275f942b4`) |
-| Publish | **Dry-run only.** Gate result: `ok=true`, `published=false` |
+| Live on this branch | `web/public/data/layer3` — **5,543** v4 files |
+| v3 rollback archive | `docs/validation/layer3-v3-pre-publish.tar.gz` (5,542 files; fingerprint `8d77cb1275f942b4`) |
 
 ## 1. What production `0000000000.json` is
 
@@ -53,7 +51,7 @@ Membership is `localStorage` key `stock-screener.layer3.membership.v1`. Identity
 - CIK known → `cik:{10-digit}`
 - else → `ticker:{TICKER}`
 
-`cikByTicker` comes from `issuers.json`. Adding ZSTK today already stores `cik:0001790169` and fetches `layer3/cik/0001790169.json`, which **does not exist in production yet** (404). Adding JHI already stores `cik:0000759828` (also no production file).
+`cikByTicker` comes from `issuers.json`. Adding ZSTK stores `cik:0001790169` and fetches `layer3/cik/0001790169.json`. Adding JHI stores `cik:0000759828`. Both files exist on this branch after the v4 publish.
 
 A list saved from the production issuer payload (`cik: 0000000000`) would be `cik:0000000000`. Deleting `0000000000.json` without a client remap would 404 that entry. `metricsForEntry` can fall back to ticker on the index, but the index has no rows and metrics are lazy-loaded by CIK file.
 
@@ -120,16 +118,31 @@ Approved and executed on `cursor/layer3-data-model-be5a` only. `publish_layer3(.
 
 Published tree size: **320.15 MB** issuer files + **3,114 B** index.
 
-Recoverable v3 backup (committed, not `/tmp` only):
+## 7. Restore the v3 issuer set
 
-- Archive: `docs/validation/layer3-v3-pre-publish.tar.gz` (4.93 MB, sha256 `b5d1775c65c03cfd7559ec067c3b51fed83a0ded5b39ef3842247b6a94df7c1a`)
-- Manifest: `docs/validation/layer3-v3-pre-publish.manifest.json`
-- Local exploded copy (gitignored): `/workspace/backups/layer3-v3-pre-publish` (5,542 files)
+A plain `tar -xzf` overlay is **not** enough. The archive does not list v4-only files, so extracting it on top of the published tree leaves `0001790169.json` and `0000759828.json` and yields 5,544 files instead of the original 5,542.
 
-Restore:
+Verified procedure (isolated copy, 2026-10-20):
 
 ```bash
+python pipeline/scripts/restore_layer3_v3.py --data-dir web/public/data
+```
+
+That script:
+
+1. Deletes every `layer3/cik/*.json` in the target data directory.
+2. Extracts `docs/validation/layer3-v3-pre-publish.tar.gz` (index + 5,542 v3 issuer files, including `0000000000.json`).
+3. Checks file count, name+size fingerprint `8d77cb1275f942b4`, v3 index (schema 2 / extract 3 / 881 bytes), and that the v4-only ZSTK/JHI files are gone.
+
+Equivalent shell:
+
+```bash
+rm -f web/public/data/layer3/cik/*.json
 tar -C web/public/data -xzf docs/validation/layer3-v3-pre-publish.tar.gz
 ```
+
+Do not run this against production unless you intend to roll back. On this PR branch, `git revert` of the publish commit is an alternative.
+
+Archive: `docs/validation/layer3-v3-pre-publish.tar.gz` (4.93 MB, sha256 `b5d1775c65c03cfd7559ec067c3b51fed83a0ded5b39ef3842247b6a94df7c1a`). Isolated verify: `/tmp/layer3-rollback-verify/report.json`.
 
 This branch was **not** merged to `main`, `refresh.yml` was **not** enabled, and GitHub Pages was **not** deployed.

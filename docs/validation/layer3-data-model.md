@@ -48,7 +48,7 @@ Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw
 | `--publish-dry-run` | Read-only publish plan (adds / replaces / removes / approved remaps). Does not write live files. Incompatible with `--publish`. |
 | `--write-live` | Required before incremental writes or publishes can target `web/public/data/layer3.json`. Refused by default. |
 
-`reset_issuer_dir` refuses the live issuer directory. On this PR branch, production `web/public/data/layer3` is the validated v4 publish (5,543 files). A recoverable v3 snapshot is `docs/validation/layer3-v3-pre-publish.tar.gz`. Do not merge or deploy until approved.
+`reset_issuer_dir` refuses the live issuer directory. On this PR branch, production `web/public/data/layer3` is the validated v4 publish (5,543 files). Restore v3 with `python pipeline/scripts/restore_layer3_v3.py --data-dir web/public/data` (clears v4-only files first). Do not merge or deploy until approved.
 
 Sidecar sample (does not publish):
 

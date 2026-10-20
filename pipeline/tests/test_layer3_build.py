@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
+import importlib.util
 import json
+import tarfile
 from pathlib import Path
 
 import pytest
@@ -577,3 +580,49 @@ def test_publish_blocks_duplicate_payload_ciks(tmp_path: Path):
     (staging_dir / "0000789019.json").write_text(json.dumps(_extracted_stub("0000046619", 2)))
     errors = validate_layer3_publish(live_dir, staging_dir)
     assert any("duplicate payload cik 0000046619" in e for e in errors)
+
+
+def _load_restore_layer3_v3():
+    path = Path(__file__).resolve().parents[1] / "scripts" / "restore_layer3_v3.py"
+    spec = importlib.util.spec_from_file_location("restore_layer3_v3", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_restore_layer3_v3_removes_v4_only_files(tmp_path: Path):
+    module = _load_restore_layer3_v3()
+    data = tmp_path / "data"
+    cik = data / "layer3" / "cik"
+    cik.mkdir(parents=True)
+    (cik / "0001790169.json").write_text(json.dumps({"cik": "0001790169"}))
+    (cik / "0000759828.json").write_text(json.dumps({"cik": "0000759828"}))
+    (data / "layer3.json").write_text(json.dumps({"schemaVersion": 3, "extractionVersion": 4}))
+
+    v3 = tmp_path / "v3src"
+    (v3 / "layer3" / "cik").mkdir(parents=True)
+    (v3 / "layer3.json").write_text(json.dumps({"schemaVersion": 2, "extractionVersion": 3}) + "\n")
+    zero = v3 / "layer3" / "cik" / "0000000000.json"
+    zero.write_text(json.dumps({"cik": "0000000000", "displayTicker": "ZSTK"}))
+    archive = tmp_path / "v3.tar.gz"
+    with tarfile.open(archive, "w:gz") as tf:
+        tf.add(v3 / "layer3.json", arcname="layer3.json")
+        tf.add(zero, arcname="layer3/cik/0000000000.json")
+
+    digest = hashlib.sha256()
+    digest.update(b"0000000000.json\0")
+    digest.update(str(zero.stat().st_size).encode())
+    digest.update(b"\n")
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps({"issuerFiles": 1, "nameSizeFingerprint": digest.hexdigest()[:16]})
+    )
+
+    report = module.restore_layer3_v3(data, archive, manifest=manifest)
+    assert report["ok"] is True
+    assert report["issuerFiles"] == 1
+    assert (cik / "0000000000.json").exists()
+    assert not (cik / "0001790169.json").exists()
+    assert not (cik / "0000759828.json").exists()
+    assert json.loads((data / "layer3.json").read_text())["schemaVersion"] == 2
