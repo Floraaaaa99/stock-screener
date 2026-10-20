@@ -131,6 +131,11 @@ def main(argv: list[str] | None = None) -> int:
         help="After a validated full rebuild, copy staging over dest (requires --mode full)",
     )
     l3.add_argument(
+        "--publish-dry-run",
+        action="store_true",
+        help="Print the publish plan (adds/replaces/removes/migrations) without writing files",
+    )
+    l3.add_argument(
         "--write-live",
         action="store_true",
         help="Allow writing dest=web/public/data/layer3.json (refused by default)",
@@ -230,10 +235,30 @@ def main(argv: list[str] | None = None) -> int:
             )
             print(json.dumps(report, indent=2))
         elif args.cmd == "layer3":
-            from .layer3_build import Layer3BuildError, default_facts_zip, write_layer3
+            from .layer3_build import (
+                Layer3BuildError,
+                default_facts_zip,
+                issuer_dir_for,
+                plan_layer3_publish,
+                resolve_layer3_staging_dest,
+                write_layer3,
+            )
 
             data_dir = Path(args.data_dir)
             dest = Path(args.output) if args.output else data_dir / "layer3.json"
+            if args.publish_dry_run:
+                if args.publish:
+                    print("error: --publish-dry-run does not publish; omit --publish", file=sys.stderr)
+                    return 2
+                staging_dest = resolve_layer3_staging_dest(
+                    dest, Path(args.staging_dir) if args.staging_dir else None
+                )
+                plan = plan_layer3_publish(issuer_dir_for(dest), issuer_dir_for(staging_dest))
+                plan["liveDest"] = str(dest)
+                plan["stagingDest"] = str(staging_dest)
+                plan["published"] = False
+                print(json.dumps(plan, indent=2))
+                return 0 if plan["ok"] else 2
             facts_zip = Path(args.facts_zip) if args.facts_zip else None
             if facts_zip is None and args.use_cached_facts:
                 facts_zip = default_facts_zip()

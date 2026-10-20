@@ -12,6 +12,7 @@ from screener_pipeline.cache import write_json_atomic
 from screener_pipeline.cli import main
 from screener_pipeline.layer3_build import (
     Layer3BuildError,
+    plan_layer3_publish,
     publish_layer3,
     validate_layer3_publish,
     write_layer3,
@@ -439,14 +440,131 @@ def test_publish_blocks_identity_errors_and_unexpected_deletes(tmp_path: Path):
         json.dumps({**_extracted_stub("0000000000", 4), "displayTicker": "JHI"})
     )
 
-    errors = validate_layer3_publish(live_dir, staging_dir)
-    joined = " ".join(errors)
-    assert "0000000000.json has zero or invalid cik" in joined
+    plan = plan_layer3_publish(live_dir, staging_dir)
+    joined = " ".join(plan["errors"])
+    assert plan["migrations"] == [
+        {
+            "legacyFile": "0000000000.json",
+            "legacyCik": "0000000000",
+            "canonicalFile": "0001790169.json",
+            "canonicalCik": "0001790169",
+            "ticker": "ZSTK",
+            "action": "remap_delete",
+        }
+    ]
+    assert "0000000000.json has zero or invalid cik" not in joined
+    assert "0000000000.json would be deleted; ticker ZSTK remapped to 0001790169.json" not in joined
     assert "0000759828.json has zero or invalid cik" in joined
-    assert "0000000000.json would be deleted; ticker ZSTK remapped to 0001790169.json" in joined
     with pytest.raises(Layer3BuildError, match="publish blocked"):
         publish_layer3(live_dest, staging_dest)
     assert json.loads((live_dir / "0000000000.json").read_text())["metrics"]["ocf"]["ttm"] == 1
+
+
+def test_approved_zstk_cik_migration_is_classified_not_an_error(tmp_path: Path):
+    live_dest = tmp_path / "layer3.json"
+    live_dir = tmp_path / "layer3" / "cik"
+    live_dir.mkdir(parents=True)
+    live_dest.write_text(json.dumps({"payload": "index"}))
+    (live_dir / "0000000000.json").write_text(
+        json.dumps({**_extracted_stub("0000000000", 1), "displayTicker": "ZSTK", "tickers": ["ZSTK"]})
+    )
+    (live_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 2)))
+
+    staging_dest = tmp_path / "stage" / "layer3.json"
+    staging_dir = tmp_path / "stage" / "layer3" / "cik"
+    staging_dir.mkdir(parents=True)
+    staging_dest.write_text(json.dumps({"payload": "index"}))
+    (staging_dir / "0001790169.json").write_text(
+        json.dumps({**_extracted_stub("0001790169", 3), "displayTicker": "ZSTK", "tickers": ["ZSTK"]})
+    )
+    (staging_dir / "0000046619.json").write_text(json.dumps(_extracted_stub("0000046619", 5)))
+    (staging_dir / "0000759828.json").write_text(
+        json.dumps({**_extracted_stub("0000759828", 4), "displayTicker": "JHI", "tickers": ["JHI"]})
+    )
+
+    plan = plan_layer3_publish(live_dir, staging_dir)
+    assert plan["ok"] is True
+    assert plan["errors"] == []
+    assert plan["added"] == ["0000759828.json", "0001790169.json"]
+    assert plan["removed"] == ["0000000000.json"]
+    assert plan["replaced"] == ["0000046619.json"]
+    assert plan["migrations"][0]["ticker"] == "ZSTK"
+    assert validate_layer3_publish(live_dir, staging_dir) == []
+
+    published = publish_layer3(live_dest, staging_dest, rollback_dir=tmp_path / "rb")
+    assert published["published"] is True
+    assert not (live_dir / "0000000000.json").exists()
+    assert json.loads((live_dir / "0001790169.json").read_text())["metrics"]["ocf"]["ttm"] == 3
+    assert json.loads((tmp_path / "rb" / "cik" / "0000000000.json").read_text())["metrics"]["ocf"]["ttm"] == 1
+
+
+def test_publish_still_blocks_unapproved_remap_and_wrong_zero_cik_occupant(tmp_path: Path):
+    live_dir = tmp_path / "live"
+    staging_dir = tmp_path / "stage"
+    live_dir.mkdir()
+    staging_dir.mkdir()
+    (live_dir / "0000046619.json").write_text(
+        json.dumps({**_extracted_stub("0000046619", 1), "displayTicker": "HEI"})
+    )
+    (staging_dir / "0000999999.json").write_text(
+        json.dumps({**_extracted_stub("0000999999", 2), "displayTicker": "HEI"})
+    )
+    errors = validate_layer3_publish(live_dir, staging_dir)
+    assert any("0000046619.json would be deleted; ticker HEI remapped" in e for e in errors)
+
+    live2 = tmp_path / "live2"
+    stage2 = tmp_path / "stage2"
+    live2.mkdir()
+    stage2.mkdir()
+    (live2 / "0000000000.json").write_text(
+        json.dumps({**_extracted_stub("0000000000", 1), "displayTicker": "JHI", "tickers": ["JHI"]})
+    )
+    (stage2 / "0000759828.json").write_text(
+        json.dumps({**_extracted_stub("0000759828", 2), "displayTicker": "JHI", "tickers": ["JHI"]})
+    )
+    joined = " ".join(validate_layer3_publish(live2, stage2))
+    assert "0000000000.json has zero or invalid cik" in joined
+    assert "0000000000.json would be deleted; ticker JHI remapped to 0000759828.json" in joined
+
+
+def test_cli_publish_dry_run_does_not_write(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+    live_dest = tmp_path / "layer3.json"
+    live_dir = tmp_path / "layer3" / "cik"
+    live_dir.mkdir(parents=True)
+    live_dest.write_text(json.dumps({"payload": "index"}))
+    (live_dir / "0000000000.json").write_text(
+        json.dumps({**_extracted_stub("0000000000", 1), "displayTicker": "ZSTK", "tickers": ["ZSTK"]})
+    )
+    staging_root = tmp_path / "stage"
+    staging_dir = staging_root / "layer3" / "cik"
+    staging_dir.mkdir(parents=True)
+    (staging_root / "layer3.json").write_text(json.dumps({"payload": "index"}))
+    (staging_dir / "0001790169.json").write_text(
+        json.dumps({**_extracted_stub("0001790169", 3), "displayTicker": "ZSTK", "tickers": ["ZSTK"]})
+    )
+
+    code = main(
+        [
+            "layer3",
+            "--data-dir",
+            str(tmp_path / "data"),
+            "--output",
+            str(live_dest),
+            "--staging-dir",
+            str(staging_root),
+            "--publish-dry-run",
+        ]
+    )
+    captured = capsys.readouterr()
+    assert code == 0
+    plan = json.loads(captured.out)
+    assert plan["published"] is False
+    assert plan["ok"] is True
+    assert plan["added"] == ["0001790169.json"]
+    assert plan["removed"] == ["0000000000.json"]
+    assert (live_dir / "0000000000.json").exists()
+    assert not (live_dir / "0001790169.json").exists()
+    assert main(["layer3", "--output", str(live_dest), "--publish", "--publish-dry-run"]) == 2
 
 
 def test_publish_blocks_duplicate_payload_ciks(tmp_path: Path):

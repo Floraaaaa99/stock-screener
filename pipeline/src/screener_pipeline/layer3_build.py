@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import zipfile
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -161,6 +162,39 @@ def issuer_dir_for(dest: Path) -> Path:
     return Path(dest).parent / "layer3" / "cik"
 
 
+def resolve_layer3_staging_dest(dest: Path, staging_dir: Path | None = None) -> Path:
+    """Index path for a full rebuild: ``<staging-dir>/layer3.json`` or ``<dest>.staging``."""
+    dest = Path(dest)
+    staging_root = Path(staging_dir) if staging_dir else dest.parent / (dest.name + ".staging")
+    staging_dest = staging_root / "layer3.json" if staging_root.suffix != ".json" else staging_root
+    if staging_dest.suffix != ".json":
+        staging_dest = staging_root / "layer3.json"
+    return staging_dest
+
+
+@dataclass(frozen=True)
+class ApprovedCikMigration:
+    """One reviewed remap. No wildcards — add a new row to approve another file."""
+
+    legacy_file: str
+    legacy_cik: str
+    ticker: str
+    canonical_file: str
+    canonical_cik: str
+
+
+# Confirmed 2026-10-20: production 0000000000.json is ZSTK only; issuers.json CIK is 0001790169.
+APPROVED_CIK_MIGRATIONS: tuple[ApprovedCikMigration, ...] = (
+    ApprovedCikMigration(
+        legacy_file="0000000000.json",
+        legacy_cik=ZERO_CIK,
+        ticker="ZSTK",
+        canonical_file="0001790169.json",
+        canonical_cik="0001790169",
+    ),
+)
+
+
 class Layer3BuildError(RuntimeError):
     """Safe-build failure. Existing live issuer files must be left untouched."""
 
@@ -251,19 +285,104 @@ def _has_facts_source(
     return facts_zip is not None and Path(facts_zip).exists()
 
 
-def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
-    """Reject an unsafe publish: identity errors, extracted→pending, unexpected deletes."""
+def _payload_tickers(payload: dict) -> set[str]:
+    tickers = {str(t).strip().upper() for t in (payload.get("tickers") or []) if t}
+    display = payload.get("displayTicker")
+    if display:
+        tickers.add(str(display).strip().upper())
+    return tickers
+
+
+def _is_explicit_zero_cik(raw: object) -> bool:
+    if raw is None:
+        return False
+    digits = "".join(ch for ch in str(raw).strip() if ch.isdigit())
+    if not digits:
+        return False
+    return str(int(digits)).zfill(10) == ZERO_CIK
+
+
+def match_approved_cik_migration(
+    live_name: str,
+    live_payload: dict,
+    staged: dict[str, dict],
+) -> ApprovedCikMigration | None:
+    """Return the allowlisted remap only when live and staging both match exactly."""
+    for mig in APPROVED_CIK_MIGRATIONS:
+        if live_name != mig.legacy_file:
+            continue
+        if _payload_tickers(live_payload) != {mig.ticker}:
+            continue
+        if not _is_explicit_zero_cik(live_payload.get("cik")):
+            continue
+        staged_payload = staged.get(mig.canonical_file)
+        if not staged_payload:
+            continue
+        if normalize_cik(staged_payload.get("cik")) != mig.canonical_cik:
+            continue
+        if _payload_tickers(staged_payload) != {mig.ticker}:
+            continue
+        return mig
+    return None
+
+
+def plan_layer3_publish(live_dir: Path, staging_dir: Path) -> dict:
+    """Classify adds/replaces/removes. Approved remaps are listed, not treated as errors.
+
+    General identity, extracted→pending, and unexpected-deletion checks stay on.
+    """
     errors: list[str] = []
     live_dir = Path(live_dir)
     staging_dir = Path(staging_dir)
     staged_files = list(staging_dir.glob("*.json")) if staging_dir.exists() else []
     if not staged_files:
-        return ["staging issuer directory is empty"]
-    errors.extend(_issuer_identity_errors(staging_dir))
-    errors.extend(_issuer_identity_errors(live_dir))
+        return {
+            "ok": False,
+            "errors": ["staging issuer directory is empty"],
+            "migrations": [],
+            "added": [],
+            "removed": [],
+            "replaced": [],
+            "counts": {
+                "live": 0,
+                "staging": 0,
+                "added": 0,
+                "removed": 0,
+                "replaced": 0,
+                "migrations": 0,
+                "errors": 1,
+            },
+        }
 
     live = {p.name: read_json(p) or {} for p in live_dir.glob("*.json")} if live_dir.exists() else {}
     staged = {p.name: read_json(p) or {} for p in staged_files}
+
+    migrations: list[dict] = []
+    approved_live_files: set[str] = set()
+    for name, payload in live.items():
+        if name in staged:
+            continue
+        mig = match_approved_cik_migration(name, payload, staged)
+        if mig is None:
+            continue
+        approved_live_files.add(name)
+        migrations.append(
+            {
+                "legacyFile": mig.legacy_file,
+                "legacyCik": mig.legacy_cik,
+                "canonicalFile": mig.canonical_file,
+                "canonicalCik": mig.canonical_cik,
+                "ticker": mig.ticker,
+                "action": "remap_delete",
+            }
+        )
+
+    errors.extend(_issuer_identity_errors(staging_dir))
+    for err in _issuer_identity_errors(live_dir):
+        if any(err.startswith(f"{name} ") or err.startswith(name) for name in approved_live_files):
+            continue
+        errors.append(err)
+
     staged_by_ticker: dict[str, list[str]] = defaultdict(list)
     for name, payload in staged.items():
         ticker = payload.get("displayTicker")
@@ -273,6 +392,8 @@ def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
     for name, payload in sorted(live.items()):
         next_payload = staged.get(name)
         if next_payload is None:
+            if name in approved_live_files:
+                continue
             ticker = payload.get("displayTicker")
             remap = staged_by_ticker.get(str(ticker) or "")
             if remap:
@@ -288,7 +409,32 @@ def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
             and next_payload.get("extractionStatus") == "pending_analysis"
         ):
             errors.append(f"{name} would replace extracted with pending_analysis")
-    return errors
+
+    added = sorted(set(staged) - set(live))
+    removed = sorted(set(live) - set(staged))
+    replaced = sorted(set(live) & set(staged))
+    return {
+        "ok": not errors,
+        "errors": errors,
+        "migrations": migrations,
+        "added": added,
+        "removed": removed,
+        "replaced": replaced,
+        "counts": {
+            "live": len(live),
+            "staging": len(staged),
+            "added": len(added),
+            "removed": len(removed),
+            "replaced": len(replaced),
+            "migrations": len(migrations),
+            "errors": len(errors),
+        },
+    }
+
+
+def validate_layer3_publish(live_dir: Path, staging_dir: Path) -> list[str]:
+    """Reject an unsafe publish: identity errors, extracted→pending, unexpected deletes."""
+    return list(plan_layer3_publish(live_dir, staging_dir)["errors"])
 
 
 def _copy_json_tree(src: Path, dest: Path) -> None:
@@ -551,10 +697,7 @@ def write_layer3(
     write_dest = dest
     staging_dest = None
     if mode == "full":
-        staging_root = Path(staging_dir) if staging_dir else dest.parent / (dest.name + ".staging")
-        staging_dest = staging_root / "layer3.json" if staging_root.suffix != ".json" else staging_root
-        if staging_dest.suffix != ".json":
-            staging_dest = staging_root / "layer3.json"
+        staging_dest = resolve_layer3_staging_dest(dest, staging_dir)
         write_dest = staging_dest
         write_dir = issuer_dir_for(write_dest)
         reset_issuer_dir(write_dir)

@@ -36,12 +36,75 @@ export interface AddToLayer3Result {
 
 export type CikByTicker = Record<string, string | null | undefined>;
 
-/** Normalize an SEC CIK to 10 digits, or null when missing/invalid. */
+export const ZERO_CIK = "0000000000";
+
+/** Reviewed browser remaps. Keep in lockstep with pipeline APPROVED_CIK_MIGRATIONS. */
+export const APPROVED_CIK_MIGRATIONS = [
+  { legacyCik: ZERO_CIK, ticker: "ZSTK", canonicalCik: "0001790169" },
+] as const;
+
+/** Normalize an SEC CIK to 10 digits, or null when missing/zero/invalid. */
 export function normalizeCik(cik: string | null | undefined): string | null {
   if (cik == null) return null;
   const digits = String(cik).replace(/\D/g, "");
   if (!digits) return null;
+  const padded = digits.padStart(10, "0");
+  if (padded === ZERO_CIK) return null;
+  return padded;
+}
+
+function paddedCikDigits(cik: string | null | undefined): string | null {
+  if (cik == null) return null;
+  const digits = String(cik).replace(/\D/g, "");
+  if (!digits) return null;
   return digits.padStart(10, "0");
+}
+
+/**
+ * Rewrite the one confirmed invalid saved-list identity.
+ * Production 0000000000.json is ZSTK only; issuers.json already uses 0001790169.
+ */
+export function migrateLegacyIssuerEntry(entry: Layer3Entry): Layer3Entry {
+  const tickers = new Set(entry.tickers.map(normalizeTicker));
+  if (entry.displayTicker) tickers.add(normalizeTicker(entry.displayTicker));
+  for (const mig of APPROVED_CIK_MIGRATIONS) {
+    if (!tickers.has(mig.ticker)) continue;
+    const idIsLegacy = entry.issuerId === `cik:${mig.legacyCik}`;
+    const cikIsLegacy = paddedCikDigits(entry.cik) === mig.legacyCik;
+    if (!idIsLegacy && !cikIsLegacy) continue;
+    return {
+      ...entry,
+      issuerId: `cik:${mig.canonicalCik}`,
+      cik: mig.canonicalCik,
+    };
+  }
+  return entry;
+}
+
+/** Apply approved remaps and collapse a legacy + canonical pair onto one entry. */
+export function migrateLegacyMembership(entries: readonly Layer3Entry[]): {
+  entries: Layer3Entry[];
+  migrated: boolean;
+} {
+  const next: Layer3Entry[] = [];
+  const byId = new Map<string, Layer3Entry>();
+  let migrated = false;
+  for (const entry of entries) {
+    const rewritten = migrateLegacyIssuerEntry(entry);
+    if (rewritten.issuerId !== entry.issuerId || rewritten.cik !== entry.cik) migrated = true;
+    const existing = byId.get(rewritten.issuerId);
+    if (!existing) {
+      byId.set(rewritten.issuerId, rewritten);
+      next.push(rewritten);
+      continue;
+    }
+    migrated = true;
+    for (const ticker of rewritten.tickers) {
+      if (!existing.tickers.includes(ticker)) existing.tickers.push(ticker);
+    }
+    if (!existing.cik && rewritten.cik) existing.cik = rewritten.cik;
+  }
+  return { entries: next, migrated };
 }
 
 export function normalizeTicker(ticker: string): string {

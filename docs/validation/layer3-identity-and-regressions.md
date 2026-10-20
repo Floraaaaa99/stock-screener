@@ -8,7 +8,7 @@ Follow-up on the full-universe staging report. Production JSON was not published
 | Staging | `/tmp/layer3-full-v4/staging` regenerated after the fixes (199 s, exit 0) |
 | Unique issuers | **5,543 files = 5,543 payload CIKs = 5,543 index rows** |
 | Production | **5,542 files, git-clean** |
-| Publish | **Blocked** (see below). Do not publish or merge. |
+| Publish | Dry-run now **passes** with the explicit ZSTK remap. Production was **not** published. Do not merge. |
 
 ## 1. CIK identity
 
@@ -29,12 +29,9 @@ Filename / payload mismatches: **0**. Duplicate payload CIKs: **0**. Zero CIKs i
 - extracted → `pending_analysis`
 - unexpected live-file deletions, including ticker remaps
 
-Against current production it correctly blocks:
+Against current production, the general checks still fire. The one confirmed remap — production `0000000000.json` (ZSTK only) → staging `0001790169.json` — is now classified by `APPROVED_CIK_MIGRATIONS` instead of treated as an error. Other remaps, other zero-CIK occupants, duplicates, filename mismatches, extracted→pending, and unexpected deletes remain hard errors.
 
-1. `0000000000.json has zero or invalid cik '0000000000'`
-2. `0000000000.json would be deleted; ticker ZSTK remapped to 0001790169.json`
-
-That remap still needs an explicit publish decision. It is not auto-allowed.
+See `docs/validation/layer3-cik-migration.md` for the dry-run add/replace/remove list. Production JSON was not modified.
 
 ## 2. v3 → v4 overlapping metrics (23 issuers)
 
@@ -114,4 +111,4 @@ Gross margin extracted is now **1,930** (the 39 conflicts no longer count as cle
 - Local pipeline: **191 passed**.
 - New cases: canonical CIK wins over facts CIK 0; publish blocks zero CIK / duplicate / remap-delete; conflict suppresses derived margins; extreme DSO flagged not clamped; CAD OCF survives a USD+CAD NI tag.
 
-Waiting for GitHub CI on this commit. Still waiting for approval before publish or merge.
+CIK migration dry-run is in `docs/validation/layer3-cik-migration.md`. Production was not published. Still waiting for approval before publish or merge.

@@ -45,6 +45,7 @@ Unchanged. It still holds revenue + earnings only. Layer 3 continues to need raw
 | No zip / facts dir / inline payload | Error. No writes. |
 | `--mode full` | Write the complete tree into `--staging-dir` (or `<output>.staging`). Live dest is untouched until `--publish`. |
 | `--publish` | Allowed only with `--mode full`. Validates that no live extracted issuer becomes `pending_analysis` or goes missing, copies live → `layer3.rollback-*`, then publishes. A failed publish restores the rollback. |
+| `--publish-dry-run` | Read-only publish plan (adds / replaces / removes / approved remaps). Does not write live files. Incompatible with `--publish`. |
 | `--write-live` | Required before incremental writes or publishes can target `web/public/data/layer3.json`. Refused by default. |
 
 `reset_issuer_dir` refuses the live issuer directory. Production 5,542 v3 files are not rebuilt by this PR.
