@@ -11,11 +11,13 @@ from screener_pipeline.sec.daily_index import (
     collect_period_filings,
     fetch_master_idx,
     fetch_master_idx_status,
+    index_data_row_count,
     index_dates,
     index_is_complete,
     lookback_dates,
     master_idx_url,
     parse_master_idx,
+    recent_business_days,
 )
 from screener_pipeline.sec.facts import DOMESTIC_FORMS
 
@@ -34,6 +36,22 @@ not-a-cik|Bad|10-Q|20261020|edgar/data/1/0000000001-26-000001.txt
 
 INCOMPLETE_IDX = """Description:           Daily Index of EDGAR Documents
 Last Data Received:    Oct 20, 2026
+"""
+
+HEADER_ONLY_IDX = """Description:           Daily Index of EDGAR Documents
+Last Data Received:    Oct 20, 2026
+Comments:              webmaster@sec.gov
+
+CIK|Company Name|Form Type|Date Filed|Filename
+--------------------------------------------------------------------------------
+"""
+
+PARTIAL_IDX = """Description:           Daily Index of EDGAR Documents
+Last Data Received:    Oct 20, 2026
+
+CIK|Company Name|Form Type|Date Filed|Filename
+--------------------------------------------------------------------------------
+0000320193|Apple Inc.|10-Q|20261020|edgar/data/320193/0000320193-26-000111.txt
 """
 
 
@@ -92,10 +110,32 @@ def test_accession_from_filename_accepts_underscore():
     assert accession_from_filename("edgar/data/320193/0000320193_26_000111.txt") == "0000320193-26-000111"
 
 
-def test_index_is_complete_requires_header():
+def test_index_is_complete_requires_header_and_rows():
     assert index_is_complete(MASTER_IDX)
+    assert index_is_complete(PARTIAL_IDX)
     assert not index_is_complete(INCOMPLETE_IDX)
+    assert not index_is_complete(HEADER_ONLY_IDX)
     assert not index_is_complete("")
+    assert index_data_row_count(MASTER_IDX) >= 4
+    assert index_data_row_count(HEADER_ONLY_IDX) == 0
+
+
+def test_recent_business_days_skips_weekends():
+    assert recent_business_days(date(2026, 10, 21), 3) == [
+        date(2026, 10, 21),
+        date(2026, 10, 20),
+        date(2026, 10, 19),
+    ]
+    assert recent_business_days(date(2026, 10, 19), 3) == [
+        date(2026, 10, 19),
+        date(2026, 10, 16),
+        date(2026, 10, 15),
+    ]
+    assert recent_business_days(date(2026, 10, 18), 3) == [
+        date(2026, 10, 16),
+        date(2026, 10, 15),
+        date(2026, 10, 14),
+    ]
 
 
 def test_fetch_master_idx_does_not_cache_404(tmp_path: Path):
@@ -118,6 +158,29 @@ def test_fetch_master_idx_does_not_cache_incomplete(tmp_path: Path):
     assert text is None
     assert status == "incomplete"
     assert not (tmp_path / "master.20261020.idx").exists()
+
+
+def test_fetch_master_idx_does_not_cache_header_only(tmp_path: Path):
+    day = date(2026, 10, 20)
+    url = master_idx_url(day)
+    http = FakeHttp({url: FakeResp(200, HEADER_ONLY_IDX)})
+    text, status = fetch_master_idx_status(http, day, cache_dir=tmp_path)
+    assert text is None
+    assert status == "incomplete"
+    assert not (tmp_path / "master.20261020.idx").exists()
+
+
+def test_header_only_cache_is_discarded_and_refetched(tmp_path: Path):
+    day = date(2026, 10, 20)
+    url = master_idx_url(day)
+    cached = tmp_path / "master.20261020.idx"
+    cached.write_text(HEADER_ONLY_IDX, encoding="utf-8")
+    http = FakeHttp({url: FakeResp(200, MASTER_IDX)})
+    text, status = fetch_master_idx_status(http, day, cache_dir=tmp_path)
+    assert status == "ok"
+    assert text is not None and "0000320193" in text
+    assert http.urls == [url]
+    assert index_is_complete(cached.read_text(encoding="utf-8"))
 
 
 def test_fetch_master_idx_refetches_stale_incomplete_cache(tmp_path: Path):
@@ -148,14 +211,55 @@ def test_index_dates_extends_for_missed_sync():
     assert len(days) == (date(2026, 10, 21) - date(2026, 9, 29)).days + 1
 
 
+def test_recent_cached_index_is_refetched_and_can_grow(tmp_path: Path):
+    as_of = date(2026, 10, 21)
+    url = master_idx_url(as_of)
+    cached = tmp_path / "master.20261021.idx"
+    cached.write_text(PARTIAL_IDX, encoding="utf-8")
+    http = FakeHttp({url: FakeResp(200, MASTER_IDX)})
+    filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        1,
+        cache_dir=tmp_path,
+        revalidate_business_days=3,
+    )
+    assert http.urls == [url]
+    assert as_of.isoformat() in found
+    assert as_of.isoformat() in unreconciled
+    assert {f.accn for f in filings} >= {"0000320193-26-000111", "0001193125-26-000099"}
+    assert index_data_row_count(cached.read_text(encoding="utf-8")) >= 4
+
+
+def test_older_complete_cache_is_reused(tmp_path: Path):
+    as_of = date(2026, 10, 21)
+    old = date(2026, 10, 12)
+    path = tmp_path / "master.20261012.idx"
+    path.write_text(MASTER_IDX, encoding="utf-8")
+    http = FakeHttp({})
+    filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        1,
+        cache_dir=tmp_path,
+        extra_dates=[old],
+        revalidate_business_days=3,
+    )
+    assert http.urls == [master_idx_url(as_of)]
+    assert old.isoformat() in found
+    assert old.isoformat() not in unreconciled
+    assert "0000320193-26-000111" in {f.accn for f in filings}
+
+
 def test_collect_period_filings_keeps_recent_missing_unreconciled(tmp_path: Path):
     as_of = date(2026, 10, 20)
     present = master_idx_url(as_of)
     http = FakeHttp({present: FakeResp(200, MASTER_IDX)})
     filings, found, unreconciled = collect_period_filings(http, as_of, 3, cache_dir=tmp_path)
     assert as_of.isoformat() in found
+    assert as_of.isoformat() in unreconciled
     assert date(2026, 10, 19).isoformat() in unreconciled
-    assert date(2026, 10, 18).isoformat() in unreconciled
+    assert date(2026, 10, 18).isoformat() not in unreconciled
     assert {f.accn for f in filings} >= {
         "0000320193-26-000111",
         "0001193125-26-000099",
@@ -172,8 +276,9 @@ def test_collect_period_filings_older_404_is_checked_empty(tmp_path: Path):
         as_of,
         10,
         cache_dir=tmp_path,
-        retry_missing_within_days=2,
+        revalidate_business_days=3,
     )
+    assert date(2026, 10, 21).isoformat() in unreconciled
     assert date(2026, 10, 20).isoformat() in unreconciled
     assert date(2026, 10, 19).isoformat() in unreconciled
     assert date(2026, 10, 12).isoformat() not in unreconciled
@@ -202,7 +307,7 @@ def test_collect_period_filings_retries_extra_unreconciled_dates(tmp_path: Path)
         1,
         cache_dir=tmp_path,
         extra_dates=[extra],
-        retry_missing_within_days=2,
+        revalidate_business_days=3,
     )
     assert extra.isoformat() in found
     assert as_of.isoformat() in unreconciled

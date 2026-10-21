@@ -12,6 +12,7 @@ from collections import defaultdict
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -23,7 +24,7 @@ from .layer2 import write_layer2
 from .layer3_build import write_layer3
 from .output import SCHEMA_VERSION, screener_row, sort_screener_rows
 from .sec.client import SecClient, load_overrides
-from .sec.daily_index import DailyFiling, collect_period_filings
+from .sec.daily_index import DailyFiling, collect_period_filings, recent_business_days
 from .sec.facts import CURRENT_REPORT_FORMS, DOMESTIC_FORMS, INDEX_RECONCILE_FORMS
 from .sec.latest_filings import fetch_latest_filings
 from .sec.store import FactsStore, PeriodicStore, SicStore, StatementStore
@@ -42,6 +43,15 @@ class DailyUpdateError(DatasetError):
 
 def _now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat()
+
+
+def pacific_today(now: datetime | None = None) -> date:
+    """Calendar date in America/Los_Angeles. Does not use the runner's UTC date."""
+    tz = ZoneInfo(config.DAILY_AS_OF_TZ)
+    current = datetime.now(tz) if now is None else now
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=UTC)
+    return current.astimezone(tz).date()
 
 
 def listing_from_company(company: dict) -> Listing:
@@ -347,7 +357,7 @@ def run_daily_update(
     On validation or HTTP failure the live directory is left untouched.
     """
     data_dir = Path(data_dir or config.OUTPUT_DIR)
-    as_of = as_of or date.today()
+    as_of = as_of or pacific_today()
     lookback_days = config.DAILY_LOOKBACK_DAYS if lookback_days is None else lookback_days
     state_dir = Path(state_dir or config.STATE_DIR)
     started = _now_iso()
@@ -396,7 +406,7 @@ def run_daily_update(
                 forms=set(INDEX_RECONCILE_FORMS),
                 since=since,
                 extra_dates=extra_dates,
-                retry_missing_within_days=config.DAILY_INDEX_RETRY_DAYS,
+                revalidate_business_days=config.DAILY_INDEX_REVALIDATE_BUSINESS_DAYS,
             )
         except requests.HTTPError as exc:
             raise DailyUpdateError(f"SEC discovery request failed; live dataset unchanged: {exc}") from exc
@@ -404,8 +414,8 @@ def run_daily_update(
     else:
         filings = merge_filings(latest_filings or [], indexes or [])
         present = sorted({f.filed.isoformat() for f in (indexes or [])})
-        retry_after = as_of - timedelta(days=config.DAILY_INDEX_RETRY_DAYS)
-        unreconciled = [d.isoformat() for d in extra_dates if d >= retry_after]
+        recent = set(recent_business_days(as_of, config.DAILY_INDEX_REVALIDATE_BUSINESS_DAYS))
+        unreconciled = [d.isoformat() for d in extra_dates if d in recent]
         latest_stats = {"pages": 0, "hits": len(latest_filings or []), "injected": True}
 
     new_filings = [f for f in filings if f.accn not in processed]

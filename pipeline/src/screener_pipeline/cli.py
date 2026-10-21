@@ -106,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Dataset directory (default: web/public/data)",
     )
     d.add_argument("--lookback-days", type=int, default=None, help="Rolling EDGAR daily-index window (default: 10)")
-    d.add_argument("--as-of", help="YYYY-MM-DD (default: today)")
+    d.add_argument("--as-of", help="YYYY-MM-DD (default: today in America/Los_Angeles)")
     d.add_argument("--offline", action="store_true", help="Use cached downloads only")
     d.add_argument("--no-verify", action="store_true", help="Skip per-quarter checks against filing statements")
     d.add_argument("--no-layer3", action="store_true", help="Do not rebuild Layer 3 issuer files")

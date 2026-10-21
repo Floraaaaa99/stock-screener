@@ -10,7 +10,7 @@ from helpers import calendar_year, companyfacts, raw
 
 from screener_pipeline.cache import write_json_atomic, write_json_if_changed
 from screener_pipeline.cli import main
-from screener_pipeline.daily_update import DailyUpdateError, discovery_since, run_daily_update
+from screener_pipeline.daily_update import DailyUpdateError, discovery_since, pacific_today, run_daily_update
 from screener_pipeline.sec.daily_index import DailyFiling
 from screener_pipeline.sec.facts import Fact
 
@@ -429,6 +429,28 @@ def test_cli_daily_update_help():
     with pytest.raises(SystemExit) as ei:
         main(["daily-update", "--help"])
     assert ei.value.code == 0
+
+
+def test_pacific_today_uses_los_angeles_not_utc():
+    # 6:00 PM PDT on 2026-10-21 is 01:00 UTC on 2026-10-22.
+    assert pacific_today(datetime(2026, 10, 22, 1, 0, tzinfo=UTC)) == date(2026, 10, 21)
+    assert pacific_today(datetime(2026, 10, 21, 23, 0, tzinfo=UTC)) == date(2026, 10, 21)
+    assert pacific_today(datetime(2026, 10, 22, 8, 0, tzinfo=UTC)) == date(2026, 10, 22)
+
+
+def test_run_daily_update_defaults_as_of_to_pacific_date(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("screener_pipeline.daily_update.pacific_today", lambda: date(2026, 10, 21))
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    report = run_daily_update(
+        data,
+        indexes=[],
+        latest_filings=[],
+        companyfacts_by_cik={},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["asOf"] == "2026-10-21"
 
 
 def test_discovery_since_uses_lookback_or_missed_period_plus_overlap():

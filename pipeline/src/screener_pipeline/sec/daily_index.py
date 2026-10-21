@@ -17,6 +17,7 @@ SEC_DAILY_MASTER_URL = (
 
 _ACCN_RE = re.compile(r"(\d{10}-\d{2}-\d{6})")
 _SEPARATOR = "CIK|Company Name|Form Type|Date Filed|Filename"
+_ROW_RE = re.compile(r"^\d+\|")
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,20 @@ def lookback_dates(as_of: date, days: int) -> list[date]:
     if days < 1:
         raise ValueError("lookback days must be >= 1")
     return [as_of - timedelta(days=offset) for offset in range(days)]
+
+
+def recent_business_days(as_of: date, count: int) -> list[date]:
+    """The last ``count`` weekdays ending at as_of (included when as_of is a weekday)."""
+    if count < 1:
+        raise ValueError("business day count must be >= 1")
+    days: list[date] = []
+    cursor = as_of
+    guard = as_of - timedelta(days=max(21, count * 7))
+    while len(days) < count and cursor >= guard:
+        if cursor.weekday() < 5:
+            days.append(cursor)
+        cursor -= timedelta(days=1)
+    return days
 
 
 def master_idx_url(day: date) -> str:
@@ -115,39 +130,83 @@ def _parse_filed(raw: str) -> date | None:
         return None
 
 
-def index_is_complete(text: str) -> bool:
-    """True when a master.idx body has the CIK header. Empty/truncated files are not."""
+def index_has_header(text: str) -> bool:
     if not text or not text.strip():
         return False
     return _SEPARATOR in text or text.startswith("CIK|") or "\nCIK|" in text
 
 
-def fetch_master_idx(http, day: date, cache_dir: Path | None = None) -> str | None:
-    """Download one day's master.idx. 404 is never written as a permanent cache."""
-    text, _status = fetch_master_idx_status(http, day, cache_dir=cache_dir)
+def index_data_row_count(text: str) -> int:
+    """Pipe-delimited filing rows after the CIK header. Header-only files count as 0."""
+    if not index_has_header(text):
+        return 0
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    started = False
+    count = 0
+    for line in lines:
+        if not started:
+            if line.startswith(_SEPARATOR) or line.startswith("CIK|"):
+                started = True
+            continue
+        if not line.strip() or set(line) <= {"-", "="}:
+            continue
+        if "|" in line and (_ROW_RE.match(line) or line.split("|", 1)[0].strip().isdigit()):
+            count += 1
+    return count
+
+
+def index_is_complete(text: str) -> bool:
+    """True only when the body has the CIK header *and* at least one filing row.
+
+    A header alone is not enough: SEC can publish a partial master.idx that still
+    has the column line while later filings are missing.
+    """
+    return index_has_header(text) and index_data_row_count(text) > 0
+
+
+def fetch_master_idx(http, day: date, cache_dir: Path | None = None, *, revalidate: bool = False) -> str | None:
+    """Download one day's master.idx. 404 and header-only bodies are never written as a permanent cache."""
+    text, _status = fetch_master_idx_status(http, day, cache_dir=cache_dir, revalidate=revalidate)
     return text
 
 
-def fetch_master_idx_status(http, day: date, cache_dir: Path | None = None) -> tuple[str | None, str]:
-    """Return (body or None, 'ok' | 'missing' | 'incomplete'). 5xx raises. 404 is not cached."""
+def fetch_master_idx_status(
+    http,
+    day: date,
+    cache_dir: Path | None = None,
+    *,
+    revalidate: bool = False,
+) -> tuple[str | None, str]:
+    """Return (body or None, 'ok' | 'missing' | 'incomplete' | 'provisional').
+
+    5xx raises. 404 and header-only files are not cached. ``revalidate`` always
+    hits the network so a previously cached header+rows snapshot can grow.
+    """
     url = master_idx_url(day)
     cache_dir = cache_dir or (config.CACHE_DIR / "sec" / "daily-index")
     path = cache_dir / f"master.{day.strftime('%Y%m%d')}.idx"
+    cached: str | None = None
     if path.exists():
         cached = path.read_text(encoding="utf-8", errors="replace")
-        if index_is_complete(cached):
-            return cached, "ok"
-        path.unlink(missing_ok=True)
+        if not index_is_complete(cached):
+            path.unlink(missing_ok=True)
+            cached = None
+    if cached is not None and not revalidate:
+        return cached, "ok"
     resp = http.get(url)
     if resp.status_code == 404:
-        return None, "missing"
+        return (cached, "ok") if cached is not None else (None, "missing")
     resp.raise_for_status()
     text = resp.content.decode("utf-8", errors="replace")
     if not index_is_complete(text):
+        if cached is not None:
+            return cached, "provisional"
         return None, "incomplete"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-    return text, "ok"
+    if cached is None or index_data_row_count(text) >= index_data_row_count(cached) or len(text) >= len(cached):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+        return text, "ok"
+    return cached, "ok"
 
 
 def index_dates(
@@ -181,30 +240,39 @@ def collect_period_filings(
     forms: set[str] | None = None,
     since: date | None = None,
     extra_dates: list[date] | None = None,
-    retry_missing_within_days: int = 2,
+    revalidate_business_days: int = 3,
 ) -> tuple[list[DailyFiling], list[str], list[str]]:
     """Filings from the recovery window. Returns (filings, dates found, still-unreconciled dates).
 
-    A 404 is not cached. Dates on or after ``as_of - retry_missing_within_days`` stay
-    unreconciled so a late-published index is retried. Older 404s are treated as
-    checked-empty (weekend/holiday).
+    The last ``revalidate_business_days`` weekdays are always re-fetched. A cached
+    file with only a header is deleted and not treated as complete. 404 is not
+    cached. Missing dates in that business-day window stay unreconciled; older
+    404s are treated as checked-empty (weekend/holiday). Incomplete or still-
+    growing indexes stay unreconciled.
     """
     wanted = forms if forms is not None else set(INDEX_RECONCILE_FORMS)
     found: list[DailyFiling] = []
     present: list[str] = []
     unreconciled: list[str] = []
     seen: set[str] = set()
-    retry_after = as_of - timedelta(days=retry_missing_within_days)
+    revalidate_days = set(recent_business_days(as_of, revalidate_business_days))
     for day in index_dates(as_of, lookback_days, since=since, extra=extra_dates):
-        text, status = fetch_master_idx_status(http, day, cache_dir=cache_dir)
+        text, status = fetch_master_idx_status(
+            http,
+            day,
+            cache_dir=cache_dir,
+            revalidate=day in revalidate_days,
+        )
         iso = day.isoformat()
         if status == "missing":
-            if day >= retry_after:
+            if day in revalidate_days:
                 unreconciled.append(iso)
             continue
         if status == "incomplete":
             unreconciled.append(iso)
             continue
+        if status == "provisional" or day in revalidate_days:
+            unreconciled.append(iso)
         present.append(iso)
         for row in parse_master_idx(text or "", forms=wanted):
             if row.accn in seen:

@@ -31,9 +31,11 @@ The job requests 8-K, 8-K/A, 10-Q, 10-Q/A, 10-K, and 10-K/A, uses acceptance tim
 The job:
 
 - Reads the last 10 days, plus any extra days implied by `lastSuccessfulSyncAt` minus a 48-hour overlap, plus previously `unreconciledDates`.
-- Never writes a permanent `.404` cache. A missing recent index (today / yesterday by default) stays unreconciled and is retried. Older 404s are treated as checked-empty (weekend / holiday).
-- Does not cache a truncated/incomplete index; those dates stay unreconciled.
+- Re-fetches the last **3 business days** every run. A CIK header alone does not make an index permanently complete; header-only or truncated files are not cached.
+- Never writes a permanent `.404` cache. A missing index in that 3-business-day window stays unreconciled and is retried. Older 404s are treated as checked-empty (weekend / holiday).
 - Matches filings to the current screener universe by CIK. Unknown CIKs are `out_of_universe`.
+
+`as_of` is the calendar date in `America/Los_Angeles`, not the GitHub runner’s UTC date. The 6:00 PM Pacific job therefore still belongs to the Pacific filing day (01:00–02:00 UTC the next morning).
 
 ## Incremental window
 
