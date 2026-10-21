@@ -73,6 +73,16 @@ export interface Meta {
   coverage: Coverage;
   sicMajorGroups: Record<string, string[]>;
   currencies: string[];
+  dailyUpdate?: {
+    lastSuccessfulSyncAt?: string;
+    lastFinancialUpdateAt?: string;
+    lastSuccessfulAt?: string;
+    asOf: string;
+    lookbackDays: number;
+    companiesUpdated: number;
+    filingsProcessed: number;
+    heartbeat?: boolean;
+  };
 }
 
 export interface QuarterSource {

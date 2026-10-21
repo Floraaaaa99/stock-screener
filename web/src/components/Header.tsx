@@ -2,6 +2,14 @@ import { formatCount, formatDateTime } from "../lib/format";
 import type { LayerId } from "../lib/layer2";
 import type { Meta } from "../types";
 
+function financialUpdatedAt(meta: Meta): string {
+  return meta.dailyUpdate?.lastFinancialUpdateAt || meta.generatedAt;
+}
+
+function secCheckedAt(meta: Meta): string {
+  return meta.dailyUpdate?.lastSuccessfulSyncAt || meta.dailyUpdate?.lastSuccessfulAt || meta.generatedAt;
+}
+
 export function Header({
   meta,
   layer,
@@ -55,14 +63,22 @@ export function Header({
             <dt
               title={
                 layer === 3
-                  ? "Last Layer 1 / Layer 2 dataset build. Not the issuer’s latest fiscal reporting date."
-                  : undefined
+                  ? "Last time published financial JSON changed. Quiet nightly SEC checks do not bump this stamp."
+                  : "Last time published financial JSON changed. Quiet nightly SEC checks do not bump this stamp."
               }
             >
               {layer === 3 ? "Screener updated" : "Data updated"}
             </dt>
-            <dd title={layer === 3 ? "Layer 1 / Layer 2 build time. Each Layer 3 issuer has its own reporting date." : undefined}>
-              {meta ? formatDateTime(meta.generatedAt) : "…"}
+            <dd title={layer === 3 ? "Layer 1 / Layer 2 financial-data time. Each Layer 3 issuer has its own reporting date." : "Last published change to company financial JSON."}>
+              {meta ? formatDateTime(financialUpdatedAt(meta)) : "…"}
+            </dd>
+          </div>
+          <div>
+            <dt title="Last successful SEC Latest Filings + daily-index check included in this published dataset. Quiet nights advance the checkpoint without republishing, so this can lag the repo until the next financial deploy.">
+              SEC checked
+            </dt>
+            <dd title="lastSuccessfulSyncAt from the daily incremental job, or the last complete build when no daily run has published yet.">
+              {meta ? formatDateTime(secCheckedAt(meta)) : "…"}
             </dd>
           </div>
           <div>

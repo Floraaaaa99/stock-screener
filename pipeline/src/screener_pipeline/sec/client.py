@@ -79,12 +79,13 @@ class SecClient:
                 return ticker_map[v]
         return None
 
-    def companyfacts(self, cik: str) -> dict | None:
+    def companyfacts(self, cik: str, *, force: bool = False) -> dict | None:
         cik10 = str(cik).zfill(10)
         text = self._cached_text(
             config.SEC_COMPANYFACTS_URL.format(cik=cik10),
             self.cache_dir / "companyfacts" / f"CIK{cik10}.json",
             config.SEC_FACTS_TTL_H,
+            force=force,
         )
         return json.loads(text) if text else None
 

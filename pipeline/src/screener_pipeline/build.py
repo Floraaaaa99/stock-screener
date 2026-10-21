@@ -189,64 +189,24 @@ def build(
             break
         cik = cik_by_ticker[listing.symbol]
         rec = rec_by_ticker[listing.symbol]
-        facts_hash = facts_store.hash_of(cik) if cik else None
-        rev = None
-        earn = None
-        supp_dict = None
-        earn_supp_dict = None
-        sec_name = rec["name"] if rec else None
-        sic: SicInfo | None = None
-        if cik:
-            sic = sec.sic(cik)
-            rf = sec.revenue_facts(cik)
-            if rf is not None:
-                facts_hash = facts_store.hash_of(cik)
-
-                def fetch(accn: str, _cik: str = cik):
-                    return sec.income_statement(_cik, accn)
-
-                periodic = sec.periodic_filings(cik)
-                latest_end = latest_facts_period_end(rf)
-                if (
-                    not offline
-                    and facts_may_lag(latest_end, as_of)
-                    and not newer_filings(periodic, latest_end)
-                ):
-                    periodic = sec.periodic_filings(cik, refresh=True)
-                    refreshed = True
-                else:
-                    refreshed = False
-                rf, supp = supplement_revenue_facts(rf, periodic, fetch, as_of)
-                supp.refreshed_submissions = refreshed
-                rev = analyze_company(
-                    rf, fetch, override=overrides.get(cik, {}).get("concept"), verify_quarters=verify_quarters
-                )
-                if supp.status == "applied" and "supplemented_from_edgar_filing" not in rev.flags:
-                    rev.flags.append("supplemented_from_edgar_filing")
-                supp_dict = supp.to_dict()
-                ef = sec.earnings_facts(cik)
-                if ef is not None:
-                    ef, e_supp = supplement_earnings_facts(ef, periodic, fetch, as_of)
-                    earn = analyze_company(ef, fetch, spec=EARNINGS_SPEC, verify_quarters=verify_quarters)
-                    if e_supp.status == "applied" and "supplemented_from_edgar_filing" not in earn.flags:
-                        earn.flags.append("supplemented_from_edgar_filing")
-                    earn_supp_dict = e_supp.to_dict()
-                log.info("%s: %s %s supplement=%s", listing.symbol, rev.status, rev.ttm, supp.status)
-        issues = classification_issues(listing, cik, sic)
-        issues_all.extend(issues)
-        c = company_json(listing, cik, sec_name, rev, sic, issues, earnings=earn)
-        if rev is None:
-            c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
-        if supp_dict and c.get("revenue"):
-            c["revenue"]["edgarSupplement"] = supp_dict
-        if earn_supp_dict and c.get("earnings"):
-            c["earnings"]["edgarSupplement"] = earn_supp_dict
+        c = rebuild_company(
+            listing,
+            cik,
+            rec,
+            sec,
+            overrides,
+            as_of=as_of,
+            verify_quarters=verify_quarters,
+            offline=offline,
+        )
         companies.append(c)
+        issues_all.extend(c.get("classificationIssues") or [])
+        facts_hash = facts_store.hash_of(cik) if cik else None
         processed[listing.symbol] = {
             "cik": cik,
             "factsHash": facts_hash,
-            "sic": (sic.code if sic else None),
-            "status": (rev.status if rev else c["ttm"]["reason"]),
+            "sic": ((c.get("sic") or {}).get("code")),
+            "status": (c.get("revenue") or {}).get("status") or c["ttm"]["reason"],
             "doneAt": _now_iso(),
         }
 
@@ -286,6 +246,72 @@ def build(
 
     write_dataset(output_dir, meta, rows, companies, issues_all)
     return meta
+
+
+def rebuild_company(
+    listing: Listing,
+    cik: str | None,
+    rec: dict | None,
+    sec: SecClient,
+    overrides: dict,
+    *,
+    as_of: date,
+    verify_quarters: bool = True,
+    offline: bool = False,
+    refresh_filings: bool = False,
+) -> dict:
+    """One listing → company JSON using existing quarter, TTM, and EDGAR-supplement rules."""
+    rev = None
+    earn = None
+    supp_dict = None
+    earn_supp_dict = None
+    sec_name = rec["name"] if rec else None
+    sic: SicInfo | None = None
+    if cik:
+        sic = sec.sic(cik)
+        rf = sec.revenue_facts(cik)
+        if rf is not None:
+
+            def fetch(accn: str, _cik: str = cik):
+                return sec.income_statement(_cik, accn)
+
+            periodic = sec.periodic_filings(cik, refresh=refresh_filings)
+            latest_end = latest_facts_period_end(rf)
+            if (
+                not offline
+                and not refresh_filings
+                and facts_may_lag(latest_end, as_of)
+                and not newer_filings(periodic, latest_end)
+            ):
+                periodic = sec.periodic_filings(cik, refresh=True)
+                refreshed = True
+            else:
+                refreshed = refresh_filings
+            rf, supp = supplement_revenue_facts(rf, periodic, fetch, as_of)
+            supp.refreshed_submissions = refreshed
+            rev = analyze_company(
+                rf, fetch, override=overrides.get(cik, {}).get("concept"), verify_quarters=verify_quarters
+            )
+            if supp.status == "applied" and "supplemented_from_edgar_filing" not in rev.flags:
+                rev.flags.append("supplemented_from_edgar_filing")
+            supp_dict = supp.to_dict()
+            ef = sec.earnings_facts(cik)
+            if ef is not None:
+                ef, e_supp = supplement_earnings_facts(ef, periodic, fetch, as_of)
+                earn = analyze_company(ef, fetch, spec=EARNINGS_SPEC, verify_quarters=verify_quarters)
+                if e_supp.status == "applied" and "supplemented_from_edgar_filing" not in earn.flags:
+                    earn.flags.append("supplemented_from_edgar_filing")
+                earn_supp_dict = e_supp.to_dict()
+            log.info("%s: %s %s supplement=%s", listing.symbol, rev.status, rev.ttm, supp.status)
+    issues = classification_issues(listing, cik, sic)
+    c = company_json(listing, cik, sec_name, rev, sic, issues, earnings=earn)
+    if rev is None:
+        c["ttm"]["reason"] = "no_cik" if not cik else "no_company_facts"
+    if supp_dict and c.get("revenue"):
+        c["revenue"]["edgarSupplement"] = supp_dict
+    if earn_supp_dict and c.get("earnings"):
+        c["earnings"]["edgarSupplement"] = earn_supp_dict
+    return c
 
 
 def classification_issues(listing: Listing, cik: str | None, sic: SicInfo | None) -> list[dict]:

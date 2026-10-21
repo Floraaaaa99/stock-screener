@@ -1,0 +1,221 @@
+name: Daily incremental update
+
+# Incremental 10-Q/10-K refresh of the committed dataset. Discovers new filings
+# from SEC Latest Filings (getcurrent, current official filing date only) plus
+# the last 10 days of EDGAR master.idx. Does not download companyfacts.zip or
+# expand the universe (that remains refresh.yml).
+# GITHUB_TOKEN commits do not retrigger deploy.yml or ci.yml, so this workflow
+# builds and deploys GitHub Pages itself after a successful financial update.
+on:
+  schedule:
+    - cron: "0 18 * * *"
+      timezone: "America/Los_Angeles"
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: Rolling EDGAR daily-index lookback window
+        type: string
+        default: "10"
+      dry_run:
+        description: Compute the update without committing or deploying
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Incremental SEC update
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SCREENER_STATE_DIR: ${{ github.workspace }}/pipeline/.cache/state
+      TZ: America/Los_Angeles
+    outputs:
+      published: ${{ steps.update.outputs.published }}
+      state_updated: ${{ steps.update.outputs.state_updated }}
+      dry_run: ${{ steps.update.outputs.dry_run }}
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Require SEC_USER_AGENT
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          if [ -z "$SEC_USER_AGENT" ]; then
+            echo "::error::Add the SEC_USER_AGENT repository secret (Settings > Secrets and variables > Actions > Secrets)."
+            exit 1
+          fi
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/pyproject.toml
+      - run: pip install -e "pipeline"
+      - uses: actions/cache@v6
+        with:
+          path: |
+            pipeline/.cache/sec/daily-index
+            pipeline/.cache/sec/companyfacts
+            pipeline/.cache/sec/submissions
+            pipeline/.cache/sec/filings
+          key: pipeline-daily-${{ github.run_id }}
+          restore-keys: pipeline-daily-
+      - name: Restore compact state from the rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          gh release download pipeline-state --pattern "state.tar.gz" --pattern "state.tar.gz.sha256" --dir /tmp/pipeline-state
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "No pipeline-state release yet; Company Facts will use the per-CIK API only."
+            exit 0
+          fi
+          screener unpack-state --archive /tmp/pipeline-state/state.tar.gz --dest "$SCREENER_STATE_DIR" --sha256-file /tmp/pipeline-state/state.tar.gz.sha256
+      - name: Incremental update
+        id: update
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          LOOKBACK="${{ github.event.inputs.lookback_days }}"
+          LOOKBACK="${LOOKBACK:-10}"
+          DRY="${{ github.event.inputs.dry_run }}"
+          extra=()
+          if [ "$DRY" = "true" ]; then
+            extra+=(--dry-run)
+            echo "dry_run=true" >> "$GITHUB_OUTPUT"
+          else
+            extra+=(--write-live)
+            echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          fi
+          set +e
+          screener -v daily-update --lookback-days "$LOOKBACK" "${extra[@]}" | tee /tmp/daily-update-report.json
+          code=$?
+          set -e
+          if [ "$code" -ne 0 ]; then
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "state_updated=false" >> "$GITHUB_OUTPUT"
+            echo "::error::Daily update failed; the previous dataset was left in place."
+            exit "$code"
+          fi
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          report = json.load(open("/tmp/daily-update-report.json", encoding="utf-8"))
+          print("published=true" if report.get("published") else "published=false")
+          print("state_updated=true" if report.get("stateUpdated") else "state_updated=false")
+          if report.get("unchanged"):
+              print("No financial dataset changes; skipping rebuild publish and Pages deploy.")
+          PY
+      - name: Pack state
+        if: always() && steps.update.outputs.dry_run != 'true' && steps.update.outputs.published == 'true'
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/pipeline/.cache/state-out"
+          if [ -d "$SCREENER_STATE_DIR/facts" ]; then
+            dest="$GITHUB_WORKSPACE/pipeline/.cache/state-out"
+            screener pack-state --state-dir "$SCREENER_STATE_DIR" --dest "$dest/state-${{ github.run_id }}.tar.gz"
+            cp "$dest/state-${{ github.run_id }}.tar.gz" "$dest/state.tar.gz"
+            cp "$dest/state-${{ github.run_id }}.tar.gz.sha256" "$dest/state.tar.gz.sha256"
+            screener unpack-state --archive "$dest/state.tar.gz" --dest "$GITHUB_WORKSPACE/pipeline/.cache/state-verify" --sha256-file "$dest/state.tar.gz.sha256"
+          else
+            echo "No compact facts to pack."
+          fi
+      - name: Upload state to the rolling release
+        if: always() && steps.update.outputs.dry_run != 'true' && steps.update.outputs.published == 'true' && hashFiles('pipeline/.cache/state-out/state.tar.gz') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view pipeline-state >/dev/null 2>&1; then
+            gh release create pipeline-state --title "Pipeline state" --notes "Compact SEC facts, SIC records, and cached statements. See docs/stage2-persistence.md."
+          fi
+          dest="$GITHUB_WORKSPACE/pipeline/.cache/state-out"
+          gh release upload pipeline-state "$dest/state-${{ github.run_id }}.tar.gz" "$dest/state-${{ github.run_id }}.tar.gz.sha256" --clobber
+          gh release download pipeline-state --pattern "state-${{ github.run_id }}.tar.gz" --dir /tmp/state-check
+          expected=$(cut -d ' ' -f1 "$dest/state-${{ github.run_id }}.tar.gz.sha256")
+          got=$(sha256sum /tmp/state-check/state-${{ github.run_id }}.tar.gz | cut -d ' ' -f1)
+          if [ "$expected" != "$got" ]; then
+            echo "::error::Uploaded state failed the checksum round-trip."
+            exit 1
+          fi
+          gh release upload pipeline-state "$dest/state.tar.gz" "$dest/state.tar.gz.sha256" --clobber
+      - name: Commit updated dataset
+        id: commit
+        if: steps.update.outputs.dry_run != 'true' && (steps.update.outputs.published == 'true' || steps.update.outputs.state_updated == 'true')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "web/public/data"
+          if git diff --cached --quiet; then
+            echo "Dataset files unchanged after the update."
+          else
+            git commit -m "chore: daily incremental SEC update [skip pages]"
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: daily-update-data
+          path: web/public/data
+          retention-days: 14
+          if-no-files-found: warn
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: update
+    if: ${{ !cancelled() && needs.update.result == 'success' && needs.update.outputs.published == 'true' && needs.update.outputs.dry_run != 'true' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.update.outputs.sha || github.sha }}
+      - name: Refuse an unpublished full-universe dataset
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path("web/public/data/meta.json")
+          meta = json.loads(p.read_text())
+          mode = (meta.get("dataset") or {}).get("mode")
+          gate = meta.get("gate") or {}
+          if mode == "sample":
+              sys.exit(0)
+          if mode == "full" and gate.get("ok"):
+              print("Full-universe dataset passed the publish gate.")
+              sys.exit(0)
+          print(
+              f"::error::Pages deploy requires dataset.mode=sample, or full with gate.ok "
+              f"(got mode={mode!r} gate={gate}). Live Pages stays on the last validated dataset."
+          )
+          sys.exit(1)
+          PY
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      - working-directory: web
+        run: npm test
+      - uses: actions/configure-pages@v6
+        id: pages
+      - working-directory: web
+        env:
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: web/dist
+      - uses: actions/deploy-pages@v5
+        id: deployment

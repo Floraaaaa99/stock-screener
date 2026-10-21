@@ -8,9 +8,10 @@ and market cap are not included.
 
 - **Website:** React + Vite + TypeScript in [`web/`](web), hosted on GitHub Pages. No login, no backend.
 - **Data pipeline:** Python in [`pipeline/`](pipeline), which writes static JSON to `web/public/data/`.
-- **Refresh:** GitHub Actions ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) for the sample site,
-  [`.github/workflows/refresh.yml`](.github/workflows/refresh.yml) for the full universe). Refreshes run manually for
-  now and become weekly once two complete full runs have passed validation.
+- **Refresh:** GitHub Actions ([`.github/workflows/daily-update.yml`](.github/workflows/daily-update.yml) for the
+  scheduled incremental update, [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) for the sample site,
+  [`.github/workflows/refresh.yml`](.github/workflows/refresh.yml) for a full-universe rebuild). Full-universe rebuilds
+  stay manual. Daily jobs only re-fetch Company Facts for issuers with new 10-Q/10-K filings.
 
 All data sources are free: the [NASDAQ Trader symbol directory](https://www.nasdaqtrader.com/trader.aspx?id=symboldirdefs)
 and [SEC EDGAR](https://www.sec.gov/edgar/sec-api-documentation) (official 10-Q/10-K filings, Company Facts as an
@@ -23,7 +24,7 @@ pipeline uses that filing's reported revenue. No paid APIs, databases, estimates
 |---|---|---|
 | 1 | 20 Biotechnology companies plus 2 foreign-filer ADRs, validated against SEC filings | Done as an SEC-only sample. See [`docs/validation/biotech20.md`](docs/validation/biotech20.md) |
 | 2 | Full NASDAQ / NYSE / NYSE American universe (≈5,600 listings) | Resumable SEC-only pipeline and publish gates. Live Pages stays on the sample until a complete full run passes completeness and filing-validation checks. See [`docs/stage2-persistence.md`](docs/stage2-persistence.md) |
-| 3 | Scheduled refreshes on GitHub Pages | Not enabled. Weekly cron is added only after two complete full manual runs |
+| 3 | Scheduled refreshes on GitHub Pages | Daily incremental update at 6:00 PM America/Los_Angeles. Full-universe `refresh.yml` stays manual. See [`docs/daily-update.md`](docs/daily-update.md) |
 
 While the site runs on the validation sample, a banner says so and shows how many of the eligible listings are
 included. `--universe full` writes a complete dataset to a staging directory; it does not replace the live Pages payload
@@ -86,6 +87,10 @@ screener freshness --data-dir pipeline/.cache/state/dataset-full --refresh-laggi
 # Layer 2 from an existing Layer 1 dataset (does not fetch SEC data)
 screener layer2 --data-dir web/public/data
 
+# Incremental daily update from Latest Filings + EDGAR daily indexes (does not expand the universe)
+screener -v daily-update --dry-run
+screener -v daily-update --write-live --lookback-days 10
+
 # Write the live Pages payload only after the publish gate passes
 screener -v build --universe full --write-live
 
@@ -118,8 +123,9 @@ One-time setup:
 Workflows:
 
 - **CI** (`ci.yml`) runs on pull requests and pushes to `main`: pipeline lint and tests, then web typecheck, tests and build.
-- **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed **sample**. A full-universe `meta.json` is accepted only when `gate.ok` is true. Manual sample refresh still exists; nothing is committed or force-pushed.
-- **Refresh full universe** (`refresh.yml`) is manual only. It restores compact SEC state from the `pipeline-state` release, builds with a 5-hour budget, packs and checksums a new state archive, and uploads artifacts. It never deploys Pages. Re-run the same workflow to resume after exit code 3. Weekly cron is not configured.
+- **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed dataset. A full-universe `meta.json` is accepted only when `gate.ok` is true. Manual sample refresh still exists. Commits whose message contains `[skip pages]` do not deploy here.
+- **Daily incremental update** (`daily-update.yml`) runs every day at 6:00 PM America/Los_Angeles (`timezone: America/Los_Angeles`) and on demand. It pages SEC Latest Filings (same-day `getcurrent`) and reconciles the last 10 days of EDGAR `master.idx`, updates only affected companies, validates, commits `[skip pages]`, and **deploys Pages in the same workflow** when financial JSON changed (GITHUB_TOKEN pushes do not retrigger `deploy.yml` or CI). A day with no dataset changes does not rebuild or redeploy. A failed run leaves the previous dataset in place. See [`docs/daily-update.md`](docs/daily-update.md) for the Actions-minutes estimate.
+- **Refresh full universe** (`refresh.yml`) is manual only. It restores compact SEC state from the `pipeline-state` release, builds with a 5-hour budget, packs and checksums a new state archive, and uploads artifacts. It never deploys Pages. Re-run the same workflow to resume after exit code 3.
 
 ## Repository layout
 
