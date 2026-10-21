@@ -570,10 +570,9 @@ def run_daily_update(
                 if row.accn in covered:
                     applied_here.append(row)
                     continue
-                if changed_here and not any_covered:
-                    # Offline fixtures often use synthetic accession numbers; if
-                    # none of this CIK's discovered accns appear in facts but the
-                    # rebuild changed JSON, treat the rebuild as covering them.
+                if offline and changed_here and not any_covered:
+                    # Offline tests use synthetic accession numbers. Production
+                    # never applies an accession that is absent from Company Facts.
                     applied_here.append(row)
                     continue
                 facts_lag = True

@@ -885,3 +885,30 @@ def test_unready_amendment_is_not_marked_when_original_is_applied(tmp_path: Path
     assert a_accn not in state["processedAccessions"]
     reasons = {row["accn"]: row.get("reason") for row in report["skippedFilings"]}
     assert reasons.get(a_accn) == "company_facts_lag"
+
+
+def test_production_does_not_apply_accession_missing_from_company_facts(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    accn = "0000000001-26-000300"
+    before = (data / "companies" / "AAA.json").read_bytes()
+    try:
+        run_daily_update(
+            data,
+            as_of=date(2026, 10, 21),
+            indexes=[_filing("0000000001", accn, form="10-K")],
+            latest_filings=[],
+            companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+            state_dir=tmp_path / "state",
+            verify_quarters=False,
+            offline=False,
+            update_layer3=False,
+        )
+        raised = False
+    except DailyUpdateError as exc:
+        raised = True
+        assert "lagging" in str(exc) or "Company Facts" in str(exc)
+    assert raised
+    assert (data / "companies" / "AAA.json").read_bytes() == before
+    state = data / "daily-update.json"
+    if state.exists():
+        assert accn not in json.loads(state.read_text()).get("processedAccessions", {})
