@@ -33,6 +33,10 @@ STATE_VERSION = 1
 STATE_DIR = Path(os.environ.get("SCREENER_STATE_DIR", CACHE_DIR / "state"))
 RELEASE_TAG = "pipeline-state"
 
+# Incremental daily update: rolling EDGAR master.idx window and processed-accession retention.
+DAILY_LOOKBACK_DAYS = int(os.environ.get("SCREENER_DAILY_LOOKBACK_DAYS", "10"))
+DAILY_ACCESSION_KEEP_DAYS = int(os.environ.get("SCREENER_DAILY_ACCESSION_KEEP_DAYS", "40"))
+
 # Publishing gates (relative drop vs the last complete baseline). A first full run has no baseline.
 GROWTH_COVERAGE_MAX_DROP = 0.05
 QUARTER_MISMATCH_MAX_RATIO = 0.10

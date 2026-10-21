@@ -96,6 +96,28 @@ def main(argv: list[str] | None = None) -> int:
     )
     ae.add_argument("--no-verify", action="store_true", help="Skip per-quarter filing checks for net income")
 
+    d = sub.add_parser(
+        "daily-update",
+        help="Incrementally update the existing dataset from new SEC 10-Q/10-K filings",
+    )
+    d.add_argument(
+        "--data-dir",
+        default=str(config.OUTPUT_DIR),
+        help="Dataset directory (default: web/public/data)",
+    )
+    d.add_argument("--lookback-days", type=int, default=None, help="Rolling EDGAR daily-index window (default: 10)")
+    d.add_argument("--as-of", help="YYYY-MM-DD (default: today)")
+    d.add_argument("--offline", action="store_true", help="Use cached downloads only")
+    d.add_argument("--no-verify", action="store_true", help="Skip per-quarter checks against filing statements")
+    d.add_argument("--no-layer3", action="store_true", help="Do not rebuild Layer 3 issuer files")
+    d.add_argument("--dry-run", action="store_true", help="Compute the update without writing the dataset")
+    d.add_argument(
+        "--write-live",
+        action="store_true",
+        help="Allow writing web/public/data (refused by default, same as build --write-live)",
+    )
+    d.add_argument("--state-dir", help="Override compact state directory")
+
     l3 = sub.add_parser(
         "layer3",
         help="Build Layer 3 financial-metric JSON from an existing Layer 1 dataset (no scoring)",
@@ -295,6 +317,28 @@ def main(argv: list[str] | None = None) -> int:
                 },
                 indent=2,
             ))
+        elif args.cmd == "daily-update":
+            from datetime import date as date_cls
+
+            from .daily_update import run_daily_update
+
+            data_dir = Path(args.data_dir)
+            as_of = date_cls.fromisoformat(args.as_of) if args.as_of else None
+            report = run_daily_update(
+                data_dir,
+                lookback_days=args.lookback_days,
+                as_of=as_of,
+                dry_run=args.dry_run,
+                offline=args.offline,
+                verify_quarters=not args.no_verify,
+                update_layer3=not args.no_layer3,
+                write=not args.dry_run,
+                write_live=args.write_live,
+                state_dir=Path(args.state_dir) if args.state_dir else None,
+            )
+            print(json.dumps(report, indent=2))
+            if not report.get("ok"):
+                return 2
     except (DatasetError, config.ConfigError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

@@ -21,7 +21,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from . import config
-from .cache import read_json, write_json_atomic
+from .cache import read_json, write_json_atomic, write_json_if_changed
 from .layer3_concepts import (
     LAYER3_EXTRACTION_VERSION,
     LAYER3_ISSUER_FILE_TEMPLATE,
@@ -765,7 +765,7 @@ def write_layer3(
                 preserved.append(cik)
                 rows.append(existing_live)
                 continue
-            write_json_atomic(write_dir / f"{cik}.json", payload, compact=True)
+            write_json_if_changed(write_dir / f"{cik}.json", payload, compact=True)
             updated.append(cik)
             rows.append(payload)
     finally:

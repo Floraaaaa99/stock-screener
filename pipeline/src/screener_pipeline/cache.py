@@ -38,6 +38,16 @@ def write_json_atomic(path: Path, data: Any, *, compact: bool = False) -> None:
     _atomic_write(path, write)
 
 
+def write_json_if_changed(path: Path, data: Any, *, compact: bool = False) -> bool:
+    """Write JSON only when canonical content differs. Missing stays missing; never coerces to zero."""
+    if path.exists():
+        existing = read_json(path)
+        if existing is not None and canonical_hash(existing) == canonical_hash(data):
+            return False
+    write_json_atomic(path, data, compact=compact)
+    return True
+
+
 def write_text_atomic(path: Path, text: str) -> None:
     _atomic_write(path, lambda fh: fh.write(text))
 

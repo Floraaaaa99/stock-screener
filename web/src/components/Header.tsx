@@ -55,13 +55,13 @@ export function Header({
             <dt
               title={
                 layer === 3
-                  ? "Last Layer 1 / Layer 2 dataset build. Not the issuer’s latest fiscal reporting date."
-                  : undefined
+                  ? "Latest successful dataset update (daily incremental job or last complete build). Not the issuer’s latest fiscal reporting date."
+                  : "Latest successful dataset update (daily incremental job or last complete build)."
               }
             >
               {layer === 3 ? "Screener updated" : "Data updated"}
             </dt>
-            <dd title={layer === 3 ? "Layer 1 / Layer 2 build time. Each Layer 3 issuer has its own reporting date." : undefined}>
+            <dd title={layer === 3 ? "Layer 1 / Layer 2 build time. Each Layer 3 issuer has its own reporting date." : "Latest successful update of the committed dataset."}>
               {meta ? formatDateTime(meta.generatedAt) : "…"}
             </dd>
           </div>

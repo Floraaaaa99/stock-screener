@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 # Deploys the committed dataset. Full-universe payloads are refused until the
 # publish gate on that dataset passes. The live site stays on the last validated
 # sample until a complete full run is copied in. No weekly schedule.
+#
+# Daily incremental updates (daily-update.yml) deploy Pages in the same workflow.
+# GITHUB_TOKEN commits do not retrigger this file; [skip pages] is an extra guard
+# if a PAT is used later.
 on:
   push:
     branches: [main]
@@ -70,7 +74,7 @@ jobs:
   build:
     name: Build site
     needs: refresh
-    if: ${{ !cancelled() && (needs.refresh.result == 'success' || needs.refresh.result == 'skipped') }}
+    if: ${{ !cancelled() && (needs.refresh.result == 'success' || needs.refresh.result == 'skipped') && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip pages]')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
