@@ -721,3 +721,167 @@ def test_facts_lag_does_not_mark_accession_or_advance(tmp_path: Path):
     assert state["lastSuccessfulSyncAt"] == sync_at
     assert "0000000001-26-000010" in state["processedAccessions"]
     assert "0000000001-26-000027" not in state["processedAccessions"]
+
+
+def _annual_facts(
+    cik: int,
+    name: str,
+    *,
+    accn: str,
+    form: str = "10-K",
+    filed: str = "2026-02-15",
+    q4: float = 17,
+    extra: list[Fact] | None = None,
+) -> dict:
+    facts = calendar_year(2024, 10, 11, 12, 13, prefix="B") + calendar_year(2025, 14, 15, 16, q4, prefix="A")
+    tagged: list[Fact] = []
+    for item in facts:
+        if item.form == "10-K" and item.fy == 2025:
+            tagged.append(
+                Fact(
+                    start=item.start,
+                    end=item.end,
+                    val=item.val,
+                    accn=accn,
+                    fy=item.fy,
+                    fp=item.fp,
+                    form=form,
+                    filed=date.fromisoformat(filed),
+                )
+            )
+        else:
+            tagged.append(item)
+    tagged.extend(extra or [])
+    return companyfacts({"Revenues": _raw_facts(tagged)}, cik=cik, name=name)
+
+
+def test_ten_k_then_amendment_is_a_new_accession(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    original = "0000000001-26-000100"
+    amendment = "0000000001-26-000200"
+    first = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[_filing("0000000001", original, form="10-K")],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": _annual_facts(1, "AAA", accn=original)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert first["published"] is True
+    assert first["filingsNew"] == 1
+    assert "AAA" in first["companiesUpdated"]
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][original]["status"] == "applied"
+    before = json.loads((data / "companies" / "AAA.json").read_text())
+
+    restated = _annual_facts(
+        1,
+        "AAA",
+        accn=original,
+        extra=[
+            Fact(
+                start=date(2025, 1, 1),
+                end=date(2025, 12, 31),
+                val=14 + 15 + 16 + 25,
+                accn=amendment,
+                fy=2025,
+                fp="FY",
+                form="10-K/A",
+                filed=date(2026, 10, 28),
+            )
+        ],
+    )
+    second = run_daily_update(
+        data,
+        as_of=date(2026, 10, 28),
+        indexes=[_filing("0000000001", amendment, form="10-K/A", filed=date(2026, 10, 28))],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": restated},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert second["filingsNew"] == 1
+    assert second["published"] is True
+    assert "AAA" in second["companiesUpdated"]
+    after = json.loads((data / "companies" / "AAA.json").read_text())
+    assert after["ttm"]["current"] != before["ttm"]["current"]
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][original]["status"] == "applied"
+    assert state["processedAccessions"][amendment]["status"] == "applied"
+    assert state["processedAccessions"][amendment]["form"] == "10-K/A"
+
+
+def test_two_new_accessions_same_company_are_applied_together(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    k_accn = "0000000001-26-000100"
+    a_accn = "0000000001-26-000200"
+    facts = _annual_facts(
+        1,
+        "AAA",
+        accn=k_accn,
+        extra=[
+            Fact(
+                start=date(2025, 1, 1),
+                end=date(2025, 12, 31),
+                val=14 + 15 + 16 + 17,
+                accn=a_accn,
+                fy=2025,
+                fp="FY",
+                form="10-K/A",
+                filed=date(2026, 10, 21),
+            )
+        ],
+    )
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[
+            _filing("0000000001", k_accn, form="10-K"),
+            _filing("0000000001", a_accn, form="10-K/A"),
+        ],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": facts},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["filingsNew"] == 2
+    assert report["published"] is True
+    assert report["companiesUpdated"] == ["AAA"]
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][k_accn]["status"] == "applied"
+    assert state["processedAccessions"][a_accn]["status"] == "applied"
+
+
+def test_unready_amendment_is_not_marked_when_original_is_applied(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    k_accn = "0000000001-26-000100"
+    a_accn = "0000000001-26-000200"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[
+            _filing("0000000001", k_accn, form="10-K"),
+            _filing("0000000001", a_accn, form="10-K/A"),
+        ],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": _annual_facts(1, "AAA", accn=k_accn)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["published"] is True
+    assert "AAA" in report["companiesUpdated"]
+    assert report["checkpointAdvanced"] is False
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][k_accn]["status"] == "applied"
+    assert a_accn not in state["processedAccessions"]
+    reasons = {row["accn"]: row.get("reason") for row in report["skippedFilings"]}
+    assert reasons.get(a_accn) == "company_facts_lag"

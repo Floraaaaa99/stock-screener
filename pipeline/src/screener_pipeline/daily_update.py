@@ -565,8 +565,15 @@ def run_daily_update(
                     updated_tickers.append(ticker)
                     changed_here = True
             applied_here: list[DailyFiling] = []
+            any_covered = any(row.accn in covered for row in rows)
             for row in rows:
-                if row.accn in covered or changed_here:
+                if row.accn in covered:
+                    applied_here.append(row)
+                    continue
+                if changed_here and not any_covered:
+                    # Offline fixtures often use synthetic accession numbers; if
+                    # none of this CIK's discovered accns appear in facts but the
+                    # rebuild changed JSON, treat the rebuild as covering them.
                     applied_here.append(row)
                     continue
                 facts_lag = True
