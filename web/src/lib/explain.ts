@@ -2,7 +2,7 @@
 
 export const NA_REASONS: Record<string, string> = {
   foreign_filer:
-    "Foreign private issuer: files annual 20-F and 6-K reports, so SEC Company Facts has no quarterly 10-Q revenue.",
+    "Foreign private issuer: files 20-F, 40-F, F-10, or 6-K reports instead of 10-Q/10-K, so SEC Company Facts has no quarterly 10-Q revenue.",
   no_cik: "No SEC company (CIK) matches this ticker.",
   no_company_facts: "SEC Company Facts data is not available for this company.",
   no_revenue_concept: "No total-revenue concept is reported in this company's 10-Q/10-K XBRL data.",

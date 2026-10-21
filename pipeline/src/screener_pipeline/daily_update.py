@@ -334,6 +334,49 @@ def is_current_report(form: str) -> bool:
     return form in CURRENT_REPORT_FORMS
 
 
+def parse_rebuild_tickers(raw: str | list[str] | None) -> list[str]:
+    """Normalize a manual rebuild list. Empty input means incremental discovery only."""
+    if not raw:
+        return []
+    parts = raw.replace(",", " ").split() if isinstance(raw, str) else [str(item) for item in raw]
+    out: list[str] = []
+    seen: set[str] = set()
+    for part in parts:
+        ticker = part.strip().upper()
+        if ticker and ticker not in seen:
+            seen.add(ticker)
+            out.append(ticker)
+    return out
+
+
+def resolve_rebuild_tickers(
+    tickers: list[str],
+    companies: dict[str, dict],
+    by_cik: dict[str, list[str]],
+) -> tuple[dict[str, list[str]], list[str]]:
+    """Map in-universe tickers to CIKs. Unknown symbols are not added to the dataset."""
+    ticker_to_cik: dict[str, str] = {}
+    for cik, symbols in by_cik.items():
+        for symbol in symbols:
+            ticker_to_cik[str(symbol).upper()] = str(cik).zfill(10)
+    for symbol, company in companies.items():
+        cik = company.get("cik")
+        if cik:
+            ticker_to_cik.setdefault(str(symbol).upper(), str(cik).zfill(10))
+    resolved: dict[str, list[str]] = {}
+    unknown: list[str] = []
+    for ticker in tickers:
+        cik = ticker_to_cik.get(ticker)
+        if not cik:
+            unknown.append(ticker)
+            continue
+        actual = next((symbol for symbol in by_cik.get(cik, []) if str(symbol).upper() == ticker), ticker)
+        resolved.setdefault(cik, [])
+        if actual not in resolved[cik]:
+            resolved[cik].append(actual)
+    return resolved, unknown
+
+
 def run_daily_update(
     data_dir: Path | None = None,
     *,
@@ -350,6 +393,7 @@ def run_daily_update(
     companyfacts_by_cik: dict[str, dict] | None = None,
     state_dir: Path | None = None,
     cache_dir: Path | None = None,
+    rebuild_tickers: str | list[str] | None = None,
 ) -> dict:
     """Apply new 10-Q/10-K accessions to the existing dataset.
 
@@ -370,6 +414,8 @@ def run_daily_update(
     baseline = read_json(data_dir / "meta.json") or {}
     companies_live = load_companies(data_dir)
     by_cik = cik_to_tickers(data_dir, companies_live)
+    wanted_tickers = parse_rebuild_tickers(rebuild_tickers)
+    force_by_cik, unknown_tickers = resolve_rebuild_tickers(wanted_tickers, companies_live, by_cik)
     state_path = data_dir / STATE_FILENAME
     state = load_state(state_path)
     processed = dict(state["processedAccessions"])
@@ -460,12 +506,14 @@ def run_daily_update(
         "skippedFilings": skipped_filings,
         "filesRewritten": [],
         "layer3Updated": [],
-        "errors": [],
+        "errors": [f"unknown_ticker:{ticker}" for ticker in unknown_tickers],
         "gate": None,
         "dryRun": dry_run,
         "unchanged": False,
         "stateUpdated": False,
         "checkpointAdvanced": False,
+        "rebuildTickers": wanted_tickers,
+        "rebuildUnknown": unknown_tickers,
     }
 
     generated_at = _now_iso()
@@ -480,7 +528,7 @@ def run_daily_update(
     }
 
     processing_complete = True
-    if not in_universe:
+    if not in_universe and not force_by_cik:
         report["unchanged"] = True
         report["filingsRecorded8k"] = len(recorded_current)
         if publish_to_dest:
@@ -524,7 +572,8 @@ def run_daily_update(
         rebuilt_accessions: list[DailyFiling] = []
         facts_lag = False
 
-        for cik, rows in sorted(in_universe.items()):
+        for cik in sorted(set(in_universe) | set(force_by_cik)):
+            rows = list(in_universe.get(cik, []))
             accns = [r.accn for r in rows]
             try:
                 raw = _fetch_companyfacts(sec, cik, companyfacts_by_cik, accns=accns)
@@ -579,7 +628,7 @@ def run_daily_update(
                 skipped_filings.append(row.to_dict() | {"reason": "company_facts_lag"})
                 log.warning("Company Facts for %s do not yet include %s; will retry", cik, row.accn)
             rebuilt_accessions.extend(applied_here)
-            if not applied_here:
+            if rows and not applied_here:
                 skipped_ciks.append(cik)
 
         if skipped_ciks and not rebuilt_accessions:
@@ -589,7 +638,10 @@ def run_daily_update(
         processing_complete = not skipped_ciks and not facts_lag
         report["filingsRecorded8k"] = len(recorded_current)
         report["skippedFilings"] = skipped_filings
-        report["errors"] = [f"company_facts_unavailable:{cik}" for cik in skipped_ciks]
+        report["errors"] = [
+            *report["errors"],
+            *[f"company_facts_unavailable:{cik}" for cik in skipped_ciks],
+        ]
         if facts_lag:
             report["errors"] = [*report["errors"], "company_facts_lag"]
 

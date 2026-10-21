@@ -20,6 +20,10 @@ on:
         description: Compute the update without committing or deploying
         type: boolean
         default: false
+      rebuild_tickers:
+        description: Optional tickers to rebuild from current Company Facts even without a new 10-Q/10-K (example MDA). Leave empty for the normal incremental check.
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -89,6 +93,7 @@ jobs:
           LOOKBACK="${{ github.event.inputs.lookback_days }}"
           LOOKBACK="${LOOKBACK:-10}"
           DRY="${{ github.event.inputs.dry_run }}"
+          REBUILD="${{ github.event.inputs.rebuild_tickers }}"
           extra=()
           if [ "$DRY" = "true" ]; then
             extra+=(--dry-run)
@@ -96,6 +101,9 @@ jobs:
           else
             extra+=(--write-live)
             echo "dry_run=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -n "$REBUILD" ]; then
+            extra+=(--rebuild-tickers "$REBUILD")
           fi
           set +e
           screener -v daily-update --lookback-days "$LOOKBACK" "${extra[@]}" | tee /tmp/daily-update-report.json

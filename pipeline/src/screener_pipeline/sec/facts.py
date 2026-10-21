@@ -29,7 +29,16 @@ DOMESTIC_FORMS = QUARTERLY_FORMS | ANNUAL_FORMS
 CURRENT_REPORT_FORMS = {"8-K", "8-K/A"}
 LATEST_DISCOVERY_FORMS = CURRENT_REPORT_FORMS | {"10-Q", "10-Q/A", "10-K", "10-K/A"}
 INDEX_RECONCILE_FORMS = DOMESTIC_FORMS | CURRENT_REPORT_FORMS
-FOREIGN_FORMS = {"20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A"}
+FOREIGN_FORMS = {
+    "20-F",
+    "20-F/A",
+    "40-F",
+    "40-F/A",
+    "6-K",
+    "6-K/A",
+    "F-10",
+    "F-10/A",
+}
 
 
 @dataclass(frozen=True)

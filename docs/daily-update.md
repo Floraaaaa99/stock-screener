@@ -14,6 +14,12 @@ Scheduled GitHub Actions job that refreshes the committed JSON dataset from new 
 
 The schedule uses GitHub Actions timezone-aware cron (`0 18 * * *` with `timezone: America/Los_Angeles`). DST is handled by the platform; there is no dual UTC cron or hour-check job. Manual **Run workflow** and `--dry-run` stay available. The update job has no approval environment.
 
+### Manual rebuild
+
+[Daily incremental update → Run workflow](https://github.com/Floraaaaa99/stock-screener/actions/workflows/daily-update.yml) is the button that re-runs SEC data now.
+
+Optional input **rebuild_tickers** (for example `MDA`) rebuilds those in-universe companies from current Company Facts even when there is no new 10-Q/10-K accession. It does not expand the universe and does not invent 10-Q quarters for foreign private issuers. Canadian / F-10 / 20-F / 6-K filers such as MDA Space Ltd. still have no 10-Q/10-K revenue in Company Facts; a rebuild keeps them N/A (`foreign_filer`) rather than fabricating numbers.
+
 ## Discovery sources
 
 Latest Filings and the daily index are complementary. Neither is used alone.
@@ -78,6 +84,7 @@ Rules that stay the same: missing values stay `null` (never `0`); `write_json_if
 export SEC_USER_AGENT="stock-screener Your Name you@example.com"
 screener -v daily-update --dry-run --lookback-days 10
 screener -v daily-update --write-live --lookback-days 10
+screener -v daily-update --write-live --rebuild-tickers MDA
 ```
 
 Without `--write-live`, `web/public/data` is not replaced (same hold-back as `screener build`).

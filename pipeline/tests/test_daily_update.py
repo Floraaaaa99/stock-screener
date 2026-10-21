@@ -10,7 +10,13 @@ from helpers import calendar_year, companyfacts, raw
 
 from screener_pipeline.cache import write_json_atomic, write_json_if_changed
 from screener_pipeline.cli import main
-from screener_pipeline.daily_update import DailyUpdateError, discovery_since, pacific_today, run_daily_update
+from screener_pipeline.daily_update import (
+    DailyUpdateError,
+    discovery_since,
+    pacific_today,
+    parse_rebuild_tickers,
+    run_daily_update,
+)
 from screener_pipeline.sec.daily_index import DailyFiling
 from screener_pipeline.sec.facts import Fact
 
@@ -912,3 +918,56 @@ def test_production_does_not_apply_accession_missing_from_company_facts(tmp_path
     state = data / "daily-update.json"
     if state.exists():
         assert accn not in json.loads(state.read_text()).get("processedAccessions", {})
+
+
+def test_parse_rebuild_tickers_normalizes_list():
+    assert parse_rebuild_tickers(None) == []
+    assert parse_rebuild_tickers("") == []
+    assert parse_rebuild_tickers("mda, aaa mda") == ["MDA", "AAA"]
+
+
+def test_rebuild_tickers_refreshes_without_new_filing(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+        rebuild_tickers="AAA",
+    )
+    assert report["rebuildTickers"] == ["AAA"]
+    assert report["rebuildUnknown"] == []
+    assert report["filingsNew"] == 0
+    assert report["companiesUpdated"] == ["AAA"]
+    assert report["published"] is True
+    state = data / "daily-update.json"
+    processed = json.loads(state.read_text()).get("processedAccessions", {}) if state.exists() else {}
+    assert processed == {}
+
+
+def test_rebuild_unknown_ticker_does_not_expand_universe(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    before = (data / "companies" / "AAA.json").read_bytes()
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+        rebuild_tickers="ZZZ",
+    )
+    assert report["rebuildUnknown"] == ["ZZZ"]
+    assert "unknown_ticker:ZZZ" in report["errors"]
+    assert report["companiesUpdated"] == []
+    assert report["published"] is False
+    assert (data / "companies" / "AAA.json").read_bytes() == before
+    assert (data / "companies" / "ZZZ.json").exists() is False

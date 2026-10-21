@@ -10,7 +10,7 @@ from screener_pipeline.revenue import (
     analyze_company,
     ttm_window_block_reason,
 )
-from screener_pipeline.sec.facts import RevenueFacts
+from screener_pipeline.sec.facts import RevenueFacts, extract_revenue_facts
 
 
 def _rf():
@@ -65,3 +65,32 @@ def test_matched_window_does_not_block():
     )
     checks = {q.end: QuarterCheck("match", accn="x", form="10-Q")}
     assert ttm_window_block_reason([q] * 8, checks, "verified", verify_quarters=True) is None
+
+
+def test_f10_only_company_facts_are_foreign_filer():
+    facts = {
+        "cik": 1857047,
+        "entityName": "MDA Space Ltd.",
+        "facts": {
+            "ffd": {
+                "TtlOfferingAmt": {
+                    "units": {
+                        "USD": [
+                            {
+                                "end": "2026-07-07",
+                                "val": 1,
+                                "accn": "0001104659-26-081788",
+                                "form": "F-10",
+                                "filed": "2026-07-08",
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+    }
+    rf = extract_revenue_facts(facts)
+    assert rf.is_foreign_filer
+    rev = analyze_company(rf, lambda _accn: None, verify_quarters=False)
+    assert rev.status == "foreign_filer"
+    assert rev.ttm.reason == "foreign_filer"

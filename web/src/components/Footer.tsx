@@ -24,6 +24,17 @@ export function Footer({ meta }: { meta: Meta | null }) {
               10-Q/10-K filings.
               {s && <span className="muted"> Latest filing included: {formatDate(s.sec.latestFilingDate)}.</span>}
             </li>
+            <li>
+              <a
+                href="https://github.com/Floraaaaa99/stock-screener/actions/workflows/daily-update.yml"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Refresh dataset
+              </a>{" "}
+              — repo owners can run the daily SEC update now. Optional ticker rebuild uses current Company Facts; it
+              does not create 10-Q numbers for foreign 20-F / F-10 / 6-K filers.
+            </li>
           </ul>
         </div>
         <div>

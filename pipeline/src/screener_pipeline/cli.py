@@ -117,6 +117,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Allow writing web/public/data (refused by default, same as build --write-live)",
     )
     d.add_argument("--state-dir", help="Override compact state directory")
+    d.add_argument(
+        "--rebuild-tickers",
+        default="",
+        help="Comma-separated tickers to rebuild from current Company Facts even without a new 10-Q/10-K",
+    )
 
     l3 = sub.add_parser(
         "layer3",
@@ -335,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
                 write=not args.dry_run,
                 write_live=args.write_live,
                 state_dir=Path(args.state_dir) if args.state_dir else None,
+                rebuild_tickers=args.rebuild_tickers or None,
             )
             print(json.dumps(report, indent=2))
             if not report.get("ok"):
