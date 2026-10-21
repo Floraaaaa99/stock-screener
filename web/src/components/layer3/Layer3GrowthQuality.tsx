@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { fiscalLabel, formatCompactMoney, formatExactMoney, formatPercent } from "../../lib/format";
 import {
-  displayAmount,
   flowAmountPoints,
   growthRatePoints,
   latestFlowPeriod,
@@ -9,7 +8,7 @@ import {
   ttmChange,
 } from "../../lib/layer3Research";
 import type { Layer3Row } from "../../types";
-import { MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
+import { MethodNote, MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
 import { SeriesView } from "./SeriesView";
 
 export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currency: string | null }) {
@@ -59,39 +58,38 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
 
   return (
     <section id="growth" className="l3-section panel">
-      <h2>Growth Quality</h2>
-      <p className="muted">
-        Revenue growth, profitability, and operating performance over the latest standalone quarters. Growth rates
-        are not classified as good or bad.
-      </p>
+      <div className="l3-section-head">
+        <h2 title="Revenue, profitability, and operating performance over the latest standalone quarters. Growth rates are not classified as good or bad.">
+          Growth Quality
+        </h2>
+      </div>
 
-      <article className="l3-block">
+      <article className="l3-block is-first">
         <header className="l3-block-head">
-          <div>
-            <h3>G1 — Revenue trend</h3>
-            <p className="muted">Latest 8 standalone fiscal quarters. YoY uses the same fiscal quarter last year. QoQ uses the previous standalone quarter.</p>
+          <h3>G1 — Revenue trend</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
+              Latest 8 standalone fiscal quarters. YoY pairs the same fiscal quarter last year. QoQ pairs the previous
+              standalone quarter. Missing quarters stay unavailable and are not replaced with zero. A zero or negative
+              comparison base is Unavailable; the dollar change is in the table. YoY/QoQ pairing is presentation-only.
+            </MethodNote>
+            <ViewToggle
+              label="Revenue view"
+              value={g1}
+              onChange={setG1}
+              options={[
+                { id: "amount", label: "Amount" },
+                { id: "yoy", label: "YoY %" },
+                { id: "qoq", label: "QoQ %" },
+              ]}
+            />
           </div>
-          <ViewToggle
-            label="Revenue view"
-            value={g1}
-            onChange={setG1}
-            options={[
-              { id: "amount", label: "Amount" },
-              { id: "yoy", label: "YoY %" },
-              { id: "qoq", label: "QoQ %" },
-            ]}
-          />
         </header>
         <SeriesView
           series={g1Series}
           kind={g1 === "amount" ? "bar" : "line"}
           unit={g1 === "amount" ? "money" : "percent"}
           currency={currency}
-          caption={
-            g1 === "amount"
-              ? `${currency ?? "USD"} amounts. Missing quarters are omitted, not shown as zero.`
-              : "Paired from extracted standalone quarters. Not a published pipeline field. A zero or negative base is Unavailable, with the dollar change in the table."
-          }
           tableCaption="Revenue history"
         />
         {g1 !== "amount" && (
@@ -109,52 +107,46 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>G2 — Profitability</h3>
-            <p className="muted">Related income-statement amounts share one axis. Margins are a separate percent view so dollars and ratios are not mixed.</p>
+          <h3>G2 — Profitability</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
+              Related amounts share one axis. Margins are a separate percent view so dollars and ratios are not mixed.
+              Derived margins stay unavailable when inputs conflict.
+            </MethodNote>
+            <ViewToggle
+              label="Profitability view"
+              value={g2}
+              onChange={setG2}
+              options={[
+                { id: "revenue", label: "Revenue & GP" },
+                { id: "income", label: "Operating results" },
+                { id: "margin", label: "Margin" },
+              ]}
+            />
           </div>
-          <ViewToggle
-            label="Profitability view"
-            value={g2}
-            onChange={setG2}
-            options={[
-              { id: "revenue", label: "Revenue & GP" },
-              { id: "income", label: "Operating results" },
-              { id: "margin", label: "Margin" },
-            ]}
-          />
         </header>
-        <SeriesView
-          series={g2Series}
-          kind="line"
-          unit={g2 === "margin" ? "ratio" : "money"}
-          currency={currency}
-          caption={
-            g2 === "margin"
-              ? "Derived margins (ratio × 100 for the axis). Suppressed ratios stay unavailable."
-              : "Related amounts share one axis. Operating income and net income are a separate view so the scale stays readable."
-          }
-        />
+        <SeriesView series={g2Series} kind="line" unit={g2 === "margin" ? "ratio" : "money"} currency={currency} />
       </article>
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>G3 — Growth efficiency</h3>
-            <p className="muted">
-              TTM year-over-year from the issuer file. When the comparison base is not positive, the percentage is
-              withheld and the dollar change is shown instead.
-            </p>
+          <h3>G3 — Growth efficiency</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
+              TTM year-over-year comes from the issuer file. When the comparison base is not positive, the percentage
+              is withheld and the dollar change is shown instead. Quarterly YoY is a UI pairing of corresponding
+              fiscal quarters.
+            </MethodNote>
+            <ViewToggle
+              label="Growth efficiency view"
+              value={g3}
+              onChange={setG3}
+              options={[
+                { id: "ttm", label: "TTM YoY" },
+                { id: "yoy", label: "Quarterly YoY" },
+              ]}
+            />
           </div>
-          <ViewToggle
-            label="Growth efficiency view"
-            value={g3}
-            onChange={setG3}
-            options={[
-              { id: "ttm", label: "TTM YoY" },
-              { id: "yoy", label: "Quarterly YoY" },
-            ]}
-          />
         </header>
         {g3 === "ttm" ? (
           <>
@@ -199,7 +191,6 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
               kind="bar"
               unit="percent"
               currency={currency}
-              caption="Current TTM versus previous TTM. Missing rates are gaps, not zeros."
             />
           </>
         ) : (
@@ -212,14 +203,8 @@ export function Layer3GrowthQuality({ row, currency }: { row: Layer3Row; currenc
             kind="line"
             unit="percent"
             currency={currency}
-            caption="UI pairing of corresponding fiscal quarters. Not stored in the issuer JSON."
           />
         )}
-        <p className="muted">
-          Latest TTM amounts: Revenue {formatCompactMoney(displayAmount(m?.revenue), currency)}, operating income{" "}
-          {formatCompactMoney(displayAmount(m?.operatingIncome), currency)}, net income{" "}
-          {formatCompactMoney(displayAmount(m?.netIncome), currency)}.
-        </p>
       </article>
     </section>
   );

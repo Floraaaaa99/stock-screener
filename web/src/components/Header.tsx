@@ -7,15 +7,17 @@ export function Header({
   layer,
   layer3Count,
   onLayer,
+  researchOpen = false,
 }: {
   meta: Meta | null;
   layer: LayerId;
   layer3Count: number;
   onLayer: (layer: LayerId) => void;
+  researchOpen?: boolean;
 }) {
   const sample = meta?.dataset.mode === "sample";
   return (
-    <header className="header">
+    <header className={researchOpen ? "header is-research" : "header"}>
       <div className="container header-inner">
         <div>
           <h1>
@@ -32,7 +34,9 @@ export function Header({
               ? "SEC SIC industry and trailing-twelve-month revenue growth for U.S.-listed stocks, from NASDAQ Trader listings and SEC EDGAR filings. Revenue is labeled in the reporting currency and is not converted."
               : layer === 2
                 ? "Sequential growth on Layer 1’s validated eight-quarter window: four quarterly YoY rates, descriptive QoQ, and on Passed companies descriptive net-income badges. No valuation screen."
-                : "Manually curated Layer 3 research list. Filter and select companies on the screener, then add them here. Nothing is enrolled from Layer 1 or Layer 2 automatically."}
+                : researchOpen
+                  ? "Issuer financial research from that company’s Layer 3 SEC file. Not an update of the Layer 1/2 screener dataset."
+                  : "Manually curated Layer 3 research list. Filter and select companies on the screener, then add them here. Nothing is enrolled from Layer 1 or Layer 2 automatically."}
           </p>
           <nav className="layer-nav" aria-label="Screener layer">
             <button type="button" className={`layer-btn ${layer === 1 ? "on" : ""}`} onClick={() => onLayer(1)}>
@@ -48,8 +52,18 @@ export function Header({
         </div>
         <dl className="header-stats">
           <div>
-            <dt>Data updated</dt>
-            <dd>{meta ? formatDateTime(meta.generatedAt) : "…"}</dd>
+            <dt
+              title={
+                layer === 3
+                  ? "Last Layer 1 / Layer 2 dataset build. Not the issuer’s latest fiscal reporting date."
+                  : undefined
+              }
+            >
+              {layer === 3 ? "Screener updated" : "Data updated"}
+            </dt>
+            <dd title={layer === 3 ? "Layer 1 / Layer 2 build time. Each Layer 3 issuer has its own reporting date." : undefined}>
+              {meta ? formatDateTime(meta.generatedAt) : "…"}
+            </dd>
           </div>
           <div>
             <dt>Companies shown</dt>

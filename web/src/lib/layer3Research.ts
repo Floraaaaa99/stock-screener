@@ -174,6 +174,22 @@ export function latestFlowPeriod(metric: Layer3FlowMetric | Layer3DerivedMetric 
   return { fiscalYear: q.fiscalYear ?? null, fiscalQuarter: q.fiscalQuarter ?? null, end: q.end ?? null };
 }
 
+export function periodKey(
+  period: { fiscalYear?: number | null; fiscalQuarter?: number | null; end?: string | null } | null | undefined,
+): string {
+  if (!period) return "";
+  return `${period.fiscalYear ?? ""}|${period.fiscalQuarter ?? ""}|${period.end ?? ""}`;
+}
+
+export function formatPeriodLabel(
+  period: { fiscalYear?: number | null; fiscalQuarter?: number | null; end?: string | null } | null | undefined,
+): string | null {
+  if (!period) return null;
+  const fy = period.fiscalYear && period.fiscalQuarter ? `FY${period.fiscalYear} Q${period.fiscalQuarter}` : null;
+  if (fy && period.end) return `${fy} · ${period.end}`;
+  return fy ?? period.end ?? null;
+}
+
 export type GrowthKind = "yoy" | "qoq";
 
 export interface GrowthPair {

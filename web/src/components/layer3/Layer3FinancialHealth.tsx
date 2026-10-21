@@ -2,7 +2,7 @@ import { useState } from "react";
 import { fiscalLabel, formatCompactMoney, formatDate, formatRatio } from "../../lib/format";
 import { displayAmount, displayKind, flowAmountPoints, latestFlowPeriod, stockHistoryPoints, ttmPoints } from "../../lib/layer3Research";
 import type { Layer3Row } from "../../types";
-import { MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
+import { MethodNote, MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
 import { SeriesView } from "./SeriesView";
 
 export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; currency: string | null }) {
@@ -15,19 +15,21 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
 
   return (
     <section id="health" className="l3-section panel">
-      <h2>Financial Health</h2>
-      <p className="muted">
-        Earnings-to-cash conversion, reinvestment, liquidity, and debt. Balance-sheet figures are snapshots on a
-        filing date and are never summed into a TTM.
-      </p>
+      <div className="l3-section-head">
+        <h2 title="Earnings-to-cash conversion, reinvestment, liquidity, and debt. Balance-sheet figures are snapshots on a filing date and are never summed into a TTM.">
+          Financial Health
+        </h2>
+      </div>
 
-      <article className="l3-block">
+      <article className="l3-block is-first">
         <header className="l3-block-head">
-          <div>
-            <h3>F1 — Earnings vs cash</h3>
-            <p className="muted">Net income and operating cash flow on matching fiscal period ends. Cash conversion is OCF / Net Income when the base is positive.</p>
-          </div>
-          <ViewToggle
+          <h3>F1 — Earnings vs cash</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
+              Net income and operating cash flow on matching fiscal period ends. Cash conversion is OCF / Net Income
+              when the base is positive.
+            </MethodNote>
+            <ViewToggle
             label="Earnings vs cash view"
             value={f1}
             onChange={setF1}
@@ -36,7 +38,8 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
               { id: "ttm", label: "TTM" },
               { id: "conversion", label: "Cash conversion" },
             ]}
-          />
+            />
+          </div>
         </header>
         {f1 === "quarter" && (
           <SeriesView
@@ -66,21 +69,19 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
             kind="line"
             unit="ratio"
             currency={currency}
-            caption="Derived OCF / Net Income. A non-positive net-income base stays unavailable."
           />
         )}
       </article>
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>F2 — Cash flow and reinvestment</h3>
-            <p className="muted">
+          <h3>F2 — Cash flow and reinvestment</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
               Free cash flow is derived as OCF minus the magnitude of capital expenditures (CapEx stored as a positive
               outflow). This is the pipeline definition, not a filing face line.
-            </p>
-          </div>
-          <ViewToggle
+            </MethodNote>
+            <ViewToggle
             label="Cash flow view"
             value={f2}
             onChange={setF2}
@@ -89,7 +90,8 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
               { id: "ttm", label: "TTM" },
               { id: "margin", label: "FCF margin" },
             ]}
-          />
+            />
+          </div>
         </header>
         {f2 === "quarter" && (
           <SeriesView
@@ -127,14 +129,13 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>F3 — Liquidity and debt</h3>
-            <p className="muted">
+          <h3>F3 — Liquidity and debt</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
               Historical balance-sheet snapshots, each labeled with its date. Current ratio is a latest-only derived
-              value — it is not computed for earlier dates in the browser.
-            </p>
-          </div>
-          <ViewToggle
+              value — it is not computed for earlier dates in the browser. These series are not TTM.
+            </MethodNote>
+            <ViewToggle
             label="Balance-sheet view"
             value={f3}
             onChange={setF3}
@@ -142,7 +143,8 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
               { id: "debt", label: "Cash and debt" },
               { id: "current", label: "Current accounts" },
             ]}
-          />
+            />
+          </div>
         </header>
         <div className="l3-cards">
           {(
@@ -193,7 +195,6 @@ export function Layer3FinancialHealth({ row, currency }: { row: Layer3Row; curre
           kind="line"
           unit="money"
           currency={currency}
-          caption="Aligned quarter-end snapshots. Missing dates are gaps. These series are not TTM."
         />
       </article>
     </section>

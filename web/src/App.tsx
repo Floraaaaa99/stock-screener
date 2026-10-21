@@ -267,8 +267,14 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header meta={meta} layer={layer} layer3Count={membership.length} onLayer={onLayer} />
-      <main className="container">
+      <Header
+        meta={meta}
+        layer={layer}
+        layer3Count={membership.length}
+        onLayer={onLayer}
+        researchOpen={layer === 3 && researchCik != null}
+      />
+      <main className={layer === 3 && researchCik != null ? "container is-research" : "container"}>
         {load.status === "error" && (
           <div className="panel error-panel" role="alert">
             <h2>Could not load the dataset</h2>

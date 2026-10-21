@@ -2,7 +2,7 @@ import { useState } from "react";
 import { formatCompactMoney, formatDate, formatDays, formatPercent } from "../../lib/format";
 import { displayAmount, displayKind, flowAmountPoints, stockHistoryPoints } from "../../lib/layer3Research";
 import type { Layer3Row } from "../../types";
-import { MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
+import { MethodNote, MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
 import { SeriesView } from "./SeriesView";
 
 export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; currency: string | null }) {
@@ -14,22 +14,21 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
 
   return (
     <section id="working-capital" className="l3-section panel">
-      <h2>Working Capital</h2>
-      <p className="muted">
-        Whether growth requires more receivables, inventory, and operating working capital. Days-outstanding, stock
-        YoY, OWC, and CCC are latest-only pipeline values — this page does not invent histories for them.
-      </p>
+      <div className="l3-section-head">
+        <h2 title="Whether growth requires more receivables, inventory, and operating working capital. DSO, DIO, DPO, CCC, OWC, and stock YoY are latest-only pipeline values — this page does not invent histories for them.">
+          Working Capital
+        </h2>
+      </div>
 
-      <article className="l3-block">
+      <article className="l3-block is-first">
         <header className="l3-block-head">
-          <div>
-            <h3>W1 — Receivables and revenue</h3>
-            <p className="muted">
+          <h3>W1 — Receivables and revenue</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
               Accounts receivable is a balance-sheet stock; revenue is a period flow. They are charted separately so
               they are not treated as equivalent.
-            </p>
-          </div>
-          <ViewToggle
+            </MethodNote>
+            <ViewToggle
             label="Receivables view"
             value={w1}
             onChange={setW1}
@@ -37,7 +36,8 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
               { id: "ar", label: "Accounts receivable" },
               { id: "revenue", label: "Revenue" },
             ]}
-          />
+            />
+          </div>
         </header>
         <div className="l3-cards">
           <MetricCard
@@ -62,20 +62,18 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
           kind="bar"
           unit="money"
           currency={currency}
-          caption={w1 === "ar" ? "Balance-sheet snapshots, not a TTM." : "Standalone quarterly revenue."}
         />
       </article>
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>W2 — Inventory and COGS</h3>
-            <p className="muted">
+          <h3>W2 — Inventory and COGS</h3>
+          <div className="l3-block-tools">
+            <MethodNote>
               Missing inventory is not shown as zero. If inventory is not applicable to the reporting model, that
               state is shown explicitly.
-            </p>
-          </div>
-          {!inventoryNA && (
+            </MethodNote>
+            {!inventoryNA && (
             <ViewToggle
               label="Inventory view"
               value={w2}
@@ -85,7 +83,8 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
                 { id: "cogs", label: "COGS" },
               ]}
             />
-          )}
+            )}
+          </div>
         </header>
         {inventoryNA ? (
           <div className="l3-na-state">
@@ -138,13 +137,11 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
 
       <article className="l3-block">
         <header className="l3-block-head">
-          <div>
-            <h3>W3 — Payables and cash conversion cycle</h3>
-            <p className="muted">
-              CCC = DSO + DIO − DPO, using the pipeline’s aligned inputs. Concept-scope conflicts and extreme ratios
-              keep their quality flags; they are not turned into clean scores.
-            </p>
-          </div>
+          <h3>W3 — Payables and cash conversion cycle</h3>
+          <MethodNote>
+            CCC = DSO + DIO − DPO, using the pipeline’s aligned inputs. Concept-scope conflicts and extreme ratios
+            keep their quality flags.
+          </MethodNote>
         </header>
         <div className="l3-cards">
           <MetricCard
@@ -199,7 +196,6 @@ export function Layer3WorkingCapital({ row, currency }: { row: Layer3Row; curren
           kind="bar"
           unit="money"
           currency={currency}
-          caption="Accounts payable snapshots. DSO, DIO, DPO, CCC, and OWC stay latest-only."
         />
       </article>
     </section>

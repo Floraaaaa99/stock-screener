@@ -189,6 +189,15 @@ export function MetricCard({
   );
 }
 
+export function MethodNote({ children }: { children: ReactNode }) {
+  return (
+    <details className="l3-method">
+      <summary>About</summary>
+      <div className="l3-method-body">{children}</div>
+    </details>
+  );
+}
+
 export function ViewToggle<T extends string>({
   value,
   options,

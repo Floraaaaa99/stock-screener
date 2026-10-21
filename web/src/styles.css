@@ -95,6 +95,11 @@ main.container {
   gap: 16px;
 }
 
+main.container.is-research {
+  padding-top: 12px;
+  padding-bottom: 24px;
+}
+
 /* Header */
 .header {
   background: var(--surface);
@@ -108,6 +113,19 @@ main.container {
   gap: 24px;
   padding-top: 18px;
   padding-bottom: 18px;
+}
+
+.header.is-research .header-inner {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.header.is-research .subtitle {
+  margin-top: 4px;
+}
+
+.header.is-research .layer-nav {
+  margin-top: 8px;
 }
 
 .header h1 {
@@ -1684,32 +1702,65 @@ a.badge:hover {
 
 /* Layer 3 research page */
 .l3-research {
-  gap: 16px;
+  gap: 8px;
 }
 
-.l3-research-header,
-.l3-overview,
+.l3-research-top,
 .l3-section {
-  padding: 18px 20px 16px;
+  padding: 12px 16px 10px;
+}
+
+.l3-research-header {
+  padding: 0;
 }
 
 .l3-research-head-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
+  gap: 10px 14px;
+  margin-bottom: 4px;
 }
 
 .l3-research-header h2 {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
+  margin: 0;
 }
 
 .l3-ticker {
   font-variant-numeric: tabular-nums;
   margin-right: 6px;
+}
+
+.l3-identity {
+  margin: 0 0 4px;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.l3-identity [title],
+.header-stats dt[title],
+.header-stats dd[title] {
+  border-bottom: 1px dotted var(--muted);
+  cursor: help;
+}
+
+.l3-data-details {
+  margin: 0 0 2px;
+  font-size: 13px;
+}
+
+.l3-data-details summary,
+.l3-method summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.l3-data-details .l3-meta {
+  margin: 8px 0 0;
 }
 
 .l3-meta {
@@ -1746,17 +1797,41 @@ a.badge:hover {
   color: var(--warn-soft-fg);
 }
 
+.l3-overview {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.l3-overview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
+
+.l3-overview h2 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.l3-overview-period {
+  margin: 0;
+  font-size: 12px;
+}
+
 .l3-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin: 12px 0;
+  gap: 8px;
+  margin: 8px 0 0;
 }
 
 .l3-card {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 12px;
+  padding: 10px;
   background: var(--surface-2);
 }
 
@@ -1774,8 +1849,8 @@ a.badge:hover {
 }
 
 .l3-card-value {
-  margin: 8px 0 4px;
-  font-size: 20px;
+  margin: 6px 0 2px;
+  font-size: 18px;
   font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
@@ -1822,8 +1897,8 @@ a.badge:hover {
   z-index: 5;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 0;
+  gap: 6px;
+  padding: 4px 0;
   background: var(--bg);
 }
 
@@ -1849,23 +1924,62 @@ a.badge:hover {
 }
 
 .l3-section h2 {
-  font-size: 18px;
+  font-size: 16px;
+  margin: 0;
+}
+
+.l3-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+  flex-wrap: wrap;
   margin-bottom: 6px;
 }
 
+.l3-section-head h2[title] {
+  border-bottom: 1px dotted var(--muted);
+  cursor: help;
+}
+
 .l3-block {
-  margin-top: 20px;
-  padding-top: 16px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--border);
+}
+
+.l3-block.is-first {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .l3-block-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
+  gap: 10px 16px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+}
+
+.l3-block-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.l3-method {
+  font-size: 12px;
+}
+
+.l3-method-body {
+  margin-top: 6px;
+  max-width: 42rem;
+  color: var(--text-2);
+  line-height: 1.45;
 }
 
 .l3-block h3 {
@@ -1976,18 +2090,24 @@ a.badge:hover {
 }
 
 @media (max-width: 860px) {
-  .l3-research-header,
-  .l3-overview,
+  .l3-research-top,
   .l3-section {
-    padding: 14px;
+    padding: 12px;
+  }
+
+  .l3-research-head-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .l3-card-value {
-    font-size: 18px;
+    font-size: 17px;
   }
 
-  .l3-block-head {
+  .l3-block-head,
+  .l3-block-tools {
     flex-direction: column;
+    align-items: flex-start;
   }
 
   .l3-sticky-nav {

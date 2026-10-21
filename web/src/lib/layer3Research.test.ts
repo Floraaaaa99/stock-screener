@@ -5,10 +5,12 @@ import {
   chronologicalQuarters,
   displayAmount,
   displayKind,
+  formatPeriodLabel,
   hasConceptScopeMismatch,
   isFiniteNumber,
   layer3ToSearch,
   pairQuarterGrowth,
+  periodKey,
   readLayer3Cik,
   ttmChange,
 } from "./layer3Research";
@@ -35,6 +37,17 @@ function q(
 function loadIssuer(cik: string): Layer3Row {
   return JSON.parse(readFileSync(`public/data/layer3/cik/${cik}.json`, "utf8")) as Layer3Row;
 }
+
+describe("overview period labels", () => {
+  it("treats matching fiscal period and end date as the same TTM window", () => {
+    const period = { fiscalYear: 2026, fiscalQuarter: 3, end: "2026-07-31" };
+    expect(periodKey(period)).toBe("2026|3|2026-07-31");
+    expect(periodKey(period)).toBe(periodKey({ ...period }));
+    expect(formatPeriodLabel(period)).toBe("FY2026 Q3 · 2026-07-31");
+    expect(periodKey(null)).toBe("");
+    expect(formatPeriodLabel(null)).toBeNull();
+  });
+});
 
 describe("Layer 3 research URL", () => {
   it("reads and writes a canonical CIK without changing the list URL", () => {
