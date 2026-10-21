@@ -5,6 +5,7 @@ import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Layer2View } from "./components/Layer2View";
+import { Layer3ResearchPage } from "./components/layer3/Layer3ResearchPage";
 import { Layer3View } from "./components/Layer3View";
 import { Pagination } from "./components/Pagination";
 import { ScreenerTable } from "./components/ScreenerTable";
@@ -24,6 +25,7 @@ import {
   type Layer3CatalogRow,
   type Layer3Entry,
 } from "./lib/layer3";
+import { layer3ToSearch, readLayer3Cik } from "./lib/layer3Research";
 import { Layer3Store, browserKvStore, storageBanner, type StorageStatus } from "./lib/layer3Storage";
 import {
   DEFAULT_VIEW,
@@ -55,12 +57,18 @@ function worstStorageStatus(...statuses: StorageStatus[]): StorageStatus {
   return "empty";
 }
 
-function parseLocation(search: string): { layer: LayerId; layer1: ViewState; layer2: Layer2ViewState } {
+function parseLocation(search: string): {
+  layer: LayerId;
+  layer1: ViewState;
+  layer2: Layer2ViewState;
+  researchCik: string | null;
+} {
   const parsed = readLayer2View(search);
   return {
     layer: parsed.layer,
     layer1: readViewFromSearch(search),
     layer2: parsed.view,
+    researchCik: parsed.layer === 3 ? readLayer3Cik(search) : null,
   };
 }
 
@@ -70,6 +78,7 @@ export default function App() {
   const initialMembership = layer3Store.loadMembership();
   const [load, setLoad] = useState<LoadState>({ status: "loading" });
   const [layer, setLayer] = useState<LayerId>(initial.layer);
+  const [researchCik, setResearchCik] = useState<string | null>(initial.researchCik);
   const [view, setView] = useState<ViewState>(initial.layer1);
   const [layer2View, setLayer2View] = useState<Layer2ViewState>(initial.layer2);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -99,9 +108,10 @@ export default function App() {
   useEffect(fetchData, [fetchData]);
 
   useEffect(() => {
-    const search = layer === 3 ? "?layer=3" : layer === 2 ? layer2ToSearch(2, layer2View, "") : viewToSearch(view);
+    const search =
+      layer === 3 ? layer3ToSearch(researchCik) : layer === 2 ? layer2ToSearch(2, layer2View, "") : viewToSearch(view);
     window.history.replaceState(null, "", `${window.location.pathname}${search}`);
-  }, [layer, view, layer2View]);
+  }, [layer, view, layer2View, researchCik]);
 
   useEffect(() => {
     const onPop = () => {
@@ -109,6 +119,7 @@ export default function App() {
       setLayer(next.layer);
       setView(next.layer1);
       setLayer2View(next.layer2);
+      setResearchCik(next.researchCik);
       setExpanded(null);
     };
     window.addEventListener("popstate", onPop);
@@ -222,6 +233,7 @@ export default function App() {
   const onLayer = (next: LayerId) => {
     setLayer(next);
     setExpanded(null);
+    setResearchCik(null);
   };
 
   const clearFilters = () => update({ sicMajorGroup: "", sicIndustries: [], currency: "", query: "" });
@@ -255,8 +267,14 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header meta={meta} layer={layer} layer3Count={membership.length} onLayer={onLayer} />
-      <main className="container">
+      <Header
+        meta={meta}
+        layer={layer}
+        layer3Count={membership.length}
+        onLayer={onLayer}
+        researchOpen={layer === 3 && researchCik != null}
+      />
+      <main className={layer === 3 && researchCik != null ? "container is-research" : "container"}>
         {load.status === "error" && (
           <div className="panel error-panel" role="alert">
             <h2>Could not load the dataset</h2>
@@ -267,12 +285,25 @@ export default function App() {
           </div>
         )}
 
-        {load.status !== "error" && layer === 3 && (
+        {load.status !== "error" && layer === 3 && researchCik && (
+          <Layer3ResearchPage
+            cik={researchCik}
+            entries={membership}
+            onBack={() => setResearchCik(null)}
+            onRemove={(issuerId) => {
+              persistMembership(removeIssuer(membership, issuerId));
+              setResearchCik(null);
+            }}
+          />
+        )}
+
+        {load.status !== "error" && layer === 3 && !researchCik && (
           <Layer3View
             entries={membership}
             storageNotice={notice}
             onRemove={(issuerId) => persistMembership(removeIssuer(membership, issuerId))}
             onOpenScreener={() => onLayer(1)}
+            onOpenResearch={(cik) => setResearchCik(cik)}
           />
         )}
 

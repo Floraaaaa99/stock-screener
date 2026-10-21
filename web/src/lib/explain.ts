@@ -54,12 +54,38 @@ export const NA_REASONS: Record<string, string> = {
     "A newer official 10-Q/10-K was read and has no applicable total-revenue line. The verified window is older than that filing.",
   official_quarter_not_in_window:
     "Official revenue from a newer filing was read but is not yet in the verified eight-quarter TTM window.",
+  concept_scope_mismatch:
+    "Gross Profit, Cost of Revenue, and Revenue do not share a compatible concept scope, so derived ratios are not shown as clean values.",
+  incompatible_inputs:
+    "A derived ratio was suppressed because its inputs do not share a compatible concept scope. Raw series are unchanged.",
+  previous_ttm_zero: "Previous TTM is zero, so a percentage change is not meaningful.",
+  insufficient_ttm: "Current or previous TTM is missing, so TTM growth is not calculated.",
+  missing_numerator: "The numerator for this ratio is missing.",
+  missing_denominator: "The denominator for this ratio is missing.",
+  denominator_zero: "The denominator is zero, so the ratio is not calculated.",
+  denominator_not_positive: "The denominator is zero or negative, so the ratio is not meaningful.",
+  no_inventory_concept: "No inventory concept is present in this issuer's Company Facts. That is not treated as zero.",
+  insufficient_stock_history: "There are not enough aligned balance-sheet snapshots to compute this figure.",
+  prior_balance_zero: "The year-ago balance is zero, so a percentage change is not meaningful.",
+  prior_balance_not_positive: "The year-ago balance is negative, so a percentage change is not meaningful.",
+  missing_accounts_receivable: "Accounts receivable is missing, so operating working capital stays N/A.",
+  missing_accounts_payable: "Accounts payable is missing, so operating working capital stays N/A.",
+  missing_cost_of_revenue: "Cost of revenue is missing, so this inventory or payables ratio stays N/A.",
+  missing_dso: "Days sales outstanding is missing, so the cash conversion cycle stays N/A.",
+  missing_revenue: "Revenue is missing, so this working-capital ratio stays N/A.",
+  ttm_window_unknown: "The TTM window length is unknown, so days-outstanding is not calculated.",
+  no_comparable_quarter: "The corresponding or previous standalone quarter is not available, so growth is not calculated.",
+  currency_mismatch: "The two periods are not in the same reporting currency, so they are not compared.",
+  prior_not_positive: "The comparison base is zero or negative, so a percentage change is not meaningful.",
+  prior_zero: "The comparison base is zero, so a percentage change is not meaningful.",
+  missing_value: "This period has no extracted amount. Missing values are not replaced with zero.",
 };
 
 export const FLAG_TEXT: Record<string, string> = {
   negative_value: "A quarter has negative revenue (for example a reversal of previously recognized revenue).",
   derivation_mismatch: "A reported quarter differs from the value implied by year-to-date totals.",
-  financial_institution: "Financial-institution SIC: metrics may be shown, but the corporate scoring model does not apply.",
+  financial_institution:
+    "Financial-institution SIC: metrics may be shown, but the corporate FCF and net-debt model does not apply.",
   no_fabricated_foreign_quarters: "Foreign 20-F/6-K reports are not turned into 10-Q quarters.",
   concept_merged: "Two XBRL revenue concepts with identical values were combined to cover the window.",
   concept_change_unverified:
@@ -71,6 +97,10 @@ export const FLAG_TEXT: Record<string, string> = {
   statement_mismatch: NA_REASONS.statement_mismatch!,
   filing_mismatch: NA_REASONS.filing_mismatch!,
   ambiguous_concept: NA_REASONS.ambiguous_concept!,
+  concept_scope_mismatch: NA_REASONS.concept_scope_mismatch!,
+  incompatible_inputs: NA_REASONS.incompatible_inputs!,
+  extreme_ratio:
+    "This ratio is outside the usual inspect-only range. The computed value is preserved and is not an investment rating.",
 };
 
 export const CONCEPT_STATUS: Record<string, string> = {
