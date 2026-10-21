@@ -6,13 +6,13 @@ Scheduled GitHub Actions job that refreshes the committed JSON dataset from new 
 
 | Workflow | Trigger | Writes live JSON | Deploys Pages |
 |---|---|---|---|
-| `daily-update.yml` | 11:59 PM America/Los_Angeles, plus **Run workflow** | Yes, after the gate passes (`--write-live`) | Yes, in the same workflow |
+| `daily-update.yml` | 6:00 PM America/Los_Angeles, plus **Run workflow** | Yes, after the gate passes and financial JSON changed | Yes, only when financial JSON changed |
 | `refresh.yml` | Manual only | No | No |
 | `deploy.yml` | Push to `main`, optional sample refresh | Sample refresh only | Yes, unless the commit message contains `[skip pages]` |
 
 `GITHUB_TOKEN` commits do not start other workflows. The daily job therefore builds `web/dist` and calls `deploy-pages` itself. The commit message includes `[skip pages]` so a later PAT push would not double-deploy.
 
-GitHub cron is UTC. The workflow lists both `59 6 * * *` (PDT) and `59 7 * * *` (PST) and skips unless `TZ=America/Los_Angeles` hour is `23`.
+The schedule uses GitHub Actions timezone-aware cron (`0 18 * * *` with `timezone: America/Los_Angeles`). DST is handled by the platform; there is no dual UTC cron or hour-check job.
 
 ## Update steps
 
@@ -26,7 +26,7 @@ GitHub cron is UTC. The workflow lists both `59 6 * * *` (PDT) and `59 7 * * *` 
 8. Run `evaluate_gate` against the previous `meta.json`. On failure, delete staging and keep the previous dataset; those accessions are not marked processed.
 9. On success, copy only changed files back (never delete extras), bump `meta.generatedAt` (the site “Data updated” / “Screener updated” stamp), and deploy Pages.
 
-A day with no in-universe filings is still a successful heartbeat: `meta.generatedAt` and `daily-update.json` update so the website shows the latest successful run.
+If no in-universe filing changed company or Layer 3 JSON, the job records new accessions in `daily-update.json` when needed and exits successfully without rewriting aggregates or deploying Pages. The site keeps the previous `generatedAt`.
 
 ## Commands
 

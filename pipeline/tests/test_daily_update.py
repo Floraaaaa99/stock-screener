@@ -237,10 +237,10 @@ def test_processed_accession_is_not_applied_again(tmp_path: Path):
     )
     assert report["filingsNew"] == 0
     assert report["companiesUpdated"] == []
-    assert report["published"] is True
+    assert report["published"] is False
+    assert report["unchanged"] is True
     assert (data / "companies" / "AAA.json").read_bytes() == before
-    meta = (tmp_path / "data" / "meta.json").read_text()
-    assert "dailyUpdate" in meta
+    assert "dailyUpdate" not in (data / "meta.json").read_text()
 
 
 def test_unknown_cik_does_not_expand_universe(tmp_path: Path):
@@ -256,6 +256,9 @@ def test_unknown_cik_does_not_expand_universe(tmp_path: Path):
     )
     assert report["outOfUniverse"] == 1
     assert report["companiesUpdated"] == []
+    assert report["published"] is False
+    assert report["stateUpdated"] is True
+    assert "dailyUpdate" not in (data / "meta.json").read_text()
     state = (data / "daily-update.json").read_text()
     assert "0000999999-26-000001" in state
     assert "out_of_universe" in state
@@ -382,6 +385,27 @@ def test_dry_run_does_not_write(tmp_path: Path):
     assert report["published"] is False
     assert report["heldBack"] == "dry_run"
     assert (data / "meta.json").read_text() == before_meta
+    assert not (data / "daily-update.json").exists()
+
+
+def test_no_new_filings_does_not_rewrite_or_publish(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    before_meta = (data / "meta.json").read_bytes()
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[],
+        companyfacts_by_cik={},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["published"] is False
+    assert report["unchanged"] is True
+    assert report["stateUpdated"] is False
+    assert (data / "meta.json").read_bytes() == before_meta
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
     assert not (data / "daily-update.json").exists()
 
 

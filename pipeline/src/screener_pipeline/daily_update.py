@@ -337,6 +337,8 @@ def run_daily_update(
         "layer3Updated": [],
         "gate": None,
         "dryRun": dry_run,
+        "unchanged": False,
+        "stateUpdated": False,
     }
 
     generated_at = _now_iso()
@@ -350,21 +352,20 @@ def run_daily_update(
     }
 
     if not in_universe:
-        report["generatedAt"] = generated_at
-        if publish_to_dest:
-            _record_success(
-                data_dir,
+        report["generatedAt"] = baseline.get("generatedAt")
+        report["unchanged"] = True
+        if publish_to_dest and out_of_universe:
+            _write_state(
+                data_dir / STATE_FILENAME,
                 processed,
                 out_of_universe,
                 [],
                 generated_at,
                 as_of,
                 lookback_days,
-                heartbeat_only=True,
-                daily_meta=daily_meta,
             )
-            report["published"] = True
-            report["filesRewritten"] = [STATE_FILENAME, "meta.json"]
+            report["stateUpdated"] = True
+            report["filesRewritten"] = [STATE_FILENAME]
         elif is_live and not write_live:
             report["heldBack"] = "write_live_required"
         return report
@@ -420,6 +421,52 @@ def run_daily_update(
                 "Every affected CIK was missing Company Facts; live dataset unchanged"
             )
 
+        layer3_updated: list[str] = []
+        if update_layer3 and raw_facts and (staging / "layer3.json").exists():
+            index_backup = (staging / "layer3.json").read_bytes()
+            payload = write_layer3(
+                staging,
+                staging / "layer3.json",
+                companyfacts_by_cik=raw_facts,
+                ciks=list(raw_facts),
+                mode="incremental",
+                write_live=False,
+            )
+            for cik in payload.get("updated") or []:
+                rel = Path("layer3") / "cik" / f"{str(cik).zfill(10)}.json"
+                if not files_identical(staging / rel, data_dir / rel):
+                    layer3_updated.append(cik)
+            if not layer3_updated:
+                (staging / "layer3.json").write_bytes(index_backup)
+
+        report["companiesUpdated"] = updated_tickers
+        report["companiesSkipped"] = skipped_ciks
+        report["layer3Updated"] = layer3_updated
+        report["generatedAt"] = generated_at
+
+        if not updated_tickers and not layer3_updated:
+            report["unchanged"] = True
+            report["generatedAt"] = baseline.get("generatedAt")
+            if publish_to_dest:
+                _write_state(
+                    data_dir / STATE_FILENAME,
+                    processed,
+                    out_of_universe,
+                    rebuilt_accessions,
+                    generated_at,
+                    as_of,
+                    lookback_days,
+                )
+                report["stateUpdated"] = True
+                report["filesRewritten"] = [STATE_FILENAME]
+            elif is_live and not write_live:
+                report["heldBack"] = "write_live_required"
+            else:
+                report["heldBack"] = "dry_run"
+            if staging.exists():
+                shutil.rmtree(staging, ignore_errors=True)
+            return report
+
         companies_staging = load_companies(staging)
         run = {
             "status": "complete",
@@ -436,24 +483,20 @@ def run_daily_update(
                 "filingsProcessed": len(rebuilt_accessions),
             },
         }
-        meta = rebuild_aggregates(
-            staging,
-            list(companies_staging.values()),
-            generated_at=generated_at,
-            run=run,
-            baseline=baseline,
-        )
-        layer3_updated: list[str] = []
-        if update_layer3 and raw_facts and (staging / "layer3.json").exists():
-            payload = write_layer3(
+        if updated_tickers:
+            meta = rebuild_aggregates(
                 staging,
-                staging / "layer3.json",
-                companyfacts_by_cik=raw_facts,
-                ciks=list(raw_facts),
-                mode="incremental",
-                write_live=False,
+                list(companies_staging.values()),
+                generated_at=generated_at,
+                run=run,
+                baseline=baseline,
             )
-            layer3_updated = list(payload.get("updated") or [])
+        else:
+            meta = read_json(staging / "meta.json") or {}
+            meta["generatedAt"] = generated_at
+            meta["dailyUpdate"] = run["dailyUpdate"]
+            write_json_if_changed(staging / "meta.json", meta)
+        if layer3_updated:
             bump_generated_at(staging / "layer3.json", generated_at)
 
         publish = publish_to_dest and (baseline.get("dataset") or {}).get("mode") == "full"
@@ -461,10 +504,6 @@ def run_daily_update(
         meta["gate"] = gate.to_dict()
         write_json_if_changed(staging / "meta.json", meta)
         report["gate"] = gate.to_dict()
-        report["companiesUpdated"] = updated_tickers
-        report["companiesSkipped"] = skipped_ciks
-        report["layer3Updated"] = layer3_updated
-        report["generatedAt"] = generated_at
 
         if not gate.ok:
             raise DailyUpdateError("Validation gate failed; live dataset unchanged: " + ", ".join(gate.reasons))
@@ -534,37 +573,3 @@ def _write_state(
         "processedAccessions": prune_processed(processed, as_of, config.DAILY_ACCESSION_KEEP_DAYS),
     }
     write_json_if_changed(path, payload)
-
-
-def _record_success(
-    data_dir: Path,
-    processed: dict,
-    out_of_universe: list[dict],
-    rebuilt: list[DailyFiling],
-    generated_at: str,
-    as_of: date,
-    lookback_days: int,
-    *,
-    heartbeat_only: bool,
-    daily_meta: dict,
-) -> None:
-    _write_state(
-        data_dir / STATE_FILENAME,
-        processed,
-        out_of_universe,
-        rebuilt,
-        generated_at,
-        as_of,
-        lookback_days,
-    )
-    meta = read_json(data_dir / "meta.json") or {}
-    meta["generatedAt"] = generated_at
-    meta["dailyUpdate"] = {**daily_meta, "heartbeat": heartbeat_only}
-    if isinstance(meta.get("run"), dict):
-        meta["run"] = {
-            **meta["run"],
-            "kind": "daily-incremental",
-            "finishedAt": generated_at,
-            "status": "complete",
-        }
-    write_json_if_changed(data_dir / "meta.json", meta)

@@ -24,7 +24,7 @@ pipeline uses that filing's reported revenue. No paid APIs, databases, estimates
 |---|---|---|
 | 1 | 20 Biotechnology companies plus 2 foreign-filer ADRs, validated against SEC filings | Done as an SEC-only sample. See [`docs/validation/biotech20.md`](docs/validation/biotech20.md) |
 | 2 | Full NASDAQ / NYSE / NYSE American universe (≈5,600 listings) | Resumable SEC-only pipeline and publish gates. Live Pages stays on the sample until a complete full run passes completeness and filing-validation checks. See [`docs/stage2-persistence.md`](docs/stage2-persistence.md) |
-| 3 | Scheduled refreshes on GitHub Pages | Daily incremental update at 11:59 PM America/Los_Angeles. Full-universe `refresh.yml` stays manual. See [`docs/daily-update.md`](docs/daily-update.md) |
+| 3 | Scheduled refreshes on GitHub Pages | Daily incremental update at 6:00 PM America/Los_Angeles. Full-universe `refresh.yml` stays manual. See [`docs/daily-update.md`](docs/daily-update.md) |
 
 While the site runs on the validation sample, a banner says so and shows how many of the eligible listings are
 included. `--universe full` writes a complete dataset to a staging directory; it does not replace the live Pages payload
@@ -124,7 +124,7 @@ Workflows:
 
 - **CI** (`ci.yml`) runs on pull requests and pushes to `main`: pipeline lint and tests, then web typecheck, tests and build.
 - **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed dataset. A full-universe `meta.json` is accepted only when `gate.ok` is true. Manual sample refresh still exists. Commits whose message contains `[skip pages]` do not deploy here.
-- **Daily incremental update** (`daily-update.yml`) runs every day at 11:59 PM America/Los_Angeles and on demand. It scans EDGAR daily indexes, updates only affected companies, validates, commits `[skip pages]`, and **deploys Pages in the same workflow** (GITHUB_TOKEN pushes do not retrigger `deploy.yml`). A failed run leaves the previous dataset in place.
+- **Daily incremental update** (`daily-update.yml`) runs every day at 6:00 PM America/Los_Angeles (`timezone: America/Los_Angeles`) and on demand. It scans EDGAR daily indexes, updates only affected companies, validates, commits `[skip pages]`, and **deploys Pages in the same workflow** when financial JSON changed (GITHUB_TOKEN pushes do not retrigger `deploy.yml`). A day with no dataset changes does not rebuild or redeploy. A failed run leaves the previous dataset in place.
 - **Refresh full universe** (`refresh.yml`) is manual only. It restores compact SEC state from the `pipeline-state` release, builds with a 5-hour budget, packs and checksums a new state archive, and uploads artifacts. It never deploys Pages. Re-run the same workflow to resume after exit code 3.
 
 ## Repository layout
