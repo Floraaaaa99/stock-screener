@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from .. import config
-from .facts import DOMESTIC_FORMS
+from .facts import DOMESTIC_FORMS, INDEX_RECONCILE_FORMS
 
 # https://www.sec.gov/Archives/edgar/daily-index/2026/QTR4/master.20261020.idx
 SEC_DAILY_MASTER_URL = (
@@ -27,16 +27,22 @@ class DailyFiling:
     filed: date
     filename: str
     accn: str
+    accepted: datetime | None = None
+    source: str = "daily-index"
 
     def to_dict(self) -> dict:
-        return {
+        payload = {
             "cik": self.cik,
             "name": self.name,
             "form": self.form,
             "filed": self.filed.isoformat(),
             "filename": self.filename,
             "accn": self.accn,
+            "source": self.source,
         }
+        if self.accepted is not None:
+            payload["accepted"] = self.accepted.isoformat()
+        return payload
 
 
 def lookback_dates(as_of: date, days: int) -> list[date]:
@@ -109,26 +115,61 @@ def _parse_filed(raw: str) -> date | None:
         return None
 
 
+def index_is_complete(text: str) -> bool:
+    """True when a master.idx body has the CIK header. Empty/truncated files are not."""
+    if not text or not text.strip():
+        return False
+    return _SEPARATOR in text or text.startswith("CIK|") or "\nCIK|" in text
+
+
 def fetch_master_idx(http, day: date, cache_dir: Path | None = None) -> str | None:
-    """Download one day's master.idx. Missing days (weekends/holidays) return None."""
+    """Download one day's master.idx. 404 is never written as a permanent cache."""
+    text, _status = fetch_master_idx_status(http, day, cache_dir=cache_dir)
+    return text
+
+
+def fetch_master_idx_status(http, day: date, cache_dir: Path | None = None) -> tuple[str | None, str]:
+    """Return (body or None, 'ok' | 'missing' | 'incomplete'). 5xx raises. 404 is not cached."""
     url = master_idx_url(day)
     cache_dir = cache_dir or (config.CACHE_DIR / "sec" / "daily-index")
     path = cache_dir / f"master.{day.strftime('%Y%m%d')}.idx"
-    missing = path.with_suffix(path.suffix + ".404")
     if path.exists():
-        return path.read_text(encoding="utf-8", errors="replace")
-    if missing.exists():
-        return None
+        cached = path.read_text(encoding="utf-8", errors="replace")
+        if index_is_complete(cached):
+            return cached, "ok"
+        path.unlink(missing_ok=True)
     resp = http.get(url)
     if resp.status_code == 404:
-        missing.parent.mkdir(parents=True, exist_ok=True)
-        missing.write_text("", encoding="utf-8")
-        return None
+        return None, "missing"
     resp.raise_for_status()
     text = resp.content.decode("utf-8", errors="replace")
+    if not index_is_complete(text):
+        return None, "incomplete"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
-    return text
+    return text, "ok"
+
+
+def index_dates(
+    as_of: date,
+    lookback_days: int,
+    *,
+    since: date | None = None,
+    extra: list[date] | None = None,
+) -> list[date]:
+    """Dates to fetch: lookback window, recovery since, and previously unreconciled days."""
+    start = as_of - timedelta(days=lookback_days - 1)
+    if since is not None and since < start:
+        start = since
+    days = []
+    cursor = start
+    while cursor <= as_of:
+        days.append(cursor)
+        cursor += timedelta(days=1)
+    for day in extra or []:
+        if day not in days:
+            days.append(day)
+    return sorted(days, reverse=True)
 
 
 def collect_period_filings(
@@ -138,22 +179,36 @@ def collect_period_filings(
     *,
     cache_dir: Path | None = None,
     forms: set[str] | None = None,
+    since: date | None = None,
+    extra_dates: list[date] | None = None,
+    retry_missing_within_days: int = 2,
 ) -> tuple[list[DailyFiling], list[str], list[str]]:
-    """Filings from the rolling lookback window. Returns (filings, index dates found, dates missing)."""
+    """Filings from the recovery window. Returns (filings, dates found, still-unreconciled dates).
+
+    A 404 is not cached. Dates on or after ``as_of - retry_missing_within_days`` stay
+    unreconciled so a late-published index is retried. Older 404s are treated as
+    checked-empty (weekend/holiday).
+    """
+    wanted = forms if forms is not None else set(INDEX_RECONCILE_FORMS)
     found: list[DailyFiling] = []
     present: list[str] = []
-    missing: list[str] = []
+    unreconciled: list[str] = []
     seen: set[str] = set()
-    for day in lookback_dates(as_of, lookback_days):
-        text = fetch_master_idx(http, day, cache_dir=cache_dir)
+    retry_after = as_of - timedelta(days=retry_missing_within_days)
+    for day in index_dates(as_of, lookback_days, since=since, extra=extra_dates):
+        text, status = fetch_master_idx_status(http, day, cache_dir=cache_dir)
         iso = day.isoformat()
-        if text is None:
-            missing.append(iso)
+        if status == "missing":
+            if day >= retry_after:
+                unreconciled.append(iso)
+            continue
+        if status == "incomplete":
+            unreconciled.append(iso)
             continue
         present.append(iso)
-        for row in parse_master_idx(text, forms=forms):
+        for row in parse_master_idx(text or "", forms=wanted):
             if row.accn in seen:
                 continue
             seen.add(row.accn)
             found.append(row)
-    return found, present, missing
+    return found, present, unreconciled

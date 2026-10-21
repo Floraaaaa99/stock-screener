@@ -74,7 +74,9 @@ export interface Meta {
   sicMajorGroups: Record<string, string[]>;
   currencies: string[];
   dailyUpdate?: {
-    lastSuccessfulAt: string;
+    lastSuccessfulSyncAt?: string;
+    lastFinancialUpdateAt?: string;
+    lastSuccessfulAt?: string;
     asOf: string;
     lookbackDays: number;
     companiesUpdated: number;

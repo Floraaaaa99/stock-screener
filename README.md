@@ -87,7 +87,7 @@ screener freshness --data-dir pipeline/.cache/state/dataset-full --refresh-laggi
 # Layer 2 from an existing Layer 1 dataset (does not fetch SEC data)
 screener layer2 --data-dir web/public/data
 
-# Incremental daily update from EDGAR 10-Q/10-K indexes (does not expand the universe)
+# Incremental daily update from Latest Filings + EDGAR daily indexes (does not expand the universe)
 screener -v daily-update --dry-run
 screener -v daily-update --write-live --lookback-days 10
 
@@ -124,7 +124,7 @@ Workflows:
 
 - **CI** (`ci.yml`) runs on pull requests and pushes to `main`: pipeline lint and tests, then web typecheck, tests and build.
 - **Deploy to GitHub Pages** (`deploy.yml`) runs on pushes to `main` and deploys the committed dataset. A full-universe `meta.json` is accepted only when `gate.ok` is true. Manual sample refresh still exists. Commits whose message contains `[skip pages]` do not deploy here.
-- **Daily incremental update** (`daily-update.yml`) runs every day at 6:00 PM America/Los_Angeles (`timezone: America/Los_Angeles`) and on demand. It scans EDGAR daily indexes, updates only affected companies, validates, commits `[skip pages]`, and **deploys Pages in the same workflow** when financial JSON changed (GITHUB_TOKEN pushes do not retrigger `deploy.yml`). A day with no dataset changes does not rebuild or redeploy. A failed run leaves the previous dataset in place.
+- **Daily incremental update** (`daily-update.yml`) runs every day at 6:00 PM America/Los_Angeles (`timezone: America/Los_Angeles`) and on demand. It pages SEC Latest Filings (same-day `getcurrent`) and reconciles the last 10 days of EDGAR `master.idx`, updates only affected companies, validates, commits `[skip pages]`, and **deploys Pages in the same workflow** when financial JSON changed (GITHUB_TOKEN pushes do not retrigger `deploy.yml` or CI). A day with no dataset changes does not rebuild or redeploy. A failed run leaves the previous dataset in place. See [`docs/daily-update.md`](docs/daily-update.md) for the Actions-minutes estimate.
 - **Refresh full universe** (`refresh.yml`) is manual only. It restores compact SEC state from the `pipeline-state` release, builds with a 5-hour budget, packs and checksums a new state archive, and uploads artifacts. It never deploys Pages. Re-run the same workflow to resume after exit code 3.
 
 ## Repository layout

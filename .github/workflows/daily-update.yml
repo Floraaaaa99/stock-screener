@@ -1,9 +1,11 @@
 name: Daily incremental update
 
-# Incremental 10-Q/10-K refresh of the committed dataset. Does not download
-# companyfacts.zip or expand the universe (that remains refresh.yml).
-# GITHUB_TOKEN commits do not retrigger deploy.yml, so this workflow builds and
-# deploys GitHub Pages itself after a successful update.
+# Incremental 10-Q/10-K refresh of the committed dataset. Discovers new filings
+# from SEC Latest Filings (getcurrent, current official filing date only) plus
+# the last 10 days of EDGAR master.idx. Does not download companyfacts.zip or
+# expand the universe (that remains refresh.yml).
+# GITHUB_TOKEN commits do not retrigger deploy.yml or ci.yml, so this workflow
+# builds and deploys GitHub Pages itself after a successful financial update.
 on:
   schedule:
     - cron: "0 18 * * *"

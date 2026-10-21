@@ -36,6 +36,8 @@ RELEASE_TAG = "pipeline-state"
 # Incremental daily update: rolling EDGAR master.idx window and processed-accession retention.
 DAILY_LOOKBACK_DAYS = int(os.environ.get("SCREENER_DAILY_LOOKBACK_DAYS", "10"))
 DAILY_ACCESSION_KEEP_DAYS = int(os.environ.get("SCREENER_DAILY_ACCESSION_KEEP_DAYS", "40"))
+DAILY_OVERLAP_HOURS = int(os.environ.get("SCREENER_DAILY_OVERLAP_HOURS", "48"))
+DAILY_INDEX_RETRY_DAYS = int(os.environ.get("SCREENER_DAILY_INDEX_RETRY_DAYS", "2"))
 
 # Publishing gates (relative drop vs the last complete baseline). A first full run has no baseline.
 GROWTH_COVERAGE_MAX_DROP = 0.05

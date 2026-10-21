@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import pytest
+import requests
 from helpers import calendar_year, companyfacts, raw
 
 from screener_pipeline.cache import write_json_atomic, write_json_if_changed
 from screener_pipeline.cli import main
-from screener_pipeline.daily_update import DailyUpdateError, run_daily_update
+from screener_pipeline.daily_update import DailyUpdateError, discovery_since, run_daily_update
 from screener_pipeline.sec.daily_index import DailyFiling
 from screener_pipeline.sec.facts import Fact
 
@@ -192,14 +193,24 @@ def _dataset(tmp_path: Path, companies: list[dict], *, extra_layer3: dict | None
     return data
 
 
-def _filing(cik: str, accn: str, form: str = "10-Q") -> DailyFiling:
+def _filing(
+    cik: str,
+    accn: str,
+    form: str = "10-Q",
+    *,
+    filed: date | None = None,
+    accepted: datetime | None = None,
+    source: str = "daily-index",
+) -> DailyFiling:
     return DailyFiling(
         cik=cik,
         name="Test",
         form=form,
-        filed=date(2026, 10, 20),
+        filed=filed or date(2026, 10, 20),
         filename=f"edgar/data/{int(cik)}/{accn}.txt",
         accn=accn,
+        accepted=accepted,
+        source=source,
     )
 
 
@@ -388,7 +399,7 @@ def test_dry_run_does_not_write(tmp_path: Path):
     assert not (data / "daily-update.json").exists()
 
 
-def test_no_new_filings_does_not_rewrite_or_publish(tmp_path: Path):
+def test_no_new_filings_advances_checkpoint_without_publishing(tmp_path: Path):
     data = _dataset(tmp_path, [_company("AAA", "0000000001")])
     before_meta = (data / "meta.json").read_bytes()
     before_company = (data / "companies" / "AAA.json").read_bytes()
@@ -396,6 +407,7 @@ def test_no_new_filings_does_not_rewrite_or_publish(tmp_path: Path):
         data,
         as_of=date(2026, 10, 21),
         indexes=[],
+        latest_filings=[],
         companyfacts_by_cik={},
         state_dir=tmp_path / "state",
         verify_quarters=False,
@@ -403,13 +415,287 @@ def test_no_new_filings_does_not_rewrite_or_publish(tmp_path: Path):
     )
     assert report["published"] is False
     assert report["unchanged"] is True
-    assert report["stateUpdated"] is False
+    assert report["stateUpdated"] is True
+    assert report["checkpointAdvanced"] is True
+    assert report["generatedAt"] == "2026-10-01T00:00:00+00:00"
     assert (data / "meta.json").read_bytes() == before_meta
     assert (data / "companies" / "AAA.json").read_bytes() == before_company
-    assert not (data / "daily-update.json").exists()
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["lastSuccessfulSyncAt"]
+    assert state.get("lastFinancialUpdateAt") is None
 
 
 def test_cli_daily_update_help():
     with pytest.raises(SystemExit) as ei:
         main(["daily-update", "--help"])
     assert ei.value.code == 0
+
+
+def test_discovery_since_uses_lookback_or_missed_period_plus_overlap():
+    as_of = date(2026, 10, 21)
+    assert discovery_since(as_of, None, 10, 48) == date(2026, 10, 12)
+    assert discovery_since(as_of, datetime(2026, 10, 20, 1, tzinfo=UTC), 10, 48) == date(2026, 10, 12)
+    assert discovery_since(as_of, datetime(2026, 10, 1, 1, tzinfo=UTC), 10, 48) == date(2026, 9, 29)
+
+
+def test_same_day_latest_filing_is_applied_when_index_missing(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    accn = "0000000001-26-000021"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[
+            _filing(
+                "0000000001",
+                accn,
+                filed=date(2026, 10, 21),
+                accepted=datetime(2026, 10, 21, 18, 5, tzinfo=UTC),
+                source="latest",
+            )
+        ],
+        indexes=[],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["filingsNew"] == 1
+    assert report["published"] is True
+    assert "AAA" in report["companiesUpdated"]
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][accn]["status"] == "applied"
+
+
+def test_delayed_filing_inside_overlap_is_still_new(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {"lastSuccessfulSyncAt": "2026-10-20T01:00:00+00:00", "processedAccessions": {}},
+    )
+    accn = "0000000001-26-000022"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[
+            _filing(
+                "0000000001",
+                accn,
+                filed=date(2026, 10, 18),
+                accepted=datetime(2026, 10, 18, 22, 0, tzinfo=UTC),
+                source="latest",
+            )
+        ],
+        indexes=[],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["syncFrom"] == "2026-10-12"
+    assert report["filingsNew"] == 1
+    assert report["published"] is True
+
+
+def test_duplicate_accession_from_both_sources_is_applied_once(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    filing = _filing("0000000001", "0000000001-26-000023")
+    latest = _filing(
+        "0000000001",
+        "0000000001-26-000023",
+        accepted=datetime(2026, 10, 20, 16, 0, tzinfo=UTC),
+        source="latest",
+    )
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[latest],
+        indexes=[filing],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["filingsSeen"] == 1
+    assert report["filingsNew"] == 1
+    assert report["published"] is True
+    state = json.loads((data / "daily-update.json").read_text())
+    assert list(state["processedAccessions"]) == ["0000000001-26-000023"]
+
+
+def test_eight_k_is_recorded_not_rebuilt(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+    before_meta = (data / "meta.json").read_text()
+    accn = "0000000001-26-000024"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[_filing("0000000001", accn, form="8-K", source="latest")],
+        indexes=[_filing("0000000001", accn, form="8-K")],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["published"] is False
+    assert report["unchanged"] is True
+    assert report["filingsRecorded8k"] == 1
+    assert report["companiesUpdated"] == []
+    assert report["generatedAt"] == "2026-10-01T00:00:00+00:00"
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
+    assert (data / "meta.json").read_text() == before_meta
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][accn]["status"] == "recorded_8k"
+    assert state["lastSuccessfulSyncAt"]
+    assert state.get("lastFinancialUpdateAt") is None
+
+
+def test_recent_unreconciled_dates_are_kept(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {
+            "lastSuccessfulSyncAt": "2026-10-20T01:00:00+00:00",
+            "unreconciledDates": ["2026-10-20", "2026-10-10"],
+            "processedAccessions": {},
+        },
+    )
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[],
+        latest_filings=[],
+        companyfacts_by_cik={},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert "2026-10-20" in report["unresolvedDates"]
+    assert "2026-10-10" not in report["unresolvedDates"]
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["unreconciledDates"] == ["2026-10-20"]
+    assert state["lastSuccessfulSyncAt"] != "2026-10-20T01:00:00+00:00"
+
+
+def test_missed_run_recovers_older_filing(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {"lastSuccessfulSyncAt": "2026-10-10T01:00:00+00:00", "processedAccessions": {}},
+    )
+    accn = "0000000001-26-000025"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[_filing("0000000001", accn, filed=date(2026, 10, 12))],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert report["syncFrom"] == "2026-10-08"
+    assert report["filingsNew"] == 1
+    assert report["published"] is True
+    assert report["lastFinancialUpdateAt"]
+
+
+def test_discovery_http_error_does_not_advance_checkpoint(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {"lastSuccessfulSyncAt": "2026-10-20T01:00:00+00:00", "processedAccessions": {}},
+    )
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+    before_state = (data / "daily-update.json").read_text()
+
+    def boom(*_args, **_kwargs):
+        raise requests.HTTPError("HTTP 503")
+
+    monkeypatch.setenv("SEC_USER_AGENT", "stock-screener tester@example.com")
+    monkeypatch.setattr("screener_pipeline.daily_update.fetch_latest_filings", boom)
+    with pytest.raises(DailyUpdateError, match="SEC discovery"):
+        run_daily_update(
+            data,
+            as_of=date(2026, 10, 21),
+            state_dir=tmp_path / "state",
+            verify_quarters=False,
+            offline=False,
+            update_layer3=False,
+        )
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
+    assert (data / "daily-update.json").read_text() == before_state
+
+
+def test_company_facts_http_error_does_not_advance_checkpoint(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {"lastSuccessfulSyncAt": "2026-10-20T01:00:00+00:00", "processedAccessions": {}},
+    )
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+
+    def boom(*_args, **_kwargs):
+        raise requests.HTTPError("HTTP 502")
+
+    monkeypatch.setattr("screener_pipeline.daily_update._fetch_companyfacts", boom)
+    with pytest.raises(DailyUpdateError, match="Company Facts"):
+        run_daily_update(
+            data,
+            as_of=date(2026, 10, 21),
+            indexes=[_filing("0000000001", "0000000001-26-000026")],
+            latest_filings=[],
+            state_dir=tmp_path / "state",
+            verify_quarters=False,
+            offline=True,
+            update_layer3=False,
+        )
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["lastSuccessfulSyncAt"] == "2026-10-20T01:00:00+00:00"
+    assert "0000000001-26-000026" not in state.get("processedAccessions", {})
+
+
+def test_facts_lag_does_not_mark_accession_or_advance(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    facts = _revenue_payload(1, "AAA")
+    first = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        indexes=[_filing("0000000001", "0000000001-26-000010")],
+        latest_filings=[],
+        companyfacts_by_cik={"0000000001": facts},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=False,
+    )
+    assert first["published"] is True
+    after_first = (data / "companies" / "AAA.json").read_bytes()
+    sync_at = json.loads((data / "daily-update.json").read_text())["lastSuccessfulSyncAt"]
+    try:
+        run_daily_update(
+            data,
+            as_of=date(2026, 10, 21),
+            indexes=[_filing("0000000001", "0000000001-26-000027")],
+            latest_filings=[],
+            companyfacts_by_cik={"0000000001": facts},
+            state_dir=tmp_path / "state",
+            verify_quarters=False,
+            offline=True,
+            update_layer3=False,
+        )
+        raised = False
+    except DailyUpdateError as exc:
+        raised = True
+        assert "lagging" in str(exc) or "Company Facts" in str(exc)
+    assert raised
+    assert (data / "companies" / "AAA.json").read_bytes() == after_first
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["lastSuccessfulSyncAt"] == sync_at
+    assert "0000000001-26-000010" in state["processedAccessions"]
+    assert "0000000001-26-000027" not in state["processedAccessions"]
