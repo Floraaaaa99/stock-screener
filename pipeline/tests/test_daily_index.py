@@ -150,6 +150,17 @@ def test_fetch_master_idx_does_not_cache_404(tmp_path: Path):
     assert http2.urls == [url]
 
 
+def test_fetch_master_idx_treats_403_as_missing_and_does_not_cache(tmp_path: Path):
+    day = date(2026, 10, 18)
+    url = master_idx_url(day)
+    http = FakeHttp({url: FakeResp(403, "Forbidden")})
+    text, status = fetch_master_idx_status(http, day, cache_dir=tmp_path)
+    assert text is None
+    assert status == "missing"
+    assert not (tmp_path / "master.20261018.idx").exists()
+    assert not (tmp_path / "master.20261018.idx.404").exists()
+
+
 def test_fetch_master_idx_does_not_cache_incomplete(tmp_path: Path):
     day = date(2026, 10, 20)
     url = master_idx_url(day)
@@ -265,6 +276,50 @@ def test_collect_period_filings_keeps_recent_missing_unreconciled(tmp_path: Path
         "0001193125-26-000099",
         "0001193125-26-000001",
     }
+
+
+def test_collect_period_filings_older_403_is_checked_empty(tmp_path: Path):
+    as_of = date(2026, 10, 21)
+    present = master_idx_url(as_of)
+    sunday = date(2026, 10, 18)
+    http = FakeHttp(
+        {
+            present: FakeResp(200, MASTER_IDX),
+            master_idx_url(sunday): FakeResp(403, "Forbidden"),
+        }
+    )
+    filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        10,
+        cache_dir=tmp_path,
+        revalidate_business_days=3,
+    )
+    assert sunday.isoformat() not in found
+    assert sunday.isoformat() not in unreconciled
+    assert as_of.isoformat() in found
+    assert "0000320193-26-000111" in {f.accn for f in filings}
+
+
+def test_collect_period_filings_recent_403_stays_unreconciled(tmp_path: Path):
+    as_of = date(2026, 10, 21)
+    http = FakeHttp(
+        {
+            master_idx_url(as_of): FakeResp(403, "Forbidden"),
+            master_idx_url(date(2026, 10, 20)): FakeResp(200, MASTER_IDX),
+        }
+    )
+    filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        10,
+        cache_dir=tmp_path,
+        revalidate_business_days=3,
+    )
+    assert as_of.isoformat() not in found
+    assert as_of.isoformat() in unreconciled
+    assert date(2026, 10, 20).isoformat() in found
+    assert "0000320193-26-000111" in {f.accn for f in filings}
 
 
 def test_collect_period_filings_older_404_is_checked_empty(tmp_path: Path):

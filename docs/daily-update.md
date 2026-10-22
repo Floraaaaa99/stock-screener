@@ -32,7 +32,7 @@ The job:
 
 - Reads the last 10 days, plus any extra days implied by `lastSuccessfulSyncAt` minus a 48-hour overlap, plus previously `unreconciledDates`.
 - Re-fetches the last **3 business days** every run. A CIK header alone does not make an index permanently complete; header-only or truncated files are not cached.
-- Never writes a permanent `.404` cache. A missing index in that 3-business-day window stays unreconciled and is retried. Older 404s are treated as checked-empty (weekend / holiday).
+- Never writes a permanent `.404` cache. A missing index (HTTP 403 or 404) in that 3-business-day window stays unreconciled and is retried. Older 403/404s are treated as checked-empty (weekend / holiday). A weekend 403 does not abort the run.
 - Matches filings to the current screener universe by CIK. Unknown CIKs are `out_of_universe`.
 
 `as_of` is the calendar date in `America/Los_Angeles`, not the GitHub runner’s UTC date. The 6:00 PM Pacific job therefore still belongs to the Pacific filing day (01:00–02:00 UTC the next morning).

@@ -165,7 +165,7 @@ def index_is_complete(text: str) -> bool:
 
 
 def fetch_master_idx(http, day: date, cache_dir: Path | None = None, *, revalidate: bool = False) -> str | None:
-    """Download one day's master.idx. 404 and header-only bodies are never written as a permanent cache."""
+    """Download one day's master.idx. 403, 404, and header-only bodies are never written as a permanent cache."""
     text, _status = fetch_master_idx_status(http, day, cache_dir=cache_dir, revalidate=revalidate)
     return text
 
@@ -179,8 +179,10 @@ def fetch_master_idx_status(
 ) -> tuple[str | None, str]:
     """Return (body or None, 'ok' | 'missing' | 'incomplete' | 'provisional').
 
-    5xx raises. 404 and header-only files are not cached. ``revalidate`` always
-    hits the network so a previously cached header+rows snapshot can grow.
+    5xx raises. 403, 404, and header-only files are not cached. SEC may answer
+    403 for a weekend or holiday index that has no filings; that is treated as
+    missing so discovery can continue. ``revalidate`` always hits the network
+    so a previously cached header+rows snapshot can grow.
     """
     url = master_idx_url(day)
     cache_dir = cache_dir or (config.CACHE_DIR / "sec" / "daily-index")
@@ -194,7 +196,7 @@ def fetch_master_idx_status(
     if cached is not None and not revalidate:
         return cached, "ok"
     resp = http.get(url)
-    if resp.status_code == 404:
+    if resp.status_code in {403, 404}:
         return (cached, "ok") if cached is not None else (None, "missing")
     resp.raise_for_status()
     text = resp.content.decode("utf-8", errors="replace")
@@ -245,10 +247,10 @@ def collect_period_filings(
     """Filings from the recovery window. Returns (filings, dates found, still-unreconciled dates).
 
     The last ``revalidate_business_days`` weekdays are always re-fetched. A cached
-    file with only a header is deleted and not treated as complete. 404 is not
-    cached. Missing dates in that business-day window stay unreconciled; older
-    404s are treated as checked-empty (weekend/holiday). Incomplete or still-
-    growing indexes stay unreconciled.
+    file with only a header is deleted and not treated as complete. 403 and 404
+    are not cached. Missing dates in that business-day window stay unreconciled;
+    older 403/404s are treated as checked-empty (weekend/holiday). Incomplete or
+    still-growing indexes stay unreconciled.
     """
     wanted = forms if forms is not None else set(INDEX_RECONCILE_FORMS)
     found: list[DailyFiling] = []
