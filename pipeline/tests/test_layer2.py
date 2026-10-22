@@ -347,9 +347,9 @@ def test_committed_pages_payload_is_full_universe_with_gate():
     assert meta["coverage"]["listings"] == 5593
     assert layer2["counts"] == {
         "passed": 1440,
-        "watchlist": 694,
+        "watchlist": 693,
         "dataReview": 2635,
-        "ttmNonpositive": 824,
+        "ttmNonpositive": 825,
         "listings": 5593,
     }
     assert layer2["rulesVersion"] == RULES_VERSION
