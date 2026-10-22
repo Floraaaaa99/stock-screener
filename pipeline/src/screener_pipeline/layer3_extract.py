@@ -45,6 +45,7 @@ from .layer3_concepts import (
     is_financial_sic,
     normalize_cik,
 )
+from .concepts import ConceptSeries, select_concept
 from .layer3_derived import (
     add_flows,
     apply_ttm_yoy,
@@ -147,6 +148,107 @@ def _slots_for_concept(rf: RevenueFacts, concept: str) -> list[Slot]:
     quarters = derive_quarters(periods, concept)
     label_quarters(quarters, rf.filings)
     return build_timeline(quarters)
+
+
+def _concept_series(rf: RevenueFacts, concept: str) -> ConceptSeries | None:
+    facts = rf.by_concept.get(concept) or []
+    if not facts:
+        return None
+    periods = dedupe_periods(facts)
+    quarters = derive_quarters(periods, concept)
+    label_quarters(quarters, rf.filings)
+    if not quarters:
+        return None
+    return ConceptSeries(concept, periods, quarters)
+
+
+def _missing_flow(reason: str, *, concept: str | None = None) -> dict:
+    return apply_ttm_yoy({
+        "status": "missing",
+        "reason": reason,
+        "concept": concept,
+        "ttm": None,
+        "previousTtm": None,
+        "quarters": [],
+        "calculationMethod": "extracted",
+        "verification": "not_checked",
+    })
+
+
+def _flow_from_slots(
+    rf: RevenueFacts,
+    slots: list[Slot],
+    *,
+    concept: str,
+    cik: str = "",
+    as_of: date | None = None,
+    require_align: bool = False,
+) -> dict:
+    newest = _newest_quarter_end(slots)
+    if require_align and as_of is not None and not _aligned(newest, as_of, FLOW_ALIGN_DAYS):
+        return apply_ttm_yoy({
+            "status": "missing",
+            "reason": "ttm_window_not_aligned",
+            "concept": concept,
+            "ttm": None,
+            "previousTtm": None,
+            "quarters": _quarter_payloads(slots, cik=cik),
+            "calculationMethod": "extracted",
+            "verification": "not_checked",
+            "verificationNote": COMPANY_FACTS_ONLY_NOTE,
+            "newestEnd": newest.isoformat() if newest else None,
+            "alignedTo": as_of.isoformat(),
+        })
+    ttm = compute_flow_ttm(slots)
+    return apply_ttm_yoy({
+        "status": "extracted" if ttm.current is not None else "missing",
+        "reason": ttm.reason,
+        "concept": concept,
+        "unit": rf.currency,
+        "ttm": ttm.current,
+        "previousTtm": ttm.previous,
+        "quarters": _quarter_payloads(slots, cik=cik),
+        "calculationMethod": "extracted",
+        "verification": "company_facts_only",
+        "verificationNote": COMPANY_FACTS_ONLY_NOTE,
+    })
+
+
+def _revenue_metric(
+    rf: RevenueFacts,
+    candidates: list[str],
+    *,
+    cik: str = "",
+    as_of: date | None = None,
+    require_align: bool = False,
+    override: str | None = None,
+) -> dict:
+    """Layer 1 `select_concept` on revenue, including equivalent `concept_merged` history.
+
+    Does not pick a single XBRL tag by list order. Overlapping equivalent tags may
+    fill gaps; disagreeing or non-overlapping tags are not merged.
+    """
+    series: list[ConceptSeries] = []
+    for concept in candidates:
+        item = _concept_series(rf, concept)
+        if item is not None:
+            series.append(item)
+    if not series:
+        return _missing_flow("no_concept")
+    sel = select_concept(
+        series,
+        None,
+        override,
+        concepts=candidates,
+        line_name="total revenue",
+    )
+    if sel.status == "ambiguous" or sel.concept is None or not sel.quarters:
+        reason = "ambiguous_concept" if sel.status == "ambiguous" else "no_concept"
+        return _missing_flow(reason, concept=sel.concept)
+    slots = build_timeline(sel.quarters, sel.anchor_end)
+    return _flow_from_slots(
+        rf, slots, concept=sel.concept, cik=cik, as_of=as_of, require_align=require_align,
+    )
 
 
 def _quarter_payloads(slots: list[Slot], *, magnitude: bool = False, cik: str = "") -> list[dict]:
@@ -809,12 +911,19 @@ def analyze_layer3_facts(
             da_incomplete = True
 
     rev_concepts = list(REVENUE_CONCEPTS)
-    if preferred_revenue_concept:
-        rev_concepts = [preferred_revenue_concept] + [c for c in rev_concepts if c != preferred_revenue_concept]
+    if preferred_revenue_concept and preferred_revenue_concept not in rev_concepts:
+        rev_concepts = [preferred_revenue_concept, *rev_concepts]
     earn_concepts = list(EARNINGS_CONCEPTS)
     if preferred_earnings_concept:
         earn_concepts = [preferred_earnings_concept] + [c for c in earn_concepts if c != preferred_earnings_concept]
-    revenue = _flow_metric(flows, rev_concepts, cik=cik, as_of=as_of, require_align=align)
+    revenue = _revenue_metric(
+        flows,
+        rev_concepts,
+        cik=cik,
+        as_of=as_of,
+        require_align=align,
+        override=preferred_revenue_concept,
+    )
     net_income = _flow_metric(flows, earn_concepts, cik=cik, as_of=as_of, require_align=align)
     gross_profit, cost_of_revenue = _select_gross_and_cogs(flows, revenue, cik, as_of)
 

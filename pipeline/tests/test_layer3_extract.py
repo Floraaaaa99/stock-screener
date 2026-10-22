@@ -793,3 +793,192 @@ def test_extreme_dso_is_flagged_not_clamped():
     assert dso["value"] > 400
     assert "extreme_ratio" in (dso.get("qualityFlags") or [])
     assert "not clamped" in (dso.get("qualityNote") or "")
+
+
+ASC_REVENUE = "RevenueFromContractWithCustomerExcludingAssessedTax"
+
+
+def _reported(start: str, end: str, val: float, accn: str, fy: int, fp: str, form: str, filed: str) -> dict:
+    return raw(start, end, val, accn, fy, fp, form=form, filed=filed)
+
+
+def _meta_like_concepts() -> dict[str, list[dict]]:
+    """META FY2026 Q3: 10-Q ASC 606 revenue plus a one-quarter 8-K `Revenues` tag."""
+    asc = [
+        _reported("2026-07-01", "2026-09-30", 64_601_000_000, "0001628280-26-066773", 2026, "Q3", "10-Q", "2026-10-22"),
+        _reported("2026-04-01", "2026-06-30", 60_801_000_000, "0001628280-26-050705", 2026, "Q2", "10-Q", "2026-07-30"),
+        _reported("2026-01-01", "2026-03-31", 56_311_000_000, "0001628280-26-028526", 2026, "Q1", "10-Q", "2026-04-30"),
+        _reported("2025-10-01", "2025-12-31", 59_893_000_000, "0001628280-26-003942", 2025, "FY", "10-K", "2026-01-29"),
+        _reported("2025-07-01", "2025-09-30", 51_242_000_000, "0001628280-25-047240", 2025, "Q3", "10-Q", "2025-10-30"),
+        _reported("2025-04-01", "2025-06-30", 47_516_000_000, "0001628280-25-036791", 2025, "Q2", "10-Q", "2025-07-31"),
+        _reported("2025-01-01", "2025-03-31", 42_314_000_000, "0001326801-25-000054", 2025, "Q1", "10-Q", "2025-04-30"),
+        _reported("2024-10-01", "2024-12-31", 48_385_000_000, "0001326801-25-000017", 2024, "FY", "10-K", "2025-01-31"),
+    ]
+    eight_k = [
+        _reported("2026-07-01", "2026-09-30", 64_601_000_000, "0001628280-26-066700", 2026, "Q3", "8-K", "2026-10-21"),
+    ]
+    ocf = [
+        _reported("2026-07-01", "2026-09-30", 32_786_000_000, "0001628280-26-066700", 2026, "Q3", "8-K", "2026-10-21"),
+        _reported("2026-04-01", "2026-06-30", 31_862_000_000, "0001628280-26-050705", 2026, "Q2", "10-Q", "2026-07-30"),
+        _reported("2026-01-01", "2026-03-31", 32_226_000_000, "0001628280-26-028526", 2026, "Q1", "10-Q", "2026-04-30"),
+        _reported("2025-10-01", "2025-12-31", 36_214_000_000, "0001628280-26-003942", 2025, "FY", "10-K", "2026-01-29"),
+        _reported("2025-07-01", "2025-09-30", 29_999_000_000, "0001628280-25-047240", 2025, "Q3", "10-Q", "2025-10-30"),
+        _reported("2025-04-01", "2025-06-30", 25_561_000_000, "0001628280-25-036791", 2025, "Q2", "10-Q", "2025-07-31"),
+        _reported("2025-01-01", "2025-03-31", 24_026_000_000, "0001326801-25-000054", 2025, "Q1", "10-Q", "2025-04-30"),
+        _reported("2024-10-01", "2024-12-31", 27_988_000_000, "0001326801-25-000017", 2024, "FY", "10-K", "2025-01-31"),
+    ]
+    oi = [
+        _reported("2026-07-01", "2026-09-30", 12_988_000_000, "0001628280-26-066773", 2026, "Q3", "10-Q", "2026-10-22"),
+        _reported("2026-04-01", "2026-06-30", 18_775_000_000, "0001628280-26-050705", 2026, "Q2", "10-Q", "2026-07-30"),
+        _reported("2026-01-01", "2026-03-31", 22_872_000_000, "0001628280-26-028526", 2026, "Q1", "10-Q", "2026-04-30"),
+        _reported("2025-10-01", "2025-12-31", 24_745_000_000, "0001628280-26-003942", 2025, "FY", "10-K", "2026-01-29"),
+        _reported("2025-07-01", "2025-09-30", 20_535_000_000, "0001628280-25-047240", 2025, "Q3", "10-Q", "2025-10-30"),
+        _reported("2025-04-01", "2025-06-30", 20_441_000_000, "0001628280-25-036791", 2025, "Q2", "10-Q", "2025-07-31"),
+        _reported("2025-01-01", "2025-03-31", 17_555_000_000, "0001326801-25-000054", 2025, "Q1", "10-Q", "2025-04-30"),
+        _reported("2024-10-01", "2024-12-31", 23_364_000_000, "0001326801-25-000017", 2024, "FY", "10-K", "2025-01-31"),
+    ]
+    ni = [
+        _reported("2026-07-01", "2026-09-30", 9_860_000_000, "0001628280-26-066773", 2026, "Q3", "10-Q", "2026-10-22"),
+        _reported("2026-04-01", "2026-06-30", 15_848_000_000, "0001628280-26-050705", 2026, "Q2", "10-Q", "2026-07-30"),
+        _reported("2026-01-01", "2026-03-31", 26_773_000_000, "0001628280-26-028526", 2026, "Q1", "10-Q", "2026-04-30"),
+        _reported("2025-10-01", "2025-12-31", 22_768_000_000, "0001628280-26-003942", 2025, "FY", "10-K", "2026-01-29"),
+        _reported("2025-07-01", "2025-09-30", 2_709_000_000, "0001628280-25-047240", 2025, "Q3", "10-Q", "2025-10-30"),
+        _reported("2025-04-01", "2025-06-30", 18_337_000_000, "0001628280-25-036791", 2025, "Q2", "10-Q", "2025-07-31"),
+        _reported("2025-01-01", "2025-03-31", 16_644_000_000, "0001326801-25-000054", 2025, "Q1", "10-Q", "2025-04-30"),
+        _reported("2024-10-01", "2024-12-31", 20_838_000_000, "0001326801-25-000017", 2024, "FY", "10-K", "2025-01-31"),
+    ]
+    return {
+        ASC_REVENUE: asc,
+        "Revenues": eight_k,
+        "NetCashProvidedByUsedInOperatingActivities": ocf,
+        "OperatingIncomeLoss": oi,
+        "NetIncomeLoss": ni,
+    }
+
+
+def test_meta_like_8k_revenues_does_not_drop_asc606_history():
+    analysis = analyze_layer3_facts(companyfacts(_meta_like_concepts(), cik=1326801, name="Meta"))
+    rev = analysis.metrics["revenue"]
+    assert rev["concept"] == ASC_REVENUE
+    assert rev["status"] == "extracted"
+    assert rev["ttm"] == 241_606_000_000
+    assert rev["previousTtm"] == 189_457_000_000
+    assert round(rev["ttmYoy"], 1) == 27.5
+    assert len([q for q in rev["quarters"] if q.get("value") is not None]) == 8
+    q3 = next(q for q in rev["quarters"] if q["end"] == "2026-09-30")
+    assert q3["value"] == 64_601_000_000
+    assert q3["form"] == "10-Q"
+    assert q3["accn"] == "0001628280-26-066773"
+    assert q3["filed"] == "2026-10-22"
+    assert q3["sourceType"] == "company_facts"
+    assert q3["concept"] == ASC_REVENUE
+    assert "0001628280-26-066773" in (q3.get("url") or "")
+    oi = analysis.metrics["operatingIncome"]
+    ni = analysis.metrics["netIncome"]
+    assert round(oi["ttmYoy"], 1) == -3.1
+    assert round(ni["ttmYoy"], 1) == 28.6
+    assert oi["concept"] == "OperatingIncomeLoss"
+    assert ni["concept"] == "NetIncomeLoss"
+    assert next(q for q in oi["quarters"] if q["end"] == "2026-09-30")["accn"] == "0001628280-26-066773"
+    assert next(q for q in ni["quarters"] if q["end"] == "2026-09-30")["accn"] == "0001628280-26-066773"
+
+
+def test_equivalent_revenue_concepts_merge_cross_quarter_history():
+    old = (
+        _ytd_year(2024, 100, 110, 120, 130, prefix="O")
+    )
+    new = _ytd_year(2025, 140, 150, 160, 170, prefix="N") + [
+        raw("2024-10-01", "2024-12-31", 130, "N2025-K", 2025, "FY", form="10-K", filed="2026-02-15"),
+    ]
+    facts = companyfacts(
+        {
+            "SalesRevenueNet": old,
+            ASC_REVENUE: new,
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 10, 10, 10, 10, prefix="C") + _ytd_year(2024, 8, 8, 8, 8, prefix="D")
+            ),
+        }
+    )
+    analysis = analyze_layer3_facts(facts)
+    rev = analysis.metrics["revenue"]
+    assert rev["status"] == "extracted"
+    assert rev["concept"] == ASC_REVENUE
+    by_end = {q["end"]: q for q in rev["quarters"]}
+    assert by_end["2025-12-31"]["value"] == 170
+    assert by_end["2025-12-31"]["concept"] == ASC_REVENUE
+    assert by_end["2024-09-30"]["value"] == 120
+    assert by_end["2024-09-30"]["concept"] == "SalesRevenueNet"
+    assert by_end["2024-09-30"]["accn"]
+    assert by_end["2024-09-30"]["form"] == "10-Q"
+    assert rev["ttm"] == 140 + 150 + 160 + 170
+    assert rev["previousTtm"] == 100 + 110 + 120 + 130
+    assert len([q for q in rev["quarters"] if q.get("value") is not None]) == 8
+
+
+def test_disagreeing_revenue_concepts_are_not_merged():
+    m = 1_000_000
+    facts = companyfacts(
+        {
+            "Revenues": _ytd_year(2025, 150 * m, 165 * m, 180 * m, 195 * m, prefix="A")
+            + _ytd_year(2024, 120 * m, 128 * m, 135 * m, 143 * m, prefix="B"),
+            ASC_REVENUE: _ytd_year(2025, 100 * m, 110 * m, 120 * m, 130 * m, prefix="C")
+            + _ytd_year(2024, 80 * m, 85 * m, 90 * m, 95 * m, prefix="D"),
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 8, 8, 8, 8, prefix="P")
+            ),
+            "OperatingIncomeLoss": (
+                _ytd_year(2025, 18, 19, 20, 21, prefix="I") + _ytd_year(2024, 14, 15, 16, 17, prefix="J")
+            ),
+        }
+    )
+    analysis = analyze_layer3_facts(facts)
+    rev = analysis.metrics["revenue"]
+    assert rev["status"] == "missing"
+    assert rev["reason"] == "ambiguous_concept"
+    assert rev["ttm"] is None
+    assert rev["quarters"] == []
+    oi = analysis.metrics["operatingIncome"]
+    assert oi["status"] == "extracted"
+    assert oi["ttm"] == 18 + 19 + 20 + 21
+
+
+def test_non_overlapping_revenue_concepts_are_not_merged():
+    facts = companyfacts(
+        {
+            "SalesRevenueNet": _ytd_year(2024, 100, 110, 120, 130, prefix="O"),
+            ASC_REVENUE: _ytd_year(2025, 140, 150, 160, 170, prefix="N"),
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 10, 10, 10, 10, prefix="C") + _ytd_year(2024, 8, 8, 8, 8, prefix="D")
+            ),
+        }
+    )
+    analysis = analyze_layer3_facts(facts)
+    rev = analysis.metrics["revenue"]
+    by_end = {q["end"]: q for q in rev["quarters"] if q.get("value") is not None}
+    assert set(by_end) == {"2025-03-31", "2025-06-30", "2025-09-30", "2025-12-31"}
+    assert all(q["concept"] == ASC_REVENUE for q in by_end.values())
+    assert "2024-12-31" not in by_end
+    assert rev["ttm"] == 140 + 150 + 160 + 170
+    assert rev["previousTtm"] is None
+    assert rev["reason"] == "insufficient_quarters"
+
+
+def test_layer1_revenue_override_keeps_selected_series_when_tags_disagree():
+    m = 1_000_000
+    facts = companyfacts(
+        {
+            "Revenues": _ytd_year(2025, 150 * m, 165 * m, 180 * m, 195 * m, prefix="A")
+            + _ytd_year(2024, 120 * m, 128 * m, 135 * m, 143 * m, prefix="B"),
+            ASC_REVENUE: _ytd_year(2025, 100 * m, 110 * m, 120 * m, 130 * m, prefix="C")
+            + _ytd_year(2024, 80 * m, 85 * m, 90 * m, 95 * m, prefix="D"),
+            "NetCashProvidedByUsedInOperatingActivities": (
+                _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 8, 8, 8, 8, prefix="P")
+            ),
+        }
+    )
+    analysis = analyze_layer3_facts(facts, preferred_revenue_concept=ASC_REVENUE)
+    rev = analysis.metrics["revenue"]
+    assert rev["status"] == "extracted"
+    assert rev["concept"] == ASC_REVENUE
+    assert rev["ttm"] == (100 + 110 + 120 + 130) * m
+    assert all(q["concept"] == ASC_REVENUE for q in rev["quarters"] if q.get("value") is not None)
