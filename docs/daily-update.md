@@ -48,7 +48,7 @@ The job:
 | `lastFinancialUpdateAt` | Last time company / Layer 2 / Layer 3 JSON actually changed. |
 | `unreconciledDates` | Index dates that are not yet safely checked. |
 | `processedAccessions` | Deduped by accession number (kept 40 days). Status is `applied`, `recorded_8k`, or `out_of_universe`. |
-| `earningsExtractions` | Separate 8-K earnings-extract status by accession (kept 90 days). Status is `pending`, `extracted`, `not_earnings`, `failed`, or `superseded`. Already-recorded 8-Ks stay eligible for backfill. |
+| `earningsExtractions` | Separate 8-K earnings-extract status by accession (kept 90 days). Status is `pending`, `extracted`, `not_earnings`, `failed`, or `superseded`. Failed or pending extracts are retried. There is no recurring historical 8-K scan. |
 
 Each run covers every filing since the previous successful sync, overlapping at least 48 hours so delayed SEC publication is retried. If Actions misses a day or the job fails, the next run extends `since` back to that checkpoint. The checkpoint does **not** advance when Latest Filings or Company Facts HTTP fails, the gate fails, or an in-universe 10-Q/10-K could not be applied.
 
@@ -69,7 +69,7 @@ Rules that stay the same: missing values stay `null` (never `0`); `write_json_if
 2. Page Latest Filings for the current official filing date. Read `master.idx` for the recovery window.
 3. Deduplicate by accession. Drop accessions already in `daily-update.json`.
 4. Map remaining CIKs onto the **current** dataset (`issuers.json` + `companies/*.json`).
-5. For in-universe periodic filings, fetch Company Facts only when needed and rebuild through staging. For in-universe 8-K/8-K/A filings, and for `recorded_8k` accessions from the last 30 days that lack a terminal `earningsExtractions` status, inspect Item 2.02 and extract GAAP figures from the earnings exhibit into Layer 3 only.
+5. For in-universe periodic filings, fetch Company Facts only when needed and rebuild through staging. For in-universe 8-K/8-K/A filings found in this same incremental window, inspect Item 2.02 and extract GAAP figures from the earnings exhibit into Layer 3 only. Failed or pending extracts are retried. A one-shot list can target a specific already-recorded accession (META `0001628280-26-066700`) without scanning unrelated historical 8-Ks.
 6. Run `evaluate_gate` against the previous `meta.json`. On failure, delete staging and keep the previous dataset; those accessions are not marked processed.
 7. On a financial change: copy only changed files back, bump `generatedAt`, pack compact state, commit `[skip pages]`, and deploy Pages from this workflow.
 8. On a quiet / 8-K-only / out-of-universe night: write `daily-update.json` (checkpoint + recorded accessions), skip aggregates, skip state pack, skip Pages.

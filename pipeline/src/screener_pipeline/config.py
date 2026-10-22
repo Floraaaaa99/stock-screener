@@ -47,7 +47,12 @@ DAILY_INDEX_REVALIDATE_BUSINESS_DAYS = int(
 DAILY_INDEX_RETRY_DAYS = DAILY_INDEX_REVALIDATE_BUSINESS_DAYS
 
 # 8-K earnings-release extract (Layer 3 provisional overlay only).
-EIGHT_K_BACKFILL_DAYS = int(os.environ.get("SCREENER_EIGHT_K_BACKFILL_DAYS", "30"))
+# One-shot accessions are already-recorded 8-Ks extracted once; not a historical scan.
+EIGHT_K_ONE_SHOT_ACCNS = tuple(
+    part.strip()
+    for part in os.environ.get("SCREENER_EIGHT_K_ONE_SHOT_ACCNS", "0001628280-26-066700").split(",")
+    if part.strip()
+)
 EIGHT_K_MAX_ATTEMPTS = int(os.environ.get("SCREENER_EIGHT_K_MAX_ATTEMPTS", "4"))
 EIGHT_K_EXTRACTION_KEEP_DAYS = int(os.environ.get("SCREENER_EIGHT_K_EXTRACTION_KEEP_DAYS", "90"))
 

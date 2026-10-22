@@ -477,7 +477,6 @@ def run_daily_update(
         "filingsNew": len(new_filings),
         "filingsRecorded8k": 0,
         "filingsExtracted8k": 0,
-        "eightKBackfill": 0,
         "outOfUniverse": len(out_of_universe),
         "companiesUpdated": [],
         "companiesSkipped": [],
@@ -515,7 +514,6 @@ def run_daily_update(
             if row.get("status") == "extracted" and not row.get("extractedAt"):
                 row["extractedAt"] = generated_at
         report["filingsExtracted8k"] = sum(1 for r in extractions.values() if r.get("status") == "extracted")
-        report["eightKBackfill"] = sum(1 for f in extract_jobs if f.source == "backfill")
 
     if not in_universe:
         report["filingsRecorded8k"] = len(recorded_current)
@@ -688,8 +686,21 @@ def run_daily_update(
                 skipped_ciks.append(cik)
 
         if skipped_ciks and not rebuilt_accessions:
-            raise DailyUpdateError(
-                "Every affected CIK was missing Company Facts or still lagging; live dataset unchanged"
+            if not recorded_current and not extract_jobs:
+                raise DailyUpdateError(
+                    "Every affected CIK was missing Company Facts or still lagging; live dataset unchanged"
+                )
+            # A lagging 10-Q/10-K must stay unapplied, but it must not discard 8-K
+            # extracts from this same incremental run.
+            for ticker in updated_tickers:
+                live_company = data_dir / "companies" / f"{ticker}.json"
+                dest = staging / "companies" / f"{ticker}.json"
+                if live_company.exists():
+                    dest.write_bytes(live_company.read_bytes())
+            updated_tickers = []
+            raw_facts = {}
+            log.warning(
+                "Company Facts lagged for every periodic CIK; recording 8-K extracts and retrying those 10-Q/10-Ks"
             )
         processing_complete = not skipped_ciks and not facts_lag
         report["filingsRecorded8k"] = len(recorded_current)

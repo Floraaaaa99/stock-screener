@@ -1,7 +1,9 @@
-"""Run 8-K earnings discovery + extract during the daily update.
+"""Run 8-K earnings extract on the existing daily SEC update.
 
-Extraction status is stored separately from processedAccessions so already
-recorded 8-Ks can be backfilled. Failed extracts do not rewrite verified JSON.
+New 8-Ks come from this run's discovery. Failed or pending extracts are
+retried. A small one-shot list can target already-recorded accessions
+without scanning unrelated historical 8-Ks. Failed extracts do not rewrite
+verified JSON.
 """
 
 from __future__ import annotations
@@ -62,7 +64,7 @@ def _row_to_filing(accn: str, row: dict) -> DailyFiling | None:
         filename=str(row.get("filename") or f"edgar/data/{int(cik)}/{accn}.txt"),
         accn=accn,
         accepted=accepted,
-        source="backfill",
+        source=str(row.get("source") or "retry"),
     )
 
 
@@ -84,23 +86,21 @@ def collect_earnings_jobs(
     *,
     as_of: date,
     by_cik: dict[str, list[str]],
-    backfill_days: int | None = None,
+    one_shot_accns: tuple[str, ...] | None = None,
     max_attempts: int | None = None,
 ) -> list[DailyFiling]:
-    backfill_days = config.EIGHT_K_BACKFILL_DAYS if backfill_days is None else backfill_days
+    _ = as_of
     max_attempts = config.EIGHT_K_MAX_ATTEMPTS if max_attempts is None else max_attempts
-    cutoff = as_of - timedelta(days=backfill_days)
+    one_shot_accns = config.EIGHT_K_ONE_SHOT_ACCNS if one_shot_accns is None else one_shot_accns
     jobs: list[DailyFiling] = []
     seen: set[str] = set()
 
-    def add(filing: DailyFiling, *, require_cutoff: bool) -> None:
+    def add(filing: DailyFiling) -> None:
         if filing.accn in seen:
             return
         if filing.form not in CURRENT_REPORT_FORMS:
             return
         if filing.cik not in by_cik:
-            return
-        if require_cutoff and filing.filed < cutoff:
             return
         if not should_process_extraction(extractions.get(filing.accn), max_attempts=max_attempts):
             return
@@ -108,14 +108,24 @@ def collect_earnings_jobs(
         seen.add(filing.accn)
 
     for filing in recorded_current:
-        add(filing, require_cutoff=False)
-    for accn, row in processed.items():
-        if not isinstance(row, dict) or row.get("status") != "recorded_8k":
+        add(filing)
+    for accn, row in extractions.items():
+        if not should_process_extraction(row if isinstance(row, dict) else None, max_attempts=max_attempts):
             continue
-        filing = _row_to_filing(accn, row)
+        filing = _row_to_filing(accn, row if isinstance(row, dict) else {})
+        if filing is None and isinstance(processed.get(accn), dict):
+            filing = _row_to_filing(accn, processed[accn])
         if filing is None:
             continue
-        add(filing, require_cutoff=True)
+        add(filing)
+    for accn in one_shot_accns:
+        row = processed.get(accn)
+        if not isinstance(row, dict) or row.get("status") != "recorded_8k":
+            continue
+        filing = _row_to_filing(accn, {**row, "source": "one_shot"})
+        if filing is None:
+            continue
+        add(filing)
     return jobs
 
 
