@@ -383,6 +383,8 @@ export interface Layer3FlowMetric {
   qualityFlags?: string[];
   qualityNote?: string | null;
   unreliableTtm?: number | null;
+  financingBasis?: "gross" | "net" | null;
+  scopeNote?: string | null;
 }
 
 export interface Layer3StockMetric {
@@ -427,12 +429,36 @@ export interface Layer3DerivedMetric {
   qualityNote?: string | null;
   unreliableTtm?: number | null;
   unreliableValue?: number | null;
+  identity?: string | null;
+  concept?: string | null;
+  financingBasis?: "gross" | "net" | null;
+  scopeNote?: string | null;
+  usedF3Cash?: boolean;
+  f3CashConcept?: string | null;
+  cashFamily?: string | null;
+  cashChangeConcept?: string | null;
+  fxIncluded?: boolean;
+  reportedChangeTtm?: number | null;
+  difference?: number | null;
 }
 
 export interface Layer3Metrics {
   ocf: Layer3FlowMetric;
   capex: Layer3FlowMetric;
   fcf: Layer3FlowMetric;
+  investingCf?: Layer3FlowMetric;
+  financingCf?: Layer3FlowMetric;
+  debtIssuance?: Layer3FlowMetric;
+  debtRepayment?: Layer3FlowMetric;
+  netDebtFinancing?: Layer3FlowMetric;
+  equityIssuance?: Layer3FlowMetric;
+  assetSales?: Layer3FlowMetric;
+  shareRepurchases?: Layer3FlowMetric;
+  dividendsPaid?: Layer3FlowMetric;
+  acquisitions?: Layer3FlowMetric;
+  fxOnCash?: Layer3FlowMetric;
+  cashChangeCf?: Layer3FlowMetric;
+  cashCfIdentity?: Layer3DerivedMetric;
   operatingIncome: Layer3FlowMetric;
   interestExpense: Layer3FlowMetric;
   depreciationAmortization?: Layer3FlowMetric;

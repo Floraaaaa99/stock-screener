@@ -79,6 +79,16 @@ export const NA_REASONS: Record<string, string> = {
   prior_not_positive: "The comparison base is zero or negative, so a percentage change is not meaningful.",
   prior_zero: "The comparison base is zero, so a percentage change is not meaningful.",
   missing_value: "This period has no extracted amount. Missing values are not replaced with zero.",
+  missing_investing_cf: "Investing cash flow is missing, so cash-flow reconciliation stays unavailable.",
+  missing_financing_cf: "Financing cash flow is missing, so cash-flow reconciliation stays unavailable.",
+  missing_cf_cash_change:
+    "The cash-flow statement change-in-cash line is missing, so reconciliation stays unavailable. F3 cash is not used as a substitute.",
+  cash_definition_not_comparable:
+    "The cash-flow change tag does not have a comparable cash definition, so reconciliation stays unavailable rather than mixing F3 cash with the cash-flow statement.",
+  fx_effect_not_disclosed:
+    "The selected cash-change line includes FX, but the FX-on-cash effect is not disclosed for the same window. Reconciliation is unavailable — not a reconciliation failure.",
+  identity_mismatch:
+    "Comparable cash-flow statement totals and the cash-change line disagree. Values are preserved; F3 cash was not substituted.",
 };
 
 export const FLAG_TEXT: Record<string, string> = {
@@ -102,6 +112,8 @@ export const FLAG_TEXT: Record<string, string> = {
   extreme_ratio:
     "This ratio is outside the usual inspect-only range. The computed value is preserved and is not an investment rating.",
   eight_k_awaiting_10q: "8-K Earnings Release — Awaiting 10-Q Verification",
+  cash_flow_identity_mismatch:
+    "Comparable cash-flow statement totals and the cash-change line disagree. F3 cash was not used.",
 };
 
 export const CONCEPT_STATUS: Record<string, string> = {

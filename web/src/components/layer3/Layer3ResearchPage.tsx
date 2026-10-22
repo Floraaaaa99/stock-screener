@@ -24,6 +24,7 @@ import {
   periodKey,
 } from "../../lib/layer3Research";
 import type { Layer3Row } from "../../types";
+import { Layer3CapitalAllocation } from "./Layer3CapitalAllocation";
 import { Layer3FinancialHealth } from "./Layer3FinancialHealth";
 import { Layer3GrowthQuality } from "./Layer3GrowthQuality";
 import { Layer3WorkingCapital } from "./Layer3WorkingCapital";
@@ -75,7 +76,9 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         const id = visible[0]?.target.id;
-        if (id === "growth" || id === "health" || id === "working-capital") setActive(id);
+        if (id === "growth" || id === "health" || id === "working-capital" || id === "capital-allocation") {
+          setActive(id);
+        }
       },
       { rootMargin: "-20% 0px -60% 0px", threshold: 0.1 },
     );
@@ -367,6 +370,7 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
           <Layer3GrowthQuality row={row} currency={currency} />
           <Layer3FinancialHealth row={row} currency={currency} />
           <Layer3WorkingCapital row={row} currency={currency} />
+          <Layer3CapitalAllocation row={row} currency={currency} />
         </>
       )}
     </section>

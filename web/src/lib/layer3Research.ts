@@ -14,6 +14,7 @@ export const LAYER3_RESEARCH_SECTIONS = [
   { id: "growth", label: "Growth Quality" },
   { id: "health", label: "Financial Health" },
   { id: "working-capital", label: "Working Capital" },
+  { id: "capital-allocation", label: "Capital Allocation" },
 ] as const;
 
 export type Layer3ResearchSectionId = (typeof LAYER3_RESEARCH_SECTIONS)[number]["id"];
@@ -125,6 +126,13 @@ export interface ProvenanceFields {
   method?: string | null;
   unreliableTtm?: number | null;
   unreliableValue?: number | null;
+  scopeNote?: string | null;
+  financingBasis?: string | null;
+  cashFamily?: string | null;
+  usedF3Cash?: boolean | null;
+  fxIncluded?: boolean | null;
+  reportedChangeTtm?: number | null;
+  f3CashConcept?: string | null;
 }
 
 export function metricProvenance(metric: MetricKind | null | undefined): ProvenanceFields {
@@ -150,7 +158,42 @@ export function metricProvenance(metric: MetricKind | null | undefined): Provena
     sourceType: "sourceType" in metric ? metric.sourceType : null,
     unreliableTtm: "unreliableTtm" in metric ? metric.unreliableTtm : null,
     unreliableValue: "unreliableValue" in metric ? metric.unreliableValue : null,
+    scopeNote: "scopeNote" in metric ? metric.scopeNote : null,
+    financingBasis: "financingBasis" in metric ? metric.financingBasis : null,
+    cashFamily: "cashFamily" in metric ? metric.cashFamily : null,
+    usedF3Cash: "usedF3Cash" in metric ? metric.usedF3Cash : null,
+    fxIncluded: "fxIncluded" in metric ? metric.fxIncluded : null,
+    reportedChangeTtm: "reportedChangeTtm" in metric ? metric.reportedChangeTtm : null,
+    f3CashConcept: "f3CashConcept" in metric ? metric.f3CashConcept : null,
   };
+}
+
+export function isNetDebtFinancingTag(concept: string | null | undefined): boolean {
+  return Boolean(concept && concept.startsWith("ProceedsFromRepayments"));
+}
+
+export function capitalLineTitle(
+  kind: "issuance" | "repayment" | "net",
+  metric: Pick<Layer3FlowMetric, "concept" | "financingBasis"> | null | undefined,
+): string {
+  if (kind === "net" || metric?.financingBasis === "net" || isNetDebtFinancingTag(metric?.concept)) {
+    return "Net debt financing";
+  }
+  if (kind === "repayment") return "Debt repayment (gross)";
+  return "Debt issuance (gross)";
+}
+
+export type CashReconciliationState = "holds" | "mismatch" | "unavailable";
+
+export function cashReconciliationState(
+  metric: Layer3DerivedMetric | null | undefined,
+): CashReconciliationState {
+  if (!metric || metric.usedF3Cash || metric.status === "missing" || metric.status === "not_applicable") {
+    return "unavailable";
+  }
+  if (metric.identity === "holds") return "holds";
+  if (metric.identity === "mismatch") return "mismatch";
+  return "unavailable";
 }
 
 export function quarterProvenance(q: Layer3Quarter | Layer3StockHistoryPoint): ProvenanceFields {
@@ -403,6 +446,14 @@ export function growthRatePoints(pairs: readonly GrowthPair[]): ChartPoint[] {
     reason: p.reason,
     provenance: quarterProvenance(p.current),
   }));
+}
+
+export function chartableFlowPoints(
+  metric: Layer3FlowMetric | Layer3DerivedMetric | null | undefined,
+  horizon: "quarter" | "ttm",
+): ChartPoint[] {
+  if (!metric || metric.status === "missing" || metric.status === "not_applicable") return [];
+  return horizon === "quarter" ? flowAmountPoints(metric) : ttmPoints(metric);
 }
 
 export function ttmPoints(metric: Layer3FlowMetric | Layer3DerivedMetric | null | undefined): ChartPoint[] {

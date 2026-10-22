@@ -29,6 +29,128 @@ CAPEX_CONCEPTS = [
 ]
 CAPEX_MAY_BE_NET = {"PaymentsForProceedsFromProductiveAssets"}
 
+# Investing / financing statement totals. Never a sum of child lines.
+INVESTING_CF_CONCEPTS = [
+    "NetCashProvidedByUsedInInvestingActivities",
+    "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
+]
+FINANCING_CF_CONCEPTS = [
+    "NetCashProvidedByUsedInFinancingActivities",
+    "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
+]
+
+# Gross cash proceeds from new borrowings. Not ProceedsFromRepayments* (those are net).
+# Tags whose US-GAAP name is "Net" of issuance costs are still gross of repayments.
+DEBT_ISSUANCE_GROSS_CONCEPTS = [
+    "ProceedsFromIssuanceOfLongTermDebt",
+    "ProceedsFromLongTermDebt",
+    "ProceedsFromIssuanceOfSeniorLongTermDebt",
+    "ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+    "ProceedsFromDebtNetOfIssuanceCosts",
+    "ProceedsFromDebtMaturingInMoreThanThreeMonths",
+    "ProceedsFromNotesPayable",
+    "ProceedsFromLinesOfCredit",
+    "ProceedsFromShortTermDebt",
+    "ProceedsFromShortTermDebtMaturingInMoreThanThreeMonths",
+    "ProceedsFromShortTermDebtMaturingInThreeMonthsOrLess",
+    "ProceedsFromOtherShortTermDebt",
+    "ProceedsFromConvertibleDebt",
+]
+DEBT_ISSUANCE_NET_OF_COSTS = {
+    "ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+    "ProceedsFromDebtNetOfIssuanceCosts",
+}
+
+# Gross cash repayments of debt. Maturity-schedule notes are not cash-flow amounts.
+DEBT_REPAYMENT_GROSS_CONCEPTS = [
+    "RepaymentsOfLongTermDebt",
+    "RepaymentsOfLongTermDebtAndCapitalSecurities",
+    "RepaymentsOfDebtMaturingInMoreThanThreeMonths",
+    "RepaymentsOfSeniorDebt",
+    "RepaymentsOfDebt",
+    "RepaymentsOfNotesPayable",
+    "RepaymentsOfShortTermDebt",
+    "RepaymentsOfShortTermDebtMaturingInMoreThanThreeMonths",
+    "RepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess",
+    "RepaymentsOfOtherShortTermDebt",
+    "RepaymentsOfCommercialPaper",
+    "RepaymentsOfConvertibleDebt",
+]
+
+# Single cash-flow line that nets issuances and repayments. Never labeled gross issuance.
+DEBT_FINANCING_NET_CONCEPTS = [
+    "ProceedsFromRepaymentsOfLongTermDebt",
+    "ProceedsFromRepaymentsOfOtherLongTermDebt",
+    "ProceedsFromRepaymentsOfDebt",
+    "ProceedsFromRepaymentsOfBankDebt",
+    "ProceedsFromRepaymentsOfNotesPayable",
+    "ProceedsFromRepaymentsOfShortTermDebt",
+    "ProceedsFromRepaymentsOfShortTermDebtMaturingInMoreThanThreeMonths",
+    "ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess",
+    "ProceedsFromRepaymentsOfCommercialPaper",
+    "ProceedsFromRepaymentsOfBankOverdrafts",
+    "ProceedsFromRepaymentsOfOtherDebt",
+]
+NET_DEBT_FINANCING_NOTE = (
+    "US-GAAP tag nets issuances and repayments. Shown as Net debt financing, "
+    "not gross issuance or gross repayment."
+)
+DEBT_ISSUANCE_COSTS_NOTE = (
+    "US-GAAP tag is net of issuance costs. It is still gross of repayments, "
+    "not a ProceedsFromRepayments net-financing line."
+)
+
+EQUITY_ISSUANCE_CONCEPTS = [
+    "ProceedsFromIssuanceOfCommonStock",
+    "ProceedsFromIssuanceOfSharesUnderIncentiveAndShareBasedCompensationPlans",
+    "ProceedsFromStockOptionsExercised",
+    "ProceedsFromIssuanceOfPreferredStockAndPreferenceStock",
+    "ProceedsFromIssuanceOfCommonStockWarrants",
+]
+
+ASSET_SALE_CONCEPTS = [
+    "ProceedsFromSaleOfPropertyPlantAndEquipment",
+    "ProceedsFromDivestitureOfBusinessesNetOfCashDivested",
+    "ProceedsFromDivestitureOfBusinesses",
+]
+
+SHARE_REPURCHASE_CONCEPTS = [
+    "PaymentsForRepurchaseOfCommonStock",
+    "PaymentsForRepurchaseOfEquity",
+    "PaymentsForRepurchaseOfPreferredStockAndPreferenceStock",
+]
+
+DIVIDEND_PAID_CONCEPTS = [
+    "PaymentsOfDividends",
+    "PaymentsOfDividendsCommonStock",
+    "PaymentsOfOrdinaryDividends",
+    "PaymentsOfDividendsPreferredStockAndPreferenceStock",
+]
+
+ACQUISITION_CF_CONCEPTS = [
+    "PaymentsToAcquireBusinessesNetOfCashAcquired",
+    "PaymentsToAcquireBusinessesGross",
+    "PaymentsToAcquireBusinessesAndInterestInAffiliates",
+]
+
+# Cash-flow statement change in cash. Never F3 CashAndCashEquivalentsAtCarryingValue.
+CF_CASH_CHANGE_INCLUDING_FX_CONCEPTS = [
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations",
+    "CashAndCashEquivalentsPeriodIncreaseDecrease",
+]
+CF_CASH_CHANGE_EXCLUDING_FX_CONCEPTS = [
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect",
+    "CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect",
+]
+FX_ON_CASH_CONCEPTS = [
+    "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+    "EffectOfExchangeRateOnCashAndCashEquivalents",
+]
+RESTRICTED_CASH_FAMILY = "cash_equivalents_and_restricted_cash"
+UNRESTRICTED_CASH_FAMILY = "cash_and_cash_equivalents"
+
 OPERATING_INCOME_CONCEPTS = [
     "OperatingIncomeLoss",
     "IncomeLossFromContinuingOperationsBeforeInterestAndTaxes",
@@ -151,6 +273,19 @@ FLOW_CONCEPTS = (
     + AMORTIZATION_ADDON_CONCEPTS
     + GROSS_PROFIT_CONCEPTS
     + COST_OF_REVENUE_CONCEPTS
+    + INVESTING_CF_CONCEPTS
+    + FINANCING_CF_CONCEPTS
+    + DEBT_ISSUANCE_GROSS_CONCEPTS
+    + DEBT_REPAYMENT_GROSS_CONCEPTS
+    + DEBT_FINANCING_NET_CONCEPTS
+    + EQUITY_ISSUANCE_CONCEPTS
+    + ASSET_SALE_CONCEPTS
+    + SHARE_REPURCHASE_CONCEPTS
+    + DIVIDEND_PAID_CONCEPTS
+    + ACQUISITION_CF_CONCEPTS
+    + CF_CASH_CHANGE_INCLUDING_FX_CONCEPTS
+    + CF_CASH_CHANGE_EXCLUDING_FX_CONCEPTS
+    + FX_ON_CASH_CONCEPTS
 )
 STOCK_CONCEPTS = (
     CASH_CONCEPTS
@@ -172,7 +307,7 @@ HISTORY_SLOTS = 8
 # SIC major groups that should not be forced through corporate FCF / net-debt definitions.
 FINANCIAL_SIC_PREFIXES = ("60", "61", "62", "63", "64", "67")
 
-LAYER3_EXTRACTION_VERSION = 4
+LAYER3_EXTRACTION_VERSION = 5
 LAYER3_SCHEMA_VERSION = 3
 LAYER3_ISSUER_FILE_TEMPLATE = "layer3/cik/{cik}.json"
 ZERO_CIK = "0000000000"
@@ -205,3 +340,27 @@ def gaap_concepts_present(companyfacts: dict, concepts: list[str]) -> list[str]:
     """us-gaap concept names that exist in the payload, regardless of units or forms."""
     gaap = (companyfacts.get("facts") or {}).get("us-gaap") or {}
     return [c for c in concepts if c in gaap]
+
+
+def cf_cash_family(concept: str | None) -> str | None:
+    """Cash definition used by a cash-flow-statement change tag. Not F3 cash."""
+    if not concept:
+        return None
+    if "RestrictedCash" in concept:
+        return RESTRICTED_CASH_FAMILY
+    if concept.startswith("CashAndCashEquivalentsPeriodIncreaseDecrease"):
+        return UNRESTRICTED_CASH_FAMILY
+    return None
+
+
+def cash_change_includes_fx(concept: str | None) -> bool | None:
+    """Whether the CF change line already includes FX. None when the tag is not a change line."""
+    if not concept:
+        return None
+    if "ExcludingExchangeRateEffect" in concept:
+        return False
+    if "IncludingExchangeRateEffect" in concept:
+        return True
+    if concept == "CashAndCashEquivalentsPeriodIncreaseDecrease":
+        return True
+    return None
