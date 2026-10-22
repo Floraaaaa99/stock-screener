@@ -206,7 +206,7 @@ describe("representative issuer files", () => {
   it("HEI uses derived gross profit and extracted manufacturing working capital", () => {
     const hei = loadIssuer("0000046619");
     expect(hei.schemaVersion).toBe(3);
-    expect(hei.extractionVersion).toBe(4);
+    expect(hei.extractionVersion).toBe(5);
     expect(hei.metrics?.grossProfit?.calculationMethod).toBe("derived");
     expect(hei.metrics?.grossProfit?.ttm).toBe(2_091_317_000);
     expect(hei.metrics?.grossMargin?.ttm).toBeCloseTo(0.4039821463480218);
