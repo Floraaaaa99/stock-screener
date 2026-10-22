@@ -10,7 +10,7 @@ from fixtures.eight_k import (
     ITEM_801_BODY,
     META_ACCN,
     META_CIK,
-    META_Q3_2026_EXHIBIT,
+    META_Q3_2026_REAL_EXHIBIT,
     earnings_documents,
     item202_presentation_only,
     unrelated_documents,
@@ -95,14 +95,20 @@ def test_item_202_without_tables_is_failed_not_invented():
 
 
 def test_meta_q3_2026_accession_extracts_when_exhibit_present():
-    docs = earnings_documents(META_ACCN, exhibit=META_Q3_2026_EXHIBIT)
+    docs = earnings_documents(META_ACCN, exhibit=META_Q3_2026_REAL_EXHIBIT)
     result = process_earnings_filing(_filing(META_CIK, META_ACCN), _fetch(docs), None)
     assert result["status"] == "extracted"
     assert result["fiscalYear"] == 2026
     assert result["fiscalQuarter"] == 3
-    assert result["metrics"]["revenue"]["value"] == 56_100_000_000
-    assert result["metrics"]["netIncome"]["value"] == 21_200_000_000
-    assert "operatingCashFlow" in result["metrics"]
+    assert result["metrics"]["revenue"]["value"] == 64_601_000_000
+    assert result["metrics"]["netIncome"]["value"] == 9_860_000_000
+    assert result["metrics"]["operatingIncome"]["value"] == 12_988_000_000
+    assert result["metrics"]["dilutedEps"]["value"] == 3.83
+    assert result["metrics"]["operatingCashFlow"]["value"] == 32_786_000_000
+    assert result["metrics"]["capitalExpenditures"]["value"] == 33_942_000_000
+    assert result["metrics"]["freeCashFlow"]["value"] == -1_156_000_000
+    assert result["metrics"]["freeCashFlow"]["gaap"] is False
+    assert result["metrics"]["companyReportedFreeCashFlow"]["value"] == -2_120_000_000
     extracted = extract_earnings_release(
         GAAP_EARNINGS_EXHIBIT,
         item_202=True,

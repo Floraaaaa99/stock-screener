@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 
-from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT
+from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT, META_Q3_2026_EXHIBIT_URL, META_Q3_2026_REAL_EXHIBIT
 
 from screener_pipeline.cache import read_json, write_json_atomic
 from screener_pipeline.eight_k_extract import AWAITING_10Q_LABEL, SOURCE_TYPE_8K, extract_earnings_release
@@ -125,6 +125,41 @@ def test_ten_q_supersedes_eight_k_and_keeps_audit():
     assert audit[0]["differences"]["revenue"]["eightK"] == 51_242_000_000
     assert audit[0]["differences"]["revenue"]["verified"] == 51_240_000_000
     assert audit[0]["differences"]["revenue"]["difference"] == -2_000_000
+
+
+def test_meta_real_exhibit_overlay_keeps_verified_and_distinct_fcf():
+    extract = extract_earnings_release(
+        META_Q3_2026_REAL_EXHIBIT,
+        item_202=True,
+        exhibit_name="meta-09302026xexhibit991.htm",
+        exhibit_url=META_Q3_2026_EXHIBIT_URL,
+        filing_url="https://www.sec.gov/Archives/edgar/data/1326801/0001628280-26-066700-index.htm",
+    )
+    payload, action = attach_provisional(
+        _issuer(),
+        extract,
+        accn="0001628280-26-066700",
+        form="8-K",
+        filed="2026-10-21",
+    )
+    assert action == "attached"
+    assert payload["metrics"]["revenue"]["quarters"][0]["value"] == 64_601_000_000
+    assert payload["metrics"]["revenue"]["quarters"][0]["fiscalQuarter"] == 3
+    assert payload["metrics"]["revenue"]["quarters"][1]["value"] == 48_000_000_000
+    assert payload["metrics"]["fcf"]["quarters"][0]["value"] == -1_156_000_000
+    assert payload["metrics"]["fcf"]["quarters"][0]["formula"] == "OCF − CapEx"
+    assert payload["metrics"]["fcf"]["quarters"][0]["value"] != -2_120_000_000
+    assert "companyReportedFreeCashFlow" not in payload["metrics"]
+    verified, superseded = attach_provisional(
+        _issuer(include_verified_q3=True),
+        extract,
+        accn="0001628280-26-066700",
+        form="8-K",
+        filed="2026-10-21",
+    )
+    assert superseded == "superseded"
+    assert verified["metrics"]["revenue"]["quarters"][0]["sourceType"] == "company_facts"
+    assert verified["metrics"]["revenue"]["quarters"][0]["value"] == 51_240_000_000
 
 
 def test_failed_extract_does_not_rewrite_issuer(tmp_path: Path):

@@ -969,12 +969,36 @@ def test_production_does_not_apply_accession_missing_from_company_facts(tmp_path
 
 
 def test_recorded_eight_k_is_backfilled_without_touching_layer1(tmp_path: Path):
-    from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT, META_ACCN, META_CIK, META_Q3_2026_EXHIBIT, earnings_documents
+    from fixtures.eight_k import (
+        GAAP_EARNINGS_EXHIBIT,
+        META_ACCN,
+        META_CIK,
+        META_Q3_2026_REAL_EXHIBIT,
+        earnings_documents,
+    )
 
     company = _company("META", META_CIK)
     data = _dataset(tmp_path, [company])
+    issuer_path = data / "layer3" / "cik" / f"{META_CIK}.json"
+    issuer = json.loads(issuer_path.read_text())
+    issuer["metrics"]["revenue"] = {
+        "status": "extracted",
+        "ttm": 190_000_000_000,
+        "quarters": [
+            {
+                "fiscalYear": 2026,
+                "fiscalQuarter": 2,
+                "value": 47_516_000_000,
+                "form": "10-Q",
+                "accn": "0001326801-26-000050",
+                "sourceType": "company_facts",
+            }
+        ],
+    }
+    write_json_atomic(issuer_path, issuer, compact=True)
     before_company = (data / "companies" / "META.json").read_bytes()
-    before_l3 = (data / "layer3" / "cik" / f"{META_CIK}.json").read_bytes()
+    before_l2 = (data / "layer2.json").read_bytes()
+    before_l3 = issuer_path.read_bytes()
     write_json_atomic(
         data / "daily-update.json",
         {
@@ -995,7 +1019,7 @@ def test_recorded_eight_k_is_backfilled_without_touching_layer1(tmp_path: Path):
         latest_filings=[],
         indexes=[],
         companyfacts_by_cik={},
-        eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=META_Q3_2026_EXHIBIT)},
+        eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=META_Q3_2026_REAL_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
         offline=True,
@@ -1003,17 +1027,26 @@ def test_recorded_eight_k_is_backfilled_without_touching_layer1(tmp_path: Path):
     assert report["eightKBackfill"] == 1
     assert report["companiesUpdated"] == []
     assert (data / "companies" / "META.json").read_bytes() == before_company
+    assert (data / "layer2.json").read_bytes() == before_l2
     state = json.loads((data / "daily-update.json").read_text())
     ext = state["earningsExtractions"][META_ACCN]
     assert ext["status"] == "extracted"
     assert ext["fiscalYear"] == 2026
     assert ext["fiscalQuarter"] == 3
     assert META_CIK in report["layer3Updated"]
-    issuer = json.loads((data / "layer3" / "cik" / f"{META_CIK}.json").read_text())
+    issuer = json.loads(issuer_path.read_text())
     assert issuer["provisionalEarnings"]["status"] == "awaiting_10q"
-    assert issuer["metrics"]["revenue"]["quarters"][0]["sourceType"] == "8k_earnings_release"
-    assert issuer["metrics"]["revenue"]["quarters"][0]["value"] == 56_100_000_000
-    assert before_l3 != (data / "layer3" / "cik" / f"{META_CIK}.json").read_bytes()
+    rev_qs = issuer["metrics"]["revenue"]["quarters"]
+    assert rev_qs[0]["sourceType"] == "8k_earnings_release"
+    assert rev_qs[0]["value"] == 64_601_000_000
+    assert rev_qs[0]["fiscalYear"] == 2026
+    assert rev_qs[0]["fiscalQuarter"] == 3
+    assert rev_qs[1]["value"] == 47_516_000_000
+    assert rev_qs[1]["sourceType"] == "company_facts"
+    assert issuer["metrics"]["fcf"]["quarters"][0]["value"] == -1_156_000_000
+    assert issuer["metrics"]["fcf"]["quarters"][0]["formula"] == "OCF − CapEx"
+    assert issuer["metrics"]["fcf"]["quarters"][0]["value"] != -2_120_000_000
+    assert before_l3 != issuer_path.read_bytes()
     # Successful extract is not reprocessed.
     report2 = run_daily_update(
         data,

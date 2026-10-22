@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 
 def index_htm(*, form: str = "8-K", exhibits: list[tuple[str, str, str]]) -> str:
     rows = [
@@ -228,6 +230,10 @@ META_Q3_2026_EXHIBIT = f"""
 
 META_ACCN = "0001628280-26-066700"
 META_CIK = "0001326801"
+META_Q3_2026_REAL_EXHIBIT = (Path(__file__).resolve().parent / "meta_q3_2026_ex991.htm").read_text(encoding="utf-8")
+META_Q3_2026_EXHIBIT_URL = (
+    "https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/meta-09302026xexhibit991.htm"
+)
 
 
 def earnings_documents(
