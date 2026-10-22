@@ -7,6 +7,7 @@ import pytest
 import requests
 
 from screener_pipeline.sec.daily_index import (
+    FORBIDDEN_RETRIES,
     accession_from_filename,
     collect_period_filings,
     fetch_master_idx,
@@ -14,6 +15,7 @@ from screener_pipeline.sec.daily_index import (
     index_data_row_count,
     index_dates,
     index_is_complete,
+    is_weekend,
     lookback_dates,
     master_idx_url,
     parse_master_idx,
@@ -139,26 +141,24 @@ def test_recent_business_days_skips_weekends():
 
 
 def test_fetch_master_idx_does_not_cache_404(tmp_path: Path):
-    day = date(2026, 10, 18)
+    day = date(2026, 10, 16)
     url = master_idx_url(day)
     http = FakeHttp({url: FakeResp(404)})
     assert fetch_master_idx(http, day, cache_dir=tmp_path) is None
-    assert not (tmp_path / "master.20261018.idx").exists()
-    assert not (tmp_path / "master.20261018.idx.404").exists()
+    assert not (tmp_path / "master.20261016.idx").exists()
+    assert not (tmp_path / "master.20261016.idx.404").exists()
     http2 = FakeHttp({url: FakeResp(404)})
     assert fetch_master_idx(http2, day, cache_dir=tmp_path) is None
     assert http2.urls == [url]
 
 
-def test_fetch_master_idx_treats_403_as_missing_and_does_not_cache(tmp_path: Path):
-    day = date(2026, 10, 18)
-    url = master_idx_url(day)
-    http = FakeHttp({url: FakeResp(403, "Forbidden")})
-    text, status = fetch_master_idx_status(http, day, cache_dir=tmp_path)
+def test_fetch_master_idx_skips_weekend_without_http(tmp_path: Path):
+    http = FakeHttp({})
+    text, status = fetch_master_idx_status(http, date(2026, 10, 18), cache_dir=tmp_path)
+    assert status == "weekend"
     assert text is None
-    assert status == "missing"
+    assert http.urls == []
     assert not (tmp_path / "master.20261018.idx").exists()
-    assert not (tmp_path / "master.20261018.idx.404").exists()
 
 
 def test_fetch_master_idx_does_not_cache_incomplete(tmp_path: Path):
@@ -219,7 +219,9 @@ def test_index_dates_extends_for_missed_sync():
     assert date(2026, 9, 29) in days
     assert date(2026, 10, 21) in days
     assert date(2026, 10, 1) in days
-    assert len(days) == (date(2026, 10, 21) - date(2026, 9, 29)).days + 1
+    assert date(2026, 10, 18) not in days
+    assert date(2026, 10, 17) not in days
+    assert all(not is_weekend(day) for day in days)
 
 
 def test_recent_cached_index_is_refetched_and_can_grow(tmp_path: Path):
@@ -278,16 +280,9 @@ def test_collect_period_filings_keeps_recent_missing_unreconciled(tmp_path: Path
     }
 
 
-def test_collect_period_filings_older_403_is_checked_empty(tmp_path: Path):
+def test_collect_period_filings_skips_weekend_requests(tmp_path: Path):
     as_of = date(2026, 10, 21)
-    present = master_idx_url(as_of)
-    sunday = date(2026, 10, 18)
-    http = FakeHttp(
-        {
-            present: FakeResp(200, MASTER_IDX),
-            master_idx_url(sunday): FakeResp(403, "Forbidden"),
-        }
-    )
+    http = FakeHttp({master_idx_url(as_of): FakeResp(200, MASTER_IDX)})
     filings, found, unreconciled = collect_period_filings(
         http,
         as_of,
@@ -295,13 +290,41 @@ def test_collect_period_filings_older_403_is_checked_empty(tmp_path: Path):
         cache_dir=tmp_path,
         revalidate_business_days=3,
     )
-    assert sunday.isoformat() not in found
-    assert sunday.isoformat() not in unreconciled
+    requested = set(http.urls)
+    assert master_idx_url(date(2026, 10, 18)) not in requested
+    assert master_idx_url(date(2026, 10, 17)) not in requested
+    assert master_idx_url(as_of) in requested
+    assert date(2026, 10, 18).isoformat() not in found
+    assert date(2026, 10, 18).isoformat() not in unreconciled
     assert as_of.isoformat() in found
     assert "0000320193-26-000111" in {f.accn for f in filings}
 
 
-def test_collect_period_filings_recent_403_stays_unreconciled(tmp_path: Path):
+def test_weekday_403_retries_then_succeeds(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("screener_pipeline.sec.daily_index._sleep", lambda _seconds: None)
+    day = date(2026, 10, 21)
+    url = master_idx_url(day)
+
+    class SeqHttp:
+        def __init__(self) -> None:
+            self.urls: list[str] = []
+
+        def get(self, requested: str) -> FakeResp:
+            self.urls.append(requested)
+            if len(self.urls) < 3:
+                return FakeResp(403, "Forbidden")
+            return FakeResp(200, MASTER_IDX)
+
+    http = SeqHttp()
+    text, status = fetch_master_idx_status(http, day, cache_dir=tmp_path)
+    assert status == "ok"
+    assert text is not None and "0000320193" in text
+    assert http.urls == [url, url, url]
+    assert (tmp_path / "master.20261021.idx").exists()
+
+
+def test_weekday_403_exhausted_stays_unreconciled(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("screener_pipeline.sec.daily_index._sleep", lambda _seconds: None)
     as_of = date(2026, 10, 21)
     http = FakeHttp(
         {
@@ -320,6 +343,49 @@ def test_collect_period_filings_recent_403_stays_unreconciled(tmp_path: Path):
     assert as_of.isoformat() in unreconciled
     assert date(2026, 10, 20).isoformat() in found
     assert "0000320193-26-000111" in {f.accn for f in filings}
+    assert not (tmp_path / "master.20261021.idx").exists()
+    assert http.urls.count(master_idx_url(as_of)) == FORBIDDEN_RETRIES + 1
+
+
+def test_weekday_403_keeps_cache_but_stays_unreconciled(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("screener_pipeline.sec.daily_index._sleep", lambda _seconds: None)
+    as_of = date(2026, 10, 21)
+    cached = tmp_path / "master.20261021.idx"
+    cached.write_text(MASTER_IDX, encoding="utf-8")
+    http = FakeHttp({master_idx_url(as_of): FakeResp(403, "Forbidden")})
+    filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        1,
+        cache_dir=tmp_path,
+        revalidate_business_days=3,
+    )
+    assert as_of.isoformat() in unreconciled
+    assert as_of.isoformat() not in found
+    assert "0000320193-26-000111" in {f.accn for f in filings}
+
+
+def test_older_weekday_403_stays_unreconciled(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("screener_pipeline.sec.daily_index._sleep", lambda _seconds: None)
+    as_of = date(2026, 10, 21)
+    monday = date(2026, 10, 12)
+    http = FakeHttp(
+        {
+            master_idx_url(as_of): FakeResp(200, MASTER_IDX),
+            master_idx_url(monday): FakeResp(403, "Forbidden"),
+        }
+    )
+    _filings, found, unreconciled = collect_period_filings(
+        http,
+        as_of,
+        10,
+        cache_dir=tmp_path,
+        revalidate_business_days=3,
+    )
+    assert monday.isoformat() not in found
+    assert monday.isoformat() in unreconciled
+    assert as_of.isoformat() in found
+    assert not (tmp_path / "master.20261012.idx").exists()
 
 
 def test_collect_period_filings_older_404_is_checked_empty(tmp_path: Path):
