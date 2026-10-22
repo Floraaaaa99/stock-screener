@@ -24,7 +24,15 @@ from .quarters import (
     label_quarters,
     values_agree,
 )
-from .sec.facts import EARNINGS_CONCEPTS, QUARTERLY_FORMS, REVENUE_CONCEPTS, FilingInfo, RevenueFacts
+from .sec.facts import (
+    CURRENT_REPORT_FORMS,
+    DOMESTIC_FORMS,
+    EARNINGS_CONCEPTS,
+    QUARTERLY_FORMS,
+    REVENUE_CONCEPTS,
+    FilingInfo,
+    RevenueFacts,
+)
 from .sec.statement import (
     Statement,
     StatementEvidence,
@@ -97,9 +105,16 @@ class CompanyRevenue:
     flags: list[str] = field(default_factory=list)
 
 
-def original_filing(filings: dict[str, FilingInfo], period_end: date) -> FilingInfo | None:
+def original_filing(
+    filings: dict[str, FilingInfo],
+    period_end: date,
+    *,
+    forms: set[str] | None = None,
+) -> FilingInfo | None:
     """The first non-amended filing whose current period ends on `period_end` (amendments as fallback)."""
     cands = [f for f in filings.values() if f.period_end == period_end]
+    if forms is not None:
+        cands = [f for f in cands if f.form in forms]
     cands.sort(key=lambda f: (f.form.endswith("/A"), f.filed))
     return cands[0] if cands else None
 
@@ -207,11 +222,16 @@ def _verify_sources(
     return QuarterCheck(status, primary.accn, primary.form, first_url, first_label, face_values[0], expected, detail)
 
 
+def _eight_k_sources(q: Quarter) -> bool:
+    return bool(q.sources) and all(s.form in CURRENT_REPORT_FORMS for s in q.sources)
+
+
 def _latest_evidence(rf: RevenueFacts, fetch: StatementFetcher) -> StatementEvidence | None:
-    if not rf.filings:
+    domestic = [f for f in rf.filings.values() if f.form in DOMESTIC_FORMS]
+    if not domestic:
         return None
-    latest_end = max(f.period_end for f in rf.filings.values())
-    f = original_filing(rf.filings, latest_end)
+    latest_end = max(f.period_end for f in domestic)
+    f = original_filing(rf.filings, latest_end, forms=DOMESTIC_FORMS)
     if f is None:
         return None
     got = fetch(f.accn)
@@ -289,8 +309,18 @@ def analyze_company(
     checks: dict[date, QuarterCheck] = {}
     if verify_quarters:
         for s in slots:
-            if isinstance(s, Quarter):
-                checks[s.end] = verify_quarter(s, fetch, is_face_line=spec.is_face_line, line_name=spec.line_name)
+            if not isinstance(s, Quarter):
+                continue
+            if _eight_k_sources(s):
+                primary = s.sources[0]
+                checks[s.end] = QuarterCheck(
+                    "awaiting_10q",
+                    primary.accn,
+                    primary.form,
+                    detail="8-K earnings release; no face income statement to verify.",
+                )
+                continue
+            checks[s.end] = verify_quarter(s, fetch, is_face_line=spec.is_face_line, line_name=spec.line_name)
 
     for s in slots:
         if isinstance(s, Quarter):
@@ -311,6 +341,7 @@ def analyze_company(
 
 
 VERIFIED_CHECK = "match"
+PROVISIONAL_CHECK = "awaiting_10q"
 
 
 def ttm_window_block_reason(
@@ -338,7 +369,7 @@ def ttm_window_block_reason(
             return "unverified_quarters"
         if check.status == "mismatch":
             return "filing_mismatch"
-        if check.status != VERIFIED_CHECK:
+        if check.status not in {VERIFIED_CHECK, PROVISIONAL_CHECK}:
             return "unverified_quarters"
     return None
 

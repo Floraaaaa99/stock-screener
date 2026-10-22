@@ -208,10 +208,35 @@ def test_facts_from_other_forms_are_ignored():
 
     from screener_pipeline.sec.facts import extract_revenue_facts
 
-    cf = companyfacts({"Revenues": [
-        raw("2024-01-01", "2024-03-31", 100, "x", 2024, "Q1"),
-        raw("2024-01-01", "2024-03-31", 999, "s1", 2024, "Q1", form="S-1"),
-        raw("2024-01-01", "2024-03-31", 888, "8k", 2024, "Q1", form="8-K"),
-    ]})
+    cf = companyfacts(
+        {
+            "Revenues": [
+                raw("2024-01-01", "2024-03-31", 100, "x", 2024, "Q1"),
+                raw("2024-01-01", "2024-03-31", 999, "s1", 2024, "Q1", form="S-1"),
+                raw("2024-01-01", "2024-03-31", 888, "8k", 2024, "Q1", form="8-K"),
+            ]
+        }
+    )
     rf = extract_revenue_facts(cf)
-    assert [f.val for f in rf.by_concept["Revenues"]] == [100]
+    assert sorted(f.val for f in rf.by_concept["Revenues"]) == [100, 888]
+
+
+def test_later_ten_q_wins_same_period_as_eight_k():
+    facts = [
+        fact("2026-07-01", "2026-09-30", 888, "8k", 2026, "Q3", form="8-K", filed="2026-10-21"),
+        fact("2026-07-01", "2026-09-30", 100, "10q", 2026, "Q3", form="10-Q", filed="2026-10-30"),
+    ]
+    period = dedupe_periods(facts)[(date(2026, 7, 1), date(2026, 9, 30))]
+    assert period.val == 100
+    assert period.form == "10-Q"
+    assert period.accn == "10q"
+
+
+def test_ten_q_supersedes_nearby_eight_k_rounding():
+    facts = [
+        fact("2026-07-01", "2026-09-30", 51_242_000_000, "8k", 2026, "Q3", form="8-K", filed="2026-10-21"),
+        fact("2026-07-01", "2026-09-30", 51_240_000_000, "10q", 2026, "Q3", form="10-Q", filed="2026-10-30"),
+    ]
+    period = dedupe_periods(facts)[(date(2026, 7, 1), date(2026, 9, 30))]
+    assert period.val == 51_240_000_000
+    assert period.form == "10-Q"

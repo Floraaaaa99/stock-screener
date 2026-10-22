@@ -6,7 +6,7 @@ from datetime import date
 
 from .quarters import MissingQuarter, Quarter
 from .revenue import CompanyRevenue, slot_role
-from .sec.facts import filing_url
+from .sec.facts import filing_url, source_type_for_form
 from .sec.sic import SicInfo
 
 SCHEMA_VERSION = 2
@@ -39,6 +39,7 @@ def quarter_json(slot, index: int, cik: str, rev: CompanyRevenue) -> dict:
         "form": primary.form,
         "filed": _iso(primary.filed),
         "accn": primary.accn,
+        "sourceType": source_type_for_form(primary.form),
         "url": filing_url(cik, primary.accn),
         "restated": q.restated,
         "labelInferred": q.label_inferred,
@@ -50,6 +51,7 @@ def quarter_json(slot, index: int, cik: str, rev: CompanyRevenue) -> dict:
                 "form": s.form,
                 "filed": _iso(s.filed),
                 "accn": s.accn,
+                "sourceType": source_type_for_form(s.form),
                 "start": _iso(s.start),
                 "end": _iso(s.end),
                 "value": s.val,

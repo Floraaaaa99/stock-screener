@@ -38,6 +38,28 @@ def _revenue_payload(cik: int, name: str, extra_q: Fact | None = None) -> dict:
     return companyfacts({"Revenues": _raw_facts(facts)}, cik=cik, name=name)
 
 
+def _shared_payload(cik: int, name: str, extra: list[Fact] | None = None) -> dict:
+    """Eight 2024–2025 quarters plus 2026 Q1/Q2 so an 8-K Q3 can enter the TTM window."""
+    facts = calendar_year(2024, 10, 11, 12, 13, prefix="B") + calendar_year(2025, 14, 15, 16, 17, prefix="A")
+    prefix = f"{cik:010d}"
+    facts += [
+        Fact(date(2026, 1, 1), date(2026, 3, 31), 18.0, f"{prefix}-26-000091", 2026, "Q1", "10-Q", date(2026, 5, 1)),
+        Fact(date(2026, 4, 1), date(2026, 6, 30), 19.0, f"{prefix}-26-000092", 2026, "Q2", "10-Q", date(2026, 8, 1)),
+        Fact(date(2026, 1, 1), date(2026, 6, 30), 37.0, f"{prefix}-26-000092", 2026, "Q2", "10-Q", date(2026, 8, 1)),
+    ]
+    if extra:
+        facts.extend(extra)
+    rows = _raw_facts(facts)
+    return companyfacts({"Revenues": rows}, cik=cik, name=name)
+
+
+def _latest_quarter(company: dict, metric: str = "revenue") -> dict | None:
+    for quarter in (company.get(metric) or {}).get("quarters") or []:
+        if not quarter.get("missing"):
+            return quarter
+    return None
+
+
 def _company(
     ticker: str,
     cik: str,
@@ -1027,16 +1049,17 @@ def test_one_shot_meta_eight_k_extracts_without_historical_scan(tmp_path: Path):
         as_of=date(2026, 10, 22),
         latest_filings=[],
         indexes=[],
-        companyfacts_by_cik={},
+        companyfacts_by_cik={META_CIK: _shared_payload(int(META_CIK), "META")},
         eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=META_Q3_2026_REAL_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
         offline=True,
     )
-    assert report["companiesUpdated"] == []
-    assert (data / "companies" / "META.json").read_bytes() == before_company
+    assert "META" in report["companiesUpdated"]
+    assert "AAA" not in report["companiesUpdated"]
+    assert (data / "companies" / "META.json").read_bytes() != before_company
     assert (data / "companies" / "AAA.json").read_bytes() == before_other
-    assert (data / "layer2.json").read_bytes() == before_l2
+    assert (data / "layer2.json").read_bytes() != before_l2
     state = json.loads((data / "daily-update.json").read_text())
     ext = state["earningsExtractions"][META_ACCN]
     assert ext["status"] == "extracted"
@@ -1051,8 +1074,15 @@ def test_one_shot_meta_eight_k_extracts_without_historical_scan(tmp_path: Path):
     assert rev_qs[0]["value"] == 64_601_000_000
     assert rev_qs[0]["fiscalYear"] == 2026
     assert rev_qs[0]["fiscalQuarter"] == 3
-    assert rev_qs[1]["value"] == 47_516_000_000
-    assert rev_qs[1]["sourceType"] == "company_facts"
+    meta_company = json.loads((data / "companies" / "META.json").read_text())
+    latest = _latest_quarter(meta_company)
+    assert latest["value"] == 64_601_000_000
+    assert latest["form"] == "8-K"
+    assert latest["sourceType"] == "8k_earnings_release"
+    assert meta_company["ttm"]["current"] != 190_000_000_000
+    l2 = json.loads((data / "layer2.json").read_text())
+    l2_row = next(r for r in l2["rows"] if r["ticker"] == "META")
+    assert l2_row["ttmGrowth"] == meta_company["ttm"]["growthPct"]
     assert issuer["metrics"]["fcf"]["quarters"][0]["value"] == -1_156_000_000
     assert issuer["metrics"]["fcf"]["quarters"][0]["formula"] == "OCF − CapEx"
     assert issuer["metrics"]["fcf"]["quarters"][0]["value"] != -2_120_000_000
@@ -1062,7 +1092,7 @@ def test_one_shot_meta_eight_k_extracts_without_historical_scan(tmp_path: Path):
         as_of=date(2026, 10, 22),
         latest_filings=[],
         indexes=[],
-        companyfacts_by_cik={},
+        companyfacts_by_cik={META_CIK: _shared_payload(int(META_CIK), "META")},
         eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=GAAP_EARNINGS_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
@@ -1092,7 +1122,7 @@ def test_lagging_ten_q_does_not_discard_same_night_eight_k(tmp_path: Path):
             _filing("0000000001", eight_k, form="8-K"),
             _filing("0000000001", ten_q, form="10-Q"),
         ],
-        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        companyfacts_by_cik={"0000000001": _shared_payload(1, "AAA")},
         eight_k_documents={eight_k: earnings_documents(eight_k, exhibit=GAAP_EARNINGS_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
@@ -1100,13 +1130,17 @@ def test_lagging_ten_q_does_not_discard_same_night_eight_k(tmp_path: Path):
     )
     assert report["ok"] is True
     assert report["checkpointAdvanced"] is False
-    assert report["companiesUpdated"] == []
-    assert (data / "companies" / "AAA.json").read_bytes() == before_company
-    assert (data / "layer2.json").read_bytes() == before_l2
+    assert "AAA" in report["companiesUpdated"]
+    assert (data / "companies" / "AAA.json").read_bytes() != before_company
+    assert (data / "layer2.json").read_bytes() != before_l2
     state = json.loads((data / "daily-update.json").read_text())
     assert ten_q not in state["processedAccessions"]
     assert state["processedAccessions"][eight_k]["status"] == "recorded_8k"
     assert state["earningsExtractions"][eight_k]["status"] == "extracted"
+    company = json.loads((data / "companies" / "AAA.json").read_text())
+    latest = _latest_quarter(company)
+    assert latest["value"] == 51_242_000_000
+    assert latest["sourceType"] == "8k_earnings_release"
     issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
     assert issuer["metrics"]["revenue"]["quarters"][0]["sourceType"] == "8k_earnings_release"
     assert issuer["metrics"]["revenue"]["quarters"][0]["value"] == 51_242_000_000
@@ -1142,7 +1176,7 @@ def test_failed_eight_k_extract_is_retried_without_historical_scan(tmp_path: Pat
         as_of=date(2026, 10, 22),
         latest_filings=[],
         indexes=[],
-        companyfacts_by_cik={},
+        companyfacts_by_cik={"0000000001": _shared_payload(1, "AAA")},
         eight_k_documents={accn: earnings_documents(accn, exhibit=GAAP_EARNINGS_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
@@ -1152,6 +1186,7 @@ def test_failed_eight_k_extract_is_retried_without_historical_scan(tmp_path: Pat
     assert state["earningsExtractions"][accn]["status"] == "extracted"
     assert state["earningsExtractions"][accn]["attempts"] == 2
     assert other not in state["earningsExtractions"]
+    assert "AAA" in report["companiesUpdated"]
     assert "0000000001" in report["layer3Updated"]
 
 
@@ -1196,7 +1231,7 @@ def test_ten_q_facts_supersede_provisional_eight_k(tmp_path: Path):
         as_of=date(2026, 10, 21),
         latest_filings=[_filing("0000000001", eight_k, form="8-K", source="latest")],
         indexes=[_filing("0000000001", eight_k, form="8-K")],
-        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        companyfacts_by_cik={"0000000001": _shared_payload(1, "AAA")},
         eight_k_documents={eight_k: earnings_documents(eight_k, exhibit=GAAP_EARNINGS_EXHIBIT)},
         state_dir=tmp_path / "state",
         verify_quarters=False,
@@ -1205,13 +1240,12 @@ def test_ten_q_facts_supersede_provisional_eight_k(tmp_path: Path):
     )
     issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
     assert issuer["provisionalEarnings"]["status"] == "awaiting_10q"
+    eight_k_company = json.loads((data / "companies" / "AAA.json").read_text())
+    assert _latest_quarter(eight_k_company)["sourceType"] == "8k_earnings_release"
     extra = [
-        Fact(date(2026, 1, 1), date(2026, 3, 31), 18.0, "0000000001-26-000091", 2026, "Q1", "10-Q", date(2026, 5, 1)),
-        Fact(date(2026, 4, 1), date(2026, 6, 30), 19.0, "0000000001-26-000092", 2026, "Q2", "10-Q", date(2026, 8, 1)),
         Fact(date(2026, 7, 1), date(2026, 9, 30), 51_240_000_000, ten_q, 2026, "Q3", "10-Q", date(2026, 10, 30)),
     ]
-    facts = _revenue_payload(1, "AAA")
-    facts["facts"]["us-gaap"]["Revenues"]["units"]["USD"].extend(_raw_facts(extra))
+    facts = _shared_payload(1, "AAA", extra=extra)
     run_daily_update(
         data,
         as_of=date(2026, 10, 31),
@@ -1227,6 +1261,61 @@ def test_ten_q_facts_supersede_provisional_eight_k(tmp_path: Path):
     state = json.loads((data / "daily-update.json").read_text())
     assert state["processedAccessions"][ten_q]["status"] == "applied"
     assert state["earningsExtractions"][eight_k]["status"] == "superseded"
+    company = json.loads((data / "companies" / "AAA.json").read_text())
+    latest = _latest_quarter(company)
+    assert latest["value"] == 51_240_000_000
+    assert latest["form"] == "10-Q"
+    assert latest["sourceType"] == "company_facts"
+    assert latest["accn"] == ten_q
+    l2 = json.loads((data / "layer2.json").read_text())
+    l2_row = next(r for r in l2["rows"] if r["ticker"] == "AAA")
+    assert l2_row["ttmGrowth"] == company["ttm"]["growthPct"]
     issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
+    assert issuer["metrics"]["revenue"]["quarters"][0]["sourceType"] == "company_facts"
+    assert issuer["metrics"]["revenue"]["quarters"][0]["value"] == 51_240_000_000
     assert issuer["earningsReleaseAudit"]
     assert issuer["earningsReleaseAudit"][0]["accn"] == eight_k
+
+
+def test_eight_k_updates_shared_quarterly_data_for_all_layers(tmp_path: Path):
+    from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT, earnings_documents
+
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    before_l2 = (data / "layer2.json").read_bytes()
+    accn = "0000000001-26-000024"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[_filing("0000000001", accn, form="8-K", source="latest")],
+        indexes=[_filing("0000000001", accn, form="8-K")],
+        companyfacts_by_cik={"0000000001": _shared_payload(1, "AAA")},
+        eight_k_documents={accn: earnings_documents(accn, exhibit=GAAP_EARNINGS_EXHIBIT)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert "AAA" in report["companiesUpdated"]
+    assert "0000000001" in report["layer3Updated"]
+    company = json.loads((data / "companies" / "AAA.json").read_text())
+    latest = _latest_quarter(company)
+    assert latest["value"] == 51_242_000_000
+    assert latest["form"] == "8-K"
+    assert latest["sourceType"] == "8k_earnings_release"
+    assert latest["accn"] == accn
+    assert company["ttm"]["current"] == 51_242_000_000 + 19 + 18 + 17
+    earn = _latest_quarter(company, "earnings")
+    assert earn["value"] == 18_300_000_000
+    assert earn["sourceType"] == "8k_earnings_release"
+    assert (data / "layer2.json").read_bytes() != before_l2
+    l2 = json.loads((data / "layer2.json").read_text())
+    l2_row = next(r for r in l2["rows"] if r["ticker"] == "AAA")
+    assert l2_row["ttmGrowth"] == company["ttm"]["growthPct"]
+    issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
+    assert issuer["metrics"]["revenue"]["quarters"][0]["value"] == 51_242_000_000
+    assert issuer["metrics"]["revenue"]["quarters"][0]["sourceType"] == "8k_earnings_release"
+    assert issuer["metrics"]["netIncome"]["quarters"][0]["value"] == 18_300_000_000
+    assert issuer["metrics"]["fcf"]["quarters"][0]["value"] == 16_700_000_000
+    interest = issuer["metrics"]["interestExpense"]
+    assert interest.get("ttm") is None
+    assert interest.get("status") in {"missing", "pending_analysis", None} or interest.get("reason")
+    assert interest.get("ttm") != 0

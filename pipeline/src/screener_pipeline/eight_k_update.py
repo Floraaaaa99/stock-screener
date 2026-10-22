@@ -266,6 +266,7 @@ def extraction_rows_by_cik(extractions: dict) -> dict[str, list[dict[str, Any]]]
                 "accn": accn,
                 "form": row.get("form") or "8-K",
                 "filed": row.get("filed"),
+                "status": row.get("status"),
                 "extract": extract,
             }
         )

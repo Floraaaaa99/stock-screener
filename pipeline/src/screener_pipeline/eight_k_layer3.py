@@ -1,8 +1,8 @@
-"""Attach provisional 8-K earnings figures to Layer 3 issuer files.
+"""Stamp 8-K provenance on Layer 3 issuer files after the shared facts rebuild.
 
-Layer 1 / Layer 2 company JSON is never modified. Verified 10-Q/10-K quarters
-remain in place; an 8-K quarter is shown only when Company Facts does not yet
-cover that fiscal slot.
+8-K figures are merged into the shared Company Facts dataset and Layer 1 / 2 / 3
+are recalculated from that. This overlay adds exhibit URLs, awaiting-10-Q flags,
+and the superseded audit when 10-Q/10-K facts already cover the fiscal slot.
 """
 
 from __future__ import annotations
