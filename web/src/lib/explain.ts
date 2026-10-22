@@ -101,6 +101,7 @@ export const FLAG_TEXT: Record<string, string> = {
   incompatible_inputs: NA_REASONS.incompatible_inputs!,
   extreme_ratio:
     "This ratio is outside the usual inspect-only range. The computed value is preserved and is not an investment rating.",
+  eight_k_awaiting_10q: "8-K Earnings Release — Awaiting 10-Q Verification",
 };
 
 export const CONCEPT_STATUS: Record<string, string> = {

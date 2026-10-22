@@ -191,6 +191,18 @@ class SecClient:
         self.statement_store.put(accn, result)
         return result
 
+    def filing_document(self, cik: str, accn: str, filename: str) -> str | None:
+        """One immutable filing document from EDGAR archives (cached forever)."""
+        name = filename.lstrip("/")
+        base = config.SEC_ARCHIVES_URL.format(cik=int(cik), accn_nodash=accn.replace("-", ""))
+        fdir = self.cache_dir / "filings" / accn
+        try:
+            return self._cached_text(base + name, fdir / name, None)
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
+
 
 def load_overrides() -> dict[str, dict]:
     data = read_json(config.OVERRIDES_FILE, default={}) or {}

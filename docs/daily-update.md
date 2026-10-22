@@ -48,6 +48,7 @@ The job:
 | `lastFinancialUpdateAt` | Last time company / Layer 2 / Layer 3 JSON actually changed. |
 | `unreconciledDates` | Index dates that are not yet safely checked. |
 | `processedAccessions` | Deduped by accession number (kept 40 days). Status is `applied`, `recorded_8k`, or `out_of_universe`. |
+| `earningsExtractions` | Separate 8-K earnings-extract status by accession (kept 90 days). Status is `pending`, `extracted`, `not_earnings`, `failed`, or `superseded`. Already-recorded 8-Ks stay eligible for backfill. |
 
 Each run covers every filing since the previous successful sync, overlapping at least 48 hours so delayed SEC publication is retried. If Actions misses a day or the job fails, the next run extends `since` back to that checkpoint. The checkpoint does **not** advance when Latest Filings or Company Facts HTTP fails, the gate fails, or an in-universe 10-Q/10-K could not be applied.
 
@@ -56,7 +57,7 @@ Each run covers every filing since the previous successful sync, overlapping at 
 | Form | Action |
 |---|---|
 | 10-Q, 10-Q/A, 10-K, 10-K/A (and 10-QT / 10-KT variants from the daily index) | Download Company Facts **only if** compact state does not already contain that accession. Recalculate Revenue, Net Income, Gross Profit, OCF, CapEx, FCF, and TTM with the existing extract / fiscal-quarter / verification code. Rebuild affected Layer 1, Layer 2, and Layer 3 files. |
-| 8-K, 8-K/A | Record the accession (`recorded_8k`). Do **not** treat an 8-K earnings announcement as completed quarterly financials. No Company Facts download, no metric rebuild. |
+| 8-K, 8-K/A | Record the accession (`recorded_8k`). If the filing contains Item 2.02, inspect the SEC document list, read the earnings exhibit (usually EX-99.1), and extract explicitly reported GAAP figures. Overlay those values on Layer 3 only, labeled **8-K Earnings Release — Awaiting 10-Q Verification**. Layer 1 / Layer 2 stay on verified 10-Q/10-K Company Facts. When a later 10-Q/10-K covers the same fiscal quarter, the overlay is replaced and the original 8-K values are kept for audit. Unrelated 8-Ks stay `not_earnings`. Layer 3 FCF stays **OCF − CapEx** and is not labeled as a GAAP financial measure. A company's own “Free cash flow” line (often Non-GAAP; Meta also subtracts finance-lease principal) is retained separately with its source and formula and is never substituted for the Layer 3 definition. |
 
 Rules that stay the same: missing values stay `null` (never `0`); `write_json_if_changed` skips identical JSON; extra Layer 3 issuer files are never deleted; browser Layer 3 membership is not remapped; a failed gate or HTTP error leaves the previous live dataset in place.
 
@@ -68,7 +69,7 @@ Rules that stay the same: missing values stay `null` (never `0`); `write_json_if
 2. Page Latest Filings for the current official filing date. Read `master.idx` for the recovery window.
 3. Deduplicate by accession. Drop accessions already in `daily-update.json`.
 4. Map remaining CIKs onto the **current** dataset (`issuers.json` + `companies/*.json`).
-5. For in-universe periodic filings, fetch Company Facts only when needed and rebuild through staging.
+5. For in-universe periodic filings, fetch Company Facts only when needed and rebuild through staging. For in-universe 8-K/8-K/A filings, and for `recorded_8k` accessions from the last 30 days that lack a terminal `earningsExtractions` status, inspect Item 2.02 and extract GAAP figures from the earnings exhibit into Layer 3 only.
 6. Run `evaluate_gate` against the previous `meta.json`. On failure, delete staging and keep the previous dataset; those accessions are not marked processed.
 7. On a financial change: copy only changed files back, bump `generatedAt`, pack compact state, commit `[skip pages]`, and deploy Pages from this workflow.
 8. On a quiet / 8-K-only / out-of-universe night: write `daily-update.json` (checkpoint + recorded accessions), skip aggregates, skip state pack, skip Pages.
@@ -104,7 +105,7 @@ The `github-pages` environment is used only for the deploy job. If that environm
 - Full-universe NASDAQ Trader refresh (`refresh.yml`)
 - Bulk `companyfacts.zip` / `submissions.zip`
 - Layer 3 scoring
-- Treating 8-K press releases as completed 10-Q/10-K financials
+- Treating 8-K press releases as completed Layer 1 / Layer 2 10-Q/10-K financials (Layer 3 may show a provisional 8-K quarter)
 - Replacing missing financials with zero
 - Deleting unused Layer 3 issuer JSON (preserves curated CIK identity)
 - External databases, paid APIs, or servers

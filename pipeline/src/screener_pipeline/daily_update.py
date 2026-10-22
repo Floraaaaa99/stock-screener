@@ -19,6 +19,14 @@ import requests
 from . import config
 from .build import DatasetError, make_meta, rebuild_company
 from .cache import read_json, write_json_if_changed
+from .eight_k_layer3 import apply_extractions_to_dataset
+from .eight_k_update import (
+    collect_earnings_jobs,
+    extraction_rows_by_cik,
+    mark_superseded,
+    prune_extractions,
+    run_earnings_extractions,
+)
 from .gate import evaluate_gate
 from .layer2 import write_layer2
 from .layer3_build import write_layer3
@@ -33,7 +41,7 @@ from .universe.nasdaq_trader import Listing
 log = logging.getLogger(__name__)
 
 STATE_FILENAME = "daily-update.json"
-STATE_SCHEMA_VERSION = 2
+STATE_SCHEMA_VERSION = 3
 EXCHANGE_CODES = {"NASDAQ": "Q", "NYSE": "N", "NYSE American": "A"}
 
 
@@ -110,6 +118,9 @@ def load_state(path: Path) -> dict:
     unresolved = data.get("unreconciledDates") or data.get("unresolvedDates") or []
     if not isinstance(unresolved, list):
         unresolved = []
+    extractions = data.get("earningsExtractions")
+    if not isinstance(extractions, dict):
+        extractions = {}
     return {
         "schemaVersion": STATE_SCHEMA_VERSION,
         "lastSuccessfulSyncAt": data.get("lastSuccessfulSyncAt") or data.get("lastSuccessfulAt"),
@@ -118,6 +129,7 @@ def load_state(path: Path) -> dict:
         "lookbackDays": data.get("lookbackDays"),
         "unreconciledDates": [str(x) for x in unresolved],
         "processedAccessions": processed,
+        "earningsExtractions": extractions,
     }
 
 
@@ -348,6 +360,7 @@ def run_daily_update(
     indexes: list[DailyFiling] | None = None,
     latest_filings: list[DailyFiling] | None = None,
     companyfacts_by_cik: dict[str, dict] | None = None,
+    eight_k_documents: dict[str, dict[str, str]] | None = None,
     state_dir: Path | None = None,
     cache_dir: Path | None = None,
 ) -> dict:
@@ -438,6 +451,15 @@ def run_daily_update(
         recorded_current.extend(current)
         skipped_filings.extend(r.to_dict() | {"reason": "unsupported_form"} for r in other)
 
+    extractions = dict(state.get("earningsExtractions") or {})
+    extract_jobs = collect_earnings_jobs(
+        recorded_current,
+        processed,
+        extractions,
+        as_of=as_of,
+        by_cik=by_cik,
+    )
+
     report: dict[str, Any] = {
         "ok": True,
         "published": False,
@@ -454,6 +476,8 @@ def run_daily_update(
         "filingsSeen": len(filings),
         "filingsNew": len(new_filings),
         "filingsRecorded8k": 0,
+        "filingsExtracted8k": 0,
+        "eightKBackfill": 0,
         "outOfUniverse": len(out_of_universe),
         "companiesUpdated": [],
         "companiesSkipped": [],
@@ -480,35 +504,116 @@ def run_daily_update(
     }
 
     processing_complete = True
+    if extract_jobs:
+        extractions = run_earnings_extractions(
+            extract_jobs,
+            extractions,
+            sec=sec,
+            eight_k_documents=eight_k_documents,
+        )
+        for _accn, row in extractions.items():
+            if row.get("status") == "extracted" and not row.get("extractedAt"):
+                row["extractedAt"] = generated_at
+        report["filingsExtracted8k"] = sum(1 for r in extractions.values() if r.get("status") == "extracted")
+        report["eightKBackfill"] = sum(1 for f in extract_jobs if f.source == "backfill")
+
     if not in_universe:
-        report["unchanged"] = True
         report["filingsRecorded8k"] = len(recorded_current)
-        if publish_to_dest:
-            _write_state(
-                data_dir / STATE_FILENAME,
-                state,
-                processed,
-                out_of_universe,
-                [],
-                recorded_current,
-                generated_at,
-                as_of,
-                lookback_days,
-                unreconciled=unreconciled,
-                advance_sync=processing_complete,
-                financial_at=state.get("lastFinancialUpdateAt"),
-            )
-            report["stateUpdated"] = True
-            report["checkpointAdvanced"] = processing_complete
-            report["lastSuccessfulSyncAt"] = generated_at if processing_complete else state.get("lastSuccessfulSyncAt")
-            report["filesRewritten"] = [STATE_FILENAME]
-        elif is_live and not write_live:
-            report["heldBack"] = "write_live_required"
+        overlay_ciks: list[str] = []
+        attach_rows = extraction_rows_by_cik(extractions)
+        needs_overlay = bool(attach_rows) and update_layer3 and any(
+            extractions.get(f.accn, {}).get("status") == "extracted" for f in extract_jobs
+        )
+        if needs_overlay and publish_to_dest:
+            staging = data_dir.with_name(data_dir.name + ".daily-staging")
+            try:
+                copy_dataset(data_dir, staging)
+                overlay_ciks, superseded = apply_extractions_to_dataset(staging, attach_rows)
+                if superseded:
+                    extractions = mark_superseded(extractions, superseded)
+                if overlay_ciks:
+                    bump_generated_at(staging / "layer3.json", generated_at)
+                    report["layer3Updated"] = overlay_ciks
+                    report["unchanged"] = False
+                    report["generatedAt"] = generated_at
+                    _write_state(
+                        staging / STATE_FILENAME,
+                        state,
+                        processed,
+                        out_of_universe,
+                        [],
+                        recorded_current,
+                        generated_at,
+                        as_of,
+                        lookback_days,
+                        unreconciled=unreconciled,
+                        advance_sync=processing_complete,
+                        financial_at=generated_at,
+                        extractions=extractions,
+                    )
+                    sync_stats = sync_changed_files(staging, data_dir)
+                    report["filesRewritten"] = sync_stats["copied"]
+                    report["published"] = True
+                    report["stateUpdated"] = True
+                    report["checkpointAdvanced"] = processing_complete
+                    report["lastSuccessfulSyncAt"] = generated_at
+                    report["lastFinancialUpdateAt"] = generated_at
+                else:
+                    report["unchanged"] = True
+                    _write_state(
+                        data_dir / STATE_FILENAME,
+                        state,
+                        processed,
+                        out_of_universe,
+                        [],
+                        recorded_current,
+                        generated_at,
+                        as_of,
+                        lookback_days,
+                        unreconciled=unreconciled,
+                        advance_sync=processing_complete,
+                        financial_at=state.get("lastFinancialUpdateAt"),
+                        extractions=extractions,
+                    )
+                    report["stateUpdated"] = True
+                    report["checkpointAdvanced"] = processing_complete
+                    report["lastSuccessfulSyncAt"] = generated_at
+                    report["filesRewritten"] = [STATE_FILENAME]
+            finally:
+                if staging.exists():
+                    shutil.rmtree(staging, ignore_errors=True)
+        else:
+            report["unchanged"] = True
+            if publish_to_dest:
+                _write_state(
+                    data_dir / STATE_FILENAME,
+                    state,
+                    processed,
+                    out_of_universe,
+                    [],
+                    recorded_current,
+                    generated_at,
+                    as_of,
+                    lookback_days,
+                    unreconciled=unreconciled,
+                    advance_sync=processing_complete,
+                    financial_at=state.get("lastFinancialUpdateAt"),
+                    extractions=extractions,
+                )
+                report["stateUpdated"] = True
+                report["checkpointAdvanced"] = processing_complete
+                report["lastSuccessfulSyncAt"] = (
+                    generated_at if processing_complete else state.get("lastSuccessfulSyncAt")
+                )
+                report["filesRewritten"] = [STATE_FILENAME]
+            elif is_live and not write_live:
+                report["heldBack"] = "write_live_required"
         log.info(
-            "daily-update: seen=%s new=%s 8k=%s out=%s unresolved=%s companies=0",
+            "daily-update: seen=%s new=%s 8k=%s extracted=%s out=%s unresolved=%s companies=0",
             len(filings),
             len(new_filings),
             len(recorded_current),
+            report["filingsExtracted8k"],
             len(out_of_universe),
             unreconciled,
         )
@@ -594,21 +699,31 @@ def run_daily_update(
             report["errors"] = [*report["errors"], "company_facts_lag"]
 
         layer3_updated: list[str] = []
-        if update_layer3 and raw_facts and (staging / "layer3.json").exists():
+        index_backup = None
+        if update_layer3 and (staging / "layer3.json").exists():
             index_backup = (staging / "layer3.json").read_bytes()
-            payload = write_layer3(
-                staging,
-                staging / "layer3.json",
-                companyfacts_by_cik=raw_facts,
-                ciks=list(raw_facts),
-                mode="incremental",
-                write_live=False,
-            )
-            for cik in payload.get("updated") or []:
-                rel = Path("layer3") / "cik" / f"{str(cik).zfill(10)}.json"
-                if not files_identical(staging / rel, data_dir / rel):
-                    layer3_updated.append(cik)
-            if not layer3_updated:
+            if raw_facts:
+                payload = write_layer3(
+                    staging,
+                    staging / "layer3.json",
+                    companyfacts_by_cik=raw_facts,
+                    ciks=list(raw_facts),
+                    mode="incremental",
+                    write_live=False,
+                )
+                for cik in payload.get("updated") or []:
+                    rel = Path("layer3") / "cik" / f"{str(cik).zfill(10)}.json"
+                    if not files_identical(staging / rel, data_dir / rel):
+                        layer3_updated.append(cik)
+            attach_rows = extraction_rows_by_cik(extractions)
+            if attach_rows:
+                overlay_ciks, superseded = apply_extractions_to_dataset(staging, attach_rows)
+                if superseded:
+                    extractions = mark_superseded(extractions, superseded)
+                for cik in overlay_ciks:
+                    if cik not in layer3_updated:
+                        layer3_updated.append(cik)
+            if not layer3_updated and index_backup is not None:
                 (staging / "layer3.json").write_bytes(index_backup)
 
         report["companiesUpdated"] = updated_tickers
@@ -633,6 +748,7 @@ def run_daily_update(
                     unreconciled=unreconciled,
                     advance_sync=processing_complete,
                     financial_at=state.get("lastFinancialUpdateAt"),
+                    extractions=extractions,
                 )
                 report["stateUpdated"] = True
                 report["checkpointAdvanced"] = processing_complete
@@ -703,6 +819,7 @@ def run_daily_update(
                 unreconciled=unreconciled,
                 advance_sync=processing_complete,
                 financial_at=generated_at,
+                extractions=extractions,
             )
             sync_stats = sync_changed_files(staging, data_dir)
             report["filesRewritten"] = sync_stats["copied"]
@@ -742,6 +859,7 @@ def _write_state(
     unreconciled: list[str],
     advance_sync: bool,
     financial_at: str | None,
+    extractions: dict | None = None,
 ) -> None:
     now = generated_at
     for row in out_of_universe:
@@ -777,5 +895,10 @@ def _write_state(
         "lookbackDays": lookback_days,
         "unreconciledDates": sorted(unreconciled),
         "processedAccessions": prune_processed(processed, as_of, config.DAILY_ACCESSION_KEEP_DAYS),
+        "earningsExtractions": prune_extractions(
+            extractions if extractions is not None else previous.get("earningsExtractions") or {},
+            as_of,
+            config.EIGHT_K_EXTRACTION_KEEP_DAYS,
+        ),
     }
     write_json_if_changed(path, payload)
