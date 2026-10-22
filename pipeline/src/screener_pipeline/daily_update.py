@@ -34,7 +34,7 @@ from .layer3_build import write_layer3
 from .output import SCHEMA_VERSION, screener_row, sort_screener_rows
 from .sec.client import SecClient, load_overrides
 from .sec.daily_index import DailyFiling, collect_period_filings, recent_business_days
-from .sec.facts import CURRENT_REPORT_FORMS, DOMESTIC_FORMS, INDEX_RECONCILE_FORMS
+from .sec.facts import CURRENT_REPORT_FORMS, DOMESTIC_FORMS, INDEX_RECONCILE_FORMS, SOURCE_TYPE_8K
 from .sec.latest_filings import fetch_latest_filings
 from .sec.store import FactsStore, PeriodicStore, SicStore, StatementStore
 from .universe.nasdaq_trader import Listing
@@ -347,6 +347,51 @@ def is_current_report(form: str) -> bool:
     return form in CURRENT_REPORT_FORMS
 
 
+def _fiscal_slot(year: object, quarter: object) -> tuple[int, int] | None:
+    if year in (None, "") or quarter in (None, ""):
+        return None
+    try:
+        return (int(year), int(quarter))
+    except (TypeError, ValueError):
+        return None
+
+
+def layer3_revenue_still_eight_k(
+    data_dir: Path,
+    cik: str,
+    fiscal_year: object = None,
+    fiscal_quarter: object = None,
+) -> bool:
+    """True when Layer 3 still cites an 8-K for a quarter that later 10-Q/10-K already replaced."""
+    path = Path(data_dir) / "layer3" / "cik" / f"{str(cik).zfill(10)}.json"
+    payload = read_json(path, default=None)
+    if not isinstance(payload, dict):
+        return False
+    want = _fiscal_slot(fiscal_year, fiscal_quarter)
+    for quarter in ((payload.get("metrics") or {}).get("revenue") or {}).get("quarters") or []:
+        got = _fiscal_slot(quarter.get("fiscalYear"), quarter.get("fiscalQuarter"))
+        if want is not None and got != want:
+            continue
+        form = str(quarter.get("form") or "")
+        if quarter.get("sourceType") == SOURCE_TYPE_8K or form.startswith("8-K"):
+            return True
+    return False
+
+
+def ciks_needing_layer3_resync(data_dir: Path, extractions: dict) -> set[str]:
+    """CIKs whose 8-K extract is superseded but Layer 3 revenue is still the 8-K quarter."""
+    out: set[str] = set()
+    for row in extractions.values():
+        if not isinstance(row, dict) or row.get("status") != "superseded":
+            continue
+        cik = str(row.get("cik") or "").zfill(10)
+        if cik in {"", "0000000000"}:
+            continue
+        if layer3_revenue_still_eight_k(data_dir, cik, row.get("fiscalYear"), row.get("fiscalQuarter")):
+            out.add(cik)
+    return out
+
+
 def run_daily_update(
     data_dir: Path | None = None,
     *,
@@ -522,6 +567,7 @@ def run_daily_update(
         row = extractions.get(job.accn)
         if isinstance(row, dict) and row.get("status") == "extracted":
             rebuild_ciks.add(job.cik)
+    rebuild_ciks.update(ciks_needing_layer3_resync(data_dir, extractions))
 
     if not rebuild_ciks:
         report["filingsRecorded8k"] = len(recorded_current)
