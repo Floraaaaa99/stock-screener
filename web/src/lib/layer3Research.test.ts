@@ -2,6 +2,9 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { formatDays, formatExactMoney, formatRatio, formatRatioPercent } from "./format";
 import {
+  capitalLineTitle,
+  cashReconciliationState,
+  chartableFlowPoints,
   chronologicalQuarters,
   displayAmount,
   displayKind,
@@ -11,6 +14,8 @@ import {
   hasConceptScopeMismatch,
   isEightKDerived,
   isFiniteNumber,
+  isNetDebtFinancingTag,
+  LAYER3_RESEARCH_SECTIONS,
   layer3ToSearch,
   pairQuarterGrowth,
   periodKey,
@@ -269,6 +274,85 @@ describe("representative issuer files", () => {
     expect(displayAmount(jpm.metrics?.inventory)).toBeNull();
     expect(jpm.metrics?.grossProfit?.status).toBe("missing");
     expect(displayAmount(jpm.metrics?.revenue)).toBe(199_408_000_000);
+  });
+});
+
+describe("capital allocation presentation", () => {
+  it("keeps gross issuance, gross repayment, and net financing as distinct labels", () => {
+    expect(LAYER3_RESEARCH_SECTIONS.map((s) => s.id)).toContain("capital-allocation");
+    expect(isNetDebtFinancingTag("ProceedsFromRepaymentsOfCommercialPaper")).toBe(true);
+    expect(isNetDebtFinancingTag("ProceedsFromIssuanceOfLongTermDebt")).toBe(false);
+    expect(capitalLineTitle("issuance", { concept: "ProceedsFromIssuanceOfLongTermDebt", financingBasis: "gross" })).toBe(
+      "Debt issuance (gross)",
+    );
+    expect(
+      capitalLineTitle("issuance", {
+        concept: "ProceedsFromRepaymentsOfLongTermDebt",
+        financingBasis: "net",
+      }),
+    ).toBe("Net debt financing");
+    expect(
+      capitalLineTitle("net", {
+        concept: "ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess",
+        financingBasis: "net",
+      }),
+    ).toBe("Net debt financing");
+    expect(capitalLineTitle("repayment", { concept: "RepaymentsOfLongTermDebt", financingBasis: "gross" })).toBe(
+      "Debt repayment (gross)",
+    );
+  });
+
+  it("does not treat missing FX or a missing CF change as a reconciliation failure", () => {
+    expect(
+      cashReconciliationState({
+        status: "missing",
+        reason: "fx_effect_not_disclosed",
+        ttm: null,
+        identity: null,
+        usedF3Cash: false,
+      }),
+    ).toBe("unavailable");
+    expect(
+      cashReconciliationState({
+        status: "missing",
+        reason: "missing_cf_cash_change",
+        ttm: null,
+        identity: null,
+        usedF3Cash: false,
+      }),
+    ).toBe("unavailable");
+    expect(
+      cashReconciliationState({
+        status: "extracted",
+        reason: "identity_mismatch",
+        ttm: 100,
+        identity: "mismatch",
+        usedF3Cash: false,
+      }),
+    ).toBe("mismatch");
+    expect(
+      cashReconciliationState({
+        status: "extracted",
+        reason: null,
+        ttm: 100,
+        identity: "holds",
+        usedF3Cash: true,
+      }),
+    ).toBe("unavailable");
+    expect(displayAmount({ status: "missing", reason: "no_concept", ttm: null, verification: "not_checked" })).toBeNull();
+    expect(
+      chartableFlowPoints(
+        {
+          status: "missing",
+          reason: "ttm_window_not_aligned",
+          ttm: null,
+          verification: "not_checked",
+          concept: "ProceedsFromIssuanceOfLongTermDebt",
+          quarters: [{ fiscalYear: 2021, fiscalQuarter: 1, start: null, end: "2021-03-31", value: 12, method: "reported", formula: null }],
+        },
+        "quarter",
+      ),
+    ).toEqual([]);
   });
 });
 

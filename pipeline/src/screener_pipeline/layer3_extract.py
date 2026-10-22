@@ -12,36 +12,54 @@ from datetime import date
 
 from .concepts import ConceptSeries, select_concept
 from .layer3_concepts import (
+    ACQUISITION_CF_CONCEPTS,
     AMORTIZATION_ADDON_CONCEPTS,
     AP_CONCEPTS,
     AR_CONCEPTS,
+    ASSET_SALE_CONCEPTS,
     CAPEX_CONCEPTS,
     CAPEX_MAY_BE_NET,
     CASH_CONCEPTS,
+    CF_CASH_CHANGE_EXCLUDING_FX_CONCEPTS,
+    CF_CASH_CHANGE_INCLUDING_FX_CONCEPTS,
     COST_OF_REVENUE_CONCEPTS,
     CURRENT_ASSET_CONCEPTS,
     CURRENT_LIABILITY_CONCEPTS,
     DA_CONCEPTS,
+    DEBT_FINANCING_NET_CONCEPTS,
+    DEBT_ISSUANCE_COSTS_NOTE,
+    DEBT_ISSUANCE_GROSS_CONCEPTS,
+    DEBT_ISSUANCE_NET_OF_COSTS,
+    DEBT_REPAYMENT_GROSS_CONCEPTS,
     DEPRECIATION_ONLY_CONCEPTS,
+    DIVIDEND_PAID_CONCEPTS,
+    EQUITY_ISSUANCE_CONCEPTS,
+    FINANCING_CF_CONCEPTS,
     FLOW_ALIGN_DAYS,
     FLOW_CONCEPTS,
+    FX_ON_CASH_CONCEPTS,
     GROSS_PROFIT_CONCEPTS,
     HISTORY_SLOTS,
     INTEREST_CONCEPTS,
     INVENTORY_CONCEPTS,
     INVENTORY_NARROW_SCOPE,
+    INVESTING_CF_CONCEPTS,
     LAYER3_EXTRACTION_VERSION,
     LAYER3_SCHEMA_VERSION,
     LT_DEBT_CONCEPTS,
     LT_DEBT_INCLUDES_LEASES,
+    NET_DEBT_FINANCING_NOTE,
     OCF_CONCEPTS,
     OPERATING_INCOME_CONCEPTS,
+    SHARE_REPURCHASE_CONCEPTS,
     ST_DEBT_PART_CONCEPTS,
     ST_DEBT_TOTAL_CONCEPTS,
     STOCK_ALIGN_DAYS,
     STOCK_CONCEPTS,
     TOTAL_DEBT_FALLBACK_CONCEPTS,
     TOTAL_DEBT_INCLUDES_LEASES,
+    cash_change_includes_fx,
+    cf_cash_family,
     gaap_concepts_present,
     is_financial_sic,
     normalize_cik,
@@ -52,6 +70,7 @@ from .layer3_derived import (
     average_balance,
     cash_conversion_cycle,
     cash_conversion_metric,
+    cash_flow_identity,
     current_ratio_metric,
     days_outstanding,
     flag_extreme_ratio,
@@ -317,9 +336,11 @@ def _flow_metric(
     candidates: list[str],
     *,
     capex: bool = False,
+    magnitude: bool = False,
     cik: str = "",
     as_of: date | None = None,
     require_align: bool = False,
+    financing_basis: str | None = None,
 ) -> dict:
     concept = _pick_flow_concept(rf, candidates, as_of if require_align else None)
     if concept is None:
@@ -336,20 +357,24 @@ def _flow_metric(
     slots = _slots_for_concept(rf, concept)
     newest = _newest_quarter_end(slots)
     if require_align and as_of is not None and not _aligned(newest, as_of, FLOW_ALIGN_DAYS):
-        return apply_ttm_yoy({
-            "status": "missing",
-            "reason": "ttm_window_not_aligned",
-            "concept": concept,
-            "ttm": None,
-            "previousTtm": None,
-            "quarters": _quarter_payloads(slots, cik=cik),
-            "calculationMethod": "extracted",
-            "verification": "not_checked",
-            "verificationNote": COMPANY_FACTS_ONLY_NOTE,
-            "newestEnd": newest.isoformat() if newest else None,
-            "alignedTo": as_of.isoformat(),
-        })
-    if capex:
+        return _annotate_cash_flow(
+            apply_ttm_yoy({
+                "status": "missing",
+                "reason": "ttm_window_not_aligned",
+                "concept": concept,
+                "ttm": None,
+                "previousTtm": None,
+                "quarters": _quarter_payloads(slots, cik=cik),
+                "calculationMethod": "extracted",
+                "verification": "not_checked",
+                "verificationNote": COMPANY_FACTS_ONLY_NOTE,
+                "newestEnd": newest.isoformat() if newest else None,
+                "alignedTo": as_of.isoformat(),
+            }),
+            concept=concept,
+            financing_basis=financing_basis,
+        )
+    if capex or magnitude:
         mag_slots: list[Slot] = []
         for s in slots:
             if isinstance(s, Quarter):
@@ -386,26 +411,41 @@ def _flow_metric(
             "verification": "company_facts_only",
             "verificationNote": COMPANY_FACTS_ONLY_NOTE,
         })
-        if concept in CAPEX_MAY_BE_NET:
+        if capex and concept in CAPEX_MAY_BE_NET:
             payload["scopeNote"] = (
                 "Last-resort tag; US-GAAP name is net of asset-sale proceeds. "
                 "Used only when no gross PPE CapEx tag is aligned."
             )
-        return payload
+        return _annotate_cash_flow(payload, concept=concept, financing_basis=financing_basis)
     ttm = compute_flow_ttm(slots)
     quarters = _quarter_payloads(slots, cik=cik)
-    return apply_ttm_yoy({
-        "status": "extracted" if ttm.current is not None else "missing",
-        "reason": ttm.reason,
-        "concept": concept,
-        "unit": rf.currency,
-        "ttm": ttm.current,
-        "previousTtm": ttm.previous,
-        "quarters": quarters,
-        "calculationMethod": "extracted",
-        "verification": "company_facts_only",
-        "verificationNote": COMPANY_FACTS_ONLY_NOTE,
-    })
+    return _annotate_cash_flow(
+        apply_ttm_yoy({
+            "status": "extracted" if ttm.current is not None else "missing",
+            "reason": ttm.reason,
+            "concept": concept,
+            "unit": rf.currency,
+            "ttm": ttm.current,
+            "previousTtm": ttm.previous,
+            "quarters": quarters,
+            "calculationMethod": "extracted",
+            "verification": "company_facts_only",
+            "verificationNote": COMPANY_FACTS_ONLY_NOTE,
+        }),
+        concept=concept,
+        financing_basis=financing_basis,
+    )
+
+
+def _annotate_cash_flow(payload: dict, *, concept: str | None, financing_basis: str | None) -> dict:
+    """Gross vs net debt labels. A net tag is never retitled as issuance or repayment."""
+    if financing_basis:
+        payload["financingBasis"] = financing_basis
+    if financing_basis == "net":
+        payload["scopeNote"] = NET_DEBT_FINANCING_NOTE
+    elif financing_basis == "gross" and concept in DEBT_ISSUANCE_NET_OF_COSTS:
+        payload["scopeNote"] = DEBT_ISSUANCE_COSTS_NOTE
+    return payload
 
 
 def _latest_instant(facts: list[InstantFact], as_of: date | None) -> InstantFact | None:
@@ -958,6 +998,38 @@ def analyze_layer3_facts(
         ebitda["verification"] = "derived"
 
     stocks = _stock_metrics(instants, as_of, cik, flows.currency)
+    flow_kw = {"cik": cik, "as_of": as_of, "require_align": align}
+    investing_cf = _flow_metric(flows, INVESTING_CF_CONCEPTS, **flow_kw)
+    financing_cf = _flow_metric(flows, FINANCING_CF_CONCEPTS, **flow_kw)
+    debt_issuance = _flow_metric(
+        flows, DEBT_ISSUANCE_GROSS_CONCEPTS, financing_basis="gross", **flow_kw
+    )
+    debt_repayment = _flow_metric(
+        flows, DEBT_REPAYMENT_GROSS_CONCEPTS, magnitude=True, financing_basis="gross", **flow_kw
+    )
+    net_debt_financing = _flow_metric(
+        flows, DEBT_FINANCING_NET_CONCEPTS, financing_basis="net", **flow_kw
+    )
+    equity_issuance = _flow_metric(flows, EQUITY_ISSUANCE_CONCEPTS, **flow_kw)
+    asset_sales = _flow_metric(flows, ASSET_SALE_CONCEPTS, **flow_kw)
+    share_repurchases = _flow_metric(flows, SHARE_REPURCHASE_CONCEPTS, magnitude=True, **flow_kw)
+    dividends_paid = _flow_metric(flows, DIVIDEND_PAID_CONCEPTS, magnitude=True, **flow_kw)
+    acquisitions = _flow_metric(flows, ACQUISITION_CF_CONCEPTS, magnitude=True, **flow_kw)
+    fx_on_cash = _flow_metric(flows, FX_ON_CASH_CONCEPTS, **flow_kw)
+    cash_change_excl = _flow_metric(flows, CF_CASH_CHANGE_EXCLUDING_FX_CONCEPTS, **flow_kw)
+    cash_change_incl = _flow_metric(flows, CF_CASH_CHANGE_INCLUDING_FX_CONCEPTS, **flow_kw)
+    cash_change = cash_change_excl if cash_change_excl.get("ttm") is not None else cash_change_incl
+    cash_cf_identity = cash_flow_identity(
+        ocf=ocf,
+        investing=investing_cf,
+        financing=financing_cf,
+        fx=fx_on_cash,
+        cash_change=cash_change,
+        includes_fx=cash_change_includes_fx(cash_change.get("concept")),
+        cash_family=cf_cash_family(cash_change.get("concept")),
+        f3_cash_concept=stocks["cash"].get("concept"),
+        align_days=FLOW_ALIGN_DAYS,
+    )
     spine = _fiscal_spine(ocf) or _fiscal_spine(revenue)
     debt_hist = _debt_history(instants, spine, cik, flows.currency) if spine else {}
     for key, rows in debt_hist.items():
@@ -1030,6 +1102,19 @@ def analyze_layer3_facts(
         "operatingIncome": opinc,
         "ocf": ocf,
         "capex": capex,
+        "investingCf": investing_cf,
+        "financingCf": financing_cf,
+        "debtIssuance": debt_issuance,
+        "debtRepayment": debt_repayment,
+        "netDebtFinancing": net_debt_financing,
+        "equityIssuance": equity_issuance,
+        "assetSales": asset_sales,
+        "shareRepurchases": share_repurchases,
+        "dividendsPaid": dividends_paid,
+        "acquisitions": acquisitions,
+        "fxOnCash": fx_on_cash,
+        "cashChangeCf": cash_change,
+        "cashCfIdentity": cash_cf_identity,
         "interestExpense": interest,
         "depreciationAmortization": da,
         "fcf": fcf,

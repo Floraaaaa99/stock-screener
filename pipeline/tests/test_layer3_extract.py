@@ -2,7 +2,7 @@ from datetime import date
 
 from helpers import companyfacts, raw
 
-from screener_pipeline.layer3_concepts import is_financial_sic
+from screener_pipeline.layer3_concepts import LAYER3_EXTRACTION_VERSION, is_financial_sic
 from screener_pipeline.layer3_extract import analyze_layer3_facts, compute_flow_ttm
 from screener_pipeline.quarters import MissingQuarter, Quarter
 from screener_pipeline.sec.facts import parse_instant_fact
@@ -456,7 +456,7 @@ def test_gross_profit_and_cogs_keep_revenue_identity():
     assert gp["verification"] != "statement_verified"
     assert analysis.metrics["grossMargin"]["ttm"] == 184 / 460
     assert analysis.schema_version == 3
-    assert analysis.extraction_version == 4
+    assert analysis.extraction_version == LAYER3_EXTRACTION_VERSION
     assert analysis.data_as_of == "2025-12-31"
 
 

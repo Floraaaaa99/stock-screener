@@ -55,6 +55,48 @@ export function ProvenancePanel({
           <dd className="concept">{fields.concept}</dd>
         </div>
       )}
+      {fields.financingBasis && (
+        <div>
+          <dt>Financing basis</dt>
+          <dd>{fields.financingBasis === "net" ? "Net financing — not gross issuance or repayment" : "Gross"}</dd>
+        </div>
+      )}
+      {fields.scopeNote && (
+        <div>
+          <dt>Scope note</dt>
+          <dd>{fields.scopeNote}</dd>
+        </div>
+      )}
+      {fields.cashFamily && (
+        <div>
+          <dt>Cash definition</dt>
+          <dd>{fields.cashFamily.replace(/_/g, " ")}</dd>
+        </div>
+      )}
+      {fields.usedF3Cash != null && (
+        <div>
+          <dt>Used F3 cash</dt>
+          <dd>{fields.usedF3Cash ? "Yes" : "No — F3 cash is not the cash-flow change line"}</dd>
+        </div>
+      )}
+      {fields.fxIncluded != null && (
+        <div>
+          <dt>FX included</dt>
+          <dd>{fields.fxIncluded ? "Yes" : "No"}</dd>
+        </div>
+      )}
+      {fields.f3CashConcept && (
+        <div>
+          <dt>F3 cash concept (not used)</dt>
+          <dd className="concept">{fields.f3CashConcept}</dd>
+        </div>
+      )}
+      {fields.reportedChangeTtm != null && (
+        <div>
+          <dt>Reported CF cash change TTM</dt>
+          <dd>{fields.reportedChangeTtm}</dd>
+        </div>
+      )}
       {fields.calculationMethod && (
         <div>
           <dt>Calculation</dt>

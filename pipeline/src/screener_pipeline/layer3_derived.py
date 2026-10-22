@@ -574,3 +574,150 @@ def identity_holds(gross: float | None, cogs: float | None, revenue: float | Non
     if gross is None or cogs is None or revenue is None:
         return False
     return values_agree(gross + cogs, revenue)
+
+
+CASH_CF_IDENTITY_NOTE = (
+    "OCF + investing CF + financing CF is compared to the cash-flow statement change in cash. "
+    "F3 Cash (CashAndCashEquivalentsAtCarryingValue) is not used: it may exclude restricted cash "
+    "and is a balance-sheet stock, not the CF change line."
+)
+
+
+def _newest_valued_end(metric: dict | None) -> date | None:
+    if not isinstance(metric, dict):
+        return None
+    for q in metric.get("quarters") or []:
+        if q.get("value") is not None and q.get("end"):
+            try:
+                return date.fromisoformat(str(q["end"]))
+            except ValueError:
+                return None
+    return None
+
+
+def cash_flow_identity(
+    *,
+    ocf: dict,
+    investing: dict,
+    financing: dict,
+    fx: dict,
+    cash_change: dict,
+    includes_fx: bool | None,
+    cash_family: str | None,
+    f3_cash_concept: str | None,
+    align_days: int,
+) -> dict:
+    """Reconcile CF section totals to the CF-statement cash change.
+
+    Unavailable (not identity_mismatch) when FX is required but missing, when the
+    cash-change tag is absent, or when F3 cash would be the only reconciling stock.
+    """
+    base = {
+        "status": "missing",
+        "reason": None,
+        "ttm": None,
+        "previousTtm": None,
+        "reportedChangeTtm": None,
+        "difference": None,
+        "identity": None,
+        "formula": "OCF + Investing CF + Financing CF",
+        "calculationMethod": "derived",
+        "verification": "not_checked",
+        "verificationNote": CASH_CF_IDENTITY_NOTE,
+        "usedF3Cash": False,
+        "f3CashConcept": f3_cash_concept,
+        "cashFamily": cash_family,
+        "concept": cash_change.get("concept") if isinstance(cash_change, dict) else None,
+        "cashChangeConcept": cash_change.get("concept") if isinstance(cash_change, dict) else None,
+        "fxIncluded": False,
+        "quarters": [],
+    }
+    if cash_change.get("ttm") is None or not cash_change.get("concept"):
+        base["reason"] = "missing_cf_cash_change"
+        return apply_ttm_yoy(base)
+    if cash_family is None or includes_fx is None:
+        base["reason"] = "cash_definition_not_comparable"
+        return apply_ttm_yoy(base)
+    if ocf.get("ttm") is None:
+        base["reason"] = "missing_ocf"
+        return apply_ttm_yoy(base)
+    if investing.get("ttm") is None:
+        base["reason"] = "missing_investing_cf"
+        return apply_ttm_yoy(base)
+    if financing.get("ttm") is None:
+        base["reason"] = "missing_financing_cf"
+        return apply_ttm_yoy(base)
+
+    ends = [
+        _newest_valued_end(ocf),
+        _newest_valued_end(investing),
+        _newest_valued_end(financing),
+        _newest_valued_end(cash_change),
+    ]
+    if any(e is None for e in ends):
+        base["reason"] = "ttm_window_not_aligned"
+        return apply_ttm_yoy(base)
+    anchor = ends[0]
+    if any(abs((e - anchor).days) > align_days for e in ends):
+        base["reason"] = "ttm_window_not_aligned"
+        return apply_ttm_yoy(base)
+
+    reconstructed = float(ocf["ttm"]) + float(investing["ttm"]) + float(financing["ttm"])
+    formula = "OCF + Investing CF + Financing CF"
+    fx_used = False
+    if includes_fx:
+        if fx.get("ttm") is None:
+            base["reason"] = "fx_effect_not_disclosed"
+            return apply_ttm_yoy(base)
+        fx_end = _newest_valued_end(fx)
+        if fx_end is None or abs((fx_end - anchor).days) > align_days:
+            base["reason"] = "fx_effect_not_disclosed"
+            return apply_ttm_yoy(base)
+        reconstructed += float(fx["ttm"])
+        formula = "OCF + Investing CF + Financing CF + FX on cash"
+        fx_used = True
+
+    reported = float(cash_change["ttm"])
+    holds = values_agree(reconstructed, reported)
+    previous = None
+    if (
+        ocf.get("previousTtm") is not None
+        and investing.get("previousTtm") is not None
+        and financing.get("previousTtm") is not None
+        and cash_change.get("previousTtm") is not None
+        and (not fx_used or fx.get("previousTtm") is not None)
+    ):
+        previous = float(ocf["previousTtm"]) + float(investing["previousTtm"]) + float(financing["previousTtm"])
+        if fx_used:
+            previous += float(fx["previousTtm"])
+
+    out = apply_ttm_yoy({
+        **base,
+        "status": "extracted",
+        "reason": None if holds else "identity_mismatch",
+        "ttm": reconstructed,
+        "previousTtm": previous,
+        "reportedChangeTtm": reported,
+        "difference": reconstructed - reported,
+        "identity": "holds" if holds else "mismatch",
+        "formula": formula,
+        "verification": "derived" if holds else "not_checked",
+        "fxIncluded": fx_used,
+        "inputs": {
+            "ocf": ocf.get("ttm"),
+            "investingCf": investing.get("ttm"),
+            "financingCf": financing.get("ttm"),
+            "fxOnCash": fx.get("ttm") if fx_used else None,
+            "reportedChange": reported,
+        },
+    })
+    if not holds:
+        flags = list(out.get("qualityFlags") or [])
+        if "cash_flow_identity_mismatch" not in flags:
+            flags.append("cash_flow_identity_mismatch")
+        out["qualityFlags"] = flags
+        out["qualityNote"] = (
+            "Comparable CF-statement totals and cash-change line disagree. "
+            "Values are preserved; F3 cash was not substituted."
+        )
+    return out
