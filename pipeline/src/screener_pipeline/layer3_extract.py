@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 
+from .concepts import ConceptSeries, select_concept
 from .layer3_concepts import (
     AMORTIZATION_ADDON_CONCEPTS,
     AP_CONCEPTS,
@@ -45,7 +46,6 @@ from .layer3_concepts import (
     is_financial_sic,
     normalize_cik,
 )
-from .concepts import ConceptSeries, select_concept
 from .layer3_derived import (
     add_flows,
     apply_ttm_yoy,

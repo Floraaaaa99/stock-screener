@@ -645,8 +645,10 @@ def test_write_layer3_uses_layer1_revenue_concept_on_conflict(tmp_path: Path):
             {
                 "Revenues": _ytd_year(2025, 150 * m, 165 * m, 180 * m, 195 * m, prefix="A")
                 + _ytd_year(2024, 120 * m, 128 * m, 135 * m, 143 * m, prefix="B"),
-                "RevenueFromContractWithCustomerExcludingAssessedTax": _ytd_year(2025, 100 * m, 110 * m, 120 * m, 130 * m, prefix="C")
-                + _ytd_year(2024, 80 * m, 85 * m, 90 * m, 95 * m, prefix="D"),
+                "RevenueFromContractWithCustomerExcludingAssessedTax": (
+                    _ytd_year(2025, 100 * m, 110 * m, 120 * m, 130 * m, prefix="C")
+                    + _ytd_year(2024, 80 * m, 85 * m, 90 * m, 95 * m, prefix="D")
+                ),
                 "NetCashProvidedByUsedInOperatingActivities": (
                     _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 8, 8, 8, 8, prefix="P")
                 ),
