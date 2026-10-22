@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 
-from .sec.facts import ANNUAL_FORMS, Fact, FilingInfo
+from .sec.facts import ANNUAL_FORMS, DOMESTIC_FORMS, Fact, FilingInfo
 
 QUARTER_DAYS = (80, 100)
 CHAIN_TOLERANCE_DAYS = 7
@@ -137,22 +137,27 @@ def same_up_to_rounding(precise: float, precise_prec: int, coarse: float, coarse
 
 def dedupe_periods(facts: list[Fact]) -> dict[tuple[date, date], Period]:
     """One value per (start, end). The latest filing wins (restatements), except when the later value
-    is only the earlier one rounded to coarser units, in which case the more precise value is kept."""
+    is only the earlier one rounded to coarser units, in which case the more precise value is kept.
+
+    Verified 10-Q/10-K facts always supersede 8-K earnings figures for the same period.
+    """
     prec = filing_precision(facts)
     groups: dict[tuple[date, date], list[Fact]] = {}
     for f in facts:
         groups.setdefault((f.start, f.end), []).append(f)
     out: dict[tuple[date, date], Period] = {}
     for key, fs in groups.items():
-        fs.sort(key=lambda f: (f.filed, f.accn))
-        final = fs[-1]
+        verified = [f for f in fs if f.form in DOMESTIC_FORMS]
+        pool = verified or fs
+        pool.sort(key=lambda f: (f.filed, f.accn))
+        final = pool[-1]
         final_val, final_prec = final.val, prec.get(final.accn, 0)
-        for f in reversed(fs[:-1]):
+        for f in reversed(pool[:-1]):
             f_prec = prec.get(f.accn, 0)
             if same_up_to_rounding(f.val, f_prec, final_val, final_prec):
                 final_val, final_prec = f.val, f_prec
-        cited = next(f for f in fs if abs(f.val - final_val) < 0.5)
-        original = fs[0]
+        cited = next(f for f in pool if abs(f.val - final_val) < 0.5)
+        original = pool[0]
         restated = abs(original.val - final_val) >= 0.5 and not same_up_to_rounding(
             original.val, prec.get(original.accn, 0), final_val, final_prec
         )
@@ -188,8 +193,9 @@ def derive_quarters(periods: dict[tuple[date, date], Period], concept: str) -> d
 
     for p in periods.values():
         if is_quarter_length(p.days):
-            q = Quarter(p.start, p.end, p.val, "reported", "3M reported", [_source(p, "quarter")], concept,
-                        restated=p.restated)
+            q = Quarter(
+                p.start, p.end, p.val, "reported", "3M reported", [_source(p, "quarter")], concept, restated=p.restated
+            )
             existing = quarters.get(p.end)
             if existing is None or p.days > existing.days:
                 quarters[p.end] = q
@@ -354,8 +360,9 @@ def _adjacent(older: Quarter | MissingQuarter, newer: Quarter | MissingQuarter) 
     return abs((newer.start - older.end).days - 1) <= CHAIN_TOLERANCE_DAYS
 
 
-def build_timeline(quarters: dict[date, Quarter], anchor_end: date | None = None,
-                   max_slots: int = MAX_SLOTS) -> list[Slot]:
+def build_timeline(
+    quarters: dict[date, Quarter], anchor_end: date | None = None, max_slots: int = MAX_SLOTS
+) -> list[Slot]:
     """Latest `max_slots` consecutive quarter slots, newest first; gaps become MissingQuarter slots.
 
     Trailing missing slots (before the company's first available quarter) are not emitted.

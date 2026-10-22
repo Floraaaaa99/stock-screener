@@ -71,6 +71,7 @@ from .sec.facts import (
     extract_instant_facts,
     extract_named_duration_facts,
     filing_url,
+    source_type_for_form,
 )
 from .ttm import TTMResult
 
@@ -183,6 +184,7 @@ def _quarter_payloads(slots: list[Slot], *, magnitude: bool = False, cik: str = 
                 "accn": accn,
                 "form": s.sources[0].form if s.sources else None,
                 "filed": s.sources[0].filed.isoformat() if s.sources else None,
+                "sourceType": source_type_for_form(s.sources[0].form) if s.sources else None,
                 "url": url,
                 "sources": [
                     {
@@ -332,6 +334,7 @@ def _stock_from_concept(
         "accn": latest.accn,
         "form": latest.form,
         "filed": latest.filed.isoformat(),
+        "sourceType": source_type_for_form(latest.form),
         "url": filing_url(cik, latest.accn),
         "unit": currency,
         "aggregation": "latest_quarter_end",
@@ -535,6 +538,7 @@ def _history_row(slot: dict, found: dict) -> dict:
         "accn": found.get("accn"),
         "form": found.get("form"),
         "filed": found.get("filed"),
+        "sourceType": found.get("sourceType") or source_type_for_form(found.get("form")),
         "url": found.get("url"),
         "calculationMethod": found.get("calculationMethod"),
         "verification": found.get("verification"),

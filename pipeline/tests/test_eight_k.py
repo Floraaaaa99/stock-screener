@@ -17,7 +17,7 @@ from fixtures.eight_k import (
 )
 
 from screener_pipeline.eight_k_extract import extract_earnings_release
-from screener_pipeline.eight_k_update import process_earnings_filing
+from screener_pipeline.eight_k_update import collect_earnings_jobs, process_earnings_filing
 from screener_pipeline.sec.daily_index import DailyFiling
 from screener_pipeline.sec.eight_k import (
     discover_earnings_exhibit,
@@ -117,3 +117,45 @@ def test_meta_q3_2026_accession_extracts_when_exhibit_present():
         filing_url="https://example.test/index.htm",
     )
     assert extracted.status == "extracted"
+
+
+def test_collect_earnings_jobs_does_not_scan_unrelated_recorded_8ks():
+    processed = {
+        META_ACCN: {
+            "cik": META_CIK,
+            "form": "8-K",
+            "filed": "2026-10-21",
+            "status": "recorded_8k",
+        },
+        "0000000001-26-000111": {
+            "cik": "0000000001",
+            "form": "8-K",
+            "filed": "2026-10-10",
+            "status": "recorded_8k",
+        },
+    }
+    by_cik = {META_CIK: ["META"], "0000000001": ["AAA"]}
+    jobs = collect_earnings_jobs(
+        [],
+        processed,
+        {},
+        as_of=date(2026, 10, 22),
+        by_cik=by_cik,
+    )
+    assert [job.accn for job in jobs] == [META_ACCN]
+    jobs = collect_earnings_jobs(
+        [],
+        processed,
+        {
+            "0000000001-26-000111": {
+                "cik": "0000000001",
+                "form": "8-K",
+                "filed": "2026-10-10",
+                "status": "failed",
+                "attempts": 1,
+            }
+        },
+        as_of=date(2026, 10, 22),
+        by_cik=by_cik,
+    )
+    assert {job.accn for job in jobs} == {META_ACCN, "0000000001-26-000111"}

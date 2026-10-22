@@ -19,6 +19,7 @@ import requests
 from . import config
 from .build import DatasetError, make_meta, rebuild_company
 from .cache import read_json, write_json_if_changed
+from .eight_k_facts import merge_extractions_into_companyfacts
 from .eight_k_layer3 import apply_extractions_to_dataset
 from .eight_k_update import (
     collect_earnings_jobs,
@@ -477,7 +478,6 @@ def run_daily_update(
         "filingsNew": len(new_filings),
         "filingsRecorded8k": 0,
         "filingsExtracted8k": 0,
-        "eightKBackfill": 0,
         "outOfUniverse": len(out_of_universe),
         "companiesUpdated": [],
         "companiesSkipped": [],
@@ -515,99 +515,39 @@ def run_daily_update(
             if row.get("status") == "extracted" and not row.get("extractedAt"):
                 row["extractedAt"] = generated_at
         report["filingsExtracted8k"] = sum(1 for r in extractions.values() if r.get("status") == "extracted")
-        report["eightKBackfill"] = sum(1 for f in extract_jobs if f.source == "backfill")
 
-    if not in_universe:
+    attach_rows = extraction_rows_by_cik(extractions)
+    rebuild_ciks = set(in_universe)
+    for job in extract_jobs:
+        row = extractions.get(job.accn)
+        if isinstance(row, dict) and row.get("status") == "extracted":
+            rebuild_ciks.add(job.cik)
+
+    if not rebuild_ciks:
         report["filingsRecorded8k"] = len(recorded_current)
-        overlay_ciks: list[str] = []
-        attach_rows = extraction_rows_by_cik(extractions)
-        needs_overlay = bool(attach_rows) and update_layer3 and any(
-            extractions.get(f.accn, {}).get("status") == "extracted" for f in extract_jobs
-        )
-        if needs_overlay and publish_to_dest:
-            staging = data_dir.with_name(data_dir.name + ".daily-staging")
-            try:
-                copy_dataset(data_dir, staging)
-                overlay_ciks, superseded = apply_extractions_to_dataset(staging, attach_rows)
-                if superseded:
-                    extractions = mark_superseded(extractions, superseded)
-                if overlay_ciks:
-                    bump_generated_at(staging / "layer3.json", generated_at)
-                    report["layer3Updated"] = overlay_ciks
-                    report["unchanged"] = False
-                    report["generatedAt"] = generated_at
-                    _write_state(
-                        staging / STATE_FILENAME,
-                        state,
-                        processed,
-                        out_of_universe,
-                        [],
-                        recorded_current,
-                        generated_at,
-                        as_of,
-                        lookback_days,
-                        unreconciled=unreconciled,
-                        advance_sync=processing_complete,
-                        financial_at=generated_at,
-                        extractions=extractions,
-                    )
-                    sync_stats = sync_changed_files(staging, data_dir)
-                    report["filesRewritten"] = sync_stats["copied"]
-                    report["published"] = True
-                    report["stateUpdated"] = True
-                    report["checkpointAdvanced"] = processing_complete
-                    report["lastSuccessfulSyncAt"] = generated_at
-                    report["lastFinancialUpdateAt"] = generated_at
-                else:
-                    report["unchanged"] = True
-                    _write_state(
-                        data_dir / STATE_FILENAME,
-                        state,
-                        processed,
-                        out_of_universe,
-                        [],
-                        recorded_current,
-                        generated_at,
-                        as_of,
-                        lookback_days,
-                        unreconciled=unreconciled,
-                        advance_sync=processing_complete,
-                        financial_at=state.get("lastFinancialUpdateAt"),
-                        extractions=extractions,
-                    )
-                    report["stateUpdated"] = True
-                    report["checkpointAdvanced"] = processing_complete
-                    report["lastSuccessfulSyncAt"] = generated_at
-                    report["filesRewritten"] = [STATE_FILENAME]
-            finally:
-                if staging.exists():
-                    shutil.rmtree(staging, ignore_errors=True)
-        else:
-            report["unchanged"] = True
-            if publish_to_dest:
-                _write_state(
-                    data_dir / STATE_FILENAME,
-                    state,
-                    processed,
-                    out_of_universe,
-                    [],
-                    recorded_current,
-                    generated_at,
-                    as_of,
-                    lookback_days,
-                    unreconciled=unreconciled,
-                    advance_sync=processing_complete,
-                    financial_at=state.get("lastFinancialUpdateAt"),
-                    extractions=extractions,
-                )
-                report["stateUpdated"] = True
-                report["checkpointAdvanced"] = processing_complete
-                report["lastSuccessfulSyncAt"] = (
-                    generated_at if processing_complete else state.get("lastSuccessfulSyncAt")
-                )
-                report["filesRewritten"] = [STATE_FILENAME]
-            elif is_live and not write_live:
-                report["heldBack"] = "write_live_required"
+        report["unchanged"] = True
+        if publish_to_dest:
+            _write_state(
+                data_dir / STATE_FILENAME,
+                state,
+                processed,
+                out_of_universe,
+                [],
+                recorded_current,
+                generated_at,
+                as_of,
+                lookback_days,
+                unreconciled=unreconciled,
+                advance_sync=processing_complete,
+                financial_at=state.get("lastFinancialUpdateAt"),
+                extractions=extractions,
+            )
+            report["stateUpdated"] = True
+            report["checkpointAdvanced"] = processing_complete
+            report["lastSuccessfulSyncAt"] = generated_at if processing_complete else state.get("lastSuccessfulSyncAt")
+            report["filesRewritten"] = [STATE_FILENAME]
+        elif is_live and not write_live:
+            report["heldBack"] = "write_live_required"
         log.info(
             "daily-update: seen=%s new=%s 8k=%s extracted=%s out=%s unresolved=%s companies=0",
             len(filings),
@@ -629,7 +569,8 @@ def run_daily_update(
         rebuilt_accessions: list[DailyFiling] = []
         facts_lag = False
 
-        for cik, rows in sorted(in_universe.items()):
+        for cik in sorted(rebuild_ciks):
+            rows = in_universe.get(cik, [])
             accns = [r.accn for r in rows]
             try:
                 raw = _fetch_companyfacts(sec, cik, companyfacts_by_cik, accns=accns)
@@ -639,14 +580,16 @@ def run_daily_update(
                 ) from exc
             if raw is None:
                 log.warning("No Company Facts for %s; skipping this CIK and retrying in the lookback window", cik)
-                skipped_ciks.append(cik)
-                skipped_filings.extend(r.to_dict() | {"reason": "company_facts_unavailable"} for r in rows)
+                if rows:
+                    skipped_ciks.append(cik)
+                    skipped_filings.extend(r.to_dict() | {"reason": "company_facts_unavailable"} for r in rows)
                 continue
             covered = accessions_in_companyfacts(raw)
-            sec.facts_store.put_raw(raw)
-            raw_facts[cik] = raw
+            merged = merge_extractions_into_companyfacts(raw, attach_rows.get(cik) or [])
+            sec.facts_store.put_raw(merged)
+            raw_facts[cik] = merged
             changed_here = False
-            for ticker in by_cik[cik]:
+            for ticker in by_cik.get(cik, []):
                 previous = companies_live.get(ticker) or read_json(staging / "companies" / f"{ticker}.json")
                 if not previous:
                     log.warning("Ticker %s mapped to %s but has no company JSON; skipping", ticker, cik)
@@ -684,19 +627,77 @@ def run_daily_update(
                 skipped_filings.append(row.to_dict() | {"reason": "company_facts_lag"})
                 log.warning("Company Facts for %s do not yet include %s; will retry", cik, row.accn)
             rebuilt_accessions.extend(applied_here)
-            if not applied_here:
+            if rows and not applied_here:
                 skipped_ciks.append(cik)
 
+        eight_k_ciks = {
+            cik
+            for cik, rows in attach_rows.items()
+            if cik in raw_facts and any(r.get("status") == "extracted" for r in rows)
+        }
+        keep_from_eight_k = [
+            ticker
+            for ticker in updated_tickers
+            if str((companies_live.get(ticker) or {}).get("cik") or "").zfill(10) in eight_k_ciks
+        ]
         if skipped_ciks and not rebuilt_accessions:
-            raise DailyUpdateError(
-                "Every affected CIK was missing Company Facts or still lagging; live dataset unchanged"
-            )
+            if not keep_from_eight_k:
+                if not recorded_current and not extract_jobs:
+                    raise DailyUpdateError(
+                        "Every affected CIK was missing Company Facts or still lagging; live dataset unchanged"
+                    )
+                for ticker in updated_tickers:
+                    live_company = data_dir / "companies" / f"{ticker}.json"
+                    dest = staging / "companies" / f"{ticker}.json"
+                    if live_company.exists():
+                        dest.write_bytes(live_company.read_bytes())
+                updated_tickers = []
+                raw_facts = {}
+                log.warning(
+                    "Company Facts lagged for every periodic CIK; recording 8-K extracts and retrying those 10-Q/10-Ks"
+                )
+            else:
+                drop = set(updated_tickers) - set(keep_from_eight_k)
+                for ticker in drop:
+                    live_company = data_dir / "companies" / f"{ticker}.json"
+                    dest = staging / "companies" / f"{ticker}.json"
+                    if live_company.exists():
+                        dest.write_bytes(live_company.read_bytes())
+                updated_tickers = keep_from_eight_k
+                raw_facts = {cik: payload for cik, payload in raw_facts.items() if cik in eight_k_ciks}
         processing_complete = not skipped_ciks and not facts_lag
         report["filingsRecorded8k"] = len(recorded_current)
         report["skippedFilings"] = skipped_filings
         report["errors"] = [f"company_facts_unavailable:{cik}" for cik in skipped_ciks]
         if facts_lag:
             report["errors"] = [*report["errors"], "company_facts_lag"]
+
+        companies_staging = load_companies(staging)
+        run = {
+            "status": "complete",
+            "kind": "daily-incremental",
+            "startedAt": started,
+            "finishedAt": generated_at,
+            "listingsTarget": (baseline.get("run") or {}).get("listingsTarget") or len(companies_staging),
+            "listingsDone": len(companies_staging),
+            "pending": [],
+            "companiesUpdated": updated_tickers,
+            "dailyUpdate": {
+                **daily_meta,
+                "lastSuccessfulSyncAt": generated_at if processing_complete else state.get("lastSuccessfulSyncAt"),
+                "lastFinancialUpdateAt": generated_at,
+                "companiesUpdated": len(set(updated_tickers)),
+                "filingsProcessed": len(rebuilt_accessions),
+            },
+        }
+        if updated_tickers:
+            rebuild_aggregates(
+                staging,
+                list(companies_staging.values()),
+                generated_at=generated_at,
+                run=run,
+                baseline=baseline,
+            )
 
         layer3_updated: list[str] = []
         index_backup = None
@@ -710,14 +711,15 @@ def run_daily_update(
                     ciks=list(raw_facts),
                     mode="incremental",
                     write_live=False,
+                    read_company_json=True,
                 )
                 for cik in payload.get("updated") or []:
                     rel = Path("layer3") / "cik" / f"{str(cik).zfill(10)}.json"
                     if not files_identical(staging / rel, data_dir / rel):
                         layer3_updated.append(cik)
-            attach_rows = extraction_rows_by_cik(extractions)
-            if attach_rows:
-                overlay_ciks, superseded = apply_extractions_to_dataset(staging, attach_rows)
+            overlay_for = {cik: rows for cik, rows in attach_rows.items() if cik in raw_facts}
+            if overlay_for:
+                overlay_ciks, superseded = apply_extractions_to_dataset(staging, overlay_for)
                 if superseded:
                     extractions = mark_superseded(extractions, superseded)
                 for cik in overlay_ciks:
@@ -761,32 +763,8 @@ def run_daily_update(
                 shutil.rmtree(staging, ignore_errors=True)
             return report
 
-        companies_staging = load_companies(staging)
-        run = {
-            "status": "complete",
-            "kind": "daily-incremental",
-            "startedAt": started,
-            "finishedAt": generated_at,
-            "listingsTarget": (baseline.get("run") or {}).get("listingsTarget") or len(companies_staging),
-            "listingsDone": len(companies_staging),
-            "pending": [],
-            "companiesUpdated": updated_tickers,
-            "dailyUpdate": {
-                **daily_meta,
-                "lastSuccessfulSyncAt": generated_at if processing_complete else state.get("lastSuccessfulSyncAt"),
-                "lastFinancialUpdateAt": generated_at,
-                "companiesUpdated": len(set(updated_tickers)),
-                "filingsProcessed": len(rebuilt_accessions),
-            },
-        }
         if updated_tickers:
-            meta = rebuild_aggregates(
-                staging,
-                list(companies_staging.values()),
-                generated_at=generated_at,
-                run=run,
-                baseline=baseline,
-            )
+            meta = read_json(staging / "meta.json") or {}
         else:
             meta = read_json(staging / "meta.json") or {}
             meta["generatedAt"] = generated_at
@@ -831,9 +809,7 @@ def run_daily_update(
         else:
             report["heldBack"] = "write_live_required" if is_live and not write_live else "dry_run"
             report["filesRewritten"] = [
-                p.as_posix()
-                for p in iter_files(staging)
-                if not files_identical(staging / p, data_dir / p)
+                p.as_posix() for p in iter_files(staging) if not files_identical(staging / p, data_dir / p)
             ]
     except Exception:
         if staging.exists():

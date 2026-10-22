@@ -29,7 +29,18 @@ DOMESTIC_FORMS = QUARTERLY_FORMS | ANNUAL_FORMS
 CURRENT_REPORT_FORMS = {"8-K", "8-K/A"}
 LATEST_DISCOVERY_FORMS = CURRENT_REPORT_FORMS | {"10-Q", "10-Q/A", "10-K", "10-K/A"}
 INDEX_RECONCILE_FORMS = DOMESTIC_FORMS | CURRENT_REPORT_FORMS
+# 8-K earnings figures share this dataset with 10-Q/10-K. 8-K is not a periodic
+# report: discovery, supplements, and is_periodic still use DOMESTIC_FORMS only.
+FINANCIAL_FACT_FORMS = DOMESTIC_FORMS | CURRENT_REPORT_FORMS
 FOREIGN_FORMS = {"20-F", "20-F/A", "40-F", "40-F/A", "6-K", "6-K/A"}
+SOURCE_TYPE_8K = "8k_earnings_release"
+SOURCE_TYPE_FACTS = "company_facts"
+
+
+def source_type_for_form(form: str | None) -> str:
+    if form in CURRENT_REPORT_FORMS:
+        return SOURCE_TYPE_8K
+    return SOURCE_TYPE_FACTS
 
 
 @dataclass(frozen=True)
@@ -115,7 +126,7 @@ def extract_duration_facts(
     *,
     currency: str | None = None,
 ) -> RevenueFacts:
-    """Duration facts from 10-Q/10-K filings for the given us-gaap concepts."""
+    """Duration facts from 10-Q/10-K and 8-K earnings figures for the given us-gaap concepts."""
     cik = str(companyfacts.get("cik", "")).zfill(10)
     root = companyfacts.get("facts", {})
     gaap = root.get("us-gaap", {})
@@ -130,11 +141,7 @@ def extract_duration_facts(
     if currency:
         for concept in concepts:
             raw_list = gaap.get(concept, {}).get("units", {}).get(currency, [])
-            facts = [
-                f
-                for f in (parse_fact(r) for r in raw_list)
-                if f is not None and f.form in DOMESTIC_FORMS
-            ]
+            facts = [f for f in (parse_fact(r) for r in raw_list) if f is not None and f.form in FINANCIAL_FACT_FORMS]
             if facts:
                 by_concept[concept] = facts
             for f in facts:
@@ -312,7 +319,7 @@ def extract_instant_facts(
     *,
     currency: str | None = None,
 ) -> dict[str, list[InstantFact]]:
-    """Instant us-gaap facts from 10-Q/10-K filings, grouped by concept."""
+    """Instant us-gaap facts from 10-Q/10-K and 8-K earnings figures, grouped by concept."""
     gaap = companyfacts.get("facts", {}).get("us-gaap", {})
     if currency is None:
         currencies = {_pick_unit(gaap[c].get("units", {})) for c in concepts if c in gaap} - {None}
@@ -322,7 +329,9 @@ def extract_instant_facts(
         return out
     for concept in concepts:
         raw_list = gaap.get(concept, {}).get("units", {}).get(currency, [])
-        facts = [f for f in (parse_instant_fact(r) for r in raw_list) if f is not None and f.form in DOMESTIC_FORMS]
+        facts = [
+            f for f in (parse_instant_fact(r) for r in raw_list) if f is not None and f.form in FINANCIAL_FACT_FORMS
+        ]
         if facts:
             out[concept] = facts
     return out
@@ -336,4 +345,3 @@ def extract_named_duration_facts(
 ) -> RevenueFacts:
     """Duration facts for an explicit concept list. Does not change revenue/earnings extractors."""
     return extract_duration_facts(companyfacts, concepts, currency=currency)
-
