@@ -15,7 +15,9 @@ import {
   LAYER3_RESEARCH_SECTIONS,
   displayAmount,
   displayKind,
+  EIGHT_K_AWAITING_LABEL,
   formatPeriodLabel,
+  hasAwaitingEightK,
   hasConceptScopeMismatch,
   issuerCurrency,
   latestFlowPeriod,
@@ -183,7 +185,11 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
             <dl className="l3-meta">
               <div>
                 <dt>Source</dt>
-                <dd>SEC Company Facts</dd>
+                <dd>
+                  {hasAwaitingEightK(row)
+                    ? "SEC 8-K earnings exhibit (provisional) + Company Facts"
+                    : "SEC Company Facts"}
+                </dd>
               </div>
               <div>
                 <dt>Schema / extract</dt>
@@ -239,8 +245,19 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
               Derived margins and inventory/payables ratios stay suppressed.
             </p>
           )}
+          {hasAwaitingEightK(row) && (
+            <p className="l3-banner is-warn" role="status">
+              {row?.provisionalEarnings?.label || EIGHT_K_AWAITING_LABEL}
+              {row?.provisionalEarnings?.fiscalYear && row?.provisionalEarnings?.fiscalQuarter
+                ? ` · FY${row.provisionalEarnings.fiscalYear} Q${row.provisionalEarnings.fiscalQuarter}`
+                : ""}
+              {row?.provisionalEarnings?.periodEnd ? ` · period-end ${row.provisionalEarnings.periodEnd}` : ""}
+              {row?.provisionalEarnings?.filed ? ` · filed ${formatDate(row.provisionalEarnings.filed)}` : ""}
+              . These figures are not used in Layer 1 or Layer 2 screening.
+            </p>
+          )}
           {(row?.flags ?? [])
-            .filter((f) => f !== "concept_scope_mismatch" && f !== "financial_institution")
+            .filter((f) => f !== "concept_scope_mismatch" && f !== "financial_institution" && f !== "eight_k_awaiting_10q")
             .map((f) => (
               <p key={f} className="l3-banner" role="status">
                 {flagText(f)}
@@ -278,7 +295,10 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
             <div className="l3-overview-head">
               <h2 id="l3-overview-title">Financial overview</h2>
               {sharedOverviewPeriod && (
-                <p className="muted l3-overview-period">TTM through {sharedOverviewPeriod}</p>
+                <p className="muted l3-overview-period">
+                  TTM through {sharedOverviewPeriod}
+                  {row.metrics?.revenue?.ttmSourceType === "8k_earnings_release" ? " · 8-K-derived" : ""}
+                </p>
               )}
             </div>
             <div className="l3-cards">
@@ -302,7 +322,13 @@ export function Layer3ResearchPage({ cik, entries, onBack, onRemove }: Props) {
                     title={title}
                     metric={metric}
                     period={showOwnPeriod ? ownPeriod : null}
-                    hint={title === "FCF TTM" ? metric?.formula : undefined}
+                    hint={
+                      metric && "ttmSourceType" in metric && metric.ttmSourceType === "8k_earnings_release"
+                        ? EIGHT_K_AWAITING_LABEL
+                        : title === "FCF TTM"
+                          ? metric?.formula
+                          : undefined
+                    }
                     value={
                       empty ? (
                         <Unavailable reason={metric?.reason} />

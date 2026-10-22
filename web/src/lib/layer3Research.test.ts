@@ -5,14 +5,18 @@ import {
   chronologicalQuarters,
   displayAmount,
   displayKind,
+  EIGHT_K_AWAITING_LABEL,
   formatPeriodLabel,
+  hasAwaitingEightK,
   hasConceptScopeMismatch,
+  isEightKDerived,
   isFiniteNumber,
   layer3ToSearch,
   pairQuarterGrowth,
   periodKey,
   readLayer3Cik,
   ttmChange,
+  verificationLabel,
 } from "./layer3Research";
 import type { Layer3Quarter, Layer3Row } from "../types";
 
@@ -265,5 +269,26 @@ describe("representative issuer files", () => {
     expect(displayAmount(jpm.metrics?.inventory)).toBeNull();
     expect(jpm.metrics?.grossProfit?.status).toBe("missing");
     expect(displayAmount(jpm.metrics?.revenue)).toBe(199_408_000_000);
+  });
+});
+
+describe("8-K provisional Layer 3 labels", () => {
+  it("labels awaiting 10-Q verification and does not treat missing 8-K metrics as zero", () => {
+    expect(verificationLabel("awaiting_10q")).toBe(EIGHT_K_AWAITING_LABEL);
+    expect(isEightKDerived({ sourceType: "8k_earnings_release", verification: "awaiting_10q" })).toBe(true);
+    expect(isEightKDerived({ sourceType: "company_facts" })).toBe(false);
+    const row = {
+      flags: ["eight_k_awaiting_10q"],
+      provisionalEarnings: { status: "awaiting_10q", label: EIGHT_K_AWAITING_LABEL, fiscalYear: 2026, fiscalQuarter: 3 },
+    } as Layer3Row;
+    expect(hasAwaitingEightK(row)).toBe(true);
+    const eightK = q(2026, 3, 51_242_000_000, {
+      sourceType: "8k_earnings_release",
+      verification: "awaiting_10q",
+    });
+    const prior = q(2025, 3, 40_589_000_000, { sourceType: "company_facts" });
+    const yoy = pairQuarterGrowth([prior, eightK], "yoy", "USD");
+    expect(yoy[1]?.rate).toBeCloseTo((51_242_000_000 / 40_589_000_000 - 1) * 100);
+    expect(isEightKDerived(yoy[1]?.current)).toBe(true);
   });
 });

@@ -966,3 +966,142 @@ def test_production_does_not_apply_accession_missing_from_company_facts(tmp_path
     state = data / "daily-update.json"
     if state.exists():
         assert accn not in json.loads(state.read_text()).get("processedAccessions", {})
+
+
+def test_recorded_eight_k_is_backfilled_without_touching_layer1(tmp_path: Path):
+    from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT, META_ACCN, META_CIK, META_Q3_2026_EXHIBIT, earnings_documents
+
+    company = _company("META", META_CIK)
+    data = _dataset(tmp_path, [company])
+    before_company = (data / "companies" / "META.json").read_bytes()
+    before_l3 = (data / "layer3" / "cik" / f"{META_CIK}.json").read_bytes()
+    write_json_atomic(
+        data / "daily-update.json",
+        {
+            "schemaVersion": 2,
+            "processedAccessions": {
+                META_ACCN: {
+                    "cik": META_CIK,
+                    "form": "8-K",
+                    "filed": "2026-10-21",
+                    "status": "recorded_8k",
+                }
+            },
+        },
+    )
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 22),
+        latest_filings=[],
+        indexes=[],
+        companyfacts_by_cik={},
+        eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=META_Q3_2026_EXHIBIT)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["eightKBackfill"] == 1
+    assert report["companiesUpdated"] == []
+    assert (data / "companies" / "META.json").read_bytes() == before_company
+    state = json.loads((data / "daily-update.json").read_text())
+    ext = state["earningsExtractions"][META_ACCN]
+    assert ext["status"] == "extracted"
+    assert ext["fiscalYear"] == 2026
+    assert ext["fiscalQuarter"] == 3
+    assert META_CIK in report["layer3Updated"]
+    issuer = json.loads((data / "layer3" / "cik" / f"{META_CIK}.json").read_text())
+    assert issuer["provisionalEarnings"]["status"] == "awaiting_10q"
+    assert issuer["metrics"]["revenue"]["quarters"][0]["sourceType"] == "8k_earnings_release"
+    assert issuer["metrics"]["revenue"]["quarters"][0]["value"] == 56_100_000_000
+    assert before_l3 != (data / "layer3" / "cik" / f"{META_CIK}.json").read_bytes()
+    # Successful extract is not reprocessed.
+    report2 = run_daily_update(
+        data,
+        as_of=date(2026, 10, 22),
+        latest_filings=[],
+        indexes=[],
+        companyfacts_by_cik={},
+        eight_k_documents={META_ACCN: earnings_documents(META_ACCN, exhibit=GAAP_EARNINGS_EXHIBIT)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report2["eightKBackfill"] == 0
+    assert json.loads((data / "daily-update.json").read_text())["earningsExtractions"][META_ACCN]["attempts"] == 1
+
+
+def test_failed_eight_k_extract_does_not_corrupt_verified_json(tmp_path: Path):
+    from fixtures.eight_k import ITEM_202_NO_TABLES, earnings_documents
+
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+    before_l3 = (data / "layer3" / "cik" / "0000000001.json").read_bytes()
+    accn = "0000000001-26-000024"
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[_filing("0000000001", accn, form="8-K", source="latest")],
+        indexes=[_filing("0000000001", accn, form="8-K")],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        eight_k_documents={accn: earnings_documents(accn, exhibit=ITEM_202_NO_TABLES)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["published"] is False
+    assert report["companiesUpdated"] == []
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
+    assert (data / "layer3" / "cik" / "0000000001.json").read_bytes() == before_l3
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][accn]["status"] == "recorded_8k"
+    assert state["earningsExtractions"][accn]["status"] == "failed"
+    assert state["earningsExtractions"][accn]["attempts"] == 1
+
+
+def test_ten_q_facts_supersede_provisional_eight_k(tmp_path: Path):
+    from fixtures.eight_k import GAAP_EARNINGS_EXHIBIT, earnings_documents
+
+    from screener_pipeline.sec.facts import Fact
+
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    eight_k = "0000000001-26-000024"
+    ten_q = "0000000001-26-000099"
+    run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        latest_filings=[_filing("0000000001", eight_k, form="8-K", source="latest")],
+        indexes=[_filing("0000000001", eight_k, form="8-K")],
+        companyfacts_by_cik={"0000000001": _revenue_payload(1, "AAA")},
+        eight_k_documents={eight_k: earnings_documents(eight_k, exhibit=GAAP_EARNINGS_EXHIBIT)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=True,
+    )
+    issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
+    assert issuer["provisionalEarnings"]["status"] == "awaiting_10q"
+    extra = [
+        Fact(date(2026, 1, 1), date(2026, 3, 31), 18.0, "0000000001-26-000091", 2026, "Q1", "10-Q", date(2026, 5, 1)),
+        Fact(date(2026, 4, 1), date(2026, 6, 30), 19.0, "0000000001-26-000092", 2026, "Q2", "10-Q", date(2026, 8, 1)),
+        Fact(date(2026, 7, 1), date(2026, 9, 30), 51_240_000_000, ten_q, 2026, "Q3", "10-Q", date(2026, 10, 30)),
+    ]
+    facts = _revenue_payload(1, "AAA")
+    facts["facts"]["us-gaap"]["Revenues"]["units"]["USD"].extend(_raw_facts(extra))
+    run_daily_update(
+        data,
+        as_of=date(2026, 10, 31),
+        latest_filings=[],
+        indexes=[_filing("0000000001", ten_q, form="10-Q", filed=date(2026, 10, 30))],
+        companyfacts_by_cik={"0000000001": facts},
+        eight_k_documents={eight_k: earnings_documents(eight_k, exhibit=GAAP_EARNINGS_EXHIBIT)},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=True,
+    )
+    state = json.loads((data / "daily-update.json").read_text())
+    assert state["processedAccessions"][ten_q]["status"] == "applied"
+    assert state["earningsExtractions"][eight_k]["status"] == "superseded"
+    issuer = json.loads((data / "layer3" / "cik" / "0000000001.json").read_text())
+    assert issuer["earningsReleaseAudit"]
+    assert issuer["earningsReleaseAudit"][0]["accn"] == eight_k

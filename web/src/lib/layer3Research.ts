@@ -89,7 +89,12 @@ export function displayKindLabel(kind: DisplayKind): string {
   }
 }
 
+export const EIGHT_K_AWAITING_LABEL = "8-K Earnings Release — Awaiting 10-Q Verification";
+export const EIGHT_K_VERIFIED_LABEL = "10-Q/10-K Verified";
+
 export function verificationLabel(verification: string | null | undefined): string {
+  if (verification === "awaiting_10q") return EIGHT_K_AWAITING_LABEL;
+  if (verification === "company_facts_verified" || verification === "10q_verified") return EIGHT_K_VERIFIED_LABEL;
   if (verification === "company_facts_only") return "Company Facts only — not statement-checked";
   if (verification === "derived") return "Derived — not statement-checked";
   return "Not statement-checked";
@@ -112,6 +117,8 @@ export interface ProvenanceFields {
   form?: string | null;
   filed?: string | null;
   url?: string | null;
+  exhibitUrl?: string | null;
+  sourceType?: string | null;
   fiscalYear?: number | null;
   fiscalQuarter?: number | null;
   start?: string | null;
@@ -139,6 +146,8 @@ export function metricProvenance(metric: MetricKind | null | undefined): Provena
     form: "form" in metric ? metric.form : null,
     filed: "filed" in metric ? metric.filed : null,
     url: "url" in metric ? metric.url : null,
+    exhibitUrl: "exhibitUrl" in metric ? metric.exhibitUrl : null,
+    sourceType: "sourceType" in metric ? metric.sourceType : null,
     unreliableTtm: "unreliableTtm" in metric ? metric.unreliableTtm : null,
     unreliableValue: "unreliableValue" in metric ? metric.unreliableValue : null,
   };
@@ -157,6 +166,8 @@ export function quarterProvenance(q: Layer3Quarter | Layer3StockHistoryPoint): P
     form: q.form,
     filed: q.filed,
     url: q.url,
+    exhibitUrl: q.exhibitUrl,
+    sourceType: q.sourceType,
     fiscalYear: q.fiscalYear,
     fiscalQuarter: q.fiscalQuarter,
     start: "start" in q ? q.start : null,
@@ -322,6 +333,17 @@ export function issuerCurrency(row: Layer3Row | null | undefined): string | null
 
 export function issuerFlags(row: Layer3Row | null | undefined): string[] {
   return row?.flags ?? [];
+}
+
+export function hasAwaitingEightK(row: Layer3Row | null | undefined): boolean {
+  if (!row) return false;
+  if (row.provisionalEarnings?.status === "awaiting_10q") return true;
+  return (row.flags ?? []).includes("eight_k_awaiting_10q");
+}
+
+export function isEightKDerived(value: { sourceType?: string | null; verification?: string | null } | null | undefined): boolean {
+  if (!value) return false;
+  return value.sourceType === "8k_earnings_release" || value.verification === "awaiting_10q";
 }
 
 export function hasConceptScopeMismatch(row: Layer3Row | null | undefined): boolean {

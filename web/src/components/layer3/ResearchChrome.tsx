@@ -119,6 +119,12 @@ export function ProvenancePanel({
           <dd>Stored but not shown as a clean ratio: {fields.unreliableValue}</dd>
         </div>
       )}
+      {fields.sourceType && (
+        <div>
+          <dt>Data source</dt>
+          <dd>{fields.sourceType === "8k_earnings_release" ? "8-K earnings exhibit" : fields.sourceType.replace(/_/g, " ")}</dd>
+        </div>
+      )}
       {fields.form && (
         <div>
           <dt>Filing</dt>
@@ -132,6 +138,16 @@ export function ProvenancePanel({
               fields.form
             )}
             {fields.filed ? ` · filed ${formatDate(fields.filed)}` : ""}
+          </dd>
+        </div>
+      )}
+      {fields.exhibitUrl && (
+        <div>
+          <dt>Exhibit</dt>
+          <dd>
+            <a href={fields.exhibitUrl} target="_blank" rel="noreferrer">
+              Earnings exhibit
+            </a>
           </dd>
         </div>
       )}

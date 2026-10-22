@@ -332,8 +332,12 @@ export interface Layer3Quarter {
   form?: string | null;
   filed?: string | null;
   url?: string | null;
+  exhibitUrl?: string | null;
+  sourceType?: string | null;
+  unit?: string | null;
   calculationMethod?: string | null;
   verification?: string | null;
+  verificationNote?: string | null;
 }
 
 export interface Layer3StockHistoryPoint {
@@ -348,8 +352,11 @@ export interface Layer3StockHistoryPoint {
   form?: string | null;
   filed?: string | null;
   url?: string | null;
+  exhibitUrl?: string | null;
+  sourceType?: string | null;
   calculationMethod?: string | null;
   verification?: string | null;
+  verificationNote?: string | null;
 }
 
 export interface Layer3FlowMetric {
@@ -368,6 +375,10 @@ export interface Layer3FlowMetric {
   calculationMethod?: string;
   verification: string;
   verificationNote?: string;
+  ttmSourceType?: string | null;
+  verifiedTtm?: number | null;
+  exhibitUrl?: string | null;
+  sourceType?: string | null;
   identity?: string | null;
   qualityFlags?: string[];
   qualityNote?: string | null;
@@ -384,11 +395,14 @@ export interface Layer3StockMetric {
   form?: string | null;
   filed?: string | null;
   url?: string | null;
+  exhibitUrl?: string | null;
+  sourceType?: string | null;
   unit?: string | null;
   aggregation?: string;
   formula?: string;
   calculationMethod?: string;
   verification: string;
+  verificationNote?: string;
   components?: Layer3StockMetric[];
   /** Up to 8 aligned quarter-end snapshots. Stocks are never summed into a TTM. */
   history?: Layer3StockHistoryPoint[];
@@ -451,8 +465,26 @@ export interface Layer3Metrics {
   dio?: Layer3DerivedMetric;
   dpo?: Layer3DerivedMetric;
   cashConversionCycle?: Layer3DerivedMetric;
+  dilutedEps?: Layer3FlowMetric;
+  totalAssets?: Layer3StockMetric;
+  totalLiabilities?: Layer3StockMetric;
   noInterestBurden: boolean;
   growthSource: string;
+}
+
+export interface Layer3ProvisionalEarnings {
+  status: "awaiting_10q" | "superseded" | string;
+  label?: string | null;
+  form?: string | null;
+  filed?: string | null;
+  accn?: string | null;
+  exhibitUrl?: string | null;
+  filingUrl?: string | null;
+  fiscalYear?: number | null;
+  fiscalQuarter?: number | null;
+  periodEnd?: string | null;
+  sourceType?: string | null;
+  metricsPresent?: string[];
 }
 
 export interface Layer3Row {
@@ -481,6 +513,8 @@ export interface Layer3Row {
   growthSource: string;
   scoring: null;
   issuerFile?: string | null;
+  provisionalEarnings?: Layer3ProvisionalEarnings | null;
+  earningsReleaseAudit?: Array<Record<string, unknown>>;
   layer1: {
     revenueTtm: number | null;
     revenuePriorTtm: number | null;

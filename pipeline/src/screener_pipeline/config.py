@@ -46,6 +46,11 @@ DAILY_INDEX_REVALIDATE_BUSINESS_DAYS = int(
 )
 DAILY_INDEX_RETRY_DAYS = DAILY_INDEX_REVALIDATE_BUSINESS_DAYS
 
+# 8-K earnings-release extract (Layer 3 provisional overlay only).
+EIGHT_K_BACKFILL_DAYS = int(os.environ.get("SCREENER_EIGHT_K_BACKFILL_DAYS", "30"))
+EIGHT_K_MAX_ATTEMPTS = int(os.environ.get("SCREENER_EIGHT_K_MAX_ATTEMPTS", "4"))
+EIGHT_K_EXTRACTION_KEEP_DAYS = int(os.environ.get("SCREENER_EIGHT_K_EXTRACTION_KEEP_DAYS", "90"))
+
 # Publishing gates (relative drop vs the last complete baseline). A first full run has no baseline.
 GROWTH_COVERAGE_MAX_DROP = 0.05
 QUARTER_MISMATCH_MAX_RATIO = 0.10

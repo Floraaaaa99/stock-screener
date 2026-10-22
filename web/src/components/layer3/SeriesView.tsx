@@ -237,7 +237,18 @@ export function SeriesView({
                       );
                     })}
                     <td>
-                      {first?.provenance ? (
+                      {first?.provenance?.sourceType === "8k_earnings_release" ||
+                      first?.provenance?.verification === "awaiting_10q" ? (
+                        <div>
+                          <div className="muted">8-K — awaiting 10-Q</div>
+                          {first.provenance ? (
+                            <details className="l3-prov">
+                              <summary>Source</summary>
+                              <ProvenancePanel fields={first.provenance} />
+                            </details>
+                          ) : null}
+                        </div>
+                      ) : first?.provenance ? (
                         <details className="l3-prov">
                           <summary>Source</summary>
                           <ProvenancePanel fields={first.provenance} />

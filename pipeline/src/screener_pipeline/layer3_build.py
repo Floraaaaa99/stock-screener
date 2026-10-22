@@ -501,9 +501,21 @@ def publish_layer3(
 
 def index_row(payload: dict) -> dict:
     """Universe index row: statuses and identity only. No quarter-level metrics."""
-    row = {k: v for k, v in payload.items() if k != "metrics"}
+    row = {k: v for k, v in payload.items() if k not in {"metrics", "earningsReleaseAudit"}}
     row["metrics"] = None
     row["issuerFile"] = issuer_file_relpath(payload["cik"])
+    pe = row.get("provisionalEarnings")
+    if isinstance(pe, dict):
+        row["provisionalEarnings"] = {
+            "status": pe.get("status"),
+            "label": pe.get("label"),
+            "accn": pe.get("accn"),
+            "form": pe.get("form"),
+            "filed": pe.get("filed"),
+            "fiscalYear": pe.get("fiscalYear"),
+            "fiscalQuarter": pe.get("fiscalQuarter"),
+            "periodEnd": pe.get("periodEnd"),
+        }
     return row
 
 
