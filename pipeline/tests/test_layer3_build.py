@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import tarfile
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -20,6 +21,8 @@ from screener_pipeline.layer3_build import (
     validate_layer3_publish,
     write_layer3,
 )
+from screener_pipeline.sec.edgar import PeriodicFiling
+from screener_pipeline.sec.statement import Statement, StatementColumn, StatementRow
 
 
 def _dataset(tmp_path: Path) -> Path:
@@ -178,6 +181,101 @@ def test_write_layer3_preserves_face_disclosure_and_recomputes_metrics(tmp_path:
     rewritten = json.loads(issuer_path.read_text())
     assert rewritten["disclosures"]["cashFlow"]["notesParsed"] is False
     assert rewritten["metrics"]["fcf"]["ttm"] == 32
+    index_row = next(r for r in out["indexRows"] if r["cik"] == "0000046619")
+    assert "disclosures" not in index_row
+
+
+class _FakeSec:
+    def __init__(self, filings, statements):
+        self.filings = filings
+        self.statements = statements
+        self.cf_gets: list[str] = []
+
+    def periodic_filings(self, cik, refresh=False):
+        return self.filings.get(cik, [])
+
+    def cash_flow_statement(self, cik, accn):
+        self.cf_gets.append(accn)
+        st = self.statements.get(accn)
+        if st is None:
+            return None
+        return st, f"https://www.sec.gov/Archives/edgar/data/46619/{accn.replace('-', '')}/R6.htm"
+
+    def filing_summary(self, cik, accn):
+        return None
+
+
+def test_write_layer3_refreshes_disclosure_from_official_filing_not_metric_accn(tmp_path: Path):
+    data = _dataset(tmp_path)
+    old_accn = "0000046619-26-000050"
+    new_accn = "0000046619-26-000090"
+    facts = {
+        "0000046619": companyfacts(
+            {
+                "NetCashProvidedByUsedInOperatingActivities": (
+                    _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 9, 9, 9, 9, prefix="P")
+                ),
+                "PaymentsToAcquirePropertyPlantAndEquipment": (
+                    _ytd_year(2025, 2, 2, 2, 2, prefix="C") + _ytd_year(2024, 1, 1, 1, 1, prefix="D")
+                ),
+                "CashAndCashEquivalentsAtCarryingValue": [
+                    _instant("2025-12-31", 50, "a", 2025, "FY", form="10-K")
+                ],
+            },
+            cik=46619,
+            name="HEICO CORPORATION",
+        )
+    }
+    dest = tmp_path / "layer3.json"
+    write_layer3(data, dest, companyfacts_by_cik=facts)
+    issuer_path = dest.parent / "layer3" / "cik" / "0000046619.json"
+    issuer = json.loads(issuer_path.read_text())
+    assert issuer["metrics"]["ocf"]["quarters"][0]["accn"] != new_accn
+    issuer["disclosures"] = {
+        "cashFlow": {
+            "source": "sec_cash_flow_face",
+            "status": "current",
+            "filing": {"accn": old_accn, "filed": "2026-05-01"},
+            "groups": [{"id": "financing", "lines": [{"concept": "old-face"}]}],
+        }
+    }
+    issuer_path.write_text(json.dumps(issuer))
+    face = Statement(
+        title="Cash Flows",
+        scale=1,
+        columns=[StatementColumn(months=3, end=date(2026, 6, 30))],
+        rows=[StatementRow("us-gaap:PaymentsToAcquirePropertyPlantAndEquipment", "PPE", [-9.0])],
+    )
+    sec = _FakeSec(
+        {
+            "0000046619": [
+                PeriodicFiling(old_accn, "10-Q", date(2026, 5, 1), date(2026, 3, 31)),
+                PeriodicFiling(new_accn, "10-Q", date(2026, 8, 1), date(2026, 6, 30)),
+            ]
+        },
+        {new_accn: face},
+    )
+    out = write_layer3(
+        data,
+        dest,
+        companyfacts_by_cik=facts,
+        sec=sec,
+        known_periodics={
+            "0000046619": [PeriodicFiling(new_accn, "10-Q", date(2026, 8, 1), date(2026, 6, 30))]
+        },
+    )
+    hei = next(r for r in out["rows"] if r["cik"] == "0000046619")
+    assert hei["metrics"]["fcf"]["ttm"] == 32
+    assert hei["disclosures"]["cashFlow"]["filing"]["accn"] == new_accn
+    assert hei["disclosures"]["cashFlow"]["status"] == "current"
+    assert hei["disclosures"]["cashFlow"]["groups"][0]["lines"][0]["concept"] == (
+        "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"
+    )
+    assert sec.cf_gets[0] == new_accn
+    assert old_accn in sec.cf_gets[1:]
+    index_row = next(r for r in out["indexRows"] if r["cik"] == "0000046619")
+    assert "disclosures" not in index_row
+    assert hei["metrics"]["ocf"]["quarters"][0]["accn"] != new_accn
 
 
 def test_write_layer3_without_facts_fails_and_preserves_existing(tmp_path: Path):

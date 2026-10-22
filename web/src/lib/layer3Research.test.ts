@@ -305,10 +305,12 @@ describe("capital allocation presentation", () => {
 
   it("treats the cash-flow disclosure tree as optional and separate from one-tag metrics", () => {
     const msft = loadIssuer("0000789019");
-    expect(hasCashFlowDisclosure(msft)).toBe(false);
+    expect(hasCashFlowDisclosure(msft)).toBe(true);
+    const { disclosures: _drop, ...without } = msft;
+    expect(hasCashFlowDisclosure(without)).toBe(false);
     expect(
       hasCashFlowDisclosure({
-        ...msft,
+        ...without,
         disclosures: {
           cashFlow: {
             source: "sec_cash_flow_face",
@@ -355,9 +357,16 @@ describe("capital allocation presentation", () => {
     const meta = loadIssuer("0001326801");
     const msft = loadIssuer("0000789019");
     const aapl = loadIssuer("0000320193");
-    expect(hasCashFlowDisclosure(meta)).toBe(false);
-    expect(hasCashFlowDisclosure(msft)).toBe(false);
-    expect(hasCashFlowDisclosure(aapl)).toBe(false);
+    expect(hasCashFlowDisclosure(meta)).toBe(true);
+    expect(hasCashFlowDisclosure(msft)).toBe(true);
+    expect(hasCashFlowDisclosure(aapl)).toBe(true);
+    expect(meta.disclosures?.cashFlow?.filing?.accn).toBe("0001628280-26-066773");
+    expect(msft.disclosures?.cashFlow?.filing?.accn).toBe("0001193125-26-323660");
+    expect(aapl.disclosures?.cashFlow?.filing?.accn).toBe("0000320193-26-000020");
+    const aaplFinancing = aapl.disclosures?.cashFlow?.groups.find((group) => group.id === "financing");
+    expect(
+      aaplFinancing?.lines.some((line) => line.concept === "us-gaap:PaymentsForRepurchaseOfCommonStock"),
+    ).toBe(true);
     expect(meta.metrics?.ocf?.ttm).toBe(133_087_000_000);
     expect(meta.metrics?.capex?.ttm).toBe(104_438_000_000);
     expect(meta.metrics?.fcf?.ttm).toBe(28_649_000_000);

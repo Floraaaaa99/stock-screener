@@ -84,6 +84,22 @@ export function Layer3CashFlowDisclosure({ row, currency }: { row: Layer3Row; cu
         filings. Missing prior YTD stays Unavailable, not zero. Section totals are the reported
         totals, not a sum of children.
       </p>
+      {cash.status === "stale" && (
+        <p className="l3-banner is-warn" role="status">
+          Showing the face from {filing?.form ?? "a prior filing"}
+          {filing?.filed ? ` filed ${filing.filed}` : ""}. This is not the latest 10-Q/10-K
+          {cash.targetAccn ? ` (${cash.targetAccn}` : ""}
+          {cash.targetFiled ? ` filed ${cash.targetFiled}` : ""}
+          {cash.targetAccn ? ")" : ""}.
+        </p>
+      )}
+      {cash.status === "unavailable" && (
+        <p className="l3-banner" role="status">
+          The latest 10-Q/10-K cash-flow face could not be read
+          {cash.targetAccn ? ` (${cash.targetAccn})` : ""}. Standardized research metrics below
+          are one tag each and are not a complete disclosure breakdown.
+        </p>
+      )}
       <p className="l3-disclosure-links">
         {filing?.statementUrl && (
           <a href={filing.statementUrl} target="_blank" rel="noreferrer">

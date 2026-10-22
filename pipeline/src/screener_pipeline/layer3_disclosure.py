@@ -188,23 +188,39 @@ def _same_end_quarter_column(
     return None, None
 
 
-def _group_for_concept(name: str, current: str) -> str:
+_CASH_ROLLFORWARD = {
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    "CashAndCashEquivalentsAtCarryingValue",
+}
+
+
+def _section_marker(name: str) -> str | None:
+    """Move the section cursor only on activity headers and reported section totals."""
     if "SupplementalCashFlow" in name:
         return "supplemental"
-    if name.endswith("OperatingActivitiesAbstract") or name in OPERATING_TOTALS:
+    if name in OPERATING_TOTALS or ("OperatingActivities" in name and name.endswith("Abstract")):
         return "operating"
-    if name.endswith("InvestingActivitiesAbstract") or name in INVESTING_TOTALS:
+    if name in INVESTING_TOTALS or ("InvestingActivities" in name and name.endswith("Abstract")):
         return "investing"
-    if name.endswith("FinancingActivitiesAbstract") or name in FINANCING_TOTALS:
+    if name in FINANCING_TOTALS or ("FinancingActivities" in name and name.endswith("Abstract")):
         return "financing"
+    return None
+
+
+def _assign_group(name: str, section: str) -> tuple[str, str]:
+    """Return (row group, next section cursor).
+
+    Beginning-cash and FX rows are Other and do not steal the cursor, so an
+    Apple-style ContinuingOperationsAbstract still opens the right activity group.
+    """
+    marker = _section_marker(name)
+    if marker:
+        return marker, marker
     if name.startswith("EffectOfExchangeRate") or "PeriodIncreaseDecrease" in name:
-        return "other"
-    if name in {
-        "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-        "CashAndCashEquivalentsAtCarryingValue",
-    }:
-        return "other"
-    return current
+        return "other", section
+    if name in _CASH_ROLLFORWARD:
+        return "other", section
+    return section, section
 
 
 def _role(name: str, values: list[float | None], group: str) -> str:
@@ -288,12 +304,12 @@ def build_cash_flow_disclosure(
     q_idx, q_col = _same_end_quarter_column(statement.columns, current) if current else (None, None)
 
     groups: dict[str, dict] = {}
-    group_id = "operating"
+    section = "operating"
     capex_lines = 0
 
     for order, row in enumerate(statement.rows):
         name = _local(row.concept)
-        group_id = _group_for_concept(name, group_id)
+        group_id, section = _assign_group(name, section)
         role = _role(name, row.values, group_id)
         reported = _row_value(row, cur_idx) if role != "header" else None
         prior_year_val = _row_value(row, py_idx) if role != "header" and py_idx is not None else None
@@ -406,6 +422,7 @@ def build_cash_flow_disclosure(
 
     return {
         "source": "sec_cash_flow_face",
+        "status": "current",
         "currency": currency,
         "filing": {
             "cik": str(cik).zfill(10),
@@ -441,4 +458,133 @@ def build_cash_flow_disclosure(
         },
         "noteLinks": note_links or [],
         "notesParsed": False,
+    }
+
+
+def _existing_cash_flow(existing: dict | None) -> dict | None:
+    if not isinstance(existing, dict):
+        return None
+    if "cashFlow" in existing:
+        cash = existing.get("cashFlow")
+        return cash if isinstance(cash, dict) else None
+    if existing.get("source") == "sec_cash_flow_face" or existing.get("groups"):
+        return existing
+    return None
+
+
+def _valid_tree(cash: dict | None) -> bool:
+    return bool(cash and cash.get("source") == "sec_cash_flow_face" and cash.get("groups"))
+
+
+def _with_status(cash: dict, status: str, **extra) -> dict:
+    out = dict(cash)
+    out["status"] = status
+    for key, value in extra.items():
+        if value is not None:
+            out[key] = value
+    return out
+
+
+def _unavailable_stub(cik: str, accn: str, form: str | None, filed: str | None, reason: str) -> dict:
+    return {
+        "source": "sec_cash_flow_face",
+        "status": "unavailable",
+        "unavailableReason": reason,
+        "targetAccn": accn,
+        "filing": {
+            "cik": str(cik).zfill(10),
+            "accn": accn,
+            "form": form,
+            "filed": filed,
+            "indexUrl": filing_url(cik, accn),
+            "statementUrl": "",
+            "title": None,
+        },
+        "groups": [],
+        "notesParsed": False,
+    }
+
+
+def _build_from_sec(sec, cik: str, latest, prior) -> dict | None:
+    current = sec.cash_flow_statement(cik, latest.accn)
+    if not current:
+        return None
+    statement, url = current
+    if not statement.rows:
+        return None
+    prior_statement = None
+    prior_accn = None
+    if prior is not None:
+        prev = sec.cash_flow_statement(cik, prior.accn)
+        if prev:
+            prior_statement = prev[0]
+            prior_accn = prior.accn
+    summary = sec.filing_summary(cik, latest.accn) if hasattr(sec, "filing_summary") else None
+    notes = note_source_links(summary or "", cik, latest.accn)
+    return build_cash_flow_disclosure(
+        statement,
+        cik=cik,
+        accn=latest.accn,
+        form=latest.form,
+        filed=latest.filed.isoformat() if getattr(latest.filed, "isoformat", None) else str(latest.filed),
+        statement_url=url,
+        html_name=url.rsplit("/", 1)[-1],
+        prior_statement=prior_statement,
+        prior_accn=prior_accn,
+        note_links=notes,
+    )
+
+
+def resolve_cash_flow_disclosure(
+    *,
+    cik: str,
+    sec=None,
+    existing: dict | None = None,
+    official_filings: list | None = None,
+) -> dict | None:
+    """Attach or refresh the face tree from official 10-Q/10-K metadata.
+
+    Latest filing is the newest official periodic row, not the accession on an
+    OCF / investing / financing metric. A Company Facts metric accn is never
+    treated as proof that a face is current.
+    """
+    from .sec.edgar import latest_official_periodic, prior_comparable_periodic
+
+    existing_cf = _existing_cash_flow(existing)
+    latest = latest_official_periodic(official_filings or [])
+    if latest is None:
+        if _valid_tree(existing_cf):
+            return {"cashFlow": _with_status(existing_cf, existing_cf.get("status") or "current")}
+        return None
+
+    filed = latest.filed.isoformat() if getattr(latest.filed, "isoformat", None) else str(latest.filed)
+    existing_accn = (existing_cf or {}).get("filing", {}).get("accn") if existing_cf else None
+    if _valid_tree(existing_cf) and existing_accn == latest.accn and existing_cf.get("status") != "unavailable":
+        return {"cashFlow": _with_status(existing_cf, "current", targetAccn=latest.accn)}
+
+    tree = None
+    if sec is not None:
+        try:
+            tree = _build_from_sec(sec, cik, latest, prior_comparable_periodic(official_filings or [], latest))
+        except Exception:  # noqa: BLE001 - face fetch is best-effort
+            tree = None
+
+    if tree and tree.get("groups"):
+        return {"cashFlow": _with_status(tree, "current", targetAccn=latest.accn)}
+
+    if _valid_tree(existing_cf):
+        reason = "newer_periodic_filing" if existing_accn != latest.accn else "refresh_failed"
+        return {
+            "cashFlow": _with_status(
+                existing_cf,
+                "stale",
+                targetAccn=latest.accn,
+                targetFiled=filed,
+                staleReason=reason,
+            )
+        }
+    return {
+        "cashFlow": _unavailable_stub(
+            cik, latest.accn, latest.form, filed, "cash_flow_face_unavailable"
+        )
     }

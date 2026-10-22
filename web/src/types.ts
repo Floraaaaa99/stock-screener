@@ -591,6 +591,11 @@ export interface Layer3DisclosureGroup {
 export interface Layer3Disclosures {
   cashFlow?: {
     source: string;
+    status?: "current" | "stale" | "unavailable" | string;
+    targetAccn?: string | null;
+    targetFiled?: string | null;
+    staleReason?: string | null;
+    unavailableReason?: string | null;
     currency?: string | null;
     filing?: {
       cik?: string;

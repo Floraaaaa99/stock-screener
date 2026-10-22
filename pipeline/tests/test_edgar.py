@@ -15,9 +15,12 @@ from screener_pipeline.sec.edgar import (
     freshness_row,
     infer_fy_fp,
     latest_facts_period_end,
+    latest_official_periodic,
+    merge_periodic_filings,
     parse_periodic_filings,
     period_start,
     pick_official_value,
+    prior_comparable_periodic,
     supplement_revenue_facts,
 )
 from screener_pipeline.sec.facts import FilingInfo, RevenueFacts, revenue_facts_from_compact
@@ -102,6 +105,19 @@ def test_same_day_10qa_does_not_hide_original_10q():
     assert len(got) == 1
     assert got[0].accn == "0000354963-26-000209"
     assert got[0].form == "10-Q"
+
+
+def test_latest_official_periodic_merges_daily_index_over_older_metric_accn():
+    metric = PeriodicFiling("0000000001-26-000050", "10-Q", date(2026, 5, 1), date(2026, 3, 31))
+    daily = PeriodicFiling("0000000001-26-000090", "10-Q", date(2026, 8, 1), None)
+    submissions = PeriodicFiling("0000000001-26-000050", "10-Q", date(2026, 5, 1), date(2026, 3, 31))
+    merged = merge_periodic_filings([daily], [submissions, metric])
+    latest = latest_official_periodic(merged)
+    assert latest is not None
+    assert latest.accn == "0000000001-26-000090"
+    prior = prior_comparable_periodic(merged, latest)
+    assert prior is not None
+    assert prior.accn == "0000000001-26-000050"
 
 
 def test_facts_may_lag_uses_next_quarter_window():

@@ -145,6 +145,51 @@ def _dedupe_periodic(filings: list[PeriodicFiling]) -> list[PeriodicFiling]:
     return sorted(by_end.values(), key=lambda f: (f.report_date or date.min, f.filed))
 
 
+def merge_periodic_filings(*groups: list[PeriodicFiling]) -> list[PeriodicFiling]:
+    """Union official 10-Q/10-K rows (submissions + daily index) with the same dedupe rules."""
+    merged: list[PeriodicFiling] = []
+    for group in groups:
+        merged.extend(group)
+    return _dedupe_periodic(merged)
+
+
+def latest_official_periodic(filings: list[PeriodicFiling]) -> PeriodicFiling | None:
+    """Latest official 10-Q/10-K by filing date, then report date.
+
+    This is the latest submitted periodic report. It is not the accession on a
+    Company Facts metric series, which can lag or stay on an older 10-Q/10-K.
+    """
+    if not filings:
+        return None
+    return max(filings, key=lambda f: (f.filed, f.report_date or date.min, f.accn))
+
+
+_PRIOR_GAP = (60, 120)
+
+
+def prior_comparable_periodic(
+    filings: list[PeriodicFiling], current: PeriodicFiling
+) -> PeriodicFiling | None:
+    """Previous official periodic about one quarter earlier. Absence is not inferred."""
+    best: PeriodicFiling | None = None
+    for filing in filings:
+        if filing.accn == current.accn:
+            continue
+        if current.report_date and filing.report_date:
+            if filing.report_date >= current.report_date:
+                continue
+            gap = (current.report_date - filing.report_date).days
+        else:
+            if filing.filed >= current.filed:
+                continue
+            gap = (current.filed - filing.filed).days
+        if gap < _PRIOR_GAP[0] or gap > _PRIOR_GAP[1]:
+            continue
+        if best is None or (filing.report_date or filing.filed) > (best.report_date or best.filed):
+            best = filing
+    return best
+
+
 def latest_facts_period_end(rf: RevenueFacts) -> date | None:
     if not rf.filings:
         return None

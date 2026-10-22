@@ -7,8 +7,14 @@ from datetime import date
 from helpers import FIXTURES
 from test_layer3_capital_allocation import _cf_core
 
-from screener_pipeline.layer3_disclosure import build_cash_flow_disclosure, line_identity, note_source_links
+from screener_pipeline.layer3_disclosure import (
+    build_cash_flow_disclosure,
+    line_identity,
+    note_source_links,
+    resolve_cash_flow_disclosure,
+)
 from screener_pipeline.layer3_extract import analyze_layer3_facts
+from screener_pipeline.sec.edgar import PeriodicFiling, latest_official_periodic
 from screener_pipeline.sec.statement import (
     Statement,
     StatementColumn,
@@ -20,6 +26,12 @@ from screener_pipeline.sec.statement import (
 MOG_Q3 = FIXTURES / "statements" / "MOG-0001628280-26-051294-R6.htm"
 MOG_Q2 = FIXTURES / "statements" / "MOG-0001628280-26-027064-R6.htm"
 MOG_SUMMARY = FIXTURES / "statements" / "MOG-0001628280-26-051294-FilingSummary.xml"
+META_Q3 = FIXTURES / "statements" / "META-0001628280-26-066773-R8.htm"
+META_Q2 = FIXTURES / "statements" / "META-0001628280-26-050705-R8.htm"
+MSFT_FY = FIXTURES / "statements" / "MSFT-0001193125-26-323660-R6.htm"
+MSFT_Q3 = FIXTURES / "statements" / "MSFT-0001193125-26-191507-R6.htm"
+AAPL_Q3 = FIXTURES / "statements" / "AAPL-0000320193-26-000020-R7.htm"
+AAPL_Q2 = FIXTURES / "statements" / "AAPL-0000320193-26-000013-R7.htm"
 
 
 def _mog_disclosure():
@@ -245,3 +257,182 @@ def test_real_research_metrics_unchanged_when_disclosure_attached():
     assert meta.metrics["fcf"]["formula"].startswith("OCF − CapEx")
     assert msft.metrics["cashCfIdentity"]["usedF3Cash"] is False
     assert aapl.metrics["cashCfIdentity"]["usedF3Cash"] is False
+
+
+def test_apple_style_continuing_operations_headers_keep_financing_together():
+    st = Statement(
+        title="Statements of Cash Flows",
+        scale=1,
+        columns=[StatementColumn(months=9, end=date(2026, 6, 27))],
+        rows=[
+            StatementRow(
+                "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                "Beginning cash",
+                [10.0],
+            ),
+            StatementRow(
+                "us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperationsAbstract",
+                "Operating activities:",
+                [None],
+            ),
+            StatementRow("us-gaap:NetIncomeLoss", "Net income", [5.0]),
+            StatementRow("us-gaap:NetCashProvidedByUsedInOperatingActivities", "Cash from operations", [8.0]),
+            StatementRow(
+                "us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperationsAbstract",
+                "Investing activities:",
+                [None],
+            ),
+            StatementRow("us-gaap:PaymentsToAcquirePropertyPlantAndEquipment", "CapEx", [-2.0]),
+            StatementRow("us-gaap:NetCashProvidedByUsedInInvestingActivities", "Cash from investing", [-2.0]),
+            StatementRow(
+                "us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperationsAbstract",
+                "Financing activities:",
+                [None],
+            ),
+            StatementRow("us-gaap:PaymentsForRepurchaseOfCommonStock", "Repurchases", [-3.0]),
+            StatementRow("us-gaap:NetCashProvidedByUsedInFinancingActivities", "Cash from financing", [-3.0]),
+        ],
+    )
+    disc = build_cash_flow_disclosure(st, cik="0000320193", accn="0000320193-26-000020", html_name="R7.htm")
+    assert _line(disc, "us-gaap:NetIncomeLoss")["group"] == "operating"
+    assert _line(disc, "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment")["group"] == "investing"
+    assert _line(disc, "us-gaap:PaymentsForRepurchaseOfCommonStock")["group"] == "financing"
+    assert _line(disc, "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents")["group"] == "other"
+    by_order = {line["order"]: line["concept"] for g in disc["groups"] for line in g["lines"]}
+    assert [by_order[i] for i in range(len(st.rows))] == [r.concept for r in st.rows]
+
+
+def test_meta_msft_aapl_faces_keep_original_labels_custom_tags_and_groups():
+    meta = build_cash_flow_disclosure(
+        parse_statement_html(META_Q3.read_text()),
+        cik="0001326801",
+        accn="0001628280-26-066773",
+        form="10-Q",
+        html_name="R8.htm",
+        prior_statement=parse_statement_html(META_Q2.read_text()),
+    )
+    assert has_cash_flow_line(parse_statement_html(META_Q3.read_text()))
+    assert meta["period"] == {"kind": "asReported", "months": 9, "end": "2026-09-30"}
+    assert _line(meta, "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment")["label"] == (
+        "Purchases of property and equipment"
+    )
+    assert _line(meta, "us-gaap:PaymentsForRepurchaseOfCommonStock")["group"] == "financing"
+    custom = _line(meta, "meta:PaymentsToAcquireBusinessesNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets")
+    assert custom["identity"] is None
+    assert custom["group"] == "investing"
+    assert custom["label"] == "Acquisitions of businesses and intangible assets"
+    assert _line(meta, "meta:UnrealizedGainLossOnMarketableAndNonmarketableEquityInvestments")["identity"] is None
+
+    msft = build_cash_flow_disclosure(
+        parse_statement_html(MSFT_FY.read_text()),
+        cik="0000789019",
+        accn="0001193125-26-323660",
+        form="10-K",
+        html_name="R6.htm",
+        prior_statement=parse_statement_html(MSFT_Q3.read_text()),
+    )
+    assert msft["period"] == {"kind": "asReported", "months": 12, "end": "2026-06-30"}
+    assert _line(msft, "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment")["label"] == (
+        "Additions to property and equipment"
+    )
+    assert _line(msft, "us-gaap:PaymentsForRepurchaseOfCommonStock")["group"] == "financing"
+    assert _line(msft, "msft:AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets")["identity"] is None
+    assert _line(msft, "msft:DepreciationAmortizationAndOther")["identity"] is None
+
+    aapl = build_cash_flow_disclosure(
+        parse_statement_html(AAPL_Q3.read_text()),
+        cik="0000320193",
+        accn="0000320193-26-000020",
+        form="10-Q",
+        html_name="R7.htm",
+        prior_statement=parse_statement_html(AAPL_Q2.read_text()),
+    )
+    assert aapl["period"] == {"kind": "asReported", "months": 9, "end": "2026-06-27"}
+    assert _line(aapl, "us-gaap:NetIncomeLoss")["group"] == "operating"
+    assert _line(aapl, "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment")["group"] == "investing"
+    assert _line(aapl, "us-gaap:PaymentsForRepurchaseOfCommonStock")["group"] == "financing"
+    assert _line(aapl, "us-gaap:PaymentsOfDividends")["group"] == "financing"
+    cash = _line(aapl, "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents")
+    assert cash["group"] == "other"
+    aapl_rows = parse_statement_html(AAPL_Q3.read_text()).rows
+    by_order = {line["order"]: line["concept"] for g in aapl["groups"] for line in g["lines"]}
+    assert [by_order[i] for i in range(len(aapl_rows))] == [r.concept for r in aapl_rows]
+
+
+def test_latest_official_periodic_is_not_the_metric_accession():
+    older = PeriodicFiling("0000000001-26-000050", "10-Q", date(2026, 5, 1), date(2026, 3, 31))
+    newer = PeriodicFiling("0000000001-26-000090", "10-Q", date(2026, 8, 1), date(2026, 6, 30))
+    assert latest_official_periodic([older, newer]).accn == "0000000001-26-000090"
+    assert latest_official_periodic([older, newer]).accn != "0000000001-26-000050"
+
+
+class _FakeSec:
+    def __init__(self, statements, summaries=None, fail=None):
+        self.statements = statements
+        self.summaries = summaries or {}
+        self.fail = set(fail or [])
+        self.cf_gets: list[str] = []
+
+    def cash_flow_statement(self, cik, accn):
+        self.cf_gets.append(accn)
+        if accn in self.fail:
+            return None
+        st = self.statements.get(accn)
+        if st is None:
+            return None
+        return st, f"https://www.sec.gov/Archives/edgar/data/1/{accn.replace('-', '')}/R6.htm"
+
+    def filing_summary(self, cik, accn):
+        return self.summaries.get(accn)
+
+
+def test_resolve_uses_official_filing_not_metric_accn_and_marks_stale():
+    latest = PeriodicFiling("0000000001-26-000090", "10-Q", date(2026, 8, 1), date(2026, 6, 30))
+    st = Statement(
+        title="CF",
+        scale=1,
+        columns=[StatementColumn(months=3, end=date(2026, 6, 30))],
+        rows=[StatementRow("us-gaap:PaymentsToAcquirePropertyPlantAndEquipment", "PPE", [-4.0])],
+    )
+    sec = _FakeSec({"0000000001-26-000090": st})
+    resolved = resolve_cash_flow_disclosure(
+        cik="0000000001",
+        sec=sec,
+        official_filings=[latest],
+        existing={
+            "cashFlow": {
+                "source": "sec_cash_flow_face",
+                "filing": {"accn": "0000000001-26-000050"},
+                "groups": [{"id": "old", "lines": []}],
+            }
+        },
+    )
+    assert resolved["cashFlow"]["status"] == "current"
+    assert resolved["cashFlow"]["filing"]["accn"] == "0000000001-26-000090"
+    assert sec.cf_gets == ["0000000001-26-000090"]
+
+    failed = resolve_cash_flow_disclosure(
+        cik="0000000001",
+        sec=_FakeSec({}, fail={"0000000001-26-000090"}),
+        official_filings=[latest],
+        existing={
+            "cashFlow": {
+                "source": "sec_cash_flow_face",
+                "filing": {"accn": "0000000001-26-000050", "filed": "2026-05-01"},
+                "groups": [{"id": "financing", "lines": [{"concept": "keep"}]}],
+            }
+        },
+    )
+    assert failed["cashFlow"]["status"] == "stale"
+    assert failed["cashFlow"]["filing"]["accn"] == "0000000001-26-000050"
+    assert failed["cashFlow"]["targetAccn"] == "0000000001-26-000090"
+    assert failed["cashFlow"]["groups"][0]["lines"][0]["concept"] == "keep"
+
+    missing = resolve_cash_flow_disclosure(
+        cik="0000000001",
+        sec=_FakeSec({}, fail={"0000000001-26-000090"}),
+        official_filings=[latest],
+    )
+    assert missing["cashFlow"]["status"] == "unavailable"
+    assert missing["cashFlow"]["groups"] == []
+    assert missing["cashFlow"]["targetAccn"] == "0000000001-26-000090"
