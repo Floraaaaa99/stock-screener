@@ -11,7 +11,7 @@ from helpers import calendar_year, companyfacts, raw
 from screener_pipeline.cache import write_json_atomic, write_json_if_changed
 from screener_pipeline.cli import main
 from screener_pipeline.daily_update import DailyUpdateError, discovery_since, pacific_today, run_daily_update
-from screener_pipeline.sec.daily_index import DailyFiling
+from screener_pipeline.sec.daily_index import DailyFiling, collect_period_filings
 from screener_pipeline.sec.facts import Fact
 
 
@@ -651,6 +651,60 @@ def test_discovery_http_error_does_not_advance_checkpoint(tmp_path: Path, monkey
         )
     assert (data / "companies" / "AAA.json").read_bytes() == before_company
     assert (data / "daily-update.json").read_text() == before_state
+
+
+def test_weekend_master_idx_is_not_requested(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    write_json_atomic(
+        data / "daily-update.json",
+        {"lastSuccessfulSyncAt": "2026-10-20T01:00:00+00:00", "processedAccessions": {}},
+    )
+    before_company = (data / "companies" / "AAA.json").read_bytes()
+
+    class _Resp:
+        def __init__(self, status: int):
+            self.status_code = status
+            self.content = b""
+
+        def raise_for_status(self):
+            if self.status_code >= 400 and self.status_code != 404:
+                raise requests.HTTPError(f"HTTP {self.status_code}", response=self)
+
+    class _Http:
+        def __init__(self) -> None:
+            self.urls: list[str] = []
+
+        def get(self, url: str) -> _Resp:
+            self.urls.append(url)
+            return _Resp(404)
+
+    http = _Http()
+
+    def wrapped(_http, *args, **kwargs):
+        return collect_period_filings(http, *args, **kwargs)
+
+    monkeypatch.setenv("SEC_USER_AGENT", "stock-screener tester@example.com")
+    monkeypatch.setattr(
+        "screener_pipeline.daily_update.fetch_latest_filings",
+        lambda *_args, **_kwargs: ([], {"pages": 1, "hits": 0}),
+    )
+    monkeypatch.setattr("screener_pipeline.daily_update.collect_period_filings", wrapped)
+
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 21),
+        state_dir=tmp_path / "state",
+        cache_dir=tmp_path / "cache",
+        verify_quarters=False,
+        offline=False,
+        update_layer3=False,
+    )
+    assert report["ok"] is True
+    assert report["published"] is False
+    assert "2026-10-18" not in report["unresolvedDates"]
+    assert "2026-10-17" not in report["unresolvedDates"]
+    assert all("master.20261018.idx" not in url and "master.20261017.idx" not in url for url in http.urls)
+    assert (data / "companies" / "AAA.json").read_bytes() == before_company
 
 
 def test_company_facts_http_error_does_not_advance_checkpoint(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):

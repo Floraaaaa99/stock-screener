@@ -97,6 +97,7 @@ jobs:
             extra+=(--write-live)
             echo "dry_run=false" >> "$GITHUB_OUTPUT"
           fi
+          set -o pipefail
           set +e
           screener -v daily-update --lookback-days "$LOOKBACK" "${extra[@]}" | tee /tmp/daily-update-report.json
           code=$?

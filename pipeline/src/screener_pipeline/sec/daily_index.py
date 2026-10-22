@@ -2,13 +2,22 @@
 
 from __future__ import annotations
 
+import logging
 import re
+import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from .. import config
 from .facts import DOMESTIC_FORMS, INDEX_RECONCILE_FORMS
+
+log = logging.getLogger(__name__)
+
+# Weekday master.idx 403s are retried locally. This does not change Latest Filings
+# or Company Facts request policy.
+FORBIDDEN_RETRIES = 3
+FORBIDDEN_BACKOFFS = (1.0, 2.0, 4.0)
 
 # https://www.sec.gov/Archives/edgar/daily-index/2026/QTR4/master.20261020.idx
 SEC_DAILY_MASTER_URL = (
@@ -51,6 +60,28 @@ def lookback_dates(as_of: date, days: int) -> list[date]:
     if days < 1:
         raise ValueError("lookback days must be >= 1")
     return [as_of - timedelta(days=offset) for offset in range(days)]
+
+
+def is_weekend(day: date) -> bool:
+    return day.weekday() >= 5
+
+
+def _sleep(seconds: float) -> None:
+    time.sleep(seconds)
+
+
+def _get_master_idx(http, url: str):
+    """GET one master.idx URL. Retry weekday 403s with bounded backoff; 404 is not retried."""
+    resp = http.get(url)
+    if resp.status_code != 403:
+        return resp
+    for delay in FORBIDDEN_BACKOFFS[:FORBIDDEN_RETRIES]:
+        log.warning("GET %s returned 403; retrying in %.1fs", url, delay)
+        _sleep(delay)
+        resp = http.get(url)
+        if resp.status_code != 403:
+            return resp
+    return resp
 
 
 def recent_business_days(as_of: date, count: int) -> list[date]:
@@ -165,7 +196,7 @@ def index_is_complete(text: str) -> bool:
 
 
 def fetch_master_idx(http, day: date, cache_dir: Path | None = None, *, revalidate: bool = False) -> str | None:
-    """Download one day's master.idx. 404 and header-only bodies are never written as a permanent cache."""
+    """Download one day's master.idx. Weekend days are not requested. 404 and header-only bodies are never cached."""
     text, _status = fetch_master_idx_status(http, day, cache_dir=cache_dir, revalidate=revalidate)
     return text
 
@@ -177,11 +208,16 @@ def fetch_master_idx_status(
     *,
     revalidate: bool = False,
 ) -> tuple[str | None, str]:
-    """Return (body or None, 'ok' | 'missing' | 'incomplete' | 'provisional').
+    """Return (body or None, 'ok' | 'missing' | 'incomplete' | 'provisional' | 'forbidden' | 'weekend').
 
-    5xx raises. 404 and header-only files are not cached. ``revalidate`` always
-    hits the network so a previously cached header+rows snapshot can grow.
+    Saturday and Sunday are not requested. 5xx raises. 404 and header-only files
+    are not cached. A weekday 403 is retried with bounded backoff; if it remains
+    inaccessible the date is ``forbidden`` (never treated as a successful
+    reconcile). ``revalidate`` always hits the network so a previously cached
+    header+rows snapshot can grow.
     """
+    if is_weekend(day):
+        return None, "weekend"
     url = master_idx_url(day)
     cache_dir = cache_dir or (config.CACHE_DIR / "sec" / "daily-index")
     path = cache_dir / f"master.{day.strftime('%Y%m%d')}.idx"
@@ -193,9 +229,11 @@ def fetch_master_idx_status(
             cached = None
     if cached is not None and not revalidate:
         return cached, "ok"
-    resp = http.get(url)
+    resp = _get_master_idx(http, url)
     if resp.status_code == 404:
         return (cached, "ok") if cached is not None else (None, "missing")
+    if resp.status_code == 403:
+        return cached, "forbidden"
     resp.raise_for_status()
     text = resp.content.decode("utf-8", errors="replace")
     if not index_is_complete(text):
@@ -216,17 +254,21 @@ def index_dates(
     since: date | None = None,
     extra: list[date] | None = None,
 ) -> list[date]:
-    """Dates to fetch: lookback window, recovery since, and previously unreconciled days."""
+    """Weekday dates to fetch: lookback window, recovery since, and previously unreconciled days.
+
+    Saturday and Sunday are omitted; SEC does not publish weekend master.idx files.
+    """
     start = as_of - timedelta(days=lookback_days - 1)
     if since is not None and since < start:
         start = since
     days = []
     cursor = start
     while cursor <= as_of:
-        days.append(cursor)
+        if not is_weekend(cursor):
+            days.append(cursor)
         cursor += timedelta(days=1)
     for day in extra or []:
-        if day not in days:
+        if not is_weekend(day) and day not in days:
             days.append(day)
     return sorted(days, reverse=True)
 
@@ -245,10 +287,11 @@ def collect_period_filings(
     """Filings from the recovery window. Returns (filings, dates found, still-unreconciled dates).
 
     The last ``revalidate_business_days`` weekdays are always re-fetched. A cached
-    file with only a header is deleted and not treated as complete. 404 is not
-    cached. Missing dates in that business-day window stay unreconciled; older
-    404s are treated as checked-empty (weekend/holiday). Incomplete or still-
-    growing indexes stay unreconciled.
+    file with only a header is deleted and not treated as complete. Saturday and
+    Sunday are not requested. 404 is not cached: recent business-day misses stay
+    unreconciled, older weekday 404s are checked-empty (holiday). A weekday 403
+    is retried, then kept unreconciled and is never marked successfully
+    reconciled. Incomplete or still-growing indexes stay unreconciled.
     """
     wanted = forms if forms is not None else set(INDEX_RECONCILE_FORMS)
     found: list[DailyFiling] = []
@@ -264,6 +307,17 @@ def collect_period_filings(
             revalidate=day in revalidate_days,
         )
         iso = day.isoformat()
+        if status == "weekend":
+            continue
+        if status == "forbidden":
+            unreconciled.append(iso)
+            if text:
+                for row in parse_master_idx(text, forms=wanted):
+                    if row.accn in seen:
+                        continue
+                    seen.add(row.accn)
+                    found.append(row)
+            continue
         if status == "missing":
             if day in revalidate_days:
                 unreconciled.append(iso)
