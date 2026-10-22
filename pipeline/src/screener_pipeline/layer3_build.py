@@ -125,6 +125,7 @@ def _now_iso() -> str:
 
 def _reused_layer1(row: dict | None, company: dict | None) -> dict:
     ttm = (company or {}).get("ttm") or {}
+    revenue = (company or {}).get("revenue") or {}
     earnings = (company or {}).get("earnings") or {}
     return {
         "revenueTtm": row.get("ttmCurrent") if row else ttm.get("current"),
@@ -132,6 +133,7 @@ def _reused_layer1(row: dict | None, company: dict | None) -> dict:
         "revenueTtmGrowth": row.get("ttmGrowth") if row else ttm.get("growthPct"),
         "revenueReason": row.get("naReason") if row else ttm.get("reason"),
         "revenueCurrency": (row or {}).get("revenueCurrency") or ttm.get("currency"),
+        "revenueConcept": revenue.get("concept"),
         "earningsConcept": earnings.get("concept"),
         "earningsStatus": earnings.get("status"),
         "source": "layer1_copy",
@@ -588,6 +590,7 @@ def _analyze_payload(
     analysis = analyze_layer3_facts(
         facts,
         sic_code=sic_code,
+        preferred_revenue_concept=reused.get("revenueConcept"),
         preferred_earnings_concept=reused.get("earningsConcept"),
         canonical_cik=canonical,
     )

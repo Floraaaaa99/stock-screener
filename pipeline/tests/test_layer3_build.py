@@ -626,3 +626,45 @@ def test_restore_layer3_v3_removes_v4_only_files(tmp_path: Path):
     assert not (cik / "0001790169.json").exists()
     assert not (cik / "0000759828.json").exists()
     assert json.loads((data / "layer3.json").read_text())["schemaVersion"] == 2
+
+
+def test_write_layer3_uses_layer1_revenue_concept_on_conflict(tmp_path: Path):
+    data = _dataset(tmp_path)
+    m = 1_000_000
+    write_json_atomic(
+        data / "companies" / "HEI.json",
+        {
+            "ticker": "HEI",
+            "cik": "0000046619",
+            "revenue": {"concept": "RevenueFromContractWithCustomerExcludingAssessedTax", "status": "ok"},
+            "ttm": {"current": 460 * m, "previous": 350 * m, "growthPct": 31.42857142857143, "reason": None},
+        },
+    )
+    facts = {
+        "0000046619": companyfacts(
+            {
+                "Revenues": _ytd_year(2025, 150 * m, 165 * m, 180 * m, 195 * m, prefix="A")
+                + _ytd_year(2024, 120 * m, 128 * m, 135 * m, 143 * m, prefix="B"),
+                "RevenueFromContractWithCustomerExcludingAssessedTax": (
+                    _ytd_year(2025, 100 * m, 110 * m, 120 * m, 130 * m, prefix="C")
+                    + _ytd_year(2024, 80 * m, 85 * m, 90 * m, 95 * m, prefix="D")
+                ),
+                "NetCashProvidedByUsedInOperatingActivities": (
+                    _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 8, 8, 8, 8, prefix="P")
+                ),
+            },
+            cik=46619,
+            name="HEICO",
+        )
+    }
+    dest = tmp_path / "layer3.json"
+    without = write_layer3(data, dest, companyfacts_by_cik=facts)
+    hei = next(r for r in without["rows"] if r["cik"] == "0000046619")
+    assert hei["metrics"]["revenue"]["reason"] == "ambiguous_concept"
+
+    with_l1 = write_layer3(data, dest, companyfacts_by_cik=facts, read_company_json=True)
+    hei = next(r for r in with_l1["rows"] if r["cik"] == "0000046619")
+    assert hei["layer1"]["revenueConcept"] == "RevenueFromContractWithCustomerExcludingAssessedTax"
+    assert hei["metrics"]["revenue"]["concept"] == "RevenueFromContractWithCustomerExcludingAssessedTax"
+    assert hei["metrics"]["revenue"]["ttm"] == 460 * m
+    assert hei["metrics"]["revenue"]["status"] == "extracted"
