@@ -10,7 +10,14 @@ from helpers import calendar_year, companyfacts, raw
 
 from screener_pipeline.cache import write_json_atomic, write_json_if_changed
 from screener_pipeline.cli import main
-from screener_pipeline.daily_update import DailyUpdateError, discovery_since, pacific_today, run_daily_update
+from screener_pipeline.daily_update import (
+    DailyUpdateError,
+    ciks_needing_layer3_resync,
+    discovery_since,
+    layer3_revenue_still_eight_k,
+    pacific_today,
+    run_daily_update,
+)
 from screener_pipeline.sec.daily_index import DailyFiling, collect_period_filings
 from screener_pipeline.sec.facts import Fact
 
@@ -1319,3 +1326,195 @@ def test_eight_k_updates_shared_quarterly_data_for_all_layers(tmp_path: Path):
     assert interest.get("ttm") is None
     assert interest.get("status") in {"missing", "pending_analysis", None} or interest.get("reason")
     assert interest.get("ttm") != 0
+
+
+ASC_REVENUE = "RevenueFromContractWithCustomerExcludingAssessedTax"
+META_TEN_Q = "0001628280-26-066773"
+
+
+def _eight_k_revenue_quarter(
+    *,
+    fy: int = 2026,
+    fq: int = 3,
+    accn: str = "0001628280-26-066700",
+) -> dict:
+    return {
+        "fiscalYear": fy,
+        "fiscalQuarter": fq,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "value": 64_601_000_000,
+        "form": "8-K",
+        "accn": accn,
+        "sourceType": "8k_earnings_release",
+        "concept": "Revenues",
+        "verification": "awaiting_10q",
+        "verificationNote": "8-K — awaiting 10-Q",
+    }
+
+
+def _seed_stale_layer3_revenue(data: Path, cik: str, quarter: dict) -> Path:
+    path = data / "layer3" / "cik" / f"{str(cik).zfill(10)}.json"
+    payload = json.loads(path.read_text())
+    payload["metrics"]["revenue"] = {
+        "status": "extracted",
+        "concept": "Revenues",
+        "ttm": 64_601_000_000,
+        "quarters": [quarter],
+        "verification": "awaiting_10q",
+    }
+    payload["provisionalEarnings"] = {
+        "status": "awaiting_10q",
+        "accn": quarter["accn"],
+        "fiscalYear": quarter["fiscalYear"],
+        "fiscalQuarter": quarter["fiscalQuarter"],
+        "form": "8-K",
+        "sourceType": "8k_earnings_release",
+    }
+    write_json_atomic(path, payload, compact=True)
+    return path
+
+
+def _superseded_extract(cik: str, accn: str, *, fy: int = 2026, fq: int = 3) -> dict:
+    return {
+        "cik": cik,
+        "form": "8-K",
+        "filed": "2026-10-21",
+        "status": "superseded",
+        "supersededReason": "company_facts_period_covered",
+        "fiscalYear": fy,
+        "fiscalQuarter": fq,
+        "periodEnd": "2026-09-30",
+        "metrics": {
+            "revenue": {
+                "value": 64_601_000_000,
+                "unit": "USD",
+                "fiscalYear": fy,
+                "fiscalQuarter": fq,
+                "periodEnd": "2026-09-30",
+                "periodStart": "2026-07-01",
+                "label": "Revenues",
+            }
+        },
+    }
+
+
+def test_layer3_revenue_still_eight_k_matches_string_fiscal_slots(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("META", "0001326801")])
+    _seed_stale_layer3_revenue(data, "0001326801", _eight_k_revenue_quarter())
+    assert layer3_revenue_still_eight_k(data, "1326801", 2026, 3) is True
+    assert layer3_revenue_still_eight_k(data, "0001326801", "2026", "3") is True
+    assert layer3_revenue_still_eight_k(data, "0001326801", 2026, 2) is False
+
+
+def test_ciks_needing_layer3_resync_only_superseded_stale_revenue(tmp_path: Path):
+    data = _dataset(tmp_path, [_company("META", "0001326801"), _company("AAA", "0000000001")])
+    _seed_stale_layer3_revenue(data, "0001326801", _eight_k_revenue_quarter())
+    ten_q_q3 = {
+        **_eight_k_revenue_quarter(),
+        "form": "10-Q",
+        "accn": META_TEN_Q,
+        "sourceType": "company_facts",
+        "concept": ASC_REVENUE,
+        "verification": "company_facts_only",
+        "verificationNote": None,
+    }
+    _seed_stale_layer3_revenue(data, "0000000001", ten_q_q3)
+    found = ciks_needing_layer3_resync(
+        data,
+        {
+            "0001628280-26-066700": _superseded_extract("0001326801", "0001628280-26-066700"),
+            "0000000001-26-000024": _superseded_extract("0000000001", "0000000001-26-000024"),
+            "0001326801-26-000111": {
+                **_superseded_extract("0001326801", "0001326801-26-000111"),
+                "status": "extracted",
+            },
+        },
+    )
+    assert found == {"0001326801"}
+
+
+def test_superseded_eight_k_rebuilds_stale_layer3_revenue_without_new_filings(tmp_path: Path):
+    from fixtures.eight_k import META_ACCN, META_CIK
+    from test_layer3_extract import _meta_like_concepts
+
+    company = _company("META", META_CIK, current=64_601_000_000, previous=51_242_000_000, growth=26.07)
+    company["revenue"]["concept"] = ASC_REVENUE
+    company["revenue"]["quarters"] = [
+        {
+            "fiscalYear": 2026,
+            "fiscalQuarter": 3,
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "ttm": "current",
+            "missing": False,
+            "value": 64_601_000_000,
+            "form": "10-Q",
+            "accn": META_TEN_Q,
+            "sourceType": "company_facts",
+        }
+    ]
+    data = _dataset(tmp_path, [company])
+    issuer_path = _seed_stale_layer3_revenue(data, META_CIK, _eight_k_revenue_quarter(accn=META_ACCN))
+    write_json_atomic(
+        data / "daily-update.json",
+        {
+            "schemaVersion": 3,
+            "processedAccessions": {
+                META_ACCN: {
+                    "cik": META_CIK,
+                    "form": "8-K",
+                    "filed": "2026-10-21",
+                    "status": "recorded_8k",
+                },
+                META_TEN_Q: {
+                    "cik": META_CIK,
+                    "form": "10-Q",
+                    "filed": "2026-10-22",
+                    "status": "applied",
+                },
+            },
+            "earningsExtractions": {META_ACCN: _superseded_extract(META_CIK, META_ACCN)},
+        },
+    )
+    before_l3 = issuer_path.read_bytes()
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 22),
+        latest_filings=[],
+        indexes=[],
+        companyfacts_by_cik={META_CIK: companyfacts(_meta_like_concepts(), cik=int(META_CIK), name="META")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report["filingsNew"] == 0
+    assert report["published"] is True
+    assert META_CIK in report["layer3Updated"]
+    assert issuer_path.read_bytes() != before_l3
+    issuer = json.loads(issuer_path.read_text())
+    rev = issuer["metrics"]["revenue"]
+    assert rev["concept"] == ASC_REVENUE
+    q3 = next(q for q in rev["quarters"] if q.get("end") == "2026-09-30")
+    assert q3["value"] == 64_601_000_000
+    assert q3["form"] == "10-Q"
+    assert q3["accn"] == META_TEN_Q
+    assert q3["sourceType"] == "company_facts"
+    assert q3["concept"] == ASC_REVENUE
+    assert q3.get("verification") != "awaiting_10q"
+    assert "8-K" not in str(q3.get("verificationNote") or "")
+    assert round(rev["ttmYoy"], 1) == 27.5
+    report2 = run_daily_update(
+        data,
+        as_of=date(2026, 10, 22),
+        latest_filings=[],
+        indexes=[],
+        companyfacts_by_cik={META_CIK: companyfacts(_meta_like_concepts(), cik=int(META_CIK), name="META")},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+    )
+    assert report2["filingsNew"] == 0
+    assert report2["layer3Updated"] == []
+    assert report2["unchanged"] is True
+    assert json.loads(issuer_path.read_text())["metrics"]["revenue"]["concept"] == ASC_REVENUE
