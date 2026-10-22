@@ -552,6 +552,63 @@ export interface Layer3Row {
     source: string;
   };
   metrics: Layer3Metrics | null;
+  disclosures?: Layer3Disclosures | null;
+}
+
+export type DisclosureKind = "asReported" | "calculated" | "unavailable";
+
+export interface Layer3DisclosureAmount {
+  kind: DisclosureKind;
+  value: number | null;
+  months?: number | null;
+  end?: string | null;
+  reason?: string | null;
+  formula?: string | null;
+  priorAccn?: string | null;
+  priorEnd?: string | null;
+  priorValue?: number | null;
+}
+
+export interface Layer3DisclosureLine {
+  order: number;
+  label: string;
+  concept: string;
+  role: "header" | "line" | "total" | string;
+  identity: string | null;
+  group: string;
+  asReported: Layer3DisclosureAmount;
+  priorYear?: Layer3DisclosureAmount;
+  standaloneQuarter: Layer3DisclosureAmount;
+}
+
+export interface Layer3DisclosureGroup {
+  id: string;
+  label: string;
+  lines: Layer3DisclosureLine[];
+  reportedTotal?: { kind: DisclosureKind; value: number | null; concept?: string; label?: string } | null;
+}
+
+export interface Layer3Disclosures {
+  cashFlow?: {
+    source: string;
+    currency?: string | null;
+    filing?: {
+      cik?: string;
+      accn?: string | null;
+      form?: string | null;
+      filed?: string | null;
+      indexUrl?: string | null;
+      statementUrl?: string | null;
+      title?: string | null;
+    };
+    period?: { kind?: string; months?: number | null; end?: string | null };
+    groups: Layer3DisclosureGroup[];
+    identities?: Record<string, string>;
+    capex?: { breakdown?: string; note?: string | null };
+    acquisitions?: { disclosedOnFace?: boolean; note?: string | null };
+    noteLinks?: Array<{ title: string; identity?: string; url: string; parsed?: boolean }>;
+    notesParsed?: boolean;
+  };
 }
 
 export interface Layer3File {

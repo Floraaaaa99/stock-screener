@@ -124,6 +124,43 @@ def income_statement_candidates(filing_summary_xml: str) -> list[tuple[str, str]
     return [(c[2], c[3]) for c in candidates]
 
 
+_CASH_FLOW_RX = re.compile(r"cash\s+flows?", re.I)
+_NOT_CASH_FLOW_RX = re.compile(r"parenthetical", re.I)
+
+
+def cash_flow_candidates(filing_summary_xml: str) -> list[tuple[str, str]]:
+    """(html_file_name, short_name) of face cash-flow statements, best first."""
+    if not (filing_summary_xml or "").strip():
+        return []
+    try:
+        root = ET.fromstring(filing_summary_xml)
+    except ET.ParseError:
+        return []
+    candidates: list[tuple[int, int, str, str]] = []
+    for rep in root.iter("Report"):
+        cat = (rep.findtext("MenuCategory") or "").strip()
+        short = rep.findtext("ShortName") or ""
+        html = rep.findtext("HtmlFileName")
+        if cat != "Statements" or not html:
+            continue
+        if not _CASH_FLOW_RX.search(short) or _NOT_CASH_FLOW_RX.search(short):
+            continue
+        pos = int(rep.findtext("Position") or 999)
+        candidates.append((0, pos, html, short))
+    candidates.sort()
+    return [(c[2], c[3]) for c in candidates]
+
+
+def has_cash_flow_line(st: Statement) -> bool:
+    for r in st.rows:
+        name = r.concept.split(":", 1)[-1]
+        if "NetCashProvidedByUsedIn" in name or name.startswith("PaymentsToAcquire"):
+            return True
+        if re.search(r"cash flow", r.label, re.I):
+            return True
+    return False
+
+
 def has_revenue_line(st: Statement) -> bool:
     return any(
         re.search(r"revenue|sales", r.concept.split(":", 1)[-1], re.I) or re.search(r"revenue|sales", r.label, re.I)

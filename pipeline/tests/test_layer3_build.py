@@ -139,6 +139,47 @@ def test_write_layer3_groups_share_classes_and_does_not_score(tmp_path: Path):
     assert screener["rows"][0]["ttmGrowth"] == 25
 
 
+def test_write_layer3_preserves_face_disclosure_and_recomputes_metrics(tmp_path: Path):
+    data = _dataset(tmp_path)
+    facts = {
+        "0000046619": companyfacts(
+            {
+                "NetCashProvidedByUsedInOperatingActivities": (
+                    _ytd_year(2025, 10, 10, 10, 10, prefix="O") + _ytd_year(2024, 9, 9, 9, 9, prefix="P")
+                ),
+                "PaymentsToAcquirePropertyPlantAndEquipment": (
+                    _ytd_year(2025, 2, 2, 2, 2, prefix="C") + _ytd_year(2024, 1, 1, 1, 1, prefix="D")
+                ),
+                "CashAndCashEquivalentsAtCarryingValue": [
+                    _instant("2025-12-31", 50, "a", 2025, "FY", form="10-K")
+                ],
+            },
+            cik=46619,
+            name="HEICO CORPORATION",
+        )
+    }
+    dest = tmp_path / "layer3.json"
+    write_layer3(data, dest, companyfacts_by_cik=facts)
+    issuer_path = dest.parent / "layer3" / "cik" / "0000046619.json"
+    issuer = json.loads(issuer_path.read_text())
+    issuer["disclosures"] = {
+        "cashFlow": {
+            "source": "sec_cash_flow_face",
+            "groups": [{"id": "financing", "label": "Financing", "lines": [{"concept": "keep-me"}]}],
+            "notesParsed": False,
+        }
+    }
+    issuer_path.write_text(json.dumps(issuer))
+    out = write_layer3(data, dest, companyfacts_by_cik=facts)
+    hei = next(r for r in out["rows"] if r["cik"] == "0000046619")
+    assert hei["metrics"]["fcf"]["ttm"] == 32
+    assert hei["disclosures"]["cashFlow"]["source"] == "sec_cash_flow_face"
+    assert hei["disclosures"]["cashFlow"]["groups"][0]["lines"][0]["concept"] == "keep-me"
+    rewritten = json.loads(issuer_path.read_text())
+    assert rewritten["disclosures"]["cashFlow"]["notesParsed"] is False
+    assert rewritten["metrics"]["fcf"]["ttm"] == 32
+
+
 def test_write_layer3_without_facts_fails_and_preserves_existing(tmp_path: Path):
     data = _dataset(tmp_path)
     dest = tmp_path / "layer3.json"

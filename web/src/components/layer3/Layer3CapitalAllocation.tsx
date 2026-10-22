@@ -10,6 +10,7 @@ import {
   type MetricKind,
 } from "../../lib/layer3Research";
 import type { Layer3DerivedMetric, Layer3FlowMetric, Layer3Row } from "../../types";
+import { Layer3CashFlowDisclosure } from "./Layer3CashFlowDisclosure";
 import { MethodNote, MetricCard, Unavailable, ViewToggle } from "./ResearchChrome";
 import { SeriesView } from "./SeriesView";
 
@@ -55,19 +56,21 @@ export function Layer3CapitalAllocation({ row, currency }: { row: Layer3Row; cur
   return (
     <section id="capital-allocation" className="l3-section panel">
       <div className="l3-section-head">
-        <h2 title="Cash inflows, outflows, and investing/financing totals from Company Facts. Child lines are not summed into section totals. Gross issuance, gross repayment, and net financing stay separate.">
+        <h2 title="SEC cash-flow face lines first. Standardized research cards below are one Company Facts tag each and are not complete disclosure totals.">
           Capital Allocation & Cash Uses
         </h2>
       </div>
 
-      <article className="l3-block is-first">
+      <Layer3CashFlowDisclosure row={row} currency={currency} />
+
+      <article className="l3-block">
         <header className="l3-block-head">
-          <h3>Cash inflows, outflows, and section totals</h3>
+          <h3>Standardized research metrics (one tag each)</h3>
           <div className="l3-block-tools">
             <MethodNote>
-              Amounts come from a single US-GAAP cash-flow tag per line. Investing CF and Financing CF are statement
-              totals, not sums of the child lines below. CapEx is the same F2 series. Missing stays unavailable, never
-              zero. Purpose-of-use text is not inferred.
+              These cards are one US-GAAP Company Facts tag per category. They are not a complete SEC cash-flow
+              disclosure and may omit other face lines. Investing CF and Financing CF are statement totals, not sums
+              of the child cards. CapEx is the same F2 series. Missing stays unavailable, never zero.
             </MethodNote>
             <ViewToggle
               label="Capital allocation horizon"

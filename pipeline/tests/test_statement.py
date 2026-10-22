@@ -3,6 +3,7 @@ from datetime import date
 from helpers import FIXTURES
 
 from screener_pipeline.sec.statement import (
+    cash_flow_candidates,
     income_statement_candidates,
     is_net_income_label,
     is_total_revenue_label,
@@ -88,6 +89,23 @@ def test_income_statement_candidates_ranking():
 def test_real_filing_summary_finds_income_statement():
     xml = (FIXTURES / "statements" / "SRPT-0001193125-26-335003-FilingSummary.xml").read_text()
     assert income_statement_candidates(xml)[0][0] == "R4.htm"
+
+
+def test_cash_flow_candidates_skip_income_and_parenthetical():
+    xml = """<FilingSummary><MyReports>
+    <Report><HtmlFileName>R2.htm</HtmlFileName><ShortName>Statements of Operations</ShortName>
+      <MenuCategory>Statements</MenuCategory><Position>2</Position></Report>
+    <Report><HtmlFileName>R6.htm</HtmlFileName><ShortName>Consolidated Statements Of Cash Flows</ShortName>
+      <MenuCategory>Statements</MenuCategory><Position>6</Position></Report>
+    <Report><HtmlFileName>R6P.htm</HtmlFileName><ShortName>Cash Flows (Parenthetical)</ShortName>
+      <MenuCategory>Statements</MenuCategory><Position>7</Position></Report>
+    </MyReports></FilingSummary>"""
+    assert cash_flow_candidates(xml) == [("R6.htm", "Consolidated Statements Of Cash Flows")]
+
+
+def test_mog_filing_summary_finds_cash_flow():
+    xml = (FIXTURES / "statements" / "MOG-0001628280-26-051294-FilingSummary.xml").read_text()
+    assert cash_flow_candidates(xml)[0][0] == "R6.htm"
 
 
 def test_total_revenue_labels():

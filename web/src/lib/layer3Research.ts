@@ -10,6 +10,10 @@ import type {
   Layer3StockMetric,
 } from "../types";
 
+export function hasCashFlowDisclosure(row: Layer3Row | null | undefined): boolean {
+  return Boolean(row?.disclosures?.cashFlow?.groups?.length);
+}
+
 export const LAYER3_RESEARCH_SECTIONS = [
   { id: "growth", label: "Growth Quality" },
   { id: "health", label: "Financial Health" },

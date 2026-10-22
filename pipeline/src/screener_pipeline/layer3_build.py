@@ -598,14 +598,17 @@ def _analyze_payload(
     primary: str,
     row: dict | None,
     company: dict | None,
+    existing: dict | None = None,
 ) -> dict:
     canonical = str(base["cik"]).zfill(10)
+    existing_disclosures = existing.get("disclosures") if isinstance(existing, dict) else None
     analysis = analyze_layer3_facts(
         facts,
         sic_code=sic_code,
         preferred_revenue_concept=reused.get("revenueConcept"),
         preferred_earnings_concept=reused.get("earningsConcept"),
         canonical_cik=canonical,
+        disclosures=existing_disclosures if isinstance(existing_disclosures, dict) else None,
     )
     payload = {**base, **analysis.to_dict()}
     payload["cik"] = canonical
@@ -777,6 +780,7 @@ def write_layer3(
                 payload = _analyze_payload(
                     base, facts, sic_code=sic_code, reused=reused,
                     tickers=tickers, primary=primary, row=row, company=company,
+                    existing=existing_live,
                 )
             else:
                 payload = _pending_payload(base, sic_code)
