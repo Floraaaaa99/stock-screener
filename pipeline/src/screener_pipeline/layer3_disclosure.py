@@ -14,6 +14,7 @@ from datetime import date
 from .layer3_concepts import (
     ACQUISITION_CF_CONCEPTS,
     CAPEX_CONCEPTS,
+    CAPEX_MAY_BE_NET,
     DEBT_FINANCING_NET_CONCEPTS,
     DEBT_ISSUANCE_GROSS_CONCEPTS,
     DEBT_REPAYMENT_GROSS_CONCEPTS,
@@ -58,6 +59,50 @@ IDENTITY_LABELS = {
     "dividends": "Dividends",
     "acquisitions": "Acquisitions",
 }
+
+# Explicit gross cash-outflow concepts only. Prefix matching is not used to infer sign.
+GROSS_CASH_OUTFLOW_CONCEPTS = frozenset(
+    {
+        *DEBT_REPAYMENT_GROSS_CONCEPTS,
+        *SHARE_REPURCHASE_CONCEPTS,
+        *DIVIDEND_PAID_CONCEPTS,
+        *ACQUISITION_CF_CONCEPTS,
+        *(name for name in CAPEX_CONCEPTS if name not in CAPEX_MAY_BE_NET),
+        "RepaymentsOfLongTermLinesOfCredit",
+        "RepaymentsOfSecuredDebt",
+        "RepaymentsOfSubordinatedDebt",
+        "FinanceLeasePrincipalPayments",
+    }
+)
+
+_DO_NOT_NORMALIZE_SIGN = frozenset(
+    {
+        *DEBT_ISSUANCE_GROSS_CONCEPTS,
+        *DEBT_FINANCING_NET_CONCEPTS,
+        *CAPEX_MAY_BE_NET,
+    }
+)
+
+_INSTANT_BALANCE_CONCEPTS = frozenset(
+    {
+        "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+        "CashAndCashEquivalentsAtCarryingValue",
+        "RestrictedCashAndCashEquivalentsAtCarryingValue",
+        "RestrictedCashAndCashEquivalentsNoncurrent",
+    }
+)
+_CASH_ROLLFORWARD = {
+    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    "CashAndCashEquivalentsAtCarryingValue",
+}
+
+_OUTFLOW_DEF_RX = re.compile(r"cash outflow|cash paid|amount of cash paid", re.I)
+_INFLOW_DEF_RX = re.compile(r"cash inflow|cash received|proceeds from", re.I)
+_BEGIN_END_RX = re.compile(
+    r"beginning of|end of the period|end of period|at end of|at beginning of|"
+    r"beginning balances|ending balances",
+    re.I,
+)
 
 _NOTE_HINTS = (
     (re.compile(r"indebt|credit facility|long-term debt|long term debt", re.I), "debtFinancing"),
@@ -113,6 +158,94 @@ def line_identity(concept: str, label: str = "") -> str | None:
     return None
 
 
+def parse_concept_auth_refs(html: str) -> dict[str, dict]:
+    """Read Period Type / Balance Type / definition from EDGAR R-page authRef tables."""
+    out: dict[str, dict] = {}
+    if not (html or "").strip():
+        return out
+    for match in re.finditer(r'id="defref_([A-Za-z0-9-]+)_([A-Za-z0-9_]+)"', html):
+        concept = f"{match.group(1)}:{match.group(2)}"
+        chunk = html[match.end() : match.end() + 5000]
+        defn_match = re.search(r"Definition</a><div><p>(.*?)</p></div>", chunk, re.S | re.I)
+        definition = re.sub(r"<[^>]+>", " ", defn_match.group(1)) if defn_match else ""
+        definition = re.sub(r"\s+", " ", definition).strip()
+        out[concept] = {
+            "periodType": _auth_ref_field(chunk, "Period Type"),
+            "balanceType": _auth_ref_field(chunk, "Balance Type"),
+            "definition": definition,
+        }
+    return out
+
+
+def _auth_ref_field(chunk: str, label: str) -> str | None:
+    match = re.search(
+        rf"<strong>\s*{re.escape(label)}:\s*</strong></td>\s*<td>([^<]+)</td>",
+        chunk,
+        re.I,
+    )
+    if not match:
+        return None
+    value = match.group(1).strip().lower()
+    return value or None
+
+
+def _concept_meta(concept: str, concept_meta: dict[str, dict] | None) -> dict:
+    if not concept_meta:
+        return {}
+    return concept_meta.get(concept) or concept_meta.get(_local(concept)) or {}
+
+
+def _is_instant_balance(name: str, label: str = "", meta: dict | None = None) -> bool:
+    """Point-in-time cash / restricted-cash balances. Not duration flows."""
+    if "PeriodIncreaseDecrease" in name or name.startswith("EffectOfExchangeRate"):
+        return False
+    period = ((meta or {}).get("periodType") or "").lower()
+    if period == "instant":
+        return True
+    if period == "duration":
+        return False
+    if name in _INSTANT_BALANCE_CONCEPTS:
+        return True
+    return bool(name in _CASH_ROLLFORWARD and _BEGIN_END_RX.search(label or ""))
+
+
+def _is_verified_gross_outflow(concept: str, meta: dict | None = None) -> bool:
+    """True only for an allow-listed gross cash-outflow with consistent XBRL metadata."""
+    if _ns(concept) and _ns(concept) not in STANDARD_NS:
+        return False
+    name = _local(concept)
+    if name in _DO_NOT_NORMALIZE_SIGN or name in SECTION_TOTALS:
+        return False
+    if name not in GROSS_CASH_OUTFLOW_CONCEPTS:
+        return False
+    if "PaymentsForProceeds" in name or "ProceedsFrom" in name:
+        return False
+    meta = meta or {}
+    period = (meta.get("periodType") or "").lower()
+    if period == "instant":
+        return False
+    definition = meta.get("definition") or ""
+    if definition and _INFLOW_DEF_RX.search(definition) and not _OUTFLOW_DEF_RX.search(definition):
+        return False
+    return True
+
+
+def presentation_amount(
+    concept: str,
+    value: float | None,
+    *,
+    label: str = "",
+    meta: dict | None = None,
+) -> float | None:
+    """Cash-flow face sign. Already-negative and non-outflow values are unchanged."""
+    del label
+    if value is None:
+        return None
+    if value <= 0 or not _is_verified_gross_outflow(concept, meta):
+        return value
+    return -abs(value)
+
+
 def _current_column(columns: list[StatementColumn]) -> tuple[int | None, StatementColumn | None]:
     dated = [(i, c) for i, c in enumerate(columns) if c.end]
     if not dated:
@@ -153,9 +286,14 @@ def _prior_ytd_stub(
     concept: str,
     current: StatementColumn,
     prior: Statement | None,
+    *,
+    concept_meta: dict[str, dict] | None = None,
 ) -> tuple[float, StatementColumn] | None:
     """Comparable shorter YTD from another same-year filing. Absence is not zero."""
     if prior is None or current.end is None or current.months is None:
+        return None
+    meta = _concept_meta(concept, concept_meta)
+    if _is_instant_balance(_local(concept), "", meta):
         return None
     prior_idx, prior_col = _current_column(prior.columns)
     if prior_col is None or prior_col.end is None or prior_col.months is None:
@@ -170,7 +308,9 @@ def _prior_ytd_stub(
     row = _find_row(prior, concept)
     if row is None:
         return None
-    val = _row_value(row, prior_idx)
+    if _is_instant_balance(_local(row.concept), row.label, meta):
+        return None
+    val = presentation_amount(concept, _row_value(row, prior_idx), label=row.label, meta=meta)
     if val is None:
         return None
     return val, prior_col
@@ -186,12 +326,6 @@ def _same_end_quarter_column(
         if col.end == current.end and col.months == 3 and (current.months or 0) > 3:
             return i, col
     return None, None
-
-
-_CASH_ROLLFORWARD = {
-    "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-    "CashAndCashEquivalentsAtCarryingValue",
-}
 
 
 def _section_marker(name: str) -> str | None:
@@ -293,12 +427,17 @@ def build_cash_flow_disclosure(
     filed: str | None = None,
     statement_url: str = "",
     html_name: str = "",
+    statement_html: str | None = None,
+    concept_meta: dict[str, dict] | None = None,
     prior_statement: Statement | None = None,
     prior_accn: str | None = None,
     note_links: list[dict] | None = None,
     currency: str | None = "USD",
 ) -> dict:
     """Turn one face cash-flow statement into the disclosure tree."""
+    meta_by_concept = dict(concept_meta or {})
+    if statement_html:
+        meta_by_concept.update(parse_concept_auth_refs(statement_html))
     cur_idx, current = _current_column(statement.columns)
     py_idx, prior_year = _prior_year_column(statement.columns, current) if current else (None, None)
     q_idx, q_col = _same_end_quarter_column(statement.columns, current) if current else (None, None)
@@ -309,19 +448,36 @@ def build_cash_flow_disclosure(
 
     for order, row in enumerate(statement.rows):
         name = _local(row.concept)
+        meta = _concept_meta(row.concept, meta_by_concept)
         group_id, section = _assign_group(name, section)
         role = _role(name, row.values, group_id)
-        reported = _row_value(row, cur_idx) if role != "header" else None
-        prior_year_val = _row_value(row, py_idx) if role != "header" and py_idx is not None else None
+        reported = (
+            presentation_amount(row.concept, _row_value(row, cur_idx), label=row.label, meta=meta)
+            if role != "header"
+            else None
+        )
+        prior_year_val = (
+            presentation_amount(row.concept, _row_value(row, py_idx), label=row.label, meta=meta)
+            if role != "header" and py_idx is not None
+            else None
+        )
         identity = line_identity(row.concept, row.label) if role == "line" else None
         if identity == "capex":
             capex_lines += 1
+        instant = _is_instant_balance(name, row.label, meta)
 
         standalone: dict
         if role != "line":
             standalone = {
                 "kind": "unavailable",
                 "reason": None,
+                "value": None,
+                "formula": None,
+            }
+        elif instant:
+            standalone = {
+                "kind": "unavailable",
+                "reason": "instant_balance",
                 "value": None,
                 "formula": None,
             }
@@ -338,13 +494,19 @@ def build_cash_flow_disclosure(
             standalone = {
                 "kind": "asReported",
                 "reason": None,
-                "value": _row_value(row, q_idx),
+                "value": presentation_amount(
+                    row.concept, _row_value(row, q_idx), label=row.label, meta=meta
+                ),
                 "formula": "3M reported",
                 "months": 3,
                 "end": q_col.end.isoformat() if q_col.end else None,
             }
         else:
-            stub = _prior_ytd_stub(row.concept, current, prior_statement) if current else None
+            stub = (
+                _prior_ytd_stub(row.concept, current, prior_statement, concept_meta=meta_by_concept)
+                if current
+                else None
+            )
             if stub is not None and reported is not None and current is not None:
                 prior_val, prior_col = stub
                 standalone = {
@@ -521,6 +683,13 @@ def _build_from_sec(sec, cik: str, latest, prior) -> dict | None:
             prior_accn = prior.accn
     summary = sec.filing_summary(cik, latest.accn) if hasattr(sec, "filing_summary") else None
     notes = note_source_links(summary or "", cik, latest.accn)
+    html_name = url.rsplit("/", 1)[-1]
+    statement_html = None
+    if hasattr(sec, "filing_document"):
+        try:
+            statement_html = sec.filing_document(cik, latest.accn, html_name)
+        except Exception:  # noqa: BLE001
+            statement_html = None
     return build_cash_flow_disclosure(
         statement,
         cik=cik,
@@ -528,7 +697,8 @@ def _build_from_sec(sec, cik: str, latest, prior) -> dict | None:
         form=latest.form,
         filed=latest.filed.isoformat() if getattr(latest.filed, "isoformat", None) else str(latest.filed),
         statement_url=url,
-        html_name=url.rsplit("/", 1)[-1],
+        html_name=html_name,
+        statement_html=statement_html,
         prior_statement=prior_statement,
         prior_accn=prior_accn,
         note_links=notes,

@@ -11,6 +11,8 @@ from screener_pipeline.layer3_disclosure import (
     build_cash_flow_disclosure,
     line_identity,
     note_source_links,
+    parse_concept_auth_refs,
+    presentation_amount,
     resolve_cash_flow_disclosure,
 )
 from screener_pipeline.layer3_extract import analyze_layer3_facts
@@ -35,7 +37,8 @@ AAPL_Q2 = FIXTURES / "statements" / "AAPL-0000320193-26-000013-R7.htm"
 
 
 def _mog_disclosure():
-    q3 = parse_statement_html(MOG_Q3.read_text())
+    q3_html = MOG_Q3.read_text()
+    q3 = parse_statement_html(q3_html)
     q2 = parse_statement_html(MOG_Q2.read_text())
     notes = note_source_links(MOG_SUMMARY.read_text(), "0000067887", "0001628280-26-051294")
     return build_cash_flow_disclosure(
@@ -45,6 +48,7 @@ def _mog_disclosure():
         form="10-Q",
         filed="2026-07-31",
         html_name="R6.htm",
+        statement_html=q3_html,
         prior_statement=q2,
         prior_accn="0001628280-26-027064",
         note_links=notes,
@@ -98,8 +102,7 @@ def test_mog_face_keeps_revolver_notes_and_custom_sect_lines():
 
     notes_out = _line(disc, "us-gaap:RepaymentsOfSeniorDebt")
     assert notes_out["label"] == "Payments on senior notes"
-    # R6.htm shows 500,000 without parentheses (terseLabel, not negated).
-    assert notes_out["asReported"]["value"] == 500_000_000
+    assert notes_out["asReported"]["value"] == -500_000_000
     assert notes_out["standaloneQuarter"]["kind"] == "unavailable"
     assert notes_out["standaloneQuarter"]["reason"] == "missing_prior_ytd"
     assert notes_out["standaloneQuarter"]["value"] is None
@@ -123,8 +126,9 @@ def test_mog_face_keeps_revolver_notes_and_custom_sect_lines():
         for line in financing["lines"]
         if line["role"] == "line" and line["asReported"]["value"] is not None
     )
-    assert financing["reportedTotal"]["value"] == -148_305_000
-    assert child_sum != financing["reportedTotal"]["value"]
+    # Official ($500M) senior-notes outflow makes the face lines reconcile to the reported total.
+    # The total is still the SEC section amount, not a recomputed child sum.
+    assert child_sum == financing["reportedTotal"]["value"]
 
 
 def test_mog_capex_is_face_total_without_invented_breakdown():
@@ -171,16 +175,18 @@ def test_three_month_face_column_is_as_reported_standalone():
 
 
 def test_missing_prior_ytd_is_not_zero_for_new_face_line():
-    q3 = parse_statement_html(MOG_Q3.read_text())
+    q3_html = MOG_Q3.read_text()
+    q3 = parse_statement_html(q3_html)
     disc = build_cash_flow_disclosure(
         q3,
         cik="0000067887",
         accn="0001628280-26-051294",
         html_name="R6.htm",
+        statement_html=q3_html,
         prior_statement=None,
     )
     notes_out = _line(disc, "us-gaap:RepaymentsOfSeniorDebt")
-    assert notes_out["asReported"]["value"] == 500_000_000
+    assert notes_out["asReported"]["value"] == -500_000_000
     assert notes_out["standaloneQuarter"]["value"] is None
     assert notes_out["standaloneQuarter"]["kind"] == "unavailable"
     assert notes_out["standaloneQuarter"]["reason"] == "missing_prior_ytd"
@@ -303,12 +309,14 @@ def test_apple_style_continuing_operations_headers_keep_financing_together():
 
 
 def test_meta_msft_aapl_faces_keep_original_labels_custom_tags_and_groups():
+    meta_html = META_Q3.read_text()
     meta = build_cash_flow_disclosure(
-        parse_statement_html(META_Q3.read_text()),
+        parse_statement_html(meta_html),
         cik="0001326801",
         accn="0001628280-26-066773",
         form="10-Q",
         html_name="R8.htm",
+        statement_html=meta_html,
         prior_statement=parse_statement_html(META_Q2.read_text()),
     )
     assert has_cash_flow_line(parse_statement_html(META_Q3.read_text()))
@@ -322,13 +330,29 @@ def test_meta_msft_aapl_faces_keep_original_labels_custom_tags_and_groups():
     assert custom["group"] == "investing"
     assert custom["label"] == "Acquisitions of businesses and intangible assets"
     assert _line(meta, "meta:UnrealizedGainLossOnMarketableAndNonmarketableEquityInvestments")["identity"] is None
+    meta_other = next(g for g in meta["groups"] if g["id"] == "other")
+    meta_begin = next(line for line in meta_other["lines"] if "beginning of the period" in line["label"].lower())
+    meta_end = next(line for line in meta_other["lines"] if "end of the period" in line["label"].lower())
+    assert meta_begin["asReported"]["value"] == 39_100_000_000
+    assert meta_end["asReported"]["value"] == 24_354_000_000
+    assert meta_begin["standaloneQuarter"]["reason"] == "instant_balance"
+    assert meta_end["standaloneQuarter"]["reason"] == "instant_balance"
+    assert meta_begin["standaloneQuarter"]["value"] is None
+    restricted_current = _line(meta, "us-gaap:RestrictedCashAndCashEquivalentsAtCarryingValue")
+    restricted_noncurrent = _line(meta, "us-gaap:RestrictedCashAndCashEquivalentsNoncurrent")
+    assert restricted_current["asReported"]["value"] == 597_000_000
+    assert restricted_noncurrent["asReported"]["value"] == 12_535_000_000
+    assert restricted_current["standaloneQuarter"]["reason"] == "instant_balance"
+    assert restricted_noncurrent["standaloneQuarter"]["reason"] == "instant_balance"
 
+    msft_html = MSFT_FY.read_text()
     msft = build_cash_flow_disclosure(
-        parse_statement_html(MSFT_FY.read_text()),
+        parse_statement_html(msft_html),
         cik="0000789019",
         accn="0001193125-26-323660",
         form="10-K",
         html_name="R6.htm",
+        statement_html=msft_html,
         prior_statement=parse_statement_html(MSFT_Q3.read_text()),
     )
     assert msft["period"] == {"kind": "asReported", "months": 12, "end": "2026-06-30"}
@@ -338,13 +362,23 @@ def test_meta_msft_aapl_faces_keep_original_labels_custom_tags_and_groups():
     assert _line(msft, "us-gaap:PaymentsForRepurchaseOfCommonStock")["group"] == "financing"
     assert _line(msft, "msft:AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets")["identity"] is None
     assert _line(msft, "msft:DepreciationAmortizationAndOther")["identity"] is None
+    msft_other = next(g for g in msft["groups"] if g["id"] == "other")
+    msft_begin = next(line for line in msft_other["lines"] if "beginning of period" in line["label"].lower())
+    msft_end = next(line for line in msft_other["lines"] if "end of period" in line["label"].lower())
+    assert msft_begin["asReported"]["value"] == 30_242_000_000
+    assert msft_end["asReported"]["value"] == 20_935_000_000
+    assert msft_begin["standaloneQuarter"]["reason"] == "instant_balance"
+    assert msft_end["standaloneQuarter"]["reason"] == "instant_balance"
+    assert msft_begin["standaloneQuarter"]["value"] is None
 
+    aapl_html = AAPL_Q3.read_text()
     aapl = build_cash_flow_disclosure(
-        parse_statement_html(AAPL_Q3.read_text()),
+        parse_statement_html(aapl_html),
         cik="0000320193",
         accn="0000320193-26-000020",
         form="10-Q",
         html_name="R7.htm",
+        statement_html=aapl_html,
         prior_statement=parse_statement_html(AAPL_Q2.read_text()),
     )
     assert aapl["period"] == {"kind": "asReported", "months": 9, "end": "2026-06-27"}
@@ -357,6 +391,174 @@ def test_meta_msft_aapl_faces_keep_original_labels_custom_tags_and_groups():
     aapl_rows = parse_statement_html(AAPL_Q3.read_text()).rows
     by_order = {line["order"]: line["concept"] for g in aapl["groups"] for line in g["lines"]}
     assert [by_order[i] for i in range(len(aapl_rows))] == [r.concept for r in aapl_rows]
+    other = next(g for g in aapl["groups"] if g["id"] == "other")
+    begin = next(line for line in other["lines"] if "beginning" in line["label"].lower())
+    end = next(line for line in other["lines"] if "ending" in line["label"].lower())
+    assert begin["asReported"]["value"] == 35_934_000_000
+    assert end["asReported"]["value"] == 39_544_000_000
+    assert begin["standaloneQuarter"] == {
+        "kind": "unavailable",
+        "reason": "instant_balance",
+        "value": None,
+        "formula": None,
+    }
+    assert end["standaloneQuarter"]["reason"] == "instant_balance"
+    assert end["standaloneQuarter"]["value"] is None
+
+
+def test_mog_senior_notes_sign_matches_sec_10q_outflow_not_r_page_text():
+    raw = parse_statement_html(MOG_Q3.read_text())
+    raw_notes = next(r for r in raw.rows if r.concept == "us-gaap:RepaymentsOfSeniorDebt")
+    assert raw_notes.values[0] == 500_000_000
+    disc = _mog_disclosure()
+    notes = _line(disc, "us-gaap:RepaymentsOfSeniorDebt")
+    assert notes["asReported"]["value"] == -500_000_000
+    meta = parse_concept_auth_refs(MOG_Q3.read_text())["us-gaap:RepaymentsOfSeniorDebt"]
+    assert meta["periodType"] == "duration"
+    assert meta["balanceType"] == "credit"
+    assert "cash outflow" in (meta["definition"] or "").lower()
+    assert presentation_amount("us-gaap:RepaymentsOfSeniorDebt", 500_000_000, meta=meta) == -500_000_000
+
+
+def test_sign_normalization_does_not_use_concept_prefixes_or_touch_nets():
+    disc = _mog_disclosure()
+    assert _line(disc, "us-gaap:ProceedsFromIssuanceOfSeniorLongTermDebt")["asReported"]["value"] == 491_443_000
+    assert _line(disc, "us-gaap:ProceedsFromLongTermLinesOfCredit")["asReported"]["value"] == 1_348_400_000
+    assert _line(disc, "mog:PurchaseOfStockHeldByStockEmployeeCompensationTrust")["asReported"]["value"] == (
+        -51_319_000
+    )
+    meta_html = META_Q3.read_text()
+    meta = build_cash_flow_disclosure(
+        parse_statement_html(meta_html),
+        cik="0001326801",
+        accn="0001628280-26-066773",
+        statement_html=meta_html,
+    )
+    assert _line(meta, "us-gaap:PaymentsForProceedsFromOtherInvestingActivities")["asReported"]["value"] == (
+        1_079_000_000
+    )
+    assert _line(meta, "meta:AcquisitionOfBusinessAndIntangibleAssets")["asReported"]["value"] == 1_593_000_000
+    unknown = presentation_amount("us-gaap:PaymentsForSomethingUnlisted", 10.0)
+    assert unknown == 10.0
+    already_neg = presentation_amount("us-gaap:RepaymentsOfSeniorDebt", -15_716_000)
+    assert already_neg == -15_716_000
+
+
+def _sign_normalized_face_lines(html: str) -> list[tuple[str, str, float, float]]:
+    """Raw R-page values that disclosure presentation flips."""
+    raw = parse_statement_html(html)
+    meta = parse_concept_auth_refs(html)
+    flipped = []
+    for row in raw.rows:
+        if not row.values or row.values[0] is None:
+            continue
+        presented = presentation_amount(
+            row.concept, row.values[0], label=row.label, meta=meta.get(row.concept)
+        )
+        if presented != row.values[0]:
+            flipped.append((row.concept, row.label, row.values[0], presented))
+    return flipped
+
+
+def test_sign_normalized_values_match_official_sec_cash_flow_face():
+    """Only verified unsigned outflows are flipped, and only to the official face sign."""
+    mog_flips = _sign_normalized_face_lines(MOG_Q3.read_text())
+    assert mog_flips == [
+        ("us-gaap:RepaymentsOfSeniorDebt", "Payments on senior notes", 500_000_000.0, -500_000_000.0)
+    ]
+    # Official Moog FY2026 Q3 10-Q cash-flow face shows the senior-notes repayment in parentheses.
+    official_mog_10q_senior_notes = -500_000_000
+    assert mog_flips[0][3] == official_mog_10q_senior_notes
+
+    assert _sign_normalized_face_lines(META_Q3.read_text()) == []
+    assert _sign_normalized_face_lines(MSFT_FY.read_text()) == []
+    assert _sign_normalized_face_lines(AAPL_Q3.read_text()) == []
+
+    disc = _mog_disclosure()
+    assert _line(disc, "us-gaap:RepaymentsOfLongTermLinesOfCredit")["asReported"]["value"] == -1_375_400_000
+    assert _line(disc, "us-gaap:FinanceLeasePrincipalPayments")["asReported"]["value"] == -15_716_000
+    assert _line(disc, "us-gaap:PaymentsOfDividends")["asReported"]["value"] == -28_209_000
+    assert _line(disc, "us-gaap:PaymentsForRepurchaseOfCommonStock")["asReported"]["value"] == -62_673_000
+    assert _line(disc, "us-gaap:NetCashProvidedByUsedInFinancingActivities")["asReported"]["value"] == (
+        -148_305_000
+    )
+    assert _line(disc, "us-gaap:NetCashProvidedByUsedInOperatingActivities")["asReported"]["value"] == (
+        244_921_000
+    )
+
+
+def test_instant_balances_keep_face_amounts_and_skip_ytd_subtraction():
+    disc = _mog_disclosure()
+    other = next(g for g in disc["groups"] if g["id"] == "other")
+    begin = next(line for line in other["lines"] if "beginning of period" in line["label"].lower())
+    end = next(line for line in other["lines"] if "end of period" in line["label"].lower())
+    change = _line(
+        disc,
+        "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    )
+    fx = _line(
+        disc,
+        "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+    )
+    assert begin["asReported"]["value"] == 62_213_000
+    assert end["asReported"]["value"] == 67_752_000
+    assert begin["standaloneQuarter"]["kind"] == "unavailable"
+    assert begin["standaloneQuarter"]["reason"] == "instant_balance"
+    assert begin["standaloneQuarter"]["value"] is None
+    assert end["standaloneQuarter"]["reason"] == "instant_balance"
+    assert end["standaloneQuarter"]["value"] is None
+    assert change["asReported"]["value"] == 5_539_000
+    assert change["standaloneQuarter"]["kind"] == "calculated"
+    assert change["standaloneQuarter"]["value"] == 5_539_000 - 246_019_000
+    assert fx["standaloneQuarter"]["kind"] == "calculated"
+    assert fx["standaloneQuarter"]["value"] == 454_000 - 21_000
+
+    cash_meta = parse_concept_auth_refs(MOG_Q3.read_text())[
+        "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
+    ]
+    assert cash_meta["periodType"] == "instant"
+
+    st = Statement(
+        title="CF",
+        scale=1,
+        columns=[StatementColumn(months=9, end=date(2026, 6, 27))],
+        rows=[
+            StatementRow(
+                "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                "Cash at beginning of period",
+                [10.0],
+            )
+        ],
+    )
+    prior = Statement(
+        title="CF",
+        scale=1,
+        columns=[StatementColumn(months=6, end=date(2026, 3, 28))],
+        rows=[
+            StatementRow(
+                "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                "Cash at beginning of period",
+                [10.0],
+            )
+        ],
+    )
+    synthetic = build_cash_flow_disclosure(
+        st,
+        cik="1",
+        accn="a",
+        prior_statement=prior,
+        concept_meta={
+            "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+                "periodType": "instant",
+                "balanceType": "debit",
+                "definition": "Amount of cash",
+            }
+        },
+    )
+    line = _line(synthetic, "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents")
+    assert line["asReported"]["value"] == 10.0
+    assert line["standaloneQuarter"]["reason"] == "instant_balance"
+    assert line["standaloneQuarter"]["value"] is None
 
 
 def test_latest_official_periodic_is_not_the_metric_accession():
