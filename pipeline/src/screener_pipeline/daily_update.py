@@ -34,6 +34,7 @@ from .layer3_build import write_layer3
 from .output import SCHEMA_VERSION, screener_row, sort_screener_rows
 from .sec.client import SecClient, load_overrides
 from .sec.daily_index import DailyFiling, collect_period_filings, recent_business_days
+from .sec.edgar import PeriodicFiling
 from .sec.facts import CURRENT_REPORT_FORMS, DOMESTIC_FORMS, INDEX_RECONCILE_FORMS, SOURCE_TYPE_8K
 from .sec.latest_filings import fetch_latest_filings
 from .sec.store import FactsStore, PeriodicStore, SicStore, StatementStore
@@ -750,6 +751,10 @@ def run_daily_update(
         if update_layer3 and (staging / "layer3.json").exists():
             index_backup = (staging / "layer3.json").read_bytes()
             if raw_facts:
+                known_periodics = {
+                    cik: [PeriodicFiling(row.accn, row.form, row.filed, None) for row in rows]
+                    for cik, rows in in_universe.items()
+                }
                 payload = write_layer3(
                     staging,
                     staging / "layer3.json",
@@ -758,6 +763,8 @@ def run_daily_update(
                     mode="incremental",
                     write_live=False,
                     read_company_json=True,
+                    sec=sec,
+                    known_periodics=known_periodics,
                 )
                 for cik in payload.get("updated") or []:
                     rel = Path("layer3") / "cik" / f"{str(cik).zfill(10)}.json"

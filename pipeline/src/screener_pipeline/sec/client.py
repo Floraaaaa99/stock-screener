@@ -11,7 +11,14 @@ from ..universe.symbols import sec_symbol_variants
 from .edgar import PeriodicFiling, parse_periodic_filings
 from .facts import RevenueFacts, extract_earnings_facts, extract_revenue_facts
 from .sic import SicInfo
-from .statement import Statement, has_revenue_line, income_statement_candidates, parse_statement_html
+from .statement import (
+    Statement,
+    cash_flow_candidates,
+    has_cash_flow_line,
+    has_revenue_line,
+    income_statement_candidates,
+    parse_statement_html,
+)
 from .store import FactsStore, PeriodicStore, SicStore, StatementStore
 
 log = logging.getLogger(__name__)
@@ -190,6 +197,33 @@ class SecClient:
             result = None
         self.statement_store.put(accn, result)
         return result
+
+    def cash_flow_statement(self, cik: str, accn: str) -> tuple[Statement, str] | None:
+        """Rendered cash-flow statement for one filing. Not stored in the income-statement cache."""
+        base = config.SEC_ARCHIVES_URL.format(cik=int(cik), accn_nodash=accn.replace("-", ""))
+        fdir = self.cache_dir / "filings" / accn
+        try:
+            summary = self._cached_text(base + "FilingSummary.xml", fdir / "FilingSummary.xml", None)
+            for html_name, _ in cash_flow_candidates(summary) if summary else []:
+                html = self._cached_text(base + html_name, fdir / html_name, None)
+                if not html:
+                    continue
+                st = parse_statement_html(html)
+                if has_cash_flow_line(st):
+                    return st, base + html_name
+        except Exception as exc:  # noqa: BLE001 - statements are best-effort
+            log.warning("cash-flow statement unavailable for %s %s: %s", cik, accn, exc)
+        return None
+
+    def filing_summary(self, cik: str, accn: str) -> str | None:
+        base = config.SEC_ARCHIVES_URL.format(cik=int(cik), accn_nodash=accn.replace("-", ""))
+        fdir = self.cache_dir / "filings" / accn
+        try:
+            return self._cached_text(base + "FilingSummary.xml", fdir / "FilingSummary.xml", None)
+        except FileNotFoundError:
+            if self.offline:
+                return None
+            raise
 
     def filing_document(self, cik: str, accn: str, filename: str) -> str | None:
         """One immutable filing document from EDGAR archives (cached forever)."""

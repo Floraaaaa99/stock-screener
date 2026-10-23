@@ -288,6 +288,9 @@ def main(argv: list[str] | None = None) -> int:
             if args.ciks:
                 ciks = [part.strip() for part in args.ciks.replace(" ", ",").split(",") if part.strip()]
             try:
+                from .sec.client import SecClient
+
+                sec = SecClient(offline=False)
                 payload = write_layer3(
                     data_dir,
                     dest,
@@ -299,6 +302,7 @@ def main(argv: list[str] | None = None) -> int:
                     staging_dir=Path(args.staging_dir) if args.staging_dir else None,
                     publish=args.publish,
                     write_live=args.write_live,
+                    sec=sec,
                 )
             except Layer3BuildError as exc:
                 print(f"error: {exc}", file=sys.stderr)

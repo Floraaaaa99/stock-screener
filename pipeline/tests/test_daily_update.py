@@ -1518,3 +1518,87 @@ def test_superseded_eight_k_rebuilds_stale_layer3_revenue_without_new_filings(tm
     assert report2["layer3Updated"] == []
     assert report2["unchanged"] is True
     assert json.loads(issuer_path.read_text())["metrics"]["revenue"]["concept"] == ASC_REVENUE
+
+
+def test_daily_ten_q_refreshes_disclosure_when_facts_metric_accn_is_unchanged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """A new 10-Q in the daily index refreshes the face even if OCF still cites the older accn."""
+    from screener_pipeline.sec.client import SecClient
+    from screener_pipeline.sec.edgar import PeriodicFiling
+    from screener_pipeline.sec.statement import Statement, StatementColumn, StatementRow
+
+    old_accn = "0000000001-26-000092"
+    new_accn = "0000000001-26-000099"
+    data = _dataset(tmp_path, [_company("AAA", "0000000001")])
+    issuer_path = data / "layer3" / "cik" / "0000000001.json"
+    issuer = json.loads(issuer_path.read_text())
+    issuer["extractionStatus"] = "extracted"
+    issuer["metrics"] = {
+        "ocf": {"ttm": 10, "quarters": [{"accn": old_accn, "value": 10}]},
+        "fcf": {"ttm": 8},
+    }
+    issuer["disclosures"] = {
+        "cashFlow": {
+            "source": "sec_cash_flow_face",
+            "status": "current",
+            "filing": {"accn": old_accn, "form": "10-Q", "filed": "2026-08-01"},
+            "groups": [{"id": "operating", "lines": [{"concept": "old-face", "role": "line"}]}],
+        }
+    }
+    issuer_path.write_text(json.dumps(issuer))
+    face = Statement(
+        title="Cash Flows",
+        scale=1,
+        columns=[StatementColumn(months=3, end=date(2026, 9, 30))],
+        rows=[StatementRow("us-gaap:PaymentsToAcquirePropertyPlantAndEquipment", "PPE", [-4.0])],
+    )
+
+    class _Sec(SecClient):
+        def periodic_filings(self, cik, refresh=False):
+            return [
+                PeriodicFiling(old_accn, "10-Q", date(2026, 8, 1), date(2026, 6, 30)),
+                PeriodicFiling(new_accn, "10-Q", date(2026, 10, 30), date(2026, 9, 30)),
+            ]
+
+        def cash_flow_statement(self, cik, accn):
+            if accn != new_accn:
+                return None
+            return face, f"https://www.sec.gov/Archives/edgar/data/1/{accn.replace('-', '')}/R6.htm"
+
+        def filing_summary(self, cik, accn):
+            return None
+
+    monkeypatch.setattr("screener_pipeline.daily_update.SecClient", _Sec)
+    extra = [
+        Fact(date(2026, 7, 1), date(2026, 9, 30), 20.0, new_accn, 2026, "Q3", "10-Q", date(2026, 10, 30)),
+    ]
+    ocf_old = [
+        Fact(date(2026, 1, 1), date(2026, 3, 31), 4.0, "0000000001-26-000091", 2026, "Q1", "10-Q", date(2026, 5, 1)),
+        Fact(date(2026, 4, 1), date(2026, 6, 30), 5.0, old_accn, 2026, "Q2", "10-Q", date(2026, 8, 1)),
+        Fact(date(2026, 1, 1), date(2026, 6, 30), 9.0, old_accn, 2026, "Q2", "10-Q", date(2026, 8, 1)),
+    ]
+    facts = _shared_payload(1, "AAA", extra=extra)
+    facts["facts"]["us-gaap"]["NetCashProvidedByUsedInOperatingActivities"] = {
+        "units": {"USD": _raw_facts(ocf_old)}
+    }
+    report = run_daily_update(
+        data,
+        as_of=date(2026, 10, 31),
+        latest_filings=[],
+        indexes=[_filing("0000000001", new_accn, form="10-Q", filed=date(2026, 10, 30))],
+        companyfacts_by_cik={"0000000001": facts},
+        state_dir=tmp_path / "state",
+        verify_quarters=False,
+        offline=True,
+        update_layer3=True,
+    )
+    assert "0000000001" in report["layer3Updated"]
+    updated = json.loads(issuer_path.read_text())
+    assert updated["disclosures"]["cashFlow"]["status"] == "current"
+    assert updated["disclosures"]["cashFlow"]["filing"]["accn"] == new_accn
+    ocf_accns = {q.get("accn") for q in (updated["metrics"].get("ocf") or {}).get("quarters") or []}
+    assert new_accn not in ocf_accns
+    assert updated["disclosures"]["cashFlow"]["groups"][0]["lines"][0]["concept"] == (
+        "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"
+    )

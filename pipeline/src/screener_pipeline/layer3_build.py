@@ -30,7 +30,9 @@ from .layer3_concepts import (
     is_financial_sic,
     normalize_cik,
 )
+from .layer3_disclosure import resolve_cash_flow_disclosure
 from .layer3_extract import analyze_layer3_facts
+from .sec.edgar import merge_periodic_filings
 
 COVERAGE_KEYS = (
     "revenue",
@@ -516,7 +518,7 @@ def publish_layer3(
 
 def index_row(payload: dict) -> dict:
     """Universe index row: statuses and identity only. No quarter-level metrics."""
-    row = {k: v for k, v in payload.items() if k not in {"metrics", "earningsReleaseAudit"}}
+    row = {k: v for k, v in payload.items() if k not in {"metrics", "earningsReleaseAudit", "disclosures"}}
     row["metrics"] = None
     row["issuerFile"] = issuer_file_relpath(payload["cik"])
     pe = row.get("provisionalEarnings")
@@ -661,6 +663,8 @@ def write_layer3(
     staging_dir: Path | None = None,
     publish: bool = False,
     write_live: bool = False,
+    sec=None,
+    known_periodics: dict[str, list] | None = None,
 ) -> dict:
     """Extract Layer 3 issuer files.
 
@@ -778,6 +782,22 @@ def write_layer3(
                     base, facts, sic_code=sic_code, reused=reused,
                     tickers=tickers, primary=primary, row=row, company=company,
                 )
+                official = list((known_periodics or {}).get(cik) or [])
+                if sec is not None:
+                    try:
+                        official = merge_periodic_filings(official, sec.periodic_filings(cik) or [])
+                    except Exception:  # noqa: BLE001
+                        pass
+                resolved = resolve_cash_flow_disclosure(
+                    cik=cik,
+                    sec=sec,
+                    existing=existing_live.get("disclosures") if isinstance(existing_live, dict) else None,
+                    official_filings=official,
+                )
+                if resolved:
+                    payload["disclosures"] = resolved
+                elif isinstance(existing_live, dict) and existing_live.get("disclosures"):
+                    payload["disclosures"] = existing_live["disclosures"]
             else:
                 payload = _pending_payload(base, sic_code)
                 if mode == "incremental" and _is_keepable_extract(existing_live):

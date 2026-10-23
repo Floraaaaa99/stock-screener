@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { formatDays, formatExactMoney, formatRatio, formatRatioPercent } from "./format";
 import {
   capitalLineTitle,
+  hasCashFlowDisclosure,
   cashReconciliationState,
   chartableFlowPoints,
   chronologicalQuarters,
@@ -300,6 +301,94 @@ describe("capital allocation presentation", () => {
     expect(capitalLineTitle("repayment", { concept: "RepaymentsOfLongTermDebt", financingBasis: "gross" })).toBe(
       "Debt repayment (gross)",
     );
+  });
+
+  it("treats the cash-flow disclosure tree as optional and separate from one-tag metrics", () => {
+    const msft = loadIssuer("0000789019");
+    expect(hasCashFlowDisclosure(msft)).toBe(true);
+    const { disclosures: _drop, ...without } = msft;
+    expect(hasCashFlowDisclosure(without)).toBe(false);
+    expect(
+      hasCashFlowDisclosure({
+        ...without,
+        disclosures: {
+          cashFlow: {
+            source: "sec_cash_flow_face",
+            groups: [{ id: "financing", label: "Financing", lines: [] }],
+          },
+        },
+      }),
+    ).toBe(true);
+  });
+
+  it("keeps Moog face lines and does not change F2/F3 research metrics", () => {
+    const mog = loadIssuer("0000067887");
+    expect(hasCashFlowDisclosure(mog)).toBe(true);
+    const cash = mog.disclosures?.cashFlow;
+    expect(cash?.source).toBe("sec_cash_flow_face");
+    expect(cash?.notesParsed).toBe(false);
+    expect(cash?.capex?.note).toBe("Breakdown not specified.");
+    expect(cash?.period?.months).toBe(9);
+    const financing = cash?.groups.find((group) => group.id === "financing");
+    const revolver = financing?.lines.find((line) => line.concept === "us-gaap:ProceedsFromLongTermLinesOfCredit");
+    const notesOut = financing?.lines.find((line) => line.concept === "us-gaap:RepaymentsOfSeniorDebt");
+    const sect = financing?.lines.find(
+      (line) => line.concept === "mog:PurchaseOfStockHeldByStockEmployeeCompensationTrust",
+    );
+    expect(revolver?.label).toBe("Proceeds from revolving lines of credit");
+    expect(revolver?.asReported.value).toBe(1_348_400_000);
+    expect(revolver?.standaloneQuarter.kind).toBe("calculated");
+    expect(revolver?.standaloneQuarter.value).toBe(479_000_000);
+    expect(notesOut?.standaloneQuarter.kind).toBe("unavailable");
+    expect(notesOut?.standaloneQuarter.value).toBeNull();
+    expect(sect?.identity).toBeNull();
+    expect(sect?.asReported.value).toBe(-51_319_000);
+    expect(financing?.reportedTotal?.value).toBe(-148_305_000);
+    expect(mog.metrics?.ocf?.ttm).toBe(485_610_000);
+    expect(mog.metrics?.capex?.ttm).toBe(135_382_000);
+    expect(mog.metrics?.fcf?.ttm).toBe(350_228_000);
+    expect(mog.metrics?.fcf?.formula).toBe("OCF − CapEx (CapEx as positive cash outflow)");
+    expect(mog.metrics?.cash?.concept).toBe("CashAndCashEquivalentsAtCarryingValue");
+    expect(mog.metrics?.cash?.value).toBe(66_821_000);
+    expect(mog.metrics?.cashCfIdentity?.usedF3Cash).toBe(false);
+  });
+
+  it("keeps META, MSFT, and AAPL standardized research metrics unchanged", () => {
+    const meta = loadIssuer("0001326801");
+    const msft = loadIssuer("0000789019");
+    const aapl = loadIssuer("0000320193");
+    expect(hasCashFlowDisclosure(meta)).toBe(true);
+    expect(hasCashFlowDisclosure(msft)).toBe(true);
+    expect(hasCashFlowDisclosure(aapl)).toBe(true);
+    expect(meta.disclosures?.cashFlow?.filing?.accn).toBe("0001628280-26-066773");
+    expect(msft.disclosures?.cashFlow?.filing?.accn).toBe("0001193125-26-323660");
+    expect(aapl.disclosures?.cashFlow?.filing?.accn).toBe("0000320193-26-000020");
+    const aaplFinancing = aapl.disclosures?.cashFlow?.groups.find((group) => group.id === "financing");
+    expect(
+      aaplFinancing?.lines.some((line) => line.concept === "us-gaap:PaymentsForRepurchaseOfCommonStock"),
+    ).toBe(true);
+    expect(meta.metrics?.ocf?.ttm).toBe(133_087_000_000);
+    expect(meta.metrics?.capex?.ttm).toBe(104_438_000_000);
+    expect(meta.metrics?.fcf?.ttm).toBe(28_649_000_000);
+    expect(meta.metrics?.fcf?.formula).toBe("OCF − CapEx (CapEx as positive cash outflow)");
+    expect(meta.metrics?.debtIssuance?.concept).toBe("ProceedsFromIssuanceOfLongTermDebt");
+    expect(meta.metrics?.cash?.concept).toBe("CashAndCashEquivalentsAtCarryingValue");
+    expect(meta.metrics?.cashCfIdentity?.usedF3Cash).toBe(false);
+    expect(msft.metrics?.ocf?.ttm).toBe(182_935_000_000);
+    expect(msft.metrics?.capex?.ttm).toBe(115_948_000_000);
+    expect(msft.metrics?.fcf?.ttm).toBe(66_987_000_000);
+    expect(msft.metrics?.shareRepurchases?.ttm).toBe(22_271_000_000);
+    expect(msft.metrics?.dividendsPaid?.ttm).toBe(26_445_000_000);
+    expect(msft.metrics?.cashCfIdentity?.usedF3Cash).toBe(false);
+    expect(aapl.metrics?.ocf?.ttm).toBe(146_724_000_000);
+    expect(aapl.metrics?.capex?.ttm).toBe(10_041_000_000);
+    expect(aapl.metrics?.fcf?.ttm).toBe(136_683_000_000);
+    expect(aapl.metrics?.debtIssuance?.concept).toBe("ProceedsFromIssuanceOfLongTermDebt");
+    expect(aapl.metrics?.debtRepayment?.concept).toBe("RepaymentsOfLongTermDebt");
+    expect(aapl.metrics?.netDebtFinancing?.concept).toBe(
+      "ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess",
+    );
+    expect(aapl.metrics?.cashCfIdentity?.usedF3Cash).toBe(false);
   });
 
   it("does not treat missing FX or a missing CF change as a reconciliation failure", () => {

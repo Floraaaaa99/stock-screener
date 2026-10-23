@@ -871,9 +871,10 @@ class Layer3Analysis:
     extraction_version: int = LAYER3_EXTRACTION_VERSION
     schema_version: int = LAYER3_SCHEMA_VERSION
     data_as_of: str | None = None
+    disclosures: dict | None = None
 
     def to_dict(self) -> dict:
-        return {
+        payload = {
             "cik": self.cik,
             "schemaVersion": self.schema_version,
             "extractionVersion": self.extraction_version,
@@ -888,6 +889,12 @@ class Layer3Analysis:
             "metrics": self.metrics,
             "scoring": None,
         }
+        if self.disclosures:
+            if "cashFlow" in self.disclosures or "groups" not in self.disclosures:
+                payload["disclosures"] = self.disclosures
+            else:
+                payload["disclosures"] = {"cashFlow": self.disclosures}
+        return payload
 
 
 def analyze_layer3_facts(
@@ -898,6 +905,7 @@ def analyze_layer3_facts(
     preferred_revenue_concept: str | None = None,
     preferred_earnings_concept: str | None = None,
     canonical_cik: str | None = None,
+    disclosures: dict | None = None,
 ) -> Layer3Analysis:
     """Analyze one issuer's Company Facts payload. Does not score.
 
@@ -1203,4 +1211,5 @@ def analyze_layer3_facts(
         metrics=metrics,
         flags=flags,
         data_as_of=data_as_of,
+        disclosures=disclosures,
     )
