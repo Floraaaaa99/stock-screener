@@ -572,7 +572,9 @@ def _match_metric(label: str, statement: str, section: str = "") -> str | None:
     return None
 
 
-def _apply_loss_sign(key: str, label: str, value: float) -> float | None:
+def _apply_loss_sign(key: str, label: str, value: float | None) -> float | None:
+    if value is None:
+        return None
     if key not in {"operatingIncome", "netIncome", "grossProfit"}:
         return value
     if INCOME_OR_LOSS_RE.search(label):
@@ -836,7 +838,7 @@ def extract_metrics_from_html(html: str, *, exhibit_name: str = "") -> tuple[dic
             key = _match_metric(label, statement, section=section)
             if not key:
                 continue
-            signed = _apply_loss_sign(key, label, number)
+            signed = _apply_loss_sign(key, label, number) if number is not None else None
             if signed is None:
                 continue
             unit_scale = 1.0 if key == "dilutedEps" else scale
