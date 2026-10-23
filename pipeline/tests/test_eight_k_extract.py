@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fixtures.eight_k import (
+    EMPTY_QUARTERLY_LOSS_EXHIBIT,
     GAAP_EARNINGS_EXHIBIT,
     META_Q3_2026_EXHIBIT_URL,
     META_Q3_2026_REAL_EXHIBIT,
@@ -9,7 +10,11 @@ from fixtures.eight_k import (
     YTD_ONLY_EXHIBIT,
 )
 
-from screener_pipeline.eight_k_extract import extract_earnings_release, parse_number
+from screener_pipeline.eight_k_extract import (
+    _apply_loss_sign,
+    extract_earnings_release,
+    parse_number,
+)
 
 
 def _extract(html: str):
@@ -74,6 +79,28 @@ def test_thousands_and_parentheses():
     assert result.metrics["revenue"].value == 1_234_500
     assert result.metrics["operatingIncome"].value == -88_000
     assert result.metrics["netIncome"].value == -101_500
+
+
+def test_empty_quarterly_loss_cell_is_skipped_not_zero():
+    result = _extract(EMPTY_QUARTERLY_LOSS_EXHIBIT)
+    assert result.status == "extracted"
+    assert result.fiscal_year == 2026
+    assert result.fiscal_quarter == 3
+    assert result.metrics["revenue"].value == 10_000_000_000
+    assert result.metrics["operatingIncome"].value == 2_400_000_000
+    assert result.metrics["operatingIncome"].period_kind == "quarterly"
+    assert "netIncome" not in result.metrics
+    assert all(item.value is not None for item in result.metrics.values())
+
+
+def test_apply_loss_sign_skips_missing_and_keeps_valid_rules():
+    assert _apply_loss_sign("netIncome", "Net loss", None) is None
+    assert _apply_loss_sign("operatingIncome", "Operating loss", None) is None
+    assert _apply_loss_sign("netIncome", "Net loss", 88.0) == -88.0
+    assert _apply_loss_sign("netIncome", "Net loss", -101.5) == -101.5
+    assert _apply_loss_sign("netIncome", "Net income (loss)", 50.0) == 50.0
+    assert _apply_loss_sign("operatingIncome", "Income from operations", 2400.0) == 2400.0
+    assert _apply_loss_sign("revenue", "Revenue", None) is None
 
 
 def test_meta_q3_2026_real_exhibit_matches_sec_table():

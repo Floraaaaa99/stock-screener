@@ -152,6 +152,29 @@ MISSING_CF_EXHIBIT = f"""
 </body></html>
 """
 
+EMPTY_QUARTERLY_LOSS_EXHIBIT = f"""
+<html><body>
+<h1>Third Quarter 2026 Results</h1>
+{_is_table(
+    "Consolidated Statements of Operations",
+    "(In millions)",
+    [
+        [
+            "",
+            "Three Months Ended September 30, 2026",
+            "Nine Months Ended September 30, 2026",
+        ],
+    ],
+    [
+        ["Revenue", "10,000", "30,000"],
+        ["Operating loss", "", "(120)"],
+        ["Net loss", "—", "50"],
+        ["Income from operations", "2,400", "7,200"],
+    ],
+)}
+</body></html>
+"""
+
 YTD_ONLY_EXHIBIT = f"""
 <html><body>
 <h1>Year-to-date update</h1>
