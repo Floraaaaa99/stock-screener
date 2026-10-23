@@ -339,8 +339,18 @@ describe("capital allocation presentation", () => {
     expect(revolver?.asReported.value).toBe(1_348_400_000);
     expect(revolver?.standaloneQuarter.kind).toBe("calculated");
     expect(revolver?.standaloneQuarter.value).toBe(479_000_000);
+    expect(notesOut?.asReported.value).toBe(-500_000_000);
     expect(notesOut?.standaloneQuarter.kind).toBe("unavailable");
     expect(notesOut?.standaloneQuarter.value).toBeNull();
+    const other = cash?.groups.find((group) => group.id === "other");
+    const begin = other?.lines.find((line) => /beginning of period/i.test(line.label));
+    const end = other?.lines.find((line) => /end of period/i.test(line.label));
+    expect(begin?.asReported.value).toBe(62_213_000);
+    expect(end?.asReported.value).toBe(67_752_000);
+    expect(begin?.standaloneQuarter.kind).toBe("unavailable");
+    expect(begin?.standaloneQuarter.reason).toBe("instant_balance");
+    expect(end?.standaloneQuarter.reason).toBe("instant_balance");
+    expect(end?.standaloneQuarter.value).toBeNull();
     expect(sect?.identity).toBeNull();
     expect(sect?.asReported.value).toBe(-51_319_000);
     expect(financing?.reportedTotal?.value).toBe(-148_305_000);
