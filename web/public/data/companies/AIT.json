@@ -14,9 +14,9 @@
     "source": "SEC EDGAR submissions"
   },
   "ttm": {
-    "current": 4966686000.0,
-    "previous": 4563424000.0,
-    "growthPct": 8.836829538521961,
+    "current": 5058333000.0,
+    "previous": 4664003000.0,
+    "growthPct": 8.454754424471854,
     "reason": null,
     "currency": "USD"
   },
@@ -24,13 +24,24 @@
     "status": "ok",
     "currency": "USD",
     "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-    "conceptStatus": "single",
-    "conceptNote": "",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; RevenueFromContractWithCustomerExcludingAssessedTax is the total revenue line presented on the income statement of filing 0000109563-26-000054.",
     "candidates": [
       {
+        "concept": "Revenues",
+        "latestEnd": "2026-09-30",
+        "latestValue": 815349000.0,
+        "quartersInWindow": 1,
+        "selected": false,
+        "comparedWith": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "overlaps": 1,
+        "disagreements": 1,
+        "statementLabel": null
+      },
+      {
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "latestEnd": "2026-06-30",
-        "latestValue": 1352687000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 1291170000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
@@ -39,18 +50,63 @@
         "statementLabel": "Net sales"
       }
     ],
-    "flags": [],
+    "flags": [
+      "other_concept_disagrees"
+    ],
     "statementCheck": {
       "status": "verified",
-      "accn": "0000109563-26-000033",
-      "form": "10-K",
-      "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000033/R3.htm",
-      "period_end": "2026-06-30",
-      "months": 12,
-      "pipeline_value": 4966686000.0,
-      "statement_value": 4966686000.0
+      "accn": "0000109563-26-000054",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/R2.htm",
+      "period_end": "2026-09-30",
+      "months": 3,
+      "pipeline_value": 1291170000.0,
+      "statement_value": 1291170000.0
     },
     "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1291170000.0,
+        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-27",
+        "accn": "0000109563-26-000054",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/0000109563-26-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-27",
+            "accn": "0000109563-26-000054",
+            "sourceType": "company_facts",
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "value": 1291170000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/0000109563-26-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000109563-26-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/R2.htm",
+          "statement_label": "Net sales",
+          "statement_value": 1291170000.0,
+          "expected_value": 1291170000.0
+        }
+      },
       {
         "fiscalYear": 2026,
         "fiscalQuarter": 4,
@@ -65,6 +121,7 @@
         "form": "10-K",
         "filed": "2026-08-13",
         "accn": "0000109563-26-000033",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000033/0000109563-26-000033-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -76,6 +133,7 @@
             "form": "10-K",
             "filed": "2026-08-13",
             "accn": "0000109563-26-000033",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2026-06-30",
             "value": 4966686000.0,
@@ -87,6 +145,7 @@
             "form": "10-Q",
             "filed": "2026-04-28",
             "accn": "0000109563-26-000021",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2026-03-31",
             "value": 3613999000.0,
@@ -118,6 +177,7 @@
         "form": "10-Q",
         "filed": "2026-04-28",
         "accn": "0000109563-26-000021",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000021/0000109563-26-000021-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -129,6 +189,7 @@
             "form": "10-Q",
             "filed": "2026-04-28",
             "accn": "0000109563-26-000021",
+            "sourceType": "company_facts",
             "start": "2026-01-01",
             "end": "2026-03-31",
             "value": 1251453000.0,
@@ -159,6 +220,7 @@
         "form": "10-Q",
         "filed": "2026-01-27",
         "accn": "0000109563-26-000015",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000015/0000109563-26-000015-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -170,6 +232,7 @@
             "form": "10-Q",
             "filed": "2026-01-27",
             "accn": "0000109563-26-000015",
+            "sourceType": "company_facts",
             "start": "2025-10-01",
             "end": "2025-12-31",
             "value": 1163023000.0,
@@ -191,7 +254,7 @@
         "fiscalQuarter": 1,
         "start": "2025-07-01",
         "end": "2025-09-30",
-        "ttm": "current",
+        "ttm": "previous",
         "missing": false,
         "value": 1199523000.0,
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -200,6 +263,7 @@
         "form": "10-Q",
         "filed": "2025-10-28",
         "accn": "0000109563-25-000107",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000107/0000109563-25-000107-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -211,6 +275,7 @@
             "form": "10-Q",
             "filed": "2025-10-28",
             "accn": "0000109563-25-000107",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2025-09-30",
             "value": 1199523000.0,
@@ -241,6 +306,7 @@
         "form": "10-K",
         "filed": "2025-08-15",
         "accn": "0000109563-25-000080",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000080/0000109563-25-000080-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -252,6 +318,7 @@
             "form": "10-K",
             "filed": "2025-08-15",
             "accn": "0000109563-25-000080",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2025-06-30",
             "value": 4563424000.0,
@@ -263,6 +330,7 @@
             "form": "10-Q",
             "filed": "2025-05-01",
             "accn": "0000109563-25-000039",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2025-03-31",
             "value": 3338694000.0,
@@ -294,6 +362,7 @@
         "form": "10-Q",
         "filed": "2025-05-01",
         "accn": "0000109563-25-000039",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000039/0000109563-25-000039-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -305,6 +374,7 @@
             "form": "10-Q",
             "filed": "2025-05-01",
             "accn": "0000109563-25-000039",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-03-31",
             "value": 1166749000.0,
@@ -335,6 +405,7 @@
         "form": "10-Q",
         "filed": "2025-01-29",
         "accn": "0000109563-25-000026",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000026/0000109563-25-000026-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -346,6 +417,7 @@
             "form": "10-Q",
             "filed": "2025-01-29",
             "accn": "0000109563-25-000026",
+            "sourceType": "company_facts",
             "start": "2024-10-01",
             "end": "2024-12-31",
             "value": 1073001000.0,
@@ -367,7 +439,7 @@
         "fiscalQuarter": 1,
         "start": "2024-07-01",
         "end": "2024-09-30",
-        "ttm": "previous",
+        "ttm": null,
         "missing": false,
         "value": 1098944000.0,
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -376,6 +448,7 @@
         "form": "10-Q",
         "filed": "2024-10-25",
         "accn": "0000109563-24-000104",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000104/0000109563-24-000104-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -387,6 +460,7 @@
             "form": "10-Q",
             "filed": "2024-10-25",
             "accn": "0000109563-24-000104",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2024-09-30",
             "value": 1098944000.0,
@@ -417,6 +491,7 @@
         "form": "10-K",
         "filed": "2024-08-16",
         "accn": "0000109563-24-000078",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000078/0000109563-24-000078-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -428,6 +503,7 @@
             "form": "10-K",
             "filed": "2024-08-16",
             "accn": "0000109563-24-000078",
+            "sourceType": "company_facts",
             "start": "2023-07-01",
             "end": "2024-06-30",
             "value": 4479406000.0,
@@ -439,6 +515,7 @@
             "form": "10-Q",
             "filed": "2024-04-26",
             "accn": "0000109563-24-000033",
+            "sourceType": "company_facts",
             "start": "2023-07-01",
             "end": "2024-03-31",
             "value": 3318731000.0,
@@ -470,6 +547,7 @@
         "form": "10-Q",
         "filed": "2024-04-26",
         "accn": "0000109563-24-000033",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000033/0000109563-24-000033-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -481,6 +559,7 @@
             "form": "10-Q",
             "filed": "2024-04-26",
             "accn": "0000109563-24-000033",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-03-31",
             "value": 1146390000.0,
@@ -511,6 +590,7 @@
         "form": "10-Q",
         "filed": "2024-01-26",
         "accn": "0000109563-24-000024",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000024/0000109563-24-000024-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -522,6 +602,7 @@
             "form": "10-Q",
             "filed": "2024-01-26",
             "accn": "0000109563-24-000024",
+            "sourceType": "company_facts",
             "start": "2023-10-01",
             "end": "2023-12-31",
             "value": 1077153000.0,
@@ -537,60 +618,18 @@
           "statement_value": 1077153000.0,
           "expected_value": 1077153000.0
         }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 1,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 1095188000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2023-10-27",
-        "accn": "0000109563-23-000105",
-        "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/0000109563-23-000105-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2023-10-27",
-            "accn": "0000109563-23-000105",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 1095188000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/0000109563-23-000105-index.htm"
-          }
-        ],
-        "check": {
-          "status": "match",
-          "accn": "0000109563-23-000105",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/R2.htm",
-          "statement_label": "Net sales",
-          "statement_value": 1095188000.0,
-          "expected_value": 1095188000.0
-        }
       }
     ],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
-      "refreshedSubmissions": false
+      "refreshedSubmissions": true
     }
   },
-  "classificationIssues": [],
   "earnings": {
     "status": "ok",
     "currency": "USD",
@@ -600,8 +639,8 @@
     "candidates": [
       {
         "concept": "NetIncomeLoss",
-        "latestEnd": "2026-06-30",
-        "latestValue": 118600000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 110403000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
@@ -610,18 +649,63 @@
         "statementLabel": "Net income"
       }
     ],
-    "flags": [],
+    "flags": [
+      "unverified_quarters"
+    ],
     "statementCheck": {
       "status": "verified",
-      "accn": "0000109563-26-000033",
-      "form": "10-K",
-      "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000033/R3.htm",
-      "period_end": "2026-06-30",
-      "months": 12,
-      "pipeline_value": 414525000.0,
-      "statement_value": 414525000.0
+      "accn": "0000109563-26-000054",
+      "form": "10-Q",
+      "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/R2.htm",
+      "period_end": "2026-09-30",
+      "months": 3,
+      "pipeline_value": 110403000.0,
+      "statement_value": 110403000.0
     },
     "quarters": [
+      {
+        "fiscalYear": 2027,
+        "fiscalQuarter": 1,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 110403000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-27",
+        "accn": "0000109563-26-000054",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/0000109563-26-000054-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-27",
+            "accn": "0000109563-26-000054",
+            "sourceType": "company_facts",
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "value": 110403000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/0000109563-26-000054-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000109563-26-000054",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000054/R2.htm",
+          "statement_label": "Net income",
+          "statement_value": 110403000.0,
+          "expected_value": 110403000.0
+        }
+      },
       {
         "fiscalYear": 2026,
         "fiscalQuarter": 4,
@@ -636,6 +720,7 @@
         "form": "10-K",
         "filed": "2026-08-13",
         "accn": "0000109563-26-000033",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000033/0000109563-26-000033-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -647,6 +732,7 @@
             "form": "10-K",
             "filed": "2026-08-13",
             "accn": "0000109563-26-000033",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2026-06-30",
             "value": 414525000.0,
@@ -658,6 +744,7 @@
             "form": "10-Q",
             "filed": "2026-04-28",
             "accn": "0000109563-26-000021",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2026-03-31",
             "value": 295925000.0,
@@ -665,14 +752,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-26-000033",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000033/R3.htm",
-          "statement_label": "Net income",
-          "statement_value": 414525000.0,
-          "expected_value": 118600000.0,
-          "detail": "12M 414,525,000 (10-K 0000109563-26-000033) − 9M 295,925,000 (10-Q 0000109563-26-000021)"
+          "detail": "No 12-month net income column ending 2026-06-30 on 10-K 0000109563-26-000033."
         }
       },
       {
@@ -689,6 +773,7 @@
         "form": "10-Q",
         "filed": "2026-04-28",
         "accn": "0000109563-26-000021",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000021/0000109563-26-000021-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -700,6 +785,7 @@
             "form": "10-Q",
             "filed": "2026-04-28",
             "accn": "0000109563-26-000021",
+            "sourceType": "company_facts",
             "start": "2026-01-01",
             "end": "2026-03-31",
             "value": 99769000.0,
@@ -707,13 +793,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-26-000021",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000021/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 99769000.0,
-          "expected_value": 99769000.0
+          "detail": "No 3-month net income column ending 2026-03-31 on 10-Q 0000109563-26-000021."
         }
       },
       {
@@ -730,6 +814,7 @@
         "form": "10-Q",
         "filed": "2026-01-27",
         "accn": "0000109563-26-000015",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000015/0000109563-26-000015-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -741,6 +826,7 @@
             "form": "10-Q",
             "filed": "2026-01-27",
             "accn": "0000109563-26-000015",
+            "sourceType": "company_facts",
             "start": "2025-10-01",
             "end": "2025-12-31",
             "value": 95349000.0,
@@ -748,13 +834,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-26-000015",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956326000015/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 95349000.0,
-          "expected_value": 95349000.0
+          "detail": "No 3-month net income column ending 2025-12-31 on 10-Q 0000109563-26-000015."
         }
       },
       {
@@ -762,7 +846,7 @@
         "fiscalQuarter": 1,
         "start": "2025-07-01",
         "end": "2025-09-30",
-        "ttm": "current",
+        "ttm": "previous",
         "missing": false,
         "value": 100807000.0,
         "concept": "NetIncomeLoss",
@@ -771,6 +855,7 @@
         "form": "10-Q",
         "filed": "2025-10-28",
         "accn": "0000109563-25-000107",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000107/0000109563-25-000107-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -782,6 +867,7 @@
             "form": "10-Q",
             "filed": "2025-10-28",
             "accn": "0000109563-25-000107",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2025-09-30",
             "value": 100807000.0,
@@ -789,13 +875,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-25-000107",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000107/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 100807000.0,
-          "expected_value": 100807000.0
+          "detail": "No 3-month net income column ending 2025-09-30 on 10-Q 0000109563-25-000107."
         }
       },
       {
@@ -812,6 +896,7 @@
         "form": "10-K",
         "filed": "2025-08-15",
         "accn": "0000109563-25-000080",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000080/0000109563-25-000080-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -823,6 +908,7 @@
             "form": "10-K",
             "filed": "2025-08-15",
             "accn": "0000109563-25-000080",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2025-06-30",
             "value": 392988000.0,
@@ -834,6 +920,7 @@
             "form": "10-Q",
             "filed": "2025-05-01",
             "accn": "0000109563-25-000039",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2025-03-31",
             "value": 285152000.0,
@@ -841,14 +928,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-25-000080",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000080/R3.htm",
-          "statement_label": "Net income",
-          "statement_value": 392988000.0,
-          "expected_value": 107836000.0,
-          "detail": "12M 392,988,000 (10-K 0000109563-25-000080) − 9M 285,152,000 (10-Q 0000109563-25-000039)"
+          "detail": "No 12-month net income column ending 2025-06-30 on 10-K 0000109563-25-000080."
         }
       },
       {
@@ -865,6 +949,7 @@
         "form": "10-Q",
         "filed": "2025-05-01",
         "accn": "0000109563-25-000039",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000039/0000109563-25-000039-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -876,6 +961,7 @@
             "form": "10-Q",
             "filed": "2025-05-01",
             "accn": "0000109563-25-000039",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-03-31",
             "value": 99799000.0,
@@ -883,13 +969,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-25-000039",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000039/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 99799000.0,
-          "expected_value": 99799000.0
+          "detail": "No 3-month net income column ending 2025-03-31 on 10-Q 0000109563-25-000039."
         }
       },
       {
@@ -906,6 +990,7 @@
         "form": "10-Q",
         "filed": "2025-01-29",
         "accn": "0000109563-25-000026",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000026/0000109563-25-000026-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -917,6 +1002,7 @@
             "form": "10-Q",
             "filed": "2025-01-29",
             "accn": "0000109563-25-000026",
+            "sourceType": "company_facts",
             "start": "2024-10-01",
             "end": "2024-12-31",
             "value": 93290000.0,
@@ -924,13 +1010,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-25-000026",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956325000026/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 93290000.0,
-          "expected_value": 93290000.0
+          "detail": "No 3-month net income column ending 2024-12-31 on 10-Q 0000109563-25-000026."
         }
       },
       {
@@ -938,7 +1022,7 @@
         "fiscalQuarter": 1,
         "start": "2024-07-01",
         "end": "2024-09-30",
-        "ttm": "previous",
+        "ttm": null,
         "missing": false,
         "value": 92063000.0,
         "concept": "NetIncomeLoss",
@@ -947,6 +1031,7 @@
         "form": "10-Q",
         "filed": "2024-10-25",
         "accn": "0000109563-24-000104",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000104/0000109563-24-000104-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -958,6 +1043,7 @@
             "form": "10-Q",
             "filed": "2024-10-25",
             "accn": "0000109563-24-000104",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2024-09-30",
             "value": 92063000.0,
@@ -965,13 +1051,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-24-000104",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000104/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 92063000.0,
-          "expected_value": 92063000.0
+          "detail": "No 3-month net income column ending 2024-09-30 on 10-Q 0000109563-24-000104."
         }
       },
       {
@@ -988,6 +1072,7 @@
         "form": "10-K",
         "filed": "2024-08-16",
         "accn": "0000109563-24-000078",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000078/0000109563-24-000078-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -999,6 +1084,7 @@
             "form": "10-K",
             "filed": "2024-08-16",
             "accn": "0000109563-24-000078",
+            "sourceType": "company_facts",
             "start": "2023-07-01",
             "end": "2024-06-30",
             "value": 385762000.0,
@@ -1010,6 +1096,7 @@
             "form": "10-Q",
             "filed": "2024-04-26",
             "accn": "0000109563-24-000033",
+            "sourceType": "company_facts",
             "start": "2023-07-01",
             "end": "2024-03-31",
             "value": 282271000.0,
@@ -1017,14 +1104,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-24-000078",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000078/R3.htm",
-          "statement_label": "Net income",
-          "statement_value": 385762000.0,
-          "expected_value": 103491000.0,
-          "detail": "12M 385,762,000 (10-K 0000109563-24-000078) − 9M 282,271,000 (10-Q 0000109563-24-000033)"
+          "detail": "No 12-month net income column ending 2024-06-30 on 10-K 0000109563-24-000078."
         }
       },
       {
@@ -1041,6 +1125,7 @@
         "form": "10-Q",
         "filed": "2024-04-26",
         "accn": "0000109563-24-000033",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000033/0000109563-24-000033-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1052,6 +1137,7 @@
             "form": "10-Q",
             "filed": "2024-04-26",
             "accn": "0000109563-24-000033",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-03-31",
             "value": 97217000.0,
@@ -1059,13 +1145,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-24-000033",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000033/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 97217000.0,
-          "expected_value": 97217000.0
+          "detail": "No 3-month net income column ending 2024-03-31 on 10-Q 0000109563-24-000033."
         }
       },
       {
@@ -1082,6 +1166,7 @@
         "form": "10-Q",
         "filed": "2024-01-26",
         "accn": "0000109563-24-000024",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000024/0000109563-24-000024-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1093,6 +1178,7 @@
             "form": "10-Q",
             "filed": "2024-01-26",
             "accn": "0000109563-24-000024",
+            "sourceType": "company_facts",
             "start": "2023-10-01",
             "end": "2023-12-31",
             "value": 91228000.0,
@@ -1100,65 +1186,23 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0000109563-24-000024",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956324000024/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 91228000.0,
-          "expected_value": 91228000.0
-        }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 1,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 93826000.0,
-        "concept": "NetIncomeLoss",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2023-10-27",
-        "accn": "0000109563-23-000105",
-        "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/0000109563-23-000105-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2023-10-27",
-            "accn": "0000109563-23-000105",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 93826000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/0000109563-23-000105-index.htm"
-          }
-        ],
-        "check": {
-          "status": "match",
-          "accn": "0000109563-23-000105",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/109563/000010956323000105/R2.htm",
-          "statement_label": "Net income",
-          "statement_value": 93826000.0,
-          "expected_value": 93826000.0
+          "detail": "No 3-month net income column ending 2023-12-31 on 10-Q 0000109563-24-000024."
         }
       }
     ],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
       "refreshedSubmissions": false
     }
-  }
+  },
+  "classificationIssues": []
 }
