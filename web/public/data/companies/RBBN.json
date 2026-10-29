@@ -10,7 +10,7 @@
     "code": "7373",
     "description": "Services-Computer Integrated Systems Design",
     "majorGroup": "Business Services",
-    "label": "7373 — Services-Computer Integrated Systems Design",
+    "label": "Services-Computer Integrated Systems Design — 7373",
     "source": "SEC EDGAR submissions"
   },
   "ttm": {
@@ -23,7 +23,7 @@
   "revenue": {
     "status": "ok",
     "currency": "USD",
-    "concept": "Revenues",
+    "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
     "conceptStatus": "equivalent",
     "conceptNote": "",
     "candidates": [
@@ -32,36 +32,34 @@
         "latestEnd": "2026-09-30",
         "latestValue": 218710000.0,
         "quartersInWindow": 3,
-        "selected": true,
-        "comparedWith": null,
-        "overlaps": 0,
+        "selected": false,
+        "comparedWith": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "overlaps": 3,
         "disagreements": 0,
         "statementLabel": null
       },
       {
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "latestEnd": "2026-06-30",
-        "latestValue": 192340000.0,
-        "quartersInWindow": 12,
-        "selected": false,
-        "comparedWith": "Revenues",
-        "overlaps": 2,
+        "latestEnd": "2026-09-30",
+        "latestValue": 218710000.0,
+        "quartersInWindow": 13,
+        "selected": true,
+        "comparedWith": null,
+        "overlaps": 0,
         "disagreements": 0,
         "statementLabel": "Total revenue"
       }
     ],
-    "flags": [
-      "concept_merged"
-    ],
+    "flags": [],
     "statementCheck": {
-      "status": "verified_value",
-      "accn": "0001708055-26-000070",
+      "status": "verified",
+      "accn": "0001708055-26-000087",
       "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000070/R4.htm",
-      "period_end": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/R4.htm",
+      "period_end": "2026-09-30",
       "months": 3,
-      "pipeline_value": 192340000.0,
-      "statement_value": 192340000.0
+      "pipeline_value": 218710000.0,
+      "statement_value": 218710000.0
     },
     "quarters": [
       {
@@ -72,14 +70,14 @@
         "ttm": "current",
         "missing": false,
         "value": 218710000.0,
-        "concept": "Revenues",
+        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
         "method": "reported",
         "formula": "3M reported",
-        "form": "8-K",
-        "filed": "2026-10-27",
-        "accn": "0001104659-26-119166",
-        "sourceType": "8k_earnings_release",
-        "url": "https://www.sec.gov/Archives/edgar/data/1708055/000110465926119166/0001104659-26-119166-index.htm",
+        "form": "10-Q",
+        "filed": "2026-10-28",
+        "accn": "0001708055-26-000087",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/0001708055-26-000087-index.htm",
         "restated": false,
         "labelInferred": false,
         "flags": [],
@@ -87,21 +85,24 @@
           {
             "role": "quarter",
             "sign": 1,
-            "form": "8-K",
-            "filed": "2026-10-27",
-            "accn": "0001104659-26-119166",
-            "sourceType": "8k_earnings_release",
+            "form": "10-Q",
+            "filed": "2026-10-28",
+            "accn": "0001708055-26-000087",
+            "sourceType": "company_facts",
             "start": "2026-07-01",
             "end": "2026-09-30",
             "value": 218710000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1708055/000110465926119166/0001104659-26-119166-index.htm"
+            "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/0001708055-26-000087-index.htm"
           }
         ],
         "check": {
-          "status": "awaiting_10q",
-          "accn": "0001104659-26-119166",
-          "form": "8-K",
-          "detail": "8-K earnings release; no face income statement to verify."
+          "status": "match",
+          "accn": "0001708055-26-000087",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/R4.htm",
+          "statement_label": "Total revenue",
+          "statement_value": 218710000.0,
+          "expected_value": 218710000.0
         }
       },
       {
@@ -568,9 +569,9 @@
         "ttm": null,
         "missing": false,
         "value": 226401000.0,
-        "concept": "Revenues",
-        "method": "reported",
-        "formula": "3M reported",
+        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "method": "derived",
+        "formula": "FY − 9M YTD",
         "form": "10-K",
         "filed": "2024-02-28",
         "accn": "0001708055-24-000003",
@@ -581,24 +582,39 @@
         "flags": [],
         "sources": [
           {
-            "role": "quarter",
+            "role": "ytd_total",
             "sign": 1,
             "form": "10-K",
             "filed": "2024-02-28",
             "accn": "0001708055-24-000003",
             "sourceType": "company_facts",
-            "start": "2023-10-01",
+            "start": "2023-01-01",
             "end": "2023-12-31",
-            "value": 226401000.0,
+            "value": 826339000.0,
             "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805524000003/0001708055-24-000003-index.htm"
+          },
+          {
+            "role": "ytd_prior",
+            "sign": -1,
+            "form": "10-Q",
+            "filed": "2023-10-26",
+            "accn": "0001708055-23-000014",
+            "sourceType": "company_facts",
+            "start": "2023-01-01",
+            "end": "2023-09-30",
+            "value": 599938000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805523000014/0001708055-23-000014-index.htm"
           }
         ],
         "check": {
-          "status": "unavailable",
+          "status": "match",
           "accn": "0001708055-24-000003",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805524000003/R5.htm",
-          "detail": "No 3-month total revenue column ending 2023-12-31 on 10-K 0001708055-24-000003."
+          "statement_label": "Total revenue",
+          "statement_value": 826339000.0,
+          "expected_value": 226401000.0,
+          "detail": "12M 826,339,000 (10-K 0001708055-24-000003) − 9M 599,938,000 (10-Q 0001708055-23-000014)"
         }
       }
     ],
@@ -622,13 +638,13 @@
       {
         "concept": "NetIncomeLoss",
         "latestEnd": "2026-09-30",
-        "latestValue": 9117000.0,
+        "latestValue": -9117000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
-        "statementLabel": null
+        "statementLabel": "Net loss"
       }
     ],
     "flags": [
@@ -636,14 +652,14 @@
       "unverified_quarters"
     ],
     "statementCheck": {
-      "status": "not_presented",
-      "accn": "0001708055-26-000070",
+      "status": "verified",
+      "accn": "0001708055-26-000087",
       "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000070/R4.htm",
-      "period_end": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/R4.htm",
+      "period_end": "2026-09-30",
       "months": 3,
-      "pipeline_value": -26871000.0,
-      "statement_value": null
+      "pipeline_value": -9117000.0,
+      "statement_value": -9117000.0
     },
     "quarters": [
       {
@@ -653,37 +669,42 @@
         "end": "2026-09-30",
         "ttm": "current",
         "missing": false,
-        "value": 9117000.0,
+        "value": -9117000.0,
         "concept": "NetIncomeLoss",
         "method": "reported",
         "formula": "3M reported",
-        "form": "8-K",
-        "filed": "2026-10-27",
-        "accn": "0001104659-26-119166",
-        "sourceType": "8k_earnings_release",
-        "url": "https://www.sec.gov/Archives/edgar/data/1708055/000110465926119166/0001104659-26-119166-index.htm",
+        "form": "10-Q",
+        "filed": "2026-10-28",
+        "accn": "0001708055-26-000087",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/0001708055-26-000087-index.htm",
         "restated": false,
         "labelInferred": false,
-        "flags": [],
+        "flags": [
+          "negative_value"
+        ],
         "sources": [
           {
             "role": "quarter",
             "sign": 1,
-            "form": "8-K",
-            "filed": "2026-10-27",
-            "accn": "0001104659-26-119166",
-            "sourceType": "8k_earnings_release",
+            "form": "10-Q",
+            "filed": "2026-10-28",
+            "accn": "0001708055-26-000087",
+            "sourceType": "company_facts",
             "start": "2026-07-01",
             "end": "2026-09-30",
-            "value": 9117000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1708055/000110465926119166/0001104659-26-119166-index.htm"
+            "value": -9117000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/0001708055-26-000087-index.htm"
           }
         ],
         "check": {
-          "status": "awaiting_10q",
-          "accn": "0001104659-26-119166",
-          "form": "8-K",
-          "detail": "8-K earnings release; no face income statement to verify."
+          "status": "match",
+          "accn": "0001708055-26-000087",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1708055/000170805526000087/R4.htm",
+          "statement_label": "Net loss",
+          "statement_value": -9117000.0,
+          "expected_value": -9117000.0
         }
       },
       {
