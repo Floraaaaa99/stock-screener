@@ -14,9 +14,9 @@
     "source": "SEC EDGAR submissions"
   },
   "ttm": {
-    "current": 38632000000.0,
-    "previous": 36347000000.0,
-    "growthPct": 6.286626131455142,
+    "current": 38959000000.0,
+    "previous": 36901000000.0,
+    "growthPct": 5.577084631852802,
     "reason": null,
     "currency": "USD"
   },
@@ -24,13 +24,24 @@
     "status": "ok",
     "currency": "USD",
     "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-    "conceptStatus": "single",
-    "conceptNote": "",
+    "conceptStatus": "statement_verified",
+    "conceptNote": "Candidate concepts disagree; RevenueFromContractWithCustomerExcludingAssessedTax is the total revenue line presented on the income statement of filing 0000849395-26-000013.",
     "candidates": [
       {
+        "concept": "Revenues",
+        "latestEnd": "2026-09-30",
+        "latestValue": 11396.0,
+        "quartersInWindow": 1,
+        "selected": false,
+        "comparedWith": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "overlaps": 1,
+        "disagreements": 1,
+        "statementLabel": null
+      },
+      {
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "latestEnd": "2026-06-30",
-        "latestValue": 10777000000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 11396000000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
@@ -39,18 +50,63 @@
         "statementLabel": "Total revenues"
       }
     ],
-    "flags": [],
+    "flags": [
+      "other_concept_disagrees"
+    ],
     "statementCheck": {
       "status": "verified",
-      "accn": "0001628280-26-050755",
+      "accn": "0000849395-26-000013",
       "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026050755/R2.htm",
-      "period_end": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/R2.htm",
+      "period_end": "2026-09-30",
       "months": 3,
-      "pipeline_value": 10777000000.0,
-      "statement_value": 10777000000.0
+      "pipeline_value": 11396000000.0,
+      "statement_value": 11396000000.0
     },
     "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 11396000000.0,
+        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-29",
+        "accn": "0000849395-26-000013",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/0000849395-26-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-29",
+            "accn": "0000849395-26-000013",
+            "sourceType": "company_facts",
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "value": 11396000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/0000849395-26-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000849395-26-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/R2.htm",
+          "statement_label": "Total revenues",
+          "statement_value": 11396000000.0,
+          "expected_value": 11396000000.0
+        }
+      },
       {
         "fiscalYear": 2026,
         "fiscalQuarter": 2,
@@ -65,6 +121,7 @@
         "form": "10-Q",
         "filed": "2026-07-30",
         "accn": "0001628280-26-050755",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026050755/0001628280-26-050755-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -76,6 +133,7 @@
             "form": "10-Q",
             "filed": "2026-07-30",
             "accn": "0001628280-26-050755",
+            "sourceType": "company_facts",
             "start": "2026-04-01",
             "end": "2026-06-30",
             "value": 10777000000.0,
@@ -106,6 +164,7 @@
         "form": "10-Q",
         "filed": "2026-04-30",
         "accn": "0001628280-26-028556",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026028556/0001628280-26-028556-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -117,6 +176,7 @@
             "form": "10-Q",
             "filed": "2026-04-30",
             "accn": "0001628280-26-028556",
+            "sourceType": "company_facts",
             "start": "2026-01-01",
             "end": "2026-03-31",
             "value": 7370000000.0,
@@ -147,6 +207,7 @@
         "form": "10-K",
         "filed": "2026-02-18",
         "accn": "0001628280-26-009043",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026009043/0001628280-26-009043-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -158,6 +219,7 @@
             "form": "10-K",
             "filed": "2026-02-18",
             "accn": "0001628280-26-009043",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-12-31",
             "value": 37447000000.0,
@@ -169,6 +231,7 @@
             "form": "10-Q",
             "filed": "2025-11-05",
             "accn": "0001628280-25-049574",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-09-30",
             "value": 28031000000.0,
@@ -191,7 +254,7 @@
         "fiscalQuarter": 3,
         "start": "2025-07-01",
         "end": "2025-09-30",
-        "ttm": "current",
+        "ttm": "previous",
         "missing": false,
         "value": 11069000000.0,
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -200,6 +263,7 @@
         "form": "10-Q",
         "filed": "2025-11-05",
         "accn": "0001628280-25-049574",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025049574/0001628280-25-049574-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -211,6 +275,7 @@
             "form": "10-Q",
             "filed": "2025-11-05",
             "accn": "0001628280-25-049574",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2025-09-30",
             "value": 11069000000.0,
@@ -241,6 +306,7 @@
         "form": "10-Q",
         "filed": "2025-08-06",
         "accn": "0001628280-25-038362",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025038362/0001628280-25-038362-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -252,6 +318,7 @@
             "form": "10-Q",
             "filed": "2025-08-06",
             "accn": "0001628280-25-038362",
+            "sourceType": "company_facts",
             "start": "2025-04-01",
             "end": "2025-06-30",
             "value": 10206000000.0,
@@ -282,6 +349,7 @@
         "form": "10-Q",
         "filed": "2025-05-05",
         "accn": "0001628280-25-022195",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025022195/0001628280-25-022195-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -293,6 +361,7 @@
             "form": "10-Q",
             "filed": "2025-05-05",
             "accn": "0001628280-25-022195",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-03-31",
             "value": 6756000000.0,
@@ -323,6 +392,7 @@
         "form": "10-K",
         "filed": "2025-02-26",
         "accn": "0001628280-25-008179",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025008179/0001628280-25-008179-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -334,6 +404,7 @@
             "form": "10-K",
             "filed": "2025-02-26",
             "accn": "0001628280-25-008179",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-12-31",
             "value": 35572000000.0,
@@ -345,6 +416,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-09-30",
             "value": 26702000000.0,
@@ -367,7 +439,7 @@
         "fiscalQuarter": 3,
         "start": "2024-07-01",
         "end": "2024-09-30",
-        "ttm": "previous",
+        "ttm": null,
         "missing": false,
         "value": 10515000000.0,
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -376,6 +448,7 @@
         "form": "10-Q",
         "filed": "2024-11-07",
         "accn": "0001628280-24-045944",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -387,6 +460,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2024-09-30",
             "value": 10515000000.0,
@@ -417,6 +491,7 @@
         "form": "10-Q",
         "filed": "2024-08-08",
         "accn": "0001628280-24-035823",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024035823/0001628280-24-035823-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -428,6 +503,7 @@
             "form": "10-Q",
             "filed": "2024-08-08",
             "accn": "0001628280-24-035823",
+            "sourceType": "company_facts",
             "start": "2024-04-01",
             "end": "2024-06-30",
             "value": 9654000000.0,
@@ -458,6 +534,7 @@
         "form": "10-Q",
         "filed": "2024-05-10",
         "accn": "0001628280-24-022452",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024022452/0001628280-24-022452-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -469,6 +546,7 @@
             "form": "10-Q",
             "filed": "2024-05-10",
             "accn": "0001628280-24-022452",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-03-31",
             "value": 6533000000.0,
@@ -499,6 +577,7 @@
         "form": "10-K",
         "filed": "2024-02-29",
         "accn": "0001628280-24-007773",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024007773/0001628280-24-007773-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -510,6 +589,7 @@
             "form": "10-K",
             "filed": "2024-02-29",
             "accn": "0001628280-24-007773",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-12-31",
             "value": 34949000000.0,
@@ -521,6 +601,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-09-30",
             "value": 26264000000.0,
@@ -537,71 +618,29 @@
           "expected_value": 8685000000.0,
           "detail": "12M 34,949,000,000 (10-K 0001628280-24-007773) − 9M 26,264,000,000 (10-Q 0001628280-24-045944)"
         }
-      },
-      {
-        "fiscalYear": 2023,
-        "fiscalQuarter": 3,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 10128000000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2024-11-07",
-        "accn": "0001628280-24-045944",
-        "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm",
-        "restated": false,
-        "labelInferred": true,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2024-11-07",
-            "accn": "0001628280-24-045944",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 10128000000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm"
-          }
-        ],
-        "check": {
-          "status": "match",
-          "accn": "0001628280-24-045944",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/R2.htm",
-          "statement_label": "Total revenues",
-          "statement_value": 10128000000.0,
-          "expected_value": 10128000000.0
-        }
       }
     ],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
-      "refreshedSubmissions": false
+      "refreshedSubmissions": true
     }
   },
-  "classificationIssues": [],
   "earnings": {
     "status": "ok",
     "currency": "USD",
     "concept": "NetIncomeLoss",
     "conceptStatus": "statement_verified",
-    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-050755.",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0000849395-26-000013.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
-        "latestEnd": "2026-06-30",
-        "latestValue": 1486000000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 1245000000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
@@ -611,8 +650,8 @@
       },
       {
         "concept": "ProfitLoss",
-        "latestEnd": "2026-06-30",
-        "latestValue": 1511000000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 1184000000.0,
         "quartersInWindow": 13,
         "selected": false,
         "comparedWith": "NetIncomeLoss",
@@ -622,8 +661,8 @@
       },
       {
         "concept": "NetIncomeLossAvailableToCommonStockholdersBasic",
-        "latestEnd": "2026-06-30",
-        "latestValue": 1479000000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 1238000000.0,
         "quartersInWindow": 13,
         "selected": false,
         "comparedWith": "NetIncomeLoss",
@@ -634,19 +673,63 @@
     ],
     "flags": [
       "other_concept_disagrees",
-      "negative_value"
+      "negative_value",
+      "unverified_quarters"
     ],
     "statementCheck": {
       "status": "verified",
-      "accn": "0001628280-26-050755",
+      "accn": "0000849395-26-000013",
       "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026050755/R2.htm",
-      "period_end": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/R2.htm",
+      "period_end": "2026-09-30",
       "months": 3,
-      "pipeline_value": 1486000000.0,
-      "statement_value": 1486000000.0
+      "pipeline_value": 1245000000.0,
+      "statement_value": 1245000000.0
     },
     "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 1245000000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-29",
+        "accn": "0000849395-26-000013",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/0000849395-26-000013-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-29",
+            "accn": "0000849395-26-000013",
+            "sourceType": "company_facts",
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "value": 1245000000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/0000849395-26-000013-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0000849395-26-000013",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/849395/000084939526000013/R2.htm",
+          "statement_label": "Net income attributable to CRH",
+          "statement_value": 1245000000.0,
+          "expected_value": 1245000000.0
+        }
+      },
       {
         "fiscalYear": 2026,
         "fiscalQuarter": 2,
@@ -661,6 +744,7 @@
         "form": "10-Q",
         "filed": "2026-07-30",
         "accn": "0001628280-26-050755",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026050755/0001628280-26-050755-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -672,6 +756,7 @@
             "form": "10-Q",
             "filed": "2026-07-30",
             "accn": "0001628280-26-050755",
+            "sourceType": "company_facts",
             "start": "2026-04-01",
             "end": "2026-06-30",
             "value": 1486000000.0,
@@ -679,13 +764,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-050755",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026050755/R2.htm",
-          "statement_label": "Net income attributable to CRH",
-          "statement_value": 1486000000.0,
-          "expected_value": 1486000000.0
+          "detail": "No 3-month net income column ending 2026-06-30 on 10-Q 0001628280-26-050755."
         }
       },
       {
@@ -702,6 +785,7 @@
         "form": "10-Q",
         "filed": "2026-04-30",
         "accn": "0001628280-26-028556",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026028556/0001628280-26-028556-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -715,6 +799,7 @@
             "form": "10-Q",
             "filed": "2026-04-30",
             "accn": "0001628280-26-028556",
+            "sourceType": "company_facts",
             "start": "2026-01-01",
             "end": "2026-03-31",
             "value": -176000000.0,
@@ -722,13 +807,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-028556",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026028556/R2.htm",
-          "statement_label": "Net loss attributable to CRH",
-          "statement_value": -176000000.0,
-          "expected_value": -176000000.0
+          "detail": "No 3-month net income column ending 2026-03-31 on 10-Q 0001628280-26-028556."
         }
       },
       {
@@ -745,6 +828,7 @@
         "form": "10-K",
         "filed": "2026-02-18",
         "accn": "0001628280-26-009043",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026009043/0001628280-26-009043-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -756,6 +840,7 @@
             "form": "10-K",
             "filed": "2026-02-18",
             "accn": "0001628280-26-009043",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-12-31",
             "value": 3753000000.0,
@@ -767,6 +852,7 @@
             "form": "10-Q",
             "filed": "2025-11-05",
             "accn": "0001628280-25-049574",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-09-30",
             "value": 2728000000.0,
@@ -774,14 +860,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-009043",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828026009043/R3.htm",
-          "statement_label": "Net income attributable to CRH",
-          "statement_value": 3753000000.0,
-          "expected_value": 1025000000.0,
-          "detail": "12M 3,753,000,000 (10-K 0001628280-26-009043) − 9M 2,728,000,000 (10-Q 0001628280-25-049574)"
+          "detail": "No 12-month net income column ending 2025-12-31 on 10-K 0001628280-26-009043."
         }
       },
       {
@@ -789,7 +872,7 @@
         "fiscalQuarter": 3,
         "start": "2025-07-01",
         "end": "2025-09-30",
-        "ttm": "current",
+        "ttm": "previous",
         "missing": false,
         "value": 1503000000.0,
         "concept": "NetIncomeLoss",
@@ -798,6 +881,7 @@
         "form": "10-Q",
         "filed": "2025-11-05",
         "accn": "0001628280-25-049574",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025049574/0001628280-25-049574-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -809,6 +893,7 @@
             "form": "10-Q",
             "filed": "2025-11-05",
             "accn": "0001628280-25-049574",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2025-09-30",
             "value": 1503000000.0,
@@ -816,13 +901,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-25-049574",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025049574/R2.htm",
-          "statement_label": "Net income attributable to CRH",
-          "statement_value": 1503000000.0,
-          "expected_value": 1503000000.0
+          "detail": "No 3-month net income column ending 2025-09-30 on 10-Q 0001628280-25-049574."
         }
       },
       {
@@ -839,6 +922,7 @@
         "form": "10-Q",
         "filed": "2025-08-06",
         "accn": "0001628280-25-038362",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025038362/0001628280-25-038362-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -850,6 +934,7 @@
             "form": "10-Q",
             "filed": "2025-08-06",
             "accn": "0001628280-25-038362",
+            "sourceType": "company_facts",
             "start": "2025-04-01",
             "end": "2025-06-30",
             "value": 1319000000.0,
@@ -857,13 +942,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-25-038362",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025038362/R2.htm",
-          "statement_label": "Net income attributable to CRH",
-          "statement_value": 1319000000.0,
-          "expected_value": 1319000000.0
+          "detail": "No 3-month net income column ending 2025-06-30 on 10-Q 0001628280-25-038362."
         }
       },
       {
@@ -880,6 +963,7 @@
         "form": "10-Q",
         "filed": "2025-05-05",
         "accn": "0001628280-25-022195",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025022195/0001628280-25-022195-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -893,6 +977,7 @@
             "form": "10-Q",
             "filed": "2025-05-05",
             "accn": "0001628280-25-022195",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-03-31",
             "value": -94000000.0,
@@ -900,13 +985,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-25-022195",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025022195/R2.htm",
-          "statement_label": "Net (loss) income attributable to CRH",
-          "statement_value": -94000000.0,
-          "expected_value": -94000000.0
+          "detail": "No 3-month net income column ending 2025-03-31 on 10-Q 0001628280-25-022195."
         }
       },
       {
@@ -923,6 +1006,7 @@
         "form": "10-K",
         "filed": "2025-02-26",
         "accn": "0001628280-25-008179",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025008179/0001628280-25-008179-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -934,6 +1018,7 @@
             "form": "10-K",
             "filed": "2025-02-26",
             "accn": "0001628280-25-008179",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-12-31",
             "value": 3492000000.0,
@@ -945,6 +1030,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-09-30",
             "value": 2789000000.0,
@@ -952,14 +1038,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-25-008179",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828025008179/R3.htm",
-          "statement_label": "Net income attributable to CRH",
-          "statement_value": 3492000000.0,
-          "expected_value": 703000000.0,
-          "detail": "12M 3,492,000,000 (10-K 0001628280-25-008179) − 9M 2,789,000,000 (10-Q 0001628280-24-045944)"
+          "detail": "No 12-month net income column ending 2024-12-31 on 10-K 0001628280-25-008179."
         }
       },
       {
@@ -967,7 +1050,7 @@
         "fiscalQuarter": 3,
         "start": "2024-07-01",
         "end": "2024-09-30",
-        "ttm": "previous",
+        "ttm": null,
         "missing": false,
         "value": 1376000000.0,
         "concept": "NetIncomeLoss",
@@ -976,6 +1059,7 @@
         "form": "10-Q",
         "filed": "2024-11-07",
         "accn": "0001628280-24-045944",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -987,6 +1071,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2024-09-30",
             "value": 1376000000.0,
@@ -994,13 +1079,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-24-045944",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/R2.htm",
-          "statement_label": "Net income attributable to CRH plc",
-          "statement_value": 1376000000.0,
-          "expected_value": 1376000000.0
+          "detail": "No 3-month net income column ending 2024-09-30 on 10-Q 0001628280-24-045944."
         }
       },
       {
@@ -1017,6 +1100,7 @@
         "form": "10-Q",
         "filed": "2024-08-08",
         "accn": "0001628280-24-035823",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024035823/0001628280-24-035823-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1028,6 +1112,7 @@
             "form": "10-Q",
             "filed": "2024-08-08",
             "accn": "0001628280-24-035823",
+            "sourceType": "company_facts",
             "start": "2024-04-01",
             "end": "2024-06-30",
             "value": 1297000000.0,
@@ -1035,13 +1120,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-24-035823",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024035823/R2.htm",
-          "statement_label": "Net income attributable to CRH plc",
-          "statement_value": 1297000000.0,
-          "expected_value": 1297000000.0
+          "detail": "No 3-month net income column ending 2024-06-30 on 10-Q 0001628280-24-035823."
         }
       },
       {
@@ -1058,6 +1141,7 @@
         "form": "10-Q",
         "filed": "2024-05-10",
         "accn": "0001628280-24-022452",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024022452/0001628280-24-022452-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1069,6 +1153,7 @@
             "form": "10-Q",
             "filed": "2024-05-10",
             "accn": "0001628280-24-022452",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-03-31",
             "value": 116000000.0,
@@ -1076,13 +1161,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-24-022452",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024022452/R2.htm",
-          "statement_label": "Net income (loss) attributable to CRH plc",
-          "statement_value": 116000000.0,
-          "expected_value": 116000000.0
+          "detail": "No 3-month net income column ending 2024-03-31 on 10-Q 0001628280-24-022452."
         }
       },
       {
@@ -1099,6 +1182,7 @@
         "form": "10-K",
         "filed": "2024-02-29",
         "accn": "0001628280-24-007773",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024007773/0001628280-24-007773-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1110,6 +1194,7 @@
             "form": "10-K",
             "filed": "2024-02-29",
             "accn": "0001628280-24-007773",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-12-31",
             "value": 3178000000.0,
@@ -1121,6 +1206,7 @@
             "form": "10-Q",
             "filed": "2024-11-07",
             "accn": "0001628280-24-045944",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-09-30",
             "value": 2477000000.0,
@@ -1128,66 +1214,23 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-24-007773",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024007773/R3.htm",
-          "statement_label": "Net income attributable to CRH plc",
-          "statement_value": 3178000000.0,
-          "expected_value": 701000000.0,
-          "detail": "12M 3,178,000,000 (10-K 0001628280-24-007773) − 9M 2,477,000,000 (10-Q 0001628280-24-045944)"
-        }
-      },
-      {
-        "fiscalYear": 2023,
-        "fiscalQuarter": 3,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 1306000000.0,
-        "concept": "NetIncomeLoss",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2024-11-07",
-        "accn": "0001628280-24-045944",
-        "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm",
-        "restated": false,
-        "labelInferred": true,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2024-11-07",
-            "accn": "0001628280-24-045944",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 1306000000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/0001628280-24-045944-index.htm"
-          }
-        ],
-        "check": {
-          "status": "match",
-          "accn": "0001628280-24-045944",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/849395/000162828024045944/R2.htm",
-          "statement_label": "Net income attributable to CRH plc",
-          "statement_value": 1306000000.0,
-          "expected_value": 1306000000.0
+          "detail": "No 12-month net income column ending 2023-12-31 on 10-K 0001628280-24-007773."
         }
       }
     ],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
       "refreshedSubmissions": false
     }
-  }
+  },
+  "classificationIssues": []
 }

@@ -17,22 +17,33 @@
     "current": null,
     "previous": null,
     "growthPct": null,
-    "reason": "statement_mismatch",
+    "reason": "ambiguous_concept",
     "currency": "USD"
   },
   "revenue": {
-    "status": "ok",
+    "status": "ambiguous",
     "currency": "USD",
-    "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-    "conceptStatus": "single",
-    "conceptNote": "",
+    "concept": null,
+    "conceptStatus": "ambiguous",
+    "conceptNote": "Concepts disagree (Revenues, RevenueFromContractWithCustomerExcludingAssessedTax) and the income statement does not resolve which is total revenue.",
     "candidates": [
       {
+        "concept": "Revenues",
+        "latestEnd": "2026-09-30",
+        "latestValue": 332168000.0,
+        "quartersInWindow": 1,
+        "selected": false,
+        "comparedWith": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "overlaps": 1,
+        "disagreements": 1,
+        "statementLabel": null
+      },
+      {
         "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "latestEnd": "2026-06-30",
-        "latestValue": 278035000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 331155000.0,
         "quartersInWindow": 13,
-        "selected": true,
+        "selected": false,
         "comparedWith": null,
         "overlaps": 0,
         "disagreements": 0,
@@ -40,579 +51,31 @@
       }
     ],
     "flags": [
-      "statement_mismatch"
+      "ambiguous_concept"
     ],
-    "statementCheck": {
-      "status": "mismatch",
-      "accn": "0001628280-26-050990",
-      "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/R4.htm",
-      "period_end": "2026-06-30",
-      "months": 3,
-      "pipeline_value": 278035000.0,
-      "statement_value": 308596000.0
-    },
-    "quarters": [
-      {
-        "fiscalYear": 2026,
-        "fiscalQuarter": 2,
-        "start": "2026-04-01",
-        "end": "2026-06-30",
-        "ttm": "current",
-        "missing": false,
-        "value": 278035000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2026-07-30",
-        "accn": "0001628280-26-050990",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/0001628280-26-050990-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2026-07-30",
-            "accn": "0001628280-26-050990",
-            "start": "2026-04-01",
-            "end": "2026-06-30",
-            "value": 278035000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/0001628280-26-050990-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001628280-26-050990",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 308596000.0,
-          "expected_value": 278035000.0,
-          "detail": "3-month value on 10-Q 0001628280-26-050990 is 308,596,000; Company Facts has 278,035,000."
-        }
-      },
-      {
-        "fiscalYear": 2026,
-        "fiscalQuarter": 1,
-        "start": "2026-01-01",
-        "end": "2026-03-31",
-        "ttm": "current",
-        "missing": false,
-        "value": 197334000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2026-04-30",
-        "accn": "0001628280-26-028730",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026028730/0001628280-26-028730-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2026-04-30",
-            "accn": "0001628280-26-028730",
-            "start": "2026-01-01",
-            "end": "2026-03-31",
-            "value": 197334000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026028730/0001628280-26-028730-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001628280-26-028730",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026028730/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 214573000.0,
-          "expected_value": 197334000.0,
-          "detail": "3-month value on 10-Q 0001628280-26-028730 is 214,573,000; Company Facts has 197,334,000."
-        }
-      },
-      {
-        "fiscalYear": 2025,
-        "fiscalQuarter": 4,
-        "start": "2025-10-01",
-        "end": "2025-12-31",
-        "ttm": "current",
-        "missing": false,
-        "value": 210682000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "derived",
-        "formula": "FY − 9M YTD",
-        "form": "10-K",
-        "filed": "2026-02-27",
-        "accn": "0001628280-26-012444",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026012444/0001628280-26-012444-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "ytd_total",
-            "sign": 1,
-            "form": "10-K",
-            "filed": "2026-02-27",
-            "accn": "0001628280-26-012444",
-            "start": "2025-01-01",
-            "end": "2025-12-31",
-            "value": 963695000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026012444/0001628280-26-012444-index.htm"
-          },
-          {
-            "role": "ytd_prior",
-            "sign": -1,
-            "form": "10-Q",
-            "filed": "2025-10-30",
-            "accn": "0001035201-25-000039",
-            "start": "2025-01-01",
-            "end": "2025-09-30",
-            "value": 753013000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/0001035201-25-000039-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001628280-26-012444",
-          "form": "10-K",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026012444/R5.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 1000140000.0,
-          "expected_value": 963695000.0,
-          "detail": "12-month value on 10-K 0001628280-26-012444 is 1,000,140,000; Company Facts has 963,695,000."
-        }
-      },
-      {
-        "fiscalYear": 2025,
-        "fiscalQuarter": 3,
-        "start": "2025-07-01",
-        "end": "2025-09-30",
-        "ttm": "current",
-        "missing": false,
-        "value": 314096000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2025-10-30",
-        "accn": "0001035201-25-000039",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/0001035201-25-000039-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2025-10-30",
-            "accn": "0001035201-25-000039",
-            "start": "2025-07-01",
-            "end": "2025-09-30",
-            "value": 314096000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/0001035201-25-000039-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-25-000039",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 311235000.0,
-          "expected_value": 314096000.0,
-          "detail": "3-month value on 10-Q 0001035201-25-000039 is 311,235,000; Company Facts has 314,096,000."
-        }
-      },
-      {
-        "fiscalYear": 2025,
-        "fiscalQuarter": 2,
-        "start": "2025-04-01",
-        "end": "2025-06-30",
-        "ttm": "previous",
-        "missing": false,
-        "value": 256216000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2025-07-31",
-        "accn": "0001035201-25-000012",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000012/0001035201-25-000012-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2025-07-31",
-            "accn": "0001035201-25-000012",
-            "start": "2025-04-01",
-            "end": "2025-06-30",
-            "value": 256216000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000012/0001035201-25-000012-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-25-000012",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000012/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 264954000.0,
-          "expected_value": 256216000.0,
-          "detail": "3-month value on 10-Q 0001035201-25-000012 is 264,954,000; Company Facts has 256,216,000."
-        }
-      },
-      {
-        "fiscalYear": 2025,
-        "fiscalQuarter": 1,
-        "start": "2025-01-01",
-        "end": "2025-03-31",
-        "ttm": "previous",
-        "missing": false,
-        "value": 182701000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2025-05-01",
-        "accn": "0001035201-25-000006",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000006/0001035201-25-000006-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2025-05-01",
-            "accn": "0001035201-25-000006",
-            "start": "2025-01-01",
-            "end": "2025-03-31",
-            "value": 182701000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000006/0001035201-25-000006-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-25-000006",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000006/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 203973000.0,
-          "expected_value": 182701000.0,
-          "detail": "3-month value on 10-Q 0001035201-25-000006 is 203,973,000; Company Facts has 182,701,000."
-        }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 4,
-        "start": "2024-10-01",
-        "end": "2024-12-31",
-        "ttm": "previous",
-        "missing": false,
-        "value": 217820000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "derived",
-        "formula": "FY − 9M YTD",
-        "form": "10-K",
-        "filed": "2025-02-27",
-        "accn": "0001035201-25-000003",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000003/0001035201-25-000003-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "ytd_total",
-            "sign": 1,
-            "form": "10-K",
-            "filed": "2025-02-27",
-            "accn": "0001035201-25-000003",
-            "start": "2024-01-01",
-            "end": "2024-12-31",
-            "value": 905623000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000003/0001035201-25-000003-index.htm"
-          },
-          {
-            "role": "ytd_prior",
-            "sign": -1,
-            "form": "10-Q",
-            "filed": "2024-10-31",
-            "accn": "0001035201-24-000013",
-            "start": "2024-01-01",
-            "end": "2024-09-30",
-            "value": 687803000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/0001035201-24-000013-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-25-000003",
-          "form": "10-K",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000003/R5.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 1036806000.0,
-          "expected_value": 905623000.0,
-          "detail": "12-month value on 10-K 0001035201-25-000003 is 1,036,806,000; Company Facts has 905,623,000."
-        }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 3,
-        "start": "2024-07-01",
-        "end": "2024-09-30",
-        "ttm": "previous",
-        "missing": false,
-        "value": 306237000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2024-10-31",
-        "accn": "0001035201-24-000013",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/0001035201-24-000013-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2024-10-31",
-            "accn": "0001035201-24-000013",
-            "start": "2024-07-01",
-            "end": "2024-09-30",
-            "value": 306237000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/0001035201-24-000013-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-24-000013",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 299563000.0,
-          "expected_value": 306237000.0,
-          "detail": "3-month value on 10-Q 0001035201-24-000013 is 299,563,000; Company Facts has 306,237,000."
-        }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 2,
-        "start": "2024-04-01",
-        "end": "2024-06-30",
-        "ttm": null,
-        "missing": false,
-        "value": 226665000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2024-08-01",
-        "accn": "0001035201-24-000010",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000010/0001035201-24-000010-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2024-08-01",
-            "accn": "0001035201-24-000010",
-            "start": "2024-04-01",
-            "end": "2024-06-30",
-            "value": 226665000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000010/0001035201-24-000010-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-24-000010",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000010/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 244299000.0,
-          "expected_value": 226665000.0,
-          "detail": "3-month value on 10-Q 0001035201-24-000010 is 244,299,000; Company Facts has 226,665,000."
-        }
-      },
-      {
-        "fiscalYear": 2024,
-        "fiscalQuarter": 1,
-        "start": "2024-01-01",
-        "end": "2024-03-31",
-        "ttm": null,
-        "missing": false,
-        "value": 154900000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2024-04-25",
-        "accn": "0001035201-24-000007",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000007/0001035201-24-000007-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2024-04-25",
-            "accn": "0001035201-24-000007",
-            "start": "2024-01-01",
-            "end": "2024-03-31",
-            "value": 154900000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000007/0001035201-24-000007-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-24-000007",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000007/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 270749000.0,
-          "expected_value": 154900000.0,
-          "detail": "3-month value on 10-Q 0001035201-24-000007 is 270,749,000; Company Facts has 154,900,000."
-        }
-      },
-      {
-        "fiscalYear": 2023,
-        "fiscalQuarter": 4,
-        "start": "2023-10-01",
-        "end": "2023-12-31",
-        "ttm": null,
-        "missing": false,
-        "value": 197566000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "derived",
-        "formula": "FY − 9M YTD",
-        "form": "10-K",
-        "filed": "2024-02-29",
-        "accn": "0001035201-24-000004",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000004/0001035201-24-000004-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "ytd_total",
-            "sign": 1,
-            "form": "10-K",
-            "filed": "2024-02-29",
-            "accn": "0001035201-24-000004",
-            "start": "2023-01-01",
-            "end": "2023-12-31",
-            "value": 790334000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000004/0001035201-24-000004-index.htm"
-          },
-          {
-            "role": "ytd_prior",
-            "sign": -1,
-            "form": "10-Q",
-            "filed": "2023-10-26",
-            "accn": "0001035201-23-000012",
-            "start": "2023-01-01",
-            "end": "2023-09-30",
-            "value": 592768000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/0001035201-23-000012-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-24-000004",
-          "form": "10-K",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000004/R5.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 794632000.0,
-          "expected_value": 790334000.0,
-          "detail": "12-month value on 10-K 0001035201-24-000004 is 794,632,000; Company Facts has 790,334,000."
-        }
-      },
-      {
-        "fiscalYear": 2023,
-        "fiscalQuarter": 3,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 253337000.0,
-        "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2023-10-26",
-        "accn": "0001035201-23-000012",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/0001035201-23-000012-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2023-10-26",
-            "accn": "0001035201-23-000012",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 253337000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/0001035201-23-000012-index.htm"
-          }
-        ],
-        "check": {
-          "status": "mismatch",
-          "accn": "0001035201-23-000012",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/R4.htm",
-          "statement_label": "Operating revenue",
-          "statement_value": 254976000.0,
-          "expected_value": 253337000.0,
-          "detail": "3-month value on 10-Q 0001035201-23-000012 is 254,976,000; Company Facts has 253,337,000."
-        }
-      }
-    ],
+    "statementCheck": null,
+    "quarters": [],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
-      "refreshedSubmissions": false
+      "refreshedSubmissions": true
     }
   },
-  "classificationIssues": [],
   "earnings": {
     "status": "ok",
     "currency": "USD",
     "concept": "NetIncomeLoss",
     "conceptStatus": "statement_verified",
-    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-050990.",
+    "conceptNote": "Candidate concepts disagree; NetIncomeLoss is the net income line presented on the income statement of filing 0001628280-26-068293.",
     "candidates": [
       {
         "concept": "NetIncomeLoss",
-        "latestEnd": "2026-06-30",
-        "latestValue": 56465000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 65408000.0,
         "quartersInWindow": 13,
         "selected": true,
         "comparedWith": null,
@@ -622,30 +85,74 @@
       },
       {
         "concept": "ProfitLoss",
-        "latestEnd": "2026-06-30",
-        "latestValue": 56453000.0,
+        "latestEnd": "2026-09-30",
+        "latestValue": 65396000.0,
         "quartersInWindow": 13,
         "selected": false,
         "comparedWith": "NetIncomeLoss",
         "overlaps": 13,
-        "disagreements": 10,
+        "disagreements": 9,
         "statementLabel": "Net income"
       }
     ],
     "flags": [
-      "other_concept_disagrees"
+      "other_concept_disagrees",
+      "unverified_quarters"
     ],
     "statementCheck": {
       "status": "verified",
-      "accn": "0001628280-26-050990",
+      "accn": "0001628280-26-068293",
       "form": "10-Q",
-      "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/R4.htm",
-      "period_end": "2026-06-30",
+      "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026068293/R4.htm",
+      "period_end": "2026-09-30",
       "months": 3,
-      "pipeline_value": 56465000.0,
-      "statement_value": 56465000.0
+      "pipeline_value": 65408000.0,
+      "statement_value": 65408000.0
     },
     "quarters": [
+      {
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "ttm": "current",
+        "missing": false,
+        "value": 65408000.0,
+        "concept": "NetIncomeLoss",
+        "method": "reported",
+        "formula": "3M reported",
+        "form": "10-Q",
+        "filed": "2026-10-29",
+        "accn": "0001628280-26-068293",
+        "sourceType": "company_facts",
+        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026068293/0001628280-26-068293-index.htm",
+        "restated": false,
+        "labelInferred": false,
+        "flags": [],
+        "sources": [
+          {
+            "role": "quarter",
+            "sign": 1,
+            "form": "10-Q",
+            "filed": "2026-10-29",
+            "accn": "0001628280-26-068293",
+            "sourceType": "company_facts",
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "value": 65408000.0,
+            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026068293/0001628280-26-068293-index.htm"
+          }
+        ],
+        "check": {
+          "status": "match",
+          "accn": "0001628280-26-068293",
+          "form": "10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026068293/R4.htm",
+          "statement_label": "Net income attributable to California Water Service Group",
+          "statement_value": 65408000.0,
+          "expected_value": 65408000.0
+        }
+      },
       {
         "fiscalYear": 2026,
         "fiscalQuarter": 2,
@@ -660,6 +167,7 @@
         "form": "10-Q",
         "filed": "2026-07-30",
         "accn": "0001628280-26-050990",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/0001628280-26-050990-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -671,6 +179,7 @@
             "form": "10-Q",
             "filed": "2026-07-30",
             "accn": "0001628280-26-050990",
+            "sourceType": "company_facts",
             "start": "2026-04-01",
             "end": "2026-06-30",
             "value": 56465000.0,
@@ -678,13 +187,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-050990",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026050990/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 56465000.0,
-          "expected_value": 56465000.0
+          "detail": "No 3-month net income column ending 2026-06-30 on 10-Q 0001628280-26-050990."
         }
       },
       {
@@ -701,6 +208,7 @@
         "form": "10-Q",
         "filed": "2026-04-30",
         "accn": "0001628280-26-028730",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026028730/0001628280-26-028730-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -712,6 +220,7 @@
             "form": "10-Q",
             "filed": "2026-04-30",
             "accn": "0001628280-26-028730",
+            "sourceType": "company_facts",
             "start": "2026-01-01",
             "end": "2026-03-31",
             "value": 4037000.0,
@@ -719,13 +228,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-028730",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026028730/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 4037000.0,
-          "expected_value": 4037000.0
+          "detail": "No 3-month net income column ending 2026-03-31 on 10-Q 0001628280-26-028730."
         }
       },
       {
@@ -742,6 +249,7 @@
         "form": "10-K",
         "filed": "2026-02-27",
         "accn": "0001628280-26-012444",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026012444/0001628280-26-012444-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -753,6 +261,7 @@
             "form": "10-K",
             "filed": "2026-02-27",
             "accn": "0001628280-26-012444",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-12-31",
             "value": 128211000.0,
@@ -764,6 +273,7 @@
             "form": "10-Q",
             "filed": "2025-10-30",
             "accn": "0001035201-25-000039",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-09-30",
             "value": 116729000.0,
@@ -771,14 +281,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001628280-26-012444",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000162828026012444/R5.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 128211000.0,
-          "expected_value": 11482000.0,
-          "detail": "12M 128,211,000 (10-K 0001628280-26-012444) − 9M 116,729,000 (10-Q 0001035201-25-000039)"
+          "detail": "No 12-month net income column ending 2025-12-31 on 10-K 0001628280-26-012444."
         }
       },
       {
@@ -786,7 +293,7 @@
         "fiscalQuarter": 3,
         "start": "2025-07-01",
         "end": "2025-09-30",
-        "ttm": "current",
+        "ttm": "previous",
         "missing": false,
         "value": 61230000.0,
         "concept": "NetIncomeLoss",
@@ -795,6 +302,7 @@
         "form": "10-Q",
         "filed": "2025-10-30",
         "accn": "0001035201-25-000039",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/0001035201-25-000039-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -806,6 +314,7 @@
             "form": "10-Q",
             "filed": "2025-10-30",
             "accn": "0001035201-25-000039",
+            "sourceType": "company_facts",
             "start": "2025-07-01",
             "end": "2025-09-30",
             "value": 61230000.0,
@@ -813,13 +322,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-25-000039",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000039/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 61230000.0,
-          "expected_value": 61230000.0
+          "detail": "No 3-month net income column ending 2025-09-30 on 10-Q 0001035201-25-000039."
         }
       },
       {
@@ -836,6 +343,7 @@
         "form": "10-Q",
         "filed": "2025-07-31",
         "accn": "0001035201-25-000012",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000012/0001035201-25-000012-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -847,6 +355,7 @@
             "form": "10-Q",
             "filed": "2025-07-31",
             "accn": "0001035201-25-000012",
+            "sourceType": "company_facts",
             "start": "2025-04-01",
             "end": "2025-06-30",
             "value": 42168000.0,
@@ -854,13 +363,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-25-000012",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000012/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 42168000.0,
-          "expected_value": 42168000.0
+          "detail": "No 3-month net income column ending 2025-06-30 on 10-Q 0001035201-25-000012."
         }
       },
       {
@@ -877,6 +384,7 @@
         "form": "10-Q",
         "filed": "2025-05-01",
         "accn": "0001035201-25-000006",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000006/0001035201-25-000006-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -888,6 +396,7 @@
             "form": "10-Q",
             "filed": "2025-05-01",
             "accn": "0001035201-25-000006",
+            "sourceType": "company_facts",
             "start": "2025-01-01",
             "end": "2025-03-31",
             "value": 13331000.0,
@@ -895,13 +404,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-25-000006",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000006/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 13331000.0,
-          "expected_value": 13331000.0
+          "detail": "No 3-month net income column ending 2025-03-31 on 10-Q 0001035201-25-000006."
         }
       },
       {
@@ -918,6 +425,7 @@
         "form": "10-K",
         "filed": "2025-02-27",
         "accn": "0001035201-25-000003",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000003/0001035201-25-000003-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -929,6 +437,7 @@
             "form": "10-K",
             "filed": "2025-02-27",
             "accn": "0001035201-25-000003",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-12-31",
             "value": 190807000.0,
@@ -940,6 +449,7 @@
             "form": "10-Q",
             "filed": "2024-10-31",
             "accn": "0001035201-24-000013",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-09-30",
             "value": 171148000.0,
@@ -947,14 +457,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-25-000003",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520125000003/R5.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 190807000.0,
-          "expected_value": 19659000.0,
-          "detail": "12M 190,807,000 (10-K 0001035201-25-000003) − 9M 171,148,000 (10-Q 0001035201-24-000013)"
+          "detail": "No 12-month net income column ending 2024-12-31 on 10-K 0001035201-25-000003."
         }
       },
       {
@@ -962,7 +469,7 @@
         "fiscalQuarter": 3,
         "start": "2024-07-01",
         "end": "2024-09-30",
-        "ttm": "previous",
+        "ttm": null,
         "missing": false,
         "value": 60680000.0,
         "concept": "NetIncomeLoss",
@@ -971,6 +478,7 @@
         "form": "10-Q",
         "filed": "2024-10-31",
         "accn": "0001035201-24-000013",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/0001035201-24-000013-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -982,6 +490,7 @@
             "form": "10-Q",
             "filed": "2024-10-31",
             "accn": "0001035201-24-000013",
+            "sourceType": "company_facts",
             "start": "2024-07-01",
             "end": "2024-09-30",
             "value": 60680000.0,
@@ -989,13 +498,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-24-000013",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000013/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 60680000.0,
-          "expected_value": 60680000.0
+          "detail": "No 3-month net income column ending 2024-09-30 on 10-Q 0001035201-24-000013."
         }
       },
       {
@@ -1012,6 +519,7 @@
         "form": "10-Q",
         "filed": "2024-08-01",
         "accn": "0001035201-24-000010",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000010/0001035201-24-000010-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1023,6 +531,7 @@
             "form": "10-Q",
             "filed": "2024-08-01",
             "accn": "0001035201-24-000010",
+            "sourceType": "company_facts",
             "start": "2024-04-01",
             "end": "2024-06-30",
             "value": 40551000.0,
@@ -1030,13 +539,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-24-000010",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000010/R4.htm",
-          "statement_label": "Net income (loss) attributable to California Water Service Group",
-          "statement_value": 40551000.0,
-          "expected_value": 40551000.0
+          "detail": "No 3-month net income column ending 2024-06-30 on 10-Q 0001035201-24-000010."
         }
       },
       {
@@ -1053,6 +560,7 @@
         "form": "10-Q",
         "filed": "2024-04-25",
         "accn": "0001035201-24-000007",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000007/0001035201-24-000007-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1064,6 +572,7 @@
             "form": "10-Q",
             "filed": "2024-04-25",
             "accn": "0001035201-24-000007",
+            "sourceType": "company_facts",
             "start": "2024-01-01",
             "end": "2024-03-31",
             "value": 69917000.0,
@@ -1071,13 +580,11 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-24-000007",
           "form": "10-Q",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000007/R4.htm",
-          "statement_label": "Net income (loss) attributable to California Water Service Group",
-          "statement_value": 69917000.0,
-          "expected_value": 69917000.0
+          "detail": "No 3-month net income column ending 2024-03-31 on 10-Q 0001035201-24-000007."
         }
       },
       {
@@ -1094,6 +601,7 @@
         "form": "10-K",
         "filed": "2024-02-29",
         "accn": "0001035201-24-000004",
+        "sourceType": "company_facts",
         "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000004/0001035201-24-000004-index.htm",
         "restated": false,
         "labelInferred": false,
@@ -1105,6 +613,7 @@
             "form": "10-K",
             "filed": "2024-02-29",
             "accn": "0001035201-24-000004",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-12-31",
             "value": 51911000.0,
@@ -1116,6 +625,7 @@
             "form": "10-Q",
             "filed": "2023-10-26",
             "accn": "0001035201-23-000012",
+            "sourceType": "company_facts",
             "start": "2023-01-01",
             "end": "2023-09-30",
             "value": 21783000.0,
@@ -1123,66 +633,23 @@
           }
         ],
         "check": {
-          "status": "match",
+          "status": "unavailable",
           "accn": "0001035201-24-000004",
           "form": "10-K",
           "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520124000004/R5.htm",
-          "statement_label": "Net income",
-          "statement_value": 51911000.0,
-          "expected_value": 30128000.0,
-          "detail": "12M 51,911,000 (10-K 0001035201-24-000004) − 9M 21,783,000 (10-Q 0001035201-23-000012)"
-        }
-      },
-      {
-        "fiscalYear": 2023,
-        "fiscalQuarter": 3,
-        "start": "2023-07-01",
-        "end": "2023-09-30",
-        "ttm": null,
-        "missing": false,
-        "value": 34438000.0,
-        "concept": "NetIncomeLoss",
-        "method": "reported",
-        "formula": "3M reported",
-        "form": "10-Q",
-        "filed": "2023-10-26",
-        "accn": "0001035201-23-000012",
-        "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/0001035201-23-000012-index.htm",
-        "restated": false,
-        "labelInferred": false,
-        "flags": [],
-        "sources": [
-          {
-            "role": "quarter",
-            "sign": 1,
-            "form": "10-Q",
-            "filed": "2023-10-26",
-            "accn": "0001035201-23-000012",
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "value": 34438000.0,
-            "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/0001035201-23-000012-index.htm"
-          }
-        ],
-        "check": {
-          "status": "match",
-          "accn": "0001035201-23-000012",
-          "form": "10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/1035201/000103520123000012/R4.htm",
-          "statement_label": "Net income attributable to California Water Service Group",
-          "statement_value": 34438000.0,
-          "expected_value": 34438000.0
+          "detail": "No 12-month net income column ending 2023-12-31 on 10-K 0001035201-24-000004."
         }
       }
     ],
     "edgarSupplement": {
       "status": "current",
-      "latestFactsEnd": "2026-06-30",
+      "latestFactsEnd": "2026-09-30",
       "window": "official_filings",
       "newerFilings": [],
       "applied": [],
       "unresolved": [],
       "refreshedSubmissions": false
     }
-  }
+  },
+  "classificationIssues": []
 }
